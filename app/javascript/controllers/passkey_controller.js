@@ -111,7 +111,12 @@ export default class extends Controller {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 csrfToken: getCsrfToken(),
-                body: JSON.stringify({ credential: credential }), // Send the whole credential object
+                body: JSON.stringify({
+                    credential: credential,
+                    path: document.querySelector('input[name="path"]')?.value,
+                    project: document.querySelector('input[name="project"]')
+                        ?.value,
+                }),
             });
 
             const result = await verifyResponse.json();

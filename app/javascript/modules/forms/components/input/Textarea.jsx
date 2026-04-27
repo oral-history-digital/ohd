@@ -77,6 +77,7 @@ export default function Textarea({
                     direction: textDir,
                     textAlign: textDir === 'rtl' ? 'right' : 'left',
                 }}
+                data-testid={`${scope}-${attribute}-textarea`}
             />
         </Element>
     );

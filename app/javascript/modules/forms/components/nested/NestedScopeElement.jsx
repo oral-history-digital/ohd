@@ -49,6 +49,7 @@ export default function NestedScopeElement({
                                 `edit.default.${editing ? 'cancel' : 'edit'}`
                             )}
                             onClick={() => setEditing(!editing)}
+                            data-testid="edit-toggle-button"
                         >
                             <FaPencilAlt className="Icon Icon--editorial" />
                         </button>

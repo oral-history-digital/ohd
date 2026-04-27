@@ -1,4 +1,5 @@
 import isNil from 'lodash.isnil';
+import { formatDuration } from 'modules/utils';
 
 import { isDate } from './isDate';
 import { toDateString } from './toDateString';
@@ -84,7 +85,7 @@ export function humanReadable({
 
     // 4. Duration formatting (HH:MM:SS → "X h Y min")
     if (attribute === 'duration') {
-        return `${value.split(':')[0]} h ${value.split(':')[1]} min`;
+        return formatDuration(value, none);
     }
 
     // 5. Date formatting (locale-aware)

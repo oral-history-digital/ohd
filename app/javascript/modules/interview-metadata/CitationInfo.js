@@ -3,12 +3,7 @@ import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 
-export default function CitationInfo({
-    interview,
-    collections,
-    projectDoi,
-    projectName,
-}) {
+export default function CitationInfo({ interview, collections }) {
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const pathBase = usePathBase();
@@ -19,7 +14,7 @@ export default function CitationInfo({
 
     let doiLink;
     if (interview.doi_status === 'created') {
-        doiLink = `https://doi.org/${projectDoi}/${projectId}.${interview.archive_id}`;
+        doiLink = `https://doi.org/${project?.doi}/${projectId}.${interview.archive_id}`;
     }
 
     let collectionName;
@@ -40,7 +35,7 @@ export default function CitationInfo({
                         `${interview.anonymous_title?.[locale]}, `}
                     {t('interview')} {`${interview.archive_id}, `}
                     {`${interview.interview_date}, `}
-                    {projectName && `${projectName[locale]}, `}
+                    {`${project?.name[locale]}, `}
                     {collectionName}
                     {selfLink && <a href={selfLink}>{selfLink}</a>}
                     {doiLink && (
@@ -58,7 +53,5 @@ export default function CitationInfo({
 
 CitationInfo.propTypes = {
     collections: PropTypes.object.isRequired,
-    projectDoi: PropTypes.string.isRequired,
-    projectName: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
 };

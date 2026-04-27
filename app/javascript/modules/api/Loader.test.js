@@ -120,7 +120,7 @@ describe('Loader', () => {
             Loader.getJson('/api/projects', {}, mockDispatch, mockCallback);
 
             expect(consoleErrorSpy).toHaveBeenCalledWith(
-                'loading json from /api/projects failed: Error: Network error'
+                'Loading JSON from /api/projects failed: Error: Network error'
             );
             expect(mockCallback).toHaveBeenCalledWith(expect.any(Error));
             expect(mockDispatch).toHaveBeenCalledWith(
@@ -146,7 +146,7 @@ describe('Loader', () => {
             Loader.getJson('/api/projects', {}, mockDispatch, mockCallback);
 
             expect(consoleErrorSpy).toHaveBeenCalledWith(
-                'loading json from /api/projects failed: Server error'
+                'Loading JSON from /api/projects failed: Server error'
             );
 
             consoleErrorSpy.mockRestore();
@@ -229,7 +229,7 @@ describe('Loader', () => {
             );
 
             expect(consoleErrorSpy).toHaveBeenCalledWith(
-                'loading json from /api/projects/123 failed: Error: Delete failed'
+                'Loading JSON from /api/projects/123 failed: Error: Delete failed'
             );
             expect(mockCallback).toHaveBeenCalledWith(expect.any(Error));
             expect(mockDispatch).toHaveBeenCalledWith(
@@ -1097,7 +1097,7 @@ describe('Loader', () => {
                     mockErrorCallback(networkError)
                 );
                 expect(consoleErrorSpy).toHaveBeenCalledWith(
-                    'loading json from /test/url failed: Error: Network failure'
+                    'Loading JSON from /test/url failed: Error: Network failure'
                 );
 
                 consoleErrorSpy.mockRestore();

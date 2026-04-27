@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -6,7 +8,7 @@ import PropTypes from 'prop-types';
 import { FaRegQuestionCircle } from 'react-icons/fa';
 import useSWRImmutable from 'swr/immutable';
 
-export default function HelpText({ className, style, code, small = false }) {
+function HelpText({ className, style, code, small = false }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
     const path = `${pathBase}/help_texts.json`;
@@ -81,3 +83,5 @@ HelpText.propTypes = {
     code: PropTypes.string.isRequired,
     small: PropTypes.bool,
 };
+
+export default memo(HelpText);

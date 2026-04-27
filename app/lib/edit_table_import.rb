@@ -30,7 +30,10 @@ class EditTableImport
   end
 
   def process
-    sheet.each do |row|
+    sheet.each_with_index do |row, index|
+      unless row[:timecode] =~ /^\d{2}:\d{2}:\d{2}.\d{3}$/
+        raise "Timecode has to be in the format HH:MM:SS.mmm, but '#{row[:timecode]}' in line #{index+2} is not. Please correct the timecode and try again."
+      end
       unless only_references
         speaker_id = contributions.key(row[:speaker_designation])
 

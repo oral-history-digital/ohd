@@ -1,13 +1,16 @@
 .video-js {
   position: relative; // Ensures that positioned elements are relative to the container
   overflow: hidden; // Prevents elements outside the container from generating scroll
+  container-type: inline-size;
 
   .vjs-time-control {
     display: block;
   }
 
-  .vjs-remaining-time {
-    display: none;
+  @container (max-width: 400px) {
+    .vjs-current-time {
+      display: none;
+    }
   }
 
   .vjs-poster img {

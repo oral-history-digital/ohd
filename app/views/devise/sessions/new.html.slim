@@ -45,7 +45,7 @@ h2= t('login')
 
 .register-link
   = link_to tv('user.registration'),
-    "#{@project.domain_with_optional_identifier}/#{@locale}?open_register_popup='true'",
+    "#{@project.domain_with_optional_identifier}/#{@locale}/register",
     class: 'Link'
 
 .order-new-password-link

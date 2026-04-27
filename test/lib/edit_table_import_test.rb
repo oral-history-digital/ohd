@@ -42,7 +42,7 @@ class EditTableImportTest < ActiveSupport::TestCase
       ]
       f << [
         1,
-        "00:00:02.00",
+        "00:00:02.000",
         "INT",
         "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца",
         "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez",
@@ -59,7 +59,7 @@ class EditTableImportTest < ActiveSupport::TestCase
       ]
       f << [
         2,
-        "00:00:02.00",
+        "00:00:02.000",
         "AB",
         "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни",
         "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte",

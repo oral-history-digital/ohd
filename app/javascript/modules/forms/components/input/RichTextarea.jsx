@@ -59,7 +59,10 @@ export default class RichTextarea extends Component {
                 individualErrorMsg={this.props.individualErrorMsg}
                 help={this.props.help}
             >
-                <div className="richtextarea">
+                <div
+                    className="richtextarea"
+                    data-testid={`${this.props.scope}-${this.props.attribute}-richtextarea`}
+                >
                     <RichTextEditor
                         className="Input"
                         value={this.state.value}

@@ -112,6 +112,7 @@ export default function RegistryReferenceForm({
                         : registryReference.ref_object_id;
 
                     if (refObjectType === 'Person') {
+                        // Person references use SWR, so mutate handles cache updates synchronously
                         mutatePersonWithAssociations(refObjectId, async () => {
                             const referenceData = {
                                 ...params.registry_reference,
@@ -134,12 +135,18 @@ export default function RegistryReferenceForm({
 
                             return result;
                         });
+                        if (typeof onSubmit === 'function') {
+                            onSubmit();
+                        }
                     } else {
-                        submitData({ locale, projectId, project }, params);
-                    }
-
-                    if (typeof onSubmit === 'function') {
-                        onSubmit();
+                        // Segment references use Redux. Form is already closed by parent,
+                        // so callback is just for cleanup if needed.
+                        submitData(
+                            { locale, projectId, project },
+                            params,
+                            {},
+                            onSubmit
+                        );
                     }
                 }}
                 onCancel={onCancel}

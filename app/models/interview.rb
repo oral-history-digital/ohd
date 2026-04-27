@@ -626,22 +626,23 @@ class Interview < ApplicationRecord
       parsed_sheet.each_with_index do |row, index|
         contribution = contributions.select{|c| c.speaker_designation && c.speaker_designation == row[:speaker]}.first
         speaker_id = contribution && contribution.person_id
-        if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}([:.,]{1}\d{2,3})*\]*$/
-          if update_only_speakers && speaker_id
-            segment = Segment.find_or_create_by(interview_id: id, timecode: row[:timecode], tape_id: tape_id)
-            segment.update speaker_id: speaker_id
-          else
-            Segment.create_or_update_by({
-              interview_id: id,
-              timecode: row[:timecode],
-              next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode,
-              tape_id: tape_id,
-              text: row[:transcript] || '',
-              locale: locale,
-              speaker_id: speaker_id,
-              split: true
-            })
-          end
+        unless row[:timecode] =~ /^\d{2}:\d{2}:\d{2}.\d{3}$/
+          raise "Timecode has to be in the format HH:MM:SS.mmm, but '#{row[:timecode]}' in line #{index+2} is not. Please correct the timecode and try again."
+        end
+        if update_only_speakers && speaker_id
+          segment = Segment.find_or_create_by(interview_id: id, timecode: row[:timecode], tape_id: tape_id)
+          segment.update speaker_id: speaker_id
+        else
+          Segment.create_or_update_by({
+            interview_id: id,
+            timecode: row[:timecode],
+            next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode,
+            tape_id: tape_id,
+            text: row[:transcript] || '',
+            locale: locale,
+            speaker_id: speaker_id,
+            split: true
+          })
         end
       end
     end

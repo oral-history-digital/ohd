@@ -7,6 +7,8 @@ export default function tabIndexFromRoute(pathBase, pathname) {
 
     if (matchPath(`${pathBase}/not_found`, pathname)) {
         index = indexes.INDEX_NONE;
+    } else if (matchPath(`${pathBase}/admin/instance`, pathname)) {
+        index = indexes.INDEX_ADMINISTRATION;
     } else if (matchPath(`${pathBase}/users`, pathname)) {
         index = indexes.INDEX_ADMINISTRATION;
     } else if (matchPath(`${pathBase}/searches/archive`, pathname)) {

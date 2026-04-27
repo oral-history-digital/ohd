@@ -29,6 +29,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     gnupg \
     xz-utils \
     netcat-openbsd \
+    # Antivirus scanning (used by clamby)
+    clamav \
+    clamav-daemon \
+    clamav-freshclam \
     # Database clients
     default-mysql-client \
     libmariadb-dev \

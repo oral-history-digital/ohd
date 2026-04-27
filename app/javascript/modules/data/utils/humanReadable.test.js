@@ -115,6 +115,28 @@ describe('humanReadable', () => {
             });
             expect(actual).toEqual('02 h 35 min');
         });
+
+        test('should format numeric duration values as seconds', () => {
+            const obj = { duration: 3725 };
+            const actual = humanReadable({
+                obj,
+                attribute: 'duration',
+                locale: 'en',
+                translations: {},
+            });
+            expect(actual).toEqual('01 h 02 min');
+        });
+
+        test('should return fallback for invalid duration objects', () => {
+            const obj = { duration: { raw: '01:01:01' } };
+            const actual = humanReadable({
+                obj,
+                attribute: 'duration',
+                locale: 'en',
+                translations: {},
+            });
+            expect(actual).toEqual('---');
+        });
     });
 
     // Test #5: Date formatting

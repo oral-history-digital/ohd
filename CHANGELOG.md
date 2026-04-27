@@ -5,7 +5,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2026-01-12
+## [2.2.1] - 2026-04-09
+
+### Fixed
+
+- fix: enhance user authorization checks for instance settings in UsersAdminTabPanel ([6b4a43b54](https://github.com/oral-history-digital/ohd/commit/6b4a43b5406469fbe1518b59b9a578eeb35abefc))
+
+### Changed
+
+- chore: update default branch to 'staging' in deployment configuration ([1c957f7dc](https://github.com/oral-history-digital/ohd/commit/1c957f7dcc26a41427cb8f128514f5bc0cfe2c12))
+
+## [2.2.0] - 2026-04-09
+
+### Added
+
+- feat: segment inline edit ([#85](https://github.com/oral-history-digital/ohd/pull/85))
+- feat: add homepage settings endpoints and admin page ([#95](https://github.com/oral-history-digital/ohd/pull/95))
+- feat: implement Hot Module Replacement (HMR) with React Fast Refresh support ([#81](https://github.com/oral-history-digital/ohd/pull/81))
+
+### Changed
+
+- feat: improve styles in search page ([#96](https://github.com/oral-history-digital/ohd/pull/96))
+- cleanup citation ([4354e960e](https://github.com/oral-history-digital/ohd/commit/4354e960e46337c60b66198e959c75267f680acd))
+
+### Fixed
+
+- fix: redirect errors on registration and login ([#94](https://github.com/oral-history-digital/ohd/pull/94))
+- redirect after otp sign in ([4e6649e01](https://github.com/oral-history-digital/ohd/commit/4e6649e0132fe5af29ab3209d6e9f1708f567b0f))
+- add redirection after passkey sign in ([c0d45c33c](https://github.com/oral-history-digital/ohd/commit/c0d45c33cd19b2be2196637cefb71f14923b9efb))
+- fix: redirect errors on registration and login (#94) ([593b03e35](https://github.com/oral-history-digital/ohd/commit/593b03e359f4dcc5e70e34e3665760bf264a44ea))
+- prevent uploads with non-ms timecodes (transcript/ER) ([ce415858b](https://github.com/oral-history-digital/ohd/commit/ce415858b2a9ad4594c3a304470c6e827f5438c9))
+- adapt tests to restricted timecode format ([fff6c9cc6](https://github.com/oral-history-digital/ohd/commit/fff6c9cc69e5d0f0296b2d2d192fede1ec930f55))
+
+## [2.1.0] - 2026-03-23
+
+### Added
+
+- feat: add task for translation export/import ([#89](https://github.com/oral-history-digital/ohd/pull/89))
+- feat(user): refactor registration to hooks and add register page route ([#91](https://github.com/oral-history-digital/ohd/pull/91))
+- adding segments task to update timecodes ([4bf2217c2](https://github.com/oral-history-digital/ohd/commit/4bf2217c23140726f1d3a0330a56305cf1e0ec9b))
+- extend rake task to unify timecodes ([abbf1d3ba](https://github.com/oral-history-digital/ohd/commit/abbf1d3ba368a7abd6bf094c29bde74c5b856608))
+- feat(ci): add production build step to jest test runs ([2b573e284](https://github.com/oral-history-digital/ohd/commit/2b573e284bfa7c6c72191a141065314b9cc91e4b))
+
+### Changed
+
+- change timecodes to unique ms format ([a20d80b7b](https://github.com/oral-history-digital/ohd/commit/a20d80b7b61c7364d0018db26a55d0ead0bfe313))
+- adapt to decimal time format ([f9b4155d6](https://github.com/oral-history-digital/ohd/commit/f9b4155d6cffa29b430336df7a3ea5e7bd18e5bd))
+- rm test cae from segments task ([35c8aeeb1](https://github.com/oral-history-digital/ohd/commit/35c8aeeb1566c19cfd117ec298cb31c8f5e2275a))
+- serialize blank lat/lon values to null ([e55cf92b3](https://github.com/oral-history-digital/ohd/commit/e55cf92b30975182460bf6912042461702164424))
+
+### Fixed
+
+- fix: minor corrections ([#90](https://github.com/oral-history-digital/ohd/pull/90))
+- fix: avoid cache leaks across visibility contexts (anonymous/admin/per-user) ([#86](https://github.com/oral-history-digital/ohd/pull/86))
+- fix: add project count updates for institutions on project changes ([#87](https://github.com/oral-history-digital/ohd/pull/87))
+- fix: implement formatDuration utility to fix duration.split is not a function errors ([#92](https://github.com/oral-history-digital/ohd/pull/92))
+- fix: enhance timecode parsing to support colon-separated sub-seconds and frames ([#84](https://github.com/oral-history-digital/ohd/pull/84))
+- rm doubled ohd conditions ([5c7247940](https://github.com/oral-history-digital/ohd/commit/5c7247940440c7a3e382331d478e76a5eed0c03c))
+
+## [2.0.0] - 2026-03-12
 
 ### Added
 
@@ -405,6 +463,10 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.2.1]: https://github.com/oral-history-digital/ohd/compare/v2.2.0...v2.2.1
+[2.2.0]: https://github.com/oral-history-digital/ohd/compare/v2.1.0...v2.2.0
+[2.1.0]: https://github.com/oral-history-digital/ohd/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/oral-history-digital/ohd/compare/v1.9.1...v2.0.0
 [1.9.1]: https://github.com/oral-history-digital/ohd/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/oral-history-digital/ohd/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/oral-history-digital/ohd/compare/v1.7.0...v1.8.0

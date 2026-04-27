@@ -11,6 +11,7 @@ export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as EventTypesAdminPage } from './EventTypesAdminPage';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
 export { default as HelpTextAdminPage } from './HelpTextAdminPage';
+export { default as InstanceSettingAdminPage } from './InstanceSettingAdminPage';
 export { default as UsersAdminPage } from './UsersAdminPage';
 export { default as LanguagesSearchFormContainer } from './LanguagesSearchFormContainer';
 export { default as TranslationValuesSearchFormContainer } from './TranslationValuesSearchFormContainer';

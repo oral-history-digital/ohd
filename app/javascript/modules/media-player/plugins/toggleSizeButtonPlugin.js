@@ -5,6 +5,7 @@ import { MdOutlineFitScreen } from 'react-icons/md';
 import videojs from 'video.js';
 
 import { VIDEO_MAX_WIDTH_MEDIUM, VIDEO_MAX_WIDTH_SMALL } from '../constants';
+import { disposeReactRoot } from '../utils/disposeReactRoot';
 
 const VjsButton = videojs.getComponent('Button');
 
@@ -18,7 +19,7 @@ const isCompactViewport = () => isMobile() || window.innerWidth < SCREEN_M;
 /**
  * Toggle player size by manipulating video max-width
  */
-const togglePlayerWidth = (isCompact) => {
+export const togglePlayerWidth = (isCompact) => {
     const maxWidth = isCompact ? VIDEO_MAX_WIDTH_SMALL : VIDEO_MAX_WIDTH_MEDIUM;
     document.documentElement.style.setProperty(
         '--media-player-video-max-width',
@@ -26,6 +27,8 @@ const togglePlayerWidth = (isCompact) => {
     );
     // Save to sessionStorage
     sessionStorage.setItem('videoPlayerWidth', maxWidth);
+    // Notify layout hooks so sticky positioning recalculates immediately
+    window.dispatchEvent(new CustomEvent('mediaPlayerResized'));
 };
 
 /* ------------------------------------------------------------------ */
@@ -228,7 +231,8 @@ class ToggleSizeButton extends VjsButton {
         });
 
         /* Render icon with React inside the native Video.js button */
-        createRoot(el).render(
+        this.iconRoot = createRoot(el);
+        this.iconRoot.render(
             <span className="vjs-icon-placeholder">
                 <MdOutlineFitScreen style={{ fontSize: '1.2rem' }} />
             </span>
@@ -244,6 +248,9 @@ class ToggleSizeButton extends VjsButton {
             'pluginTranslationsUpdated',
             this.handleTranslationUpdate
         );
+        disposeReactRoot(this.iconRoot);
+        this.iconRoot = null;
+
         super.dispose();
     }
 }

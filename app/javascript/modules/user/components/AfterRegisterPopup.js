@@ -1,14 +1,27 @@
 import { useI18n } from 'modules/i18n';
+import { sanitizeInternalReturnPath } from 'modules/query-string';
 import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { getIsRegistered } from '../selectors';
 
-export default function AfterRegisterPopup({}) {
-    const { t, locale } = useI18n();
+export default function AfterRegisterPopup() {
+    const { t } = useI18n();
     const isRegistered = useSelector(getIsRegistered);
+    const navigate = useNavigate();
 
     if (!isRegistered) return null;
+
+    function handleClose() {
+        // Redirect to the stored return path after user confirms registration
+        const rawPath = sessionStorage.getItem('registrationReturnPath');
+        sessionStorage.removeItem('registrationReturnPath');
+
+        const returnPath = sanitizeInternalReturnPath(rawPath);
+
+        navigate(returnPath);
+    }
 
     return (
         <Modal
@@ -17,6 +30,7 @@ export default function AfterRegisterPopup({}) {
             trigger={t('user.registration')}
             showDialogInitially={true}
             hideButton={true}
+            onClose={handleClose}
         >
             {(close) => (
                 <>

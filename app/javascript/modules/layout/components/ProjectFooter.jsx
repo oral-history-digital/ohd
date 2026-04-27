@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 export function ProjectFooter({ project, locale }) {
     const identifier = project && project.shortname;
-    console.log('ProjectFooter', { identifier, locale });
 
     // TODO: This is currently dead code, ZWAR shortname is za. Decide what to do with it.
     if (identifier === 'zwar' && locale === 'de') {

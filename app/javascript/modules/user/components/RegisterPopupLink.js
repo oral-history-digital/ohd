@@ -3,9 +3,9 @@ import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
-import RegisterFormContainer from './RegisterFormContainer';
+import RegisterForm from './RegisterForm';
 
-export default function RegisterPopupLink({}) {
+export default function RegisterPopupLink() {
     const { t } = useI18n();
     const isOpen = /open_register_popup/.test(location.search);
     const currentProject = useSelector(getCurrentProject);
@@ -24,7 +24,11 @@ export default function RegisterPopupLink({}) {
                 showDialogInitially={isOpen}
             >
                 {(close) => (
-                    <RegisterFormContainer onSubmit={close} onCancel={close} />
+                    <RegisterForm
+                        onSubmit={close}
+                        onCancel={close}
+                        showCancelButton={true}
+                    />
                 )}
             </Modal>
         </>

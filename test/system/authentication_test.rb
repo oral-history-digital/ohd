@@ -13,13 +13,15 @@ class RegistrationTest < ApplicationSystemTestCase
     )
     confirm_registration_email
 
-    # step 2 - 
-    fill_in 'Institution', with: 'Goethe University'
-    select 'Researcher'
-    select 'Education'
-    fill_in 'specification', with: 'project ...'
-    check 'Terms of Use', visible: :all
-    click_on 'Submit activation request'
+    # step 2
+    within("[data-testid='user_project-form-wrapper']") do
+      find_test_id('user_project-organization-text-input').set('Goethe University')
+      select_test_id_option('user_project-job_description-select', 'Researcher')
+      select_test_id_option('user_project-research_intentions-select', 'Education')
+      find_test_id('user_project-specification-textarea').set('project ...')
+      click_test_id('user_project-tos_agreement-checkbox-input')
+      click_on 'Submit activation request'
+    end
     assert_text 'Your activation request has been successfully submitted'
     click_on 'OK'
     click_on 'Logout'
@@ -44,6 +46,88 @@ class RegistrationTest < ApplicationSystemTestCase
     # enjoy ...
     login_as 'mrossi@example.com'
     assert_text 'The test archive'
+  end
+
+  test "register confirmation returns to originating page and shows access step two" do
+    email = 'flow-check@example.com'
+
+    visit '/en/searches/archive?sort=random&checked_ohd_session=true'
+    within '.SessionButtons' do
+      click_test_id('register-link')
+    end
+
+    fill_in 'First Name', with: 'Flow'
+    fill_in 'Last Name', with: 'Check'
+    select 'Germany'
+    fill_in 'Street', with: 'Am Dornbusch 13'
+    fill_in 'City', with: 'Frankfurt am Main'
+    fill_in 'Email', with: email
+    fill_in 'Password', name: 'password', with: 'Password123!'
+    fill_in 'Password confirmation', with: 'Password123!'
+    check 'Terms of Use', visible: :all
+    check 'Privacy Policy', visible: :all
+    click_on 'Submit registration'
+
+    assert_text 'Your registration has been successfully submitted!'
+
+    user = User.find_by(email: email)
+    assert_not_nil user
+    assert_equal 'http://test.portal.oral-history.localhost:47001/en/searches/archive?sort=random', user.pre_register_location
+
+    confirm_registration_email
+
+    current_query = Rack::Utils.parse_nested_query(URI.parse(current_url).query)
+    assert_equal '/en/searches/archive', current_path
+    assert_equal 'random', current_query['sort']
+    assert_nil current_query['checked_ohd_session']
+    expected_path = current_path
+    assert_selector("[data-testid='user_project-form-wrapper']")
+
+    within("[data-testid='user_project-form-wrapper']") do
+      find_test_id('user_project-organization-text-input').set('Goethe University')
+      select_test_id_option('user_project-job_description-select', 'Researcher')
+      select_test_id_option('user_project-research_intentions-select', 'Education')
+      find_test_id('user_project-specification-textarea').set('project ...')
+      click_test_id('user_project-tos_agreement-checkbox-input')
+      click_on 'Submit activation request'
+    end
+
+    assert_text 'Your activation request has been successfully submitted'
+    assert_equal expected_path, current_path
+    click_on 'OK'
+    assert_equal expected_path, current_path
+
+    mails = ActionMailer::Base.deliveries
+    assert_equal 2, mails.count
+    assert_match /request for review/, mails.last.subject
+  end
+
+  test "registration confirmation email uses UI locale" do
+    email = "locale-check-#{SecureRandom.hex(4)}@example.com"
+
+    fill_registration_form(
+      first_name: 'Mario',
+      last_name: 'Rossi',
+      email: email,
+      locale: 'de'
+    )
+
+    user = User.find_by(email: email)
+    assert_not_nil user
+    assert_equal 'de', user.default_locale
+
+    mails = ActionMailer::Base.deliveries
+    assert_equal 1, mails.count
+
+    confirmation = mails.last
+    expected_subject = TranslationValue.for(
+      'devise.mailer.confirmation_instructions.subject',
+      'de'
+    )
+    assert_equal expected_subject, confirmation.subject
+
+    link = links_from_email(confirmation)[0]
+    assert_match %r{/de/users/confirmation\?confirmation_token=}, link
   end
 
   #test "user can enable TOTP during registration" do
@@ -83,7 +167,7 @@ class RegistrationTest < ApplicationSystemTestCase
     login_as EMAIL, PASSWORD
     
     # Should be redirected to 2FA page
-    assert_current_path users_otp_path(locale: I18n.locale)
+    assert_current_path users_otp_path(locale: I18n.locale), ignore_query: true
     assert_text 'One-time code'
     
     # Generate valid TOTP code
@@ -245,21 +329,33 @@ class RegistrationTest < ApplicationSystemTestCase
     click_on 'Login'
 
     # fail login configured times
-    Devise.maximum_attempts.times do |i|
-      fill_in 'user[email]', with: EMAIL
-      fill_in 'user[password]', with: 'WrongPassword8!'
-      click_on 'Login'
+    Devise.maximum_attempts.times do
+      assert_current_path '/en/users/sign_in', ignore_query: true
+      assert_selector 'form.Form.default'
 
-      assert_text /Invalid credentials|You have one more attempt before|Too many failed login attempts|For security reasons/
+      within('form.Form.default') do
+        fill_in 'user[email]', with: EMAIL
+        fill_in 'user[password]', with: 'WrongPassword8!'
+        click_on 'Login'
+      end
+
+      assert_current_path '/en/users/sign_in', ignore_query: true
+      assert_selector 'form.Form.default'
+      assert_selector '.notification-container', text: /Invalid credentials|You have one more attempt before|Too many failed login attempts|For security reasons/
     end
 
     user.reload
     assert user.access_locked?
 
     # now try with the correct password
-    fill_in 'user[email]', with: EMAIL
-    fill_in 'user[password]', with: PASSWORD
-    click_on 'Login'
+    assert_current_path '/en/users/sign_in', ignore_query: true
+    assert_selector 'form.Form.default'
+
+    within('form.Form.default') do
+      fill_in 'user[email]', with: EMAIL
+      fill_in 'user[password]', with: PASSWORD
+      click_on 'Login'
+    end
 
     assert_text "For security reasons, your account is locked after multiple failed attempts."
   end
@@ -281,5 +377,4 @@ class RegistrationTest < ApplicationSystemTestCase
 
     assert_text 'The test archive'
   end
-
 end

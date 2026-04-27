@@ -83,11 +83,11 @@ def main() -> None:
             raise ValueError(f"Erwartete 2 Projekte ({keep_project_shortnames}), fand aber {len(project_ids)}")
 
         # 2. Interviews behalten
-        keep_interview_ids = {"cd001"}
+        keep_interview_ids = {"cd001", "cd008", "cd025", "cd027"}
         interviews_to_keep = session.query(Interview).filter(Interview.archive_id.in_(keep_interview_ids)).all()
         interview_ids = {i.id for i in interviews_to_keep}
-        if len(interview_ids) != 1:
-            raise ValueError(f"Interview 'cd001' nicht gefunden!")
+        if len(interview_ids) != 4:
+            raise ValueError(f"Nicht alle Interviews gefunden!")
 
         print(f"Behalte Projekte: {project_ids}, Interviews: {interview_ids}")
 

@@ -1,13 +1,14 @@
 class SessionsController < Devise::SessionsController
+  include SignInRedirect
 
   skip_before_action :require_no_authentication
   skip_before_action :check_ohd_session
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 
-  before_action :set_project, only: [:new, :create, :is_logged_in, :verify_otp]
-  before_action :set_path, only: [:new, :create, :is_logged_in, :verify_otp]
-  before_action :set_locale, only: [:new, :create, :is_logged_in, :verify_otp]
+  before_action :set_project, only: [:new, :create, :is_logged_in, :verify_otp, :otp]
+  before_action :set_path, only: [:new, :create, :is_logged_in, :verify_otp, :otp]
+  before_action :set_locale, only: [:new, :create, :is_logged_in, :verify_otp, :otp]
 
   respond_to :json, :html
 
@@ -20,6 +21,11 @@ class SessionsController < Devise::SessionsController
   end
 
   def new
+    # Use the explicit path from the login URL (when present) and persist it
+    # so create/after_sign_in do not depend on stale stored locations.
+    path = current_return_path
+    store_location_for(resource_name, path) if path.present?
+
     if current_user
       redirect_to url_with_access_token
     else
@@ -27,7 +33,6 @@ class SessionsController < Devise::SessionsController
         super
       else
         project = Project.by_domain(request.base_url)
-        path = stored_location_for(resource)&.gsub("?checked_ohd_session=true", "")
         redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.shortname}&path=#{path}"
       end
     end
@@ -40,7 +45,7 @@ class SessionsController < Devise::SessionsController
       if resource.otp_required_for_login? || resource.passkey_required_for_login?
         session[:otp_user_id] = resource.id
         sign_out(resource) # important
-        redirect_to users_otp_path
+        redirect_to users_otp_path(project: @project.shortname, path: @path, locale: @locale)
       else
         sign_in(resource_name, resource)
         after_sign_in(resource)
@@ -116,42 +121,9 @@ class SessionsController < Devise::SessionsController
 
   private
 
-  def url_with_access_token
-    last_token ? join_params(url, "access_token=#{last_token}") : url
-  end
-
-  def url
-    "#{!@project.archive_domain.blank? ? @project.archive_domain : OHD_DOMAIN}#{@path}"
-  end
-
-  def set_project
-    @project = Project.where(shortname: params[:project]).first || Project.ohd
-  end
-
-  def set_path
-    @path = params[:path]
-  end
-
   def set_locale
     @locale = params[:locale]
     I18n.locale = @locale if @locale
-  end
-
-  def last_token
-    current_user&.access_tokens&.last&.token
-  end
-
-  def join_params(base_url, params_string)
-    "#{base_url}#{base_url.include?('?') ? '&' : '?'}#{params_string}"
-  end
-
-  def after_sign_in(resource)
-    path = stored_location_for(resource)
-    if path
-      respond_with resource, location: path
-    else
-      respond_with resource, location: url_with_access_token
-    end
   end
 
 end

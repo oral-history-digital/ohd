@@ -2,28 +2,29 @@ export { NAME as USER_NAME } from './constants';
 
 export { LOGOUT } from './action-types';
 export { submitLogout } from './actions';
-export { default as userReducer } from './reducer';
-export {
-    getIsLoggedIn,
-    getIsLoggedOut,
-    getLoggedInAt,
-    getIsRegistered,
-    getChangePasswordStatus,
-} from './selectors';
+export { default as canUseEditView } from './canUseEditView';
 export { default as AccountPage } from './components/AccountPage';
-export { default as OrderNewPasswordContainer } from './components/OrderNewPasswordContainer';
 export { default as ActivateAccount } from './components/ActivateAccount';
-export { default as RedirectOnLogin } from './components/RedirectOnLogin';
-export { default as AfterRegisterPopup } from './components/AfterRegisterPopup';
+export { default as ActivationActions } from './components/ActivationActions';
+export { default as ActivationFlow } from './components/ActivationFlow';
 export { default as AfterConfirmationPopup } from './components/AfterConfirmationPopup';
-export { default as AfterRequestProjectAccessPopup } from './components/AfterRequestProjectAccessPopup';
 export { default as AfterEnable2FAPopup } from './components/AfterEnable2FAPopup';
 export { default as AfterEnablePasskeyPopup } from './components/AfterEnablePasskeyPopup';
-export { default as CorrectUserDataPopup } from './components/CorrectUserDataPopup';
+export { default as AfterRegisterPopup } from './components/AfterRegisterPopup';
+export { default as AfterRequestProjectAccessPopup } from './components/AfterRequestProjectAccessPopup';
 export { default as ConfirmNewZwarTosPopup } from './components/ConfirmNewZwarTosPopup';
+export { default as CorrectUserDataPopup } from './components/CorrectUserDataPopup';
+export { default as OrderNewPasswordContainer } from './components/OrderNewPasswordContainer';
+export { default as RedirectOnLogin } from './components/RedirectOnLogin';
+export { default as RegisterPage } from './components/RegisterPage';
 export { default as RegisterPopupLink } from './components/RegisterPopupLink';
-export { default as ActivationFlow } from './components/ActivationFlow';
-export { default as ActivationActions } from './components/ActivationActions';
-export { default as canUseEditView } from './canUseEditView';
-export { default as useFetchAccount } from './hooks/useFetchAccount';
 export * from './hooks';
+export { default as useFetchAccount } from './hooks/useFetchAccount';
+export { default as userReducer } from './reducer';
+export {
+    getChangePasswordStatus,
+    getIsLoggedIn,
+    getIsLoggedOut,
+    getIsRegistered,
+    getLoggedInAt,
+} from './selectors';

@@ -56,7 +56,6 @@
 | ed25519                                        | MIT                        |
 | rails-erd                                      | MIT                        |
 | guard-spork                                    |                            |
-| guard-rspec                                    | MIT                        |
 | guard-cucumber                                 | MIT                        |
 | capistrano                                     | MIT                        |
 | capistrano3-delayed-job                        | MIT                        |
@@ -68,14 +67,10 @@
 | rb-readline                                    | BSD                        |
 | pry                                            | MIT                        |
 | meta_request                                   | MIT                        |
-| rspec                                          | MIT                        |
-| rspec-rails                                    | MIT                        |
-| rspec-snapshot                                 | MIT                        |
 | spork                                          |                            |
 | pdf-inspector                                  | PRAWN, GPL-2.0, GPL-3.0    |
 | pdf-reader                                     | MIT                        |
 | factory_bot_rails                              | MIT                        |
-| rspec-activemodel-mocks                        | MIT                        |
 | simplecov                                      | MIT                        |
 | execjs                                         | MIT                        |
 | uglifier                                       | MIT                        |

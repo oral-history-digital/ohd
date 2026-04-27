@@ -17,7 +17,7 @@ export const SCREEN_L = 990; // $screen-l
 export const SCREEN_XL = 1200; // $screen-xl
 
 // Buffer space between top of active segment and Video/Menu
-export const SPACE_BEFORE_ACTIVE_SEGMENT = 8 * CSS_BASE_UNIT;
+export const SPACE_BEFORE_ACTIVE_SEGMENT = 2 * CSS_BASE_UNIT;
 
 export const PROJECT_CDOH = 'cdoh';
 export const PROJECT_DG = 'dg';
@@ -116,9 +116,15 @@ export const CONTRIBUTION_TYPES_SPEAKING = [
 ];
 
 export const EMAIL_REGEX =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+// Password regex requires at least one uppercase letter, one lowercase letter, one number,
+// and one special character from the set #?!@$%^&*+=_,.:;~-.
+// It also requires the password to be at least 8 characters long.
+// IMPORTANT: Keep this regex in sync with the one used in the backend (config/initializers/constants.rb)
+// to ensure consistent validation across the application.
 export const PASSWORD_REGEX =
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[-#?!@$%^&*+=_,.:;~]).{8,}$/;
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*+=_,.:;~-]).{8,}$/;
 
 // DOMPurify sanitization configurations
 export const SANITIZE_CONFIG = {
@@ -171,3 +177,9 @@ export const SANITIZE_CONFIG = {
         ALLOWED_ATTR: [],
     },
 };
+
+// Frames per second for timecode calculations
+export const FRAMES_PER_SECOND = 25;
+
+// RTL languages (ISO 639-3 codes)
+export const RTL_LANGUAGES = ['ara', 'heb'];

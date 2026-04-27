@@ -9,6 +9,7 @@ import { usePeople } from 'modules/person';
 import { usePathBase } from 'modules/routes';
 import { useArchiveSearch } from 'modules/search';
 import { Spinner } from 'modules/spinners';
+import { formatDuration } from 'modules/utils';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
@@ -107,12 +108,7 @@ export default function InterviewWorkflowRow({
 
                 {box(interview?.archive_id, '10')}
                 {box(t(interview?.media_type), '10')}
-                {box(
-                    `${interview?.duration.split(':')[0]} h ${
-                        interview?.duration.split(':')[1]
-                    } min`,
-                    '10'
-                )}
+                {box(formatDuration(interview?.duration), '10')}
                 {box(languages[interview?.language_id]?.name[locale], '10')}
                 {box(collections[interview?.collection_id]?.name[locale], '10')}
 

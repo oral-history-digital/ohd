@@ -61,6 +61,7 @@ export default function InputField({
     const cleanProps = () => {
         const props = {
             id: `${scope}_${id ? id : attribute}`,
+            'data-testid': `${scope}-${attribute}-${type}-input`,
             className: 'Input',
             type: type,
             name: attribute,
@@ -80,7 +81,7 @@ export default function InputField({
     const inputOrImg = () => {
         if (type === 'file' && data && data.src && !changeFile) {
             return (
-                <div>
+                <div data-testid={`${scope}-${attribute}-image-preview`}>
                     <img src={data.thumb_src} alt="" />
                     <button
                         type="button"

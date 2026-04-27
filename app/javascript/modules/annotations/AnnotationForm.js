@@ -1,5 +1,6 @@
 import { Component } from 'react';
 
+import { CancelButton, SubmitButton } from 'modules/ui/Buttons';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-18support';
 
@@ -37,8 +38,15 @@ export default class AnnotationForm extends Component {
         event.preventDefault();
         let preparedValues = this.state.values;
         preparedValues.text = this.state.values.text.toString('html');
-        this.props.submitData(this.props, { annotation: preparedValues });
-        this.props.onSubmit();
+
+        // Submit data - form is already closed by parent component
+        // so we don't need to wait for callback
+        this.props.submitData(
+            this.props,
+            { annotation: preparedValues },
+            {},
+            this.props.onSubmit
+        );
     }
 
     render() {
@@ -55,18 +63,13 @@ export default class AnnotationForm extends Component {
                 />
 
                 <div className="Form-footer u-mt">
-                    <input
-                        type="submit"
-                        className="Button Button--primaryAction"
-                        value={submitLabel}
-                    />
-                    <button
-                        type="button"
-                        className="Button Button--secondaryAction"
-                        onClick={onCancel}
-                    >
-                        {cancelLabel}
-                    </button>
+                    <div className="Form-footer-buttons">
+                        <CancelButton
+                            buttonText={cancelLabel}
+                            handleCancel={onCancel}
+                        />
+                        <SubmitButton buttonText={submitLabel} />
+                    </div>
                 </div>
             </form>
         );
@@ -83,4 +86,6 @@ AnnotationForm.propTypes = {
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
+    submitLabel: PropTypes.string,
+    cancelLabel: PropTypes.string,
 };

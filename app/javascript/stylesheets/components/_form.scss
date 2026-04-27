@@ -16,6 +16,24 @@
   width: 100%;
 }
 
+.Form-footer-submit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: $base-unit * 0.25;
+}
+
+.Form-footer-hint {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--secondary-text-color, #666);
+  font-style: italic;
+
+  &--error {
+    color: var(--error-color, #d32f2f);
+  }
+}
+
 .Form-footer-buttons > button,
 .Form-footer-buttons > input {
   width: initial !important;
@@ -47,4 +65,38 @@
 [class*='form-row--single-'] {
   display: grid;
   grid-template-columns: 1fr;
+}
+
+/*
+ * For non-legacy Form variants (without `.default`), force controls to fill
+ * the form-input column. Legacy `form.default` keeps its own 72% desktop rules.
+ */
+.Form:not(.default)
+  .form-input
+  > input.Input:not([type='checkbox']):not([type='radio']),
+.Form:not(.default) .form-input > select.Input,
+.Form:not(.default) .form-input > textarea.Input {
+  width: 100%;
+}
+
+.Form:not(.default) .form-input > input.Input[type='checkbox'],
+.Form:not(.default) .form-input > input.Input[type='radio'] {
+  width: initial;
+}
+
+/*
+ * Segment heading edit form is used in multiple contexts (inline tabs and modal).
+ * Ensure the row child wrapper can grow and that text controls fill available width.
+ */
+.Form.SegmentHeadingForm .form-row > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.Form.SegmentHeadingForm
+  .form-input
+  > input.Input:not([type='checkbox']):not([type='radio']),
+.Form.SegmentHeadingForm .form-input > select.Input,
+.Form.SegmentHeadingForm .form-input > textarea.Input {
+  width: 100%;
 }

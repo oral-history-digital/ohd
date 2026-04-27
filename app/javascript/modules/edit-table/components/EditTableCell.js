@@ -3,9 +3,9 @@ import { Annotations } from 'modules/annotations';
 import { Fetch } from 'modules/data';
 import { SubmitOnBlurForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { formatTimecode } from 'modules/interview-helpers';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { RegistryReferencesContainer } from 'modules/registry-references';
+import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 

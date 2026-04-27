@@ -84,7 +84,10 @@ export default function Data({
             />
 
             <AuthorizedContent object={[data, task]} action="update">
-                <AdminMenu disabled={disabled}>
+                <AdminMenu
+                    disabled={disabled}
+                    testIdPrefix={`${scope}-${data.id}`}
+                >
                     {!hideShow && (
                         <Item
                             name="show"
@@ -154,12 +157,14 @@ Data.propTypes = {
     task: PropTypes.object,
     form: PropTypes.func.isRequired,
     scope: PropTypes.string.isRequired,
+    sensitiveAttributes: PropTypes.array,
     outerScope: PropTypes.string,
     outerScopeId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     showComponent: PropTypes.element,
     hideShow: PropTypes.bool,
     hideEdit: PropTypes.bool,
     hideDelete: PropTypes.bool,
+    optionsScope: PropTypes.string,
     disabled: PropTypes.bool,
     detailsAttributes: PropTypes.array,
     deleteData: PropTypes.func.isRequired,

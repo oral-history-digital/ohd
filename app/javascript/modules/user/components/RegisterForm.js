@@ -1,25 +1,42 @@
 /* global railsMode */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
+import { getCountryKeys } from 'modules/archive';
 import { EMAIL_REGEX, OHD_DOMAINS, PASSWORD_REGEX } from 'modules/constants';
+import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { sanitizeInternalReturnPath } from 'modules/query-string';
 import { usePathBase } from 'modules/routes';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { clearRegistrationStatus, submitRegister } from '../actions';
 import { NON_ZIP_COUNTRIES } from '../constants';
+import { getRegistrationStatus } from '../selectors';
 
 export default function RegisterForm({
-    project,
-    countryKeys,
-    submitRegister,
-    onSubmit,
-    onCancel,
-    registrationStatus,
+    onSubmit = () => null,
+    onCancel = () => null,
+    showCancelButton = false,
 }) {
+    const project = useSelector(getCurrentProject);
+    const countryKeys = useSelector(getCountryKeys);
+    const registrationStatus = useSelector(getRegistrationStatus);
+    const dispatch = useDispatch();
+
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
+
+    const storedReturnPath = sessionStorage.getItem('registrationReturnPath');
+    const sanitizedStoredReturnPath = sanitizeInternalReturnPath(
+        storedReturnPath,
+        null
+    );
+    const preRegisterLocation = sanitizedStoredReturnPath
+        ? `${location.origin}${sanitizedStoredReturnPath}`
+        : location.href;
 
     const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
     const privacyLink = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
@@ -28,16 +45,39 @@ export default function RegisterForm({
         registration_error: false,
         msg: null,
     });
+    const emailCheckRequestRef = useRef(0);
 
-    const handleEmailChange = async (name, value) => {
-        if (EMAIL_REGEX.test(value)) {
-            fetch(`${pathBase}/users/check_email?email=${value}`)
-                .then((res) => res.json())
-                .then((json) => setEmailCheckResponse(json));
+    const checkEmailAvailability = async (email) => {
+        if (!EMAIL_REGEX.test(email)) {
+            const fallback = { registration_error: false, msg: null };
+            setEmailCheckResponse(fallback);
+            return fallback;
+        }
+
+        const requestId = emailCheckRequestRef.current + 1;
+        emailCheckRequestRef.current = requestId;
+
+        try {
+            const response = await fetch(
+                `${pathBase}/users/check_email?email=${encodeURIComponent(email)}`
+            );
+            const json = await response.json();
+
+            if (emailCheckRequestRef.current === requestId) {
+                setEmailCheckResponse(json);
+            }
+
+            return json;
+        } catch (error) {
+            return { registration_error: false, msg: null };
         }
     };
 
-    const [password, setPassword] = useState(null);
+    const handleEmailChange = async (_, value) => {
+        await checkEmailAvailability(value);
+    };
+
+    const [password, setPassword] = useState('');
     const [hideZip, setHideZip] = useState(true);
 
     const handlePasswordChange = (_, value) => {
@@ -153,16 +193,6 @@ export default function RegisterForm({
                 },
                 group: 'password',
             },
-            //{
-            //elementType: 'input',
-            //attribute: 'otp_required_for_login',
-            //type: 'checkbox',
-            //},
-            //{
-            //elementType: 'input',
-            //attribute: 'passkey_required_for_login',
-            //type: 'checkbox',
-            //},
         ];
 
         const tosPrivacyElements = [
@@ -221,13 +251,38 @@ export default function RegisterForm({
             .concat(tosPrivacyElements);
     };
 
+    const handleRegisterSubmit = async (params) => {
+        const email = params?.user?.email;
+        const emailCheckResult = await checkEmailAvailability(email);
+
+        if (!emailCheckResult.registration_error) {
+            dispatch(submitRegister(`${pathBase}/users`, params, t));
+            onSubmit();
+        } else {
+            setEmailCheckResponse(emailCheckResult);
+            return null;
+        }
+    };
+
+    const registrationNotification = registrationStatus
+        ? {
+              variant: 'error',
+              title: sanitizeHtml(registrationStatus, 'PLAIN_TEXT'),
+          }
+        : null;
+
+    const handleDismissRegistrationNotification = () => {
+        dispatch(clearRegistrationStatus());
+    };
+
     return (
         <>
             {registrationStatus ? (
-                // TODO: Is registrationStatus actually used? It seems to never be set and displayed
-                <p className="error">
-                    {sanitizeHtml(registrationStatus, 'PLAIN_TEXT')}
-                </p>
+                <div className="u-mb-small">
+                    <p className="error">
+                        {sanitizeHtml(registrationStatus, 'PLAIN_TEXT')}
+                    </p>
+                </div>
             ) : (
                 <div>
                     <p>
@@ -258,21 +313,17 @@ export default function RegisterForm({
             )}
             <Form
                 scope="user"
-                onSubmit={(params) => {
-                    if (!emailCheckResponse.registration_error) {
-                        submitRegister(`${pathBase}/users`, params);
-                        onSubmit();
-                    } else {
-                        return null;
-                    }
-                }}
+                onSubmit={handleRegisterSubmit}
                 submitText="user.register"
                 elements={formElements()}
+                hasValidationErrors={emailCheckResponse.registration_error}
+                notification={registrationNotification}
+                onDismissNotification={handleDismissRegistrationNotification}
                 values={{
                     default_locale: locale,
-                    pre_register_location: location.href,
+                    pre_register_location: preRegisterLocation,
                 }}
-                onCancel={onCancel}
+                onCancel={showCancelButton ? onCancel : undefined}
                 className="Registration-form"
             />
         </>
@@ -280,12 +331,7 @@ export default function RegisterForm({
 }
 
 RegisterForm.propTypes = {
-    project: PropTypes.shape({
-        is_ohd: PropTypes.bool.isRequired,
-    }).isRequired,
-    countryKeys: PropTypes.object.isRequired,
-    submitRegister: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    registrationStatus: PropTypes.string,
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
+    showCancelButton: PropTypes.bool,
 };

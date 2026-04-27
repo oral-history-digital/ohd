@@ -1,0 +1,78 @@
+.SegmentContentViewer {
+  margin: $base-unit * 0.5 0;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  width: $line-length;
+}
+
+.SegmentContentViewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc($base-unit * 0.1) calc($base-unit * 0.3);
+  border-bottom: 1px solid $gray-light;
+  background-color: $gray-paler;
+}
+
+.SegmentContentViewer-title {
+  margin: 0;
+  font-size: $font-size-medium;
+  font-weight: bold;
+  color: $gray-darkest;
+}
+
+.SegmentContentViewer-content {
+  padding: calc($base-unit * 0.3);
+}
+
+.SegmentContentViewer-items {
+  display: flex;
+  flex-direction: column;
+  gap: $base-unit * 0.75;
+}
+
+.SegmentContentViewer-item {
+  margin: 0;
+  padding: calc($base-unit * 0.1) calc($base-unit * 0.3);
+  line-height: 1.5;
+  color: $gray-darker;
+  background-color: white;
+  border-left: 3px solid var(--primary-color);
+  border-radius: 2px;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.SegmentContentViewer-addButton {
+  margin-top: $base-unit * 0.5;
+  display: flex;
+  align-items: center;
+  gap: $base-unit * 0.25;
+}
+
+.SegmentContentViewer-references {
+  display: flex;
+  flex-direction: column;
+  gap: $base-unit * 0.5;
+}
+
+.SegmentContentViewer-reference {
+  padding: $base-unit * 0.5;
+  background-color: white;
+  border-left: 3px solid var(--primary-color);
+  border-radius: 2px;
+}
+
+.SegmentContentViewer-referenceName {
+  font-weight: bold;
+  color: $gray-darkest;
+  margin-bottom: $base-unit * 0.25;
+}
+
+.SegmentContentViewer-referenceNotes {
+  color: $gray-darker;
+  line-height: 1.5;
+  font-size: 0.9em;
+}

@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
         request.base_url != OHD_DOMAIN &&
         !params['checked_ohd_session'] &&
         !params[:open_register_popup] &&
+        !request.path.end_with?('/register', '/register/') &&
         storable_location?
       )
         path = url_for(

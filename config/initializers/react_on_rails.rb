@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# See docs/basics/configuration.md for many more options
+# See React on Rails configuration documentation for many more options
 
 ReactOnRails.configure do |config|
   # This configures the script to run to build the production assets by webpack. Set this to nil
@@ -11,15 +11,11 @@ ReactOnRails.configure do |config|
   ################################################################################
   ################################################################################
   # TEST CONFIGURATION OPTIONS
-  # Below options are used with the use of this test helper:
-  # ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config)
+  # Below options are used with ReactOnRails test helper integration.
   ################################################################################
 
-  # If you are using this in your spec_helper.rb (or rails_helper.rb):
-  #
-  # ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config)
-  #
-  # with rspec then this controls what yarn command is run
+  # If you are using this in your test setup:
+  # this controls what yarn command is run
   # to automatically refresh your webpack assets on every test run.
   #
   config.build_test_command = "RAILS_ENV=test bin/shakapacker"

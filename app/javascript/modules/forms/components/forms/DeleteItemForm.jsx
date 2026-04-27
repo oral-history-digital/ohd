@@ -13,6 +13,7 @@ export default function DeleteItemForm({ children, onSubmit, onCancel }) {
                     type="button"
                     className="Button Button--primaryAction"
                     onClick={onSubmit}
+                    data-testid="delete-item-confirm-button"
                 >
                     {t('delete')}
                 </button>
@@ -20,6 +21,7 @@ export default function DeleteItemForm({ children, onSubmit, onCancel }) {
                     type="button"
                     className="Button Button--secondaryAction"
                     onClick={onCancel}
+                    data-testid="delete-item-cancel-button"
                 >
                     {t('cancel')}
                 </button>

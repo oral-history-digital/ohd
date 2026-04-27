@@ -70,12 +70,24 @@ class Timecode
   end
 
   # yields the time in seconds from a timecode
+  # supports HH:MM:SS, HH:MM:SS.mmm (ms), HH:MM:SS.ff (frames),
+  # HH:MM:SS:mmm (colon ms), and HH:MM:SS:ff (colon frames)
   def self.parse_timecode(timecode)
     timecode.gsub!(/^\[\d{1,2}\]\s*/,'')
     duration_in_secs = 0
     milliseconds = (timecode[/\.\d{3}$/] || '0').to_f
-    levels = [3600, 60, 1, 0.01]
-    timecode.split(':').each_with_index do |part,index|
+    parts = timecode.split(':')
+    # Handle colon-separated sub-seconds (HH:MM:SS:ff or HH:MM:SS:mmm)
+    if parts.length == 4
+      subsec = parts.pop
+      if subsec.length == 2
+        duration_in_secs += subsec.to_f / 25
+      else
+        duration_in_secs += subsec.to_f / 1000
+      end
+    end
+    levels = [3600, 60, 1]
+    parts.each_with_index do |part, index|
       duration_in_secs += (part[/^\d+/] || 0).to_f * levels[index]
     end
     duration_in_secs + milliseconds

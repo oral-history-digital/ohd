@@ -80,8 +80,12 @@ class RegistryTest < ApplicationSystemTestCase
   end
 
   test 'create registry entry without norm-data-api' do
+    assert_selector('button, a', text: 'Add new subentry')
     click_on 'Add new subentry'
+    
+    assert_selector('button, a', text: 'Add index name')
     click_on 'Add index name'
+    
     within '#registry_name' do
       fill_in 'registry_name_descriptor_en', with: 'Neukölln'
       click_on 'Submit'

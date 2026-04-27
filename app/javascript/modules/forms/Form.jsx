@@ -45,21 +45,30 @@ export default function Form({
     fetching,
     formClasses,
     formId,
+    hasValidationErrors = false,
     helpTextCode,
     index,
     nested,
     nestedScopeProps,
     notification,
     onCancel,
+    onChange,
     onDismissNotification,
     onSubmit,
     onSubmitCallback,
+    disableIfUnchanged = false,
     scope,
     submitScope,
     submitText,
+    cancelText,
     values: initialValues,
 }) {
     const [submitted, setSubmitted] = useState(false);
+    const baseFormIdentifier = formId || scope || submitScope || 'form';
+    const formIdentifier =
+        typeof index === 'number'
+            ? `${baseFormIdentifier}-${index}`
+            : baseFormIdentifier;
 
     const {
         values,
@@ -74,16 +83,52 @@ export default function Form({
         deleteNestedObject,
         getNestedObjects,
         replaceNestedFormValues,
-    } = useFormState(initialValues, data, elements);
+        markCurrentValuesAsClean,
+        getDirtyStateForValues,
+        submitButtonState,
+    } = useFormState(initialValues, data, elements, {
+        fetching,
+        hasValidationErrors,
+        submitted,
+        disableIfUnchanged,
+    });
 
     const { t } = useI18n();
 
     function handleChange(name, value, params, identifier) {
         if (params && !name && !value) {
             writeNestedObject(params, identifier);
+
+            if (typeof onChange === 'function') {
+                onChange({
+                    field: identifier || 'nested',
+                    value: params,
+                    isDirty: true,
+                    dirtyFields: [identifier || 'nested'],
+                });
+            }
+
+            return;
         } else {
+            const nextValues = {
+                ...values,
+                [name]: value,
+            };
+            const nextDirtyState = getDirtyStateForValues(nextValues);
+
             updateField(name, value);
             touchField(name);
+
+            if (typeof onChange === 'function') {
+                onChange({
+                    field: name,
+                    value,
+                    isDirty: nextDirtyState.isDirty,
+                    dirtyFields: nextDirtyState.dirtyFields,
+                });
+            }
+
+            return;
         }
     }
 
@@ -93,6 +138,8 @@ export default function Form({
 
         if (valid()) {
             onSubmit({ [scope || submitScope]: values }, index);
+            markCurrentValuesAsClean(values);
+            setSubmitted(false);
             if (typeof onSubmitCallback === 'function') {
                 onSubmitCallback();
             }
@@ -136,6 +183,7 @@ export default function Form({
                 ? values[element.attribute]
                 : element.value;
         preparedProps.data = data;
+        preparedProps.formValues = values;
         preparedProps.accept = element.accept;
 
         // Set defaults for the possibility to shorten elements list
@@ -159,16 +207,18 @@ export default function Form({
             className={classNames(className, 'LoadingOverlay', {
                 'is-loading': fetching,
             })}
+            data-testid={`${formIdentifier}-form-wrapper`}
         >
             {helpTextCode && <HelpText code={helpTextCode} className="u-mb" />}
 
             {nestedScopes()}
             <form
-                id={formId || scope}
+                id={formIdentifier}
                 className={classNames('Form', formClasses, {
                     [`${scope} default`]: !formClasses,
                 })}
                 onSubmit={handleSubmit}
+                data-testid={`${formIdentifier}-form`}
             >
                 {children}
 
@@ -194,6 +244,44 @@ export default function Form({
                         'Form-footer--fullWidth': buttonFullWidth,
                     })}
                 >
+                    <div className="Form-footer-buttons">
+                        {typeof onCancel === 'function' && (
+                            <CancelButton
+                                buttonText={t(
+                                    cancelText ||
+                                        (nested ? 'discard' : 'cancel')
+                                )}
+                                handleCancel={onCancel}
+                                isDisabled={fetching}
+                                size={nested ? 'sm' : undefined}
+                            />
+                        )}
+                        <SubmitButton
+                            buttonText={t(
+                                submitText || (nested ? 'apply' : 'submit')
+                            )}
+                            isLoading={fetching}
+                            isDisabled={submitButtonState.disabled}
+                            title={submitButtonState.helpText}
+                            size={nested ? 'sm' : undefined}
+                        />
+                    </div>
+                    {!fetching && submitButtonState.helpText && (
+                        <div
+                            className="Form-footer-hint-container"
+                            style={{ textAlign: 'right' }}
+                        >
+                            <small
+                                className={classNames('Form-footer-hint', {
+                                    'Form-footer-hint--error':
+                                        hasValidationErrors ||
+                                        (submitted && !valid()),
+                                })}
+                            >
+                                {submitButtonState.helpText}
+                            </small>
+                        </div>
+                    )}
                     {notification && (
                         <div className="Form-footer-notification">
                             <InlineNotification
@@ -214,24 +302,6 @@ export default function Form({
                             />
                         </div>
                     )}
-                    <div className="Form-footer-buttons">
-                        {typeof onCancel === 'function' && (
-                            <CancelButton
-                                buttonText={t(nested ? 'discard' : 'cancel')}
-                                handleCancel={onCancel}
-                                isDisabled={fetching}
-                                size={nested ? 'sm' : undefined}
-                            />
-                        )}
-                        <SubmitButton
-                            buttonText={t(
-                                submitText || (nested ? 'apply' : 'submit')
-                            )}
-                            isLoading={fetching}
-                            isDisabled={fetching}
-                            size={nested ? 'sm' : undefined}
-                        />
-                    </div>
                 </div>
             </form>
         </div>
@@ -264,6 +334,7 @@ Form.propTypes = {
     fetching: PropTypes.bool,
     formClasses: PropTypes.string,
     formId: PropTypes.string,
+    hasValidationErrors: PropTypes.bool,
     helpTextCode: PropTypes.string,
     index: PropTypes.number,
     nested: PropTypes.bool,
@@ -278,11 +349,14 @@ Form.propTypes = {
         actions: PropTypes.object,
     }),
     onCancel: PropTypes.func,
+    onChange: PropTypes.func,
     onDismissNotification: PropTypes.func,
     onSubmit: PropTypes.func,
     onSubmitCallback: PropTypes.func,
+    disableIfUnchanged: PropTypes.bool,
     scope: PropTypes.string,
     submitScope: PropTypes.string,
     submitText: PropTypes.string,
+    cancelText: PropTypes.string,
     values: PropTypes.object,
 };

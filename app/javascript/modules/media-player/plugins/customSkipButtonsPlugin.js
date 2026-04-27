@@ -2,6 +2,8 @@ import { createRoot } from 'react-dom/client';
 import { TbRewindBackward5, TbRewindForward5 } from 'react-icons/tb';
 import videojs from 'video.js';
 
+import { disposeReactRoot } from '../utils/disposeReactRoot';
+
 // Import the necessary Video.js components
 const Button = videojs.getComponent('Button');
 
@@ -29,12 +31,20 @@ class CustomForwardButton extends Button {
         // Replace the inner content with our custom React icon
         const iconContainer = el.querySelector('.vjs-icon-placeholder') || el;
         if (iconContainer) {
-            createRoot(iconContainer).render(
+            this.iconRoot = createRoot(iconContainer);
+            this.iconRoot.render(
                 <TbRewindForward5 style={{ fontSize: '1.2rem' }} />
             );
         }
 
         return el;
+    }
+
+    dispose() {
+        disposeReactRoot(this.iconRoot);
+        this.iconRoot = null;
+
+        super.dispose();
     }
 }
 
@@ -62,12 +72,20 @@ class CustomBackwardButton extends Button {
         // Replace the inner content with our custom React icon
         const iconContainer = el.querySelector('.vjs-icon-placeholder') || el;
         if (iconContainer) {
-            createRoot(iconContainer).render(
+            this.iconRoot = createRoot(iconContainer);
+            this.iconRoot.render(
                 <TbRewindBackward5 style={{ fontSize: '1.2rem' }} />
             );
         }
 
         return el;
+    }
+
+    dispose() {
+        disposeReactRoot(this.iconRoot);
+        this.iconRoot = null;
+
+        super.dispose();
     }
 }
 

@@ -7,14 +7,27 @@ import { act } from 'react-dom/test-utils';
 
 import { useFormState } from './useFormState';
 
+jest.mock('modules/i18n');
+
 Enzyme.configure({ adapter: new Adapter() });
 
 function HookHarness(props) {
     return <InnerHarness {...props} />;
 }
 
-function InnerHarness({ initialValues, data, elements, onRender }) {
-    const hook = useFormState(initialValues, data, elements);
+function InnerHarness({
+    initialValues,
+    data,
+    elements,
+    submitStateOptions,
+    onRender,
+}) {
+    const hook = useFormState(
+        initialValues,
+        data,
+        elements,
+        submitStateOptions
+    );
 
     React.useEffect(() => {
         onRender(hook);
@@ -27,6 +40,7 @@ InnerHarness.propTypes = {
     initialValues: PropTypes.object,
     data: PropTypes.object,
     elements: PropTypes.array,
+    submitStateOptions: PropTypes.object,
     onRender: PropTypes.func.isRequired,
 };
 
@@ -34,6 +48,7 @@ describe('useFormState', () => {
     let wrapper;
     let hook;
 
+    // Helper function to render the hook with given props and capture the hook instance
     const render = (props) => {
         wrapper = mount(
             <HookHarness
@@ -45,6 +60,7 @@ describe('useFormState', () => {
         );
     };
 
+    // Clean up after each test
     afterEach(() => {
         if (wrapper) wrapper.unmount();
         hook = null;
@@ -375,6 +391,219 @@ describe('useFormState', () => {
         });
     });
 
+    describe('isDirty and dirtyFields', () => {
+        it('returns false when form is pristine', () => {
+            render({
+                initialValues: { name: 'Test', email: 'test@example.com' },
+                data: null,
+                elements: [],
+            });
+
+            expect(hook.isDirty).toBe(false);
+            expect(hook.dirtyFields).toEqual([]);
+        });
+
+        it('returns true and lists changed field when value changes', async () => {
+            render({
+                initialValues: { name: 'Test', email: 'test@example.com' },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'New Name');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+        });
+
+        it('tracks multiple dirty fields', async () => {
+            render({
+                initialValues: {
+                    name: 'Test',
+                    email: 'test@example.com',
+                    age: 25,
+                },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'New Name');
+                hook.updateField('age', 30);
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toContain('name');
+            expect(hook.dirtyFields).toContain('age');
+            expect(hook.dirtyFields.length).toBe(2);
+        });
+
+        it('returns false when value is changed back to initial', async () => {
+            render({
+                initialValues: { name: 'Test' },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'New Name');
+            });
+            wrapper.update();
+            expect(hook.isDirty).toBe(true);
+
+            await act(async () => {
+                hook.updateField('name', 'Test');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(false);
+            expect(hook.dirtyFields).toEqual([]);
+        });
+
+        it('tracks added fields as dirty', async () => {
+            render({
+                initialValues: { name: 'Test' },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('email', 'new@example.com');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toContain('email');
+        });
+
+        it('ignores id field in dirty check', async () => {
+            render({
+                initialValues: {},
+                data: { id: 42 },
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('id', 99);
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(false);
+            expect(hook.dirtyFields).toEqual([]);
+        });
+
+        it('tracks nested _attributes in dirty check', async () => {
+            render({
+                initialValues: {
+                    name: 'Test',
+                    events_attributes: [{ id: 1 }],
+                },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.writeNestedObject({ event: { id: 1, title: 'Updated' } });
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toContain('events_attributes');
+        });
+
+        it('handles empty initial values', async () => {
+            render({
+                initialValues: {},
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'Test');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+        });
+
+        it('handles undefined values correctly', async () => {
+            render({
+                initialValues: { name: undefined },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'Test');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+        });
+
+        it('handles null values correctly', async () => {
+            render({
+                initialValues: { name: null },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'Test');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+        });
+
+        it('can mark current values as clean after save', async () => {
+            render({
+                initialValues: { name: 'Test' },
+                data: null,
+                elements: [],
+            });
+
+            await act(async () => {
+                hook.updateField('name', 'Saved Name');
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(true);
+            expect(hook.dirtyFields).toEqual(['name']);
+
+            await act(async () => {
+                hook.markCurrentValuesAsClean();
+            });
+            wrapper.update();
+
+            expect(hook.isDirty).toBe(false);
+            expect(hook.dirtyFields).toEqual([]);
+        });
+
+        it('computes dirty state for next values immediately', () => {
+            render({
+                initialValues: { name: 'Test', email: 'test@example.com' },
+                data: null,
+                elements: [],
+            });
+
+            const dirtyState = hook.getDirtyStateForValues({
+                ...hook.values,
+                name: 'T',
+            });
+
+            expect(dirtyState.isDirty).toBe(true);
+            expect(dirtyState.dirtyFields).toEqual(['name']);
+        });
+    });
+
     describe('replaceNestedFormValues', () => {
         it('replaces the specified nested scope without affecting other values', async () => {
             render({
@@ -399,6 +628,138 @@ describe('useFormState', () => {
                 name: 'Test',
                 events_attributes: [{ id: 3 }, { id: 4 }],
                 contributions_attributes: [{ id: 10 }],
+            });
+        });
+    });
+
+    describe('getSubmitButtonState', () => {
+        it('does not stay disabled from stale touched password confirmation errors', () => {
+            let password = 'secret1';
+
+            render({
+                initialValues: {
+                    password: 'mismatch',
+                    password_confirmation: 'mismatch',
+                },
+                data: {},
+                elements: [
+                    {
+                        attribute: 'password',
+                        validate: (value) =>
+                            Boolean(value && value.length >= 6),
+                    },
+                    {
+                        attribute: 'password_confirmation',
+                        validate: (value) =>
+                            Boolean(
+                                value && value.length >= 6 && value === password
+                            ),
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            act(() => {
+                hook.touchField('password_confirmation');
+                hook.handleErrors('password_confirmation', true);
+            });
+            wrapper.update();
+
+            password = 'mismatch';
+            act(() => {
+                hook.touchField('password');
+            });
+            wrapper.update();
+
+            expect(hook.hasMissingRequired).toBe(false);
+            expect(hook.submitButtonState).toEqual({
+                disabled: false,
+                helpText: null,
+            });
+        });
+
+        it('returns validation help text when touched field is currently invalid', () => {
+            render({
+                initialValues: {
+                    password: 'secret1',
+                    password_confirmation: 'not-matching',
+                },
+                data: {},
+                elements: [
+                    {
+                        attribute: 'password',
+                        validate: (value) =>
+                            Boolean(value && value.length >= 6),
+                    },
+                    {
+                        attribute: 'password_confirmation',
+                        validate: (value) =>
+                            Boolean(
+                                value &&
+                                    value.length >= 6 &&
+                                    value === 'secret1'
+                            ),
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            act(() => {
+                hook.touchField('password_confirmation');
+            });
+            wrapper.update();
+
+            expect(hook.hasMissingRequired).toBe(false);
+            expect(hook.submitButtonState).toEqual({
+                disabled: true,
+                helpText: 'edit.form.fix_validation_errors',
+            });
+        });
+
+        it('keeps submit enabled for touched valid multi-locale descriptor', () => {
+            render({
+                initialValues: {
+                    translations_attributes: [
+                        {
+                            descriptor: 'ad',
+                            locale: 'de',
+                        },
+                    ],
+                },
+                data: {},
+                elements: [
+                    {
+                        attribute: 'descriptor',
+                        multiLocale: true,
+                        validate: (value) => value && value.length > 1,
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            act(() => {
+                hook.touchField('descriptor');
+            });
+            wrapper.update();
+
+            expect(hook.submitButtonState).toEqual({
+                disabled: false,
+                helpText: null,
             });
         });
     });

@@ -59,6 +59,7 @@ class SegmentsController < ApplicationController
       :mainheading,
       :subheading,
       :speaker_id,
+      :timecode,
       :locale,
       *dynamic_keys,
       translations_attributes: [:locale, :text, :id, :mainheading, :subheading],

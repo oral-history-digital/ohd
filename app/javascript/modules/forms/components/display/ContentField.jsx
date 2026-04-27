@@ -39,6 +39,7 @@ function ContentField({
                     <span
                         key={value}
                         className={classNames('flyout-content-data', className)}
+                        data-testid="content-field-value"
                     >
                         {linkUrls ? (
                             <ContentValueWithLinks>

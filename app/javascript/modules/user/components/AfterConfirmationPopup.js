@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 
-export default function AfterConfirmationPopup({}) {
+export default function AfterConfirmationPopup() {
     const currentUser = useSelector(getCurrentUser);
     const currentProject = useSelector(getCurrentProject);
     const currentProjectAccess =

@@ -23,8 +23,20 @@ end
 class ActiveSupport::TestCase
   include Devise::Test::IntegrationHelpers
 
-  DatabaseCleaner.clean_with :deletion
-  DatabaseCleaner.clean
+  begin
+    retries = 0
+
+    DatabaseCleaner.clean_with :deletion
+    DatabaseCleaner.clean
+  rescue ActiveRecord::LockWaitTimeout, Mysql2::Error::TimeoutError
+    # In CI environments with parallel test execution, we can occasionally run into 
+    # database lock timeouts. Retrying a few times can help mitigate this.
+    retries += 1
+    raise if retries > 3
+
+    sleep 0.5
+    retry
+  end
 
   # TODO: rebase test data on seed data once seed data is ready
   # load "#{Rails.root}/db/seeds.rb"
@@ -55,7 +67,7 @@ class ActiveSupport::TestCase
       email.body :
       email.body.parts.find{|p| p.content_type.match?(/^text\/plain/)}
     )
-    body.to_s.scan(/http[^\n> ]+/).map{|l| l.gsub(/=0D/, '')}
+    body.decoded.scan(/http[^\n> ]+/).map{|l| l.gsub(/=0D/, '')}
   end
 
   alias_method :devise_login_as, :login_as
@@ -86,9 +98,8 @@ class ActiveSupport::TestCase
     self.is_a?(::ApplicationSystemTestCase)
   end
 
-  def fill_registration_form(first_name:, last_name:, email:, password: 'Password123!', passkey_required: false, otp_required: false)
-    visit '/'
-    click_on 'Registration'
+  def fill_registration_form(first_name:, last_name:, email:, password: 'Password123!', passkey_required: false, otp_required: false, locale: 'en')
+    visit "/#{locale}/register"
     fill_in 'First Name', with: first_name
     fill_in 'Last Name', with: last_name
     select 'Germany'

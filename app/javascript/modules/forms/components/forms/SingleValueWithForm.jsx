@@ -133,6 +133,7 @@ export default function SingleValueWithForm({
                                     className="Button Button--transparent Button--icon"
                                     title={t(collapsed ? 'show' : 'hide')}
                                     onClick={() => setCollapsed(!collapsed)}
+                                    data-testid="collapse-toggle-button"
                                 >
                                     {collapsed ? (
                                         <FaAngleDown className="Icon Icon--editorial" />
@@ -149,6 +150,7 @@ export default function SingleValueWithForm({
                                     title={t(
                                         `edit.default.${editing ? 'cancel' : 'edit'}`
                                     )}
+                                    data-testid="edit-toggle-button"
                                     onClick={() => setEditing(!editing)}
                                 >
                                     {editing ? (

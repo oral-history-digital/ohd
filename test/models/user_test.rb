@@ -9,6 +9,17 @@ class UserTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
+  test 'accepts password with #?!@$%^&*+=_,.:;~-. as special sign' do
+    user = User.find_by!(email: 'john@example.com')
+    assert user.valid?
+
+    special_signs = '#?!@$%^&*+=_,.:;~-.'.chars
+    special_signs.each do |sign|
+      user.update(password: "Abcdef1#{sign}")
+      assert user.valid?, "Password with special sign '#{sign}' should be valid"
+    end
+  end
+
   test ['password needs',
     'upper- and downercase letter',
     'number and special sign',

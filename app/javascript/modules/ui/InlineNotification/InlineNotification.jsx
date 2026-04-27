@@ -164,7 +164,12 @@ export function InlineNotification({
             aria-live={ariaLive}
             aria-atomic="true"
         >
-            <div className="InlineNotification__container">
+            <div
+                className={classNames('InlineNotification__container', {
+                    'InlineNotification__container--hasDescription':
+                        description,
+                })}
+            >
                 <div className="InlineNotification__icon" aria-hidden="true">
                     <IconComponent />
                 </div>

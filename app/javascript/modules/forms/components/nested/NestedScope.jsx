@@ -164,6 +164,7 @@ export default function NestedScope({
                     className="Button Button--transparent Button--icon"
                     title={t(`edit.${scope}.new`)}
                     onClick={() => setEditing(!editing)}
+                    data-testid="add-new-element-button"
                 >
                     {t(`${pluralize(scope)}.add`) + '  '}
                     <FaPlus className="Icon Icon--editorial" />

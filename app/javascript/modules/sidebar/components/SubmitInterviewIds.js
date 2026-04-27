@@ -1,9 +1,9 @@
-import { getLocale, submitSelectedArchiveIds } from 'modules/archive';
+import { submitSelectedArchiveIds } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export default function SubmitInterviewIds({
     action,
@@ -14,7 +14,6 @@ export default function SubmitInterviewIds({
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
-    const locale = useSelector(getLocale);
     const pathBase = usePathBase();
 
     return (
@@ -57,4 +56,7 @@ export default function SubmitInterviewIds({
 SubmitInterviewIds.propTypes = {
     action: PropTypes.string.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
+    confirmText: PropTypes.string,
+    filename: PropTypes.string,
+    format: PropTypes.string,
 };

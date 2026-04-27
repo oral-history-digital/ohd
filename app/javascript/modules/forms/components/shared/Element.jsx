@@ -37,6 +37,7 @@ export default function Element({
                     'has-error': !valid && showErrors,
                 }
             )}
+            data-testid={`${scope}-${attribute}-element`}
         >
             <Label
                 label={label}
@@ -48,14 +49,20 @@ export default function Element({
             <div className="form-input">
                 {children}
                 {help && (
-                    <p className="help-block">
+                    <p
+                        className="help-block"
+                        data-testid={`${scope}-${attribute}-help-text`}
+                    >
                         {typeof help === 'string' ? t(help) : help}
                     </p>
                 )}
             </div>
 
             {!valid && showErrors && (
-                <div className="help-block">
+                <div
+                    className="help-block"
+                    data-testid={`${scope}-${attribute}-error-text`}
+                >
                     {individualErrorMsg
                         ? t(
                               `activerecord.errors.models.${scope}.attributes.${attribute}.${individualErrorMsg}`

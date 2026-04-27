@@ -1,3 +1,9 @@
+.wrapper-content.register {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 .Registration-form {
   max-width: 1000px;
   margin: 0 auto;

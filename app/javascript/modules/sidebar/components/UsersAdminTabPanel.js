@@ -1,19 +1,23 @@
 import { useState } from 'react';
 
-import { useAuthorization } from 'modules/auth';
+import { AuthorizedContent, useAuthorization } from 'modules/auth';
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import Select from 'react-select';
 
 import AdminSubTab from './AdminSubTab';
+import SubTab from './SubTab';
 
 export default function UsersAdminTabPanel({ countryKeys, project }) {
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
+    const user = useSelector(getCurrentUser);
 
     const [selectedCountries, setSelectedCountries] = useState([]);
 
@@ -99,6 +103,17 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
                         )}
                     </div>
                 </AdminSubTab>
+                {project.is_ohd && user?.admin && (
+                    <AuthorizedContent
+                        object={{ type: 'InstanceSetting' }}
+                        action="update"
+                    >
+                        <SubTab
+                            title={t('edit.instance.title')}
+                            url={`${pathBase}/admin/instance`}
+                        />
+                    </AuthorizedContent>
+                )}
             </div>
         </ErrorBoundary>
     );
@@ -106,4 +121,5 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
 
 UsersAdminTabPanel.propTypes = {
     countryKeys: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
 };

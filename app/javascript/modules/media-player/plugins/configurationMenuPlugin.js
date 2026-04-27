@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import videojs from 'video.js';
 
 import ConfigurationMenu from '../components/ConfigurationMenu';
+import { disposeReactRoot } from '../utils/disposeReactRoot';
 
 const VjsButton = videojs.getComponent('Button');
 
@@ -94,7 +95,8 @@ class ConfigurationControl extends VjsButton {
             'pluginTranslationsUpdated',
             this.handleTranslationUpdate
         );
-        this.root?.unmount();
+        disposeReactRoot(this.root);
+        this.root = null;
         super.dispose();
     }
 }

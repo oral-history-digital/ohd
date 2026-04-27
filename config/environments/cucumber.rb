@@ -3,7 +3,6 @@
 
 # IMPORTANT: Setting config.cache_classes to false is known to
 # break Cucumber's use_transactional_fixtures method.
-# For more information see https://rspec.lighthouseapp.com/projects/16211/tickets/165
 config.cache_classes = true
 
 # Log error messages when you accidentally call methods on nil.

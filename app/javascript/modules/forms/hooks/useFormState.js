@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
+import { useI18n } from 'modules/i18n';
 import { pluralize } from 'modules/strings';
+
+import { hasMissingRequiredValues } from '../utils';
 
 /**
  * Custom hook for managing form state including regular fields and nested collections.
@@ -16,10 +19,22 @@ import { pluralize } from 'modules/strings';
  * @param {Array} elements - Form element configuration array
  * @returns {Object} Form state and manipulation functions
  */
-export function useFormState(initialValues, data, elements) {
+export function useFormState(
+    initialValues,
+    data,
+    elements,
+    {
+        fetching = false,
+        hasValidationErrors = false,
+        submitted = false,
+        disableIfUnchanged = false,
+    } = {}
+) {
     const [values, setValues] = useState(initValues());
     const [errors, setErrors] = useState(initErrors());
-    const [touched, setTouched] = useState({});
+    const [touched, setTouched] = useState(initTouched());
+    const [initialFormValues, setInitialFormValues] = useState(initValues());
+    const { t } = useI18n();
 
     /**
      * Initialize form values from initialValues and data props.
@@ -91,6 +106,23 @@ export function useFormState(initialValues, data, elements) {
     }
 
     /**
+     * Initialize touched state for form elements.
+     * Fields with touchOnInvalid=true will be marked as touched if they have validation errors.
+     */
+    function initTouched() {
+        let touched = {};
+        elements.forEach((element) => {
+            if (element.attribute && element.touchOnInvalid) {
+                const error = hasError(element);
+                if (error) {
+                    touched[element.attribute] = true;
+                }
+            }
+        });
+        return touched;
+    }
+
+    /**
      * Mark a field as touched by the user.
      */
     function touchField(name) {
@@ -128,6 +160,73 @@ export function useFormState(initialValues, data, elements) {
     }
 
     /**
+     * Check if form has unsaved changes by comparing current values with initial values.
+     * Returns an object with isDirty flag and array of changed field names.
+     */
+    function areValuesEqual(a, b) {
+        if (a === b) {
+            return true;
+        }
+
+        if (a == null || b == null) {
+            return false;
+        }
+
+        // Handle arrays and objects with deep equality check
+        if (Array.isArray(a) || Array.isArray(b)) {
+            if (!Array.isArray(a) || !Array.isArray(b)) {
+                return false;
+            }
+
+            if (a.length !== b.length) {
+                return false;
+            }
+
+            return a.every((item, index) => areValuesEqual(item, b[index]));
+        }
+
+        if (typeof a === 'object' && typeof b === 'object') {
+            const aKeys = Object.keys(a);
+            const bKeys = Object.keys(b);
+
+            if (aKeys.length !== bKeys.length) {
+                return false;
+            }
+
+            return aKeys.every(
+                (key) =>
+                    Object.prototype.hasOwnProperty.call(b, key) &&
+                    areValuesEqual(a[key], b[key])
+            );
+        }
+
+        return false;
+    }
+
+    function getDirtyStateForValues(valuesToCheck = values) {
+        const currentKeys = Object.keys(valuesToCheck).filter(
+            (key) => key !== 'id'
+        );
+        const initialKeys = Object.keys(initialFormValues).filter(
+            (key) => key !== 'id'
+        );
+        const allKeys = Array.from(new Set([...currentKeys, ...initialKeys]));
+
+        const dirtyFields = [];
+
+        allKeys.forEach((key) => {
+            if (!areValuesEqual(valuesToCheck[key], initialFormValues[key])) {
+                dirtyFields.push(key);
+            }
+        });
+
+        return {
+            isDirty: dirtyFields.length > 0,
+            dirtyFields: dirtyFields,
+        };
+    }
+
+    /**
      * Update a regular form field value.
      * For nested form updates, use writeNestedObject instead.
      */
@@ -162,6 +261,73 @@ export function useFormState(initialValues, data, elements) {
 
         return !hasErrors;
     }
+
+    /**
+     * Returns true when at least one touched, relevant field is currently invalid.
+     */
+    function hasTouchedValidationErrors() {
+        return elements.some((element) => {
+            const attribute = element.attribute;
+
+            if (!attribute || !touched[attribute]) {
+                return false;
+            }
+
+            if (element.hidden || element.optional) {
+                return false;
+            }
+
+            if (typeof element.validate !== 'function') {
+                return Boolean(errors[attribute]);
+            }
+
+            return hasError(element);
+        });
+    }
+
+    const hasMissingRequired = hasMissingRequiredValues(elements, values, data);
+    const dirtyState = getDirtyStateForValues();
+
+    /**
+     * Computes the current submit button disabled state and help text.
+     */
+    function getSubmitButtonState() {
+        if (fetching) {
+            return { disabled: true, helpText: null };
+        }
+
+        if (hasValidationErrors || hasTouchedValidationErrors()) {
+            return {
+                disabled: true,
+                helpText: t('edit.form.fix_validation_errors'),
+            };
+        }
+
+        if (hasMissingRequired) {
+            return {
+                disabled: true,
+                helpText: null,
+            };
+        }
+
+        if (submitted && !valid()) {
+            return {
+                disabled: true,
+                helpText: t('edit.form.fix_errors'),
+            };
+        }
+
+        if (disableIfUnchanged && !dirtyState.isDirty) {
+            return {
+                disabled: true,
+                helpText: t('edit.form.no_changes'),
+            };
+        }
+
+        return { disabled: false, helpText: null };
+    }
+
+    const submitButtonState = getSubmitButtonState();
 
     /**
      * Convert a scope name to Rails nested attributes format.
@@ -246,10 +412,20 @@ export function useFormState(initialValues, data, elements) {
         }));
     }
 
+    /**
+     * Mark current values as the clean baseline after a successful save.
+     * This allows disableIfUnchanged forms to disable submit immediately.
+     */
+    function markCurrentValuesAsClean(nextValues = values) {
+        setInitialFormValues({ ...nextValues });
+    }
+
     return {
         values,
         errors,
         touched,
+        isDirty: dirtyState.isDirty,
+        dirtyFields: dirtyState.dirtyFields,
         updateField,
         handleErrors,
         touchField,
@@ -259,5 +435,9 @@ export function useFormState(initialValues, data, elements) {
         deleteNestedObject,
         getNestedObjects,
         replaceNestedFormValues,
+        markCurrentValuesAsClean,
+        getDirtyStateForValues,
+        hasMissingRequired,
+        submitButtonState,
     };
 }

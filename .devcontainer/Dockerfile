@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     websockify \
     wget \
     unzip \
+    ripgrep \
+    nano \
   && ln -sf /usr/bin/chromium /usr/local/bin/google-chrome \
   && ln -sf /usr/bin/chromedriver /usr/local/bin/chromedriver \
   && apt-get clean \

@@ -8,11 +8,21 @@ class WebauthnSystemTestCase < ApplicationSystemTestCase
   end
 
   def teardown
-    Capybara.reset_sessions!
+    remove_virtual_authenticator
     super
   end
 
   private
+
+  def remove_virtual_authenticator
+    return unless @virtual_authenticator
+
+    @virtual_authenticator.remove! if @virtual_authenticator.valid?
+  rescue Selenium::WebDriver::Error::WebDriverError
+    # Ignore cleanup failures when browser/session is already gone.
+  ensure
+    @virtual_authenticator = nil
+  end
 
   def add_virtual_authenticator
     return if @virtual_authenticator
@@ -26,13 +36,6 @@ class WebauthnSystemTestCase < ApplicationSystemTestCase
         isUserConsenting: true,
         isUserVerified: true
       )
-    rescue Selenium::WebDriver::Error::InvalidArgumentError => e
-      if e.message.include?("one internal authenticator")
-        Capybara.reset_sessions!
-        retry
-      else
-        raise
-      end
     end
   end
 end

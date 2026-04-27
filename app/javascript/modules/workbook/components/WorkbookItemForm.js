@@ -10,8 +10,8 @@ import {
 } from 'modules/analytics';
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
-import { formatTimecode } from 'modules/interview-helpers';
 import { useProject } from 'modules/routes';
+import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 
 import useMutateWorkbook from '../useMutateWorkbook';

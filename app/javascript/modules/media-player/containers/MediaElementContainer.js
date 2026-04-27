@@ -16,6 +16,7 @@ import {
 } from '../redux/actions';
 import {
     getCurrentTape,
+    getIsPlaying,
     getTimeChangeRequest,
     getTimeChangeRequestAvailable,
 } from '../redux/selectors';
@@ -25,6 +26,7 @@ const mapStateToProps = (state) => ({
     interview: getCurrentInterview(state),
     mediaStreams: getMediaStreamsForCurrentProject(state),
     tape: getCurrentTape(state),
+    isPlaying: getIsPlaying(state),
     timeChangeRequest: getTimeChangeRequest(state),
     timeChangeRequestAvailable: getTimeChangeRequestAvailable(state),
 });
