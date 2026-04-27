@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 
 import classNames from 'classnames';
-import { getProjectId, getViewMode } from 'modules/archive';
+import { getProjectId, getViewMode, setProjectId } from 'modules/archive';
 import {
     Banner,
     bannerHasNotBeenHiddenByUser,
@@ -72,6 +72,21 @@ export default function Layout({ children }) {
 
     useCheckLocaleAgainstProject();
     useFetchAccount();
+
+    // Keep Redux projectId aligned with the route-resolved project.
+    // This ensures selectors like getCurrentProject/getMapSections use
+    // the same project that useProject() resolves from the URL/domain.
+    // TODO: eventually we should unify this logic inside useProject()
+    // and get rid of the separate projectId in Redux.
+    useEffect(() => {
+        const resolvedProjectId = project?.shortname;
+
+        if (!resolvedProjectId || resolvedProjectId === routeProjectId) {
+            return;
+        }
+
+        dispatch(setProjectId(resolvedProjectId));
+    }, [dispatch, project?.shortname, routeProjectId]);
 
     const ohdDomain = OHD_DOMAINS[railsMode];
 
