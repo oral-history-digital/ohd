@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
+import { useI18n } from 'modules/i18n';
 import { pluralize } from 'modules/strings';
+
+import { hasMissingRequiredValues } from '../utils';
 
 /**
  * Custom hook for managing form state including regular fields and nested collections.
@@ -16,11 +19,22 @@ import { pluralize } from 'modules/strings';
  * @param {Array} elements - Form element configuration array
  * @returns {Object} Form state and manipulation functions
  */
-export function useFormState(initialValues, data, elements) {
+export function useFormState(
+    initialValues,
+    data,
+    elements,
+    {
+        fetching = false,
+        hasValidationErrors = false,
+        submitted = false,
+        disableIfUnchanged = false,
+    } = {}
+) {
     const [values, setValues] = useState(initValues());
     const [errors, setErrors] = useState(initErrors());
     const [touched, setTouched] = useState(initTouched());
     const [initialFormValues, setInitialFormValues] = useState(initValues());
+    const { t } = useI18n();
 
     /**
      * Initialize form values from initialValues and data props.
@@ -249,6 +263,73 @@ export function useFormState(initialValues, data, elements) {
     }
 
     /**
+     * Returns true when at least one touched, relevant field is currently invalid.
+     */
+    function hasTouchedValidationErrors() {
+        return elements.some((element) => {
+            const attribute = element.attribute;
+
+            if (!attribute || !touched[attribute]) {
+                return false;
+            }
+
+            if (element.hidden || element.optional) {
+                return false;
+            }
+
+            if (typeof element.validate !== 'function') {
+                return Boolean(errors[attribute]);
+            }
+
+            return hasError(element);
+        });
+    }
+
+    const hasMissingRequired = hasMissingRequiredValues(elements, values, data);
+    const dirtyState = getDirtyStateForValues();
+
+    /**
+     * Computes the current submit button disabled state and help text.
+     */
+    function getSubmitButtonState() {
+        if (fetching) {
+            return { disabled: true, helpText: null };
+        }
+
+        if (hasValidationErrors || hasTouchedValidationErrors()) {
+            return {
+                disabled: true,
+                helpText: t('edit.form.fix_validation_errors'),
+            };
+        }
+
+        if (hasMissingRequired) {
+            return {
+                disabled: true,
+                helpText: null,
+            };
+        }
+
+        if (submitted && !valid()) {
+            return {
+                disabled: true,
+                helpText: t('edit.form.fix_errors'),
+            };
+        }
+
+        if (disableIfUnchanged && !dirtyState.isDirty) {
+            return {
+                disabled: true,
+                helpText: t('edit.form.no_changes'),
+            };
+        }
+
+        return { disabled: false, helpText: null };
+    }
+
+    const submitButtonState = getSubmitButtonState();
+
+    /**
      * Convert a scope name to Rails nested attributes format.
      * Example: "event" -> "events_attributes"
      */
@@ -339,8 +420,6 @@ export function useFormState(initialValues, data, elements) {
         setInitialFormValues({ ...nextValues });
     }
 
-    const dirtyState = getDirtyStateForValues();
-
     return {
         values,
         errors,
@@ -358,5 +437,7 @@ export function useFormState(initialValues, data, elements) {
         replaceNestedFormValues,
         markCurrentValuesAsClean,
         getDirtyStateForValues,
+        hasMissingRequired,
+        submitButtonState,
     };
 }
