@@ -32,20 +32,22 @@ export function InstitutionsList({
     });
 
     const allInstitutions = institutions || [];
-    const filteredInstitutions = filterInstitutions(
-        allInstitutions,
+    const filteredInstitutions = filterInstitutions(allInstitutions, {
         query,
         interviewMin,
         interviewMax,
         instProjectMin,
         instProjectMax,
-        institutionLevel
-    );
+        institutionLevel,
+    });
     const institutionsCountLabel = useExplorerListCountLabel({
         scope: 'institutions',
         displayedItems: filteredInstitutions,
         totalItems: allInstitutions,
     });
+    const topLevelInstitutionsCount = filterInstitutions(allInstitutions, {
+        institutionLevel: 'top_level',
+    }).length;
 
     if (loading) {
         return (
@@ -82,7 +84,7 @@ export function InstitutionsList({
             >
                 <p className="InstitutionsList-description">
                     {t('explorer.institutions_list.description', {
-                        count: institutions.length,
+                        count: topLevelInstitutionsCount,
                     })}
                 </p>
                 <InstitutionsMap

@@ -1,22 +1,32 @@
 /**
  * Filters institutions by text query and/or interview count range.
  *
- * @param {Array}       institutions
- * @param {string}      query        - Text to match against name / description / project names
- * @param {number|null} interviewMin - Inclusive minimum interview count (null = no limit)
- * @param {number|null} interviewMax - Inclusive maximum interview count (null = no limit)
+ * @param {Array} institutions
+ * @param {Object} filters
+ * @param {string|null} filters.query - Text to match against name / description / project names
+ * @param {number|null} filters.interviewMin - Inclusive minimum interview count (null = no limit)
+ * @param {number|null} filters.interviewMax - Inclusive maximum interview count (null = no limit)
+ * @param {number|null} filters.instProjectMin - Inclusive minimum project count (null = no limit)
+ * @param {number|null} filters.instProjectMax - Inclusive maximum project count (null = no limit)
+ * @param {string|null} filters.institutionLevel - 'all' to include all institutions, 'top_level' to include only those without a parent
  * @returns {Array} Filtered institutions
  */
 export const filterInstitutions = (
     institutions,
-    query,
-    interviewMin,
-    interviewMax,
-    instProjectMin,
-    instProjectMax,
-    institutionLevel = 'all'
+    {
+        query = null,
+        interviewMin = null,
+        interviewMax = null,
+        instProjectMin = null,
+        instProjectMax = null,
+        institutionLevel = 'all',
+    } = {}
 ) =>
     institutions.filter((i) => {
+        if (!i) {
+            return false;
+        }
+
         if (institutionLevel === 'top_level' && i.parent?.id) {
             return false;
         }

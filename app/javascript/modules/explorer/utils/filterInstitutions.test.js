@@ -29,42 +29,33 @@ describe('filterInstitutions', () => {
     ];
 
     test('returns all institutions by default level', () => {
-        const actual = filterInstitutions(
-            institutions,
-            '',
-            null,
-            null,
-            null,
-            null
-        );
+        const actual = filterInstitutions(institutions, { query: '' });
 
         expect(actual.map((i) => i.id)).toEqual([1, 2, 3]);
     });
 
     test('filters to top-level institutions', () => {
-        const actual = filterInstitutions(
-            institutions,
-            '',
-            null,
-            null,
-            null,
-            null,
-            'top_level'
-        );
+        const actual = filterInstitutions(institutions, {
+            query: '',
+            institutionLevel: 'top_level',
+        });
 
         expect(actual.map((i) => i.id)).toEqual([1, 3]);
     });
 
     test('combines hierarchy with query filter', () => {
-        const actual = filterInstitutions(
-            institutions,
-            'top',
-            null,
-            null,
-            null,
-            null,
-            'top_level'
-        );
+        const actual = filterInstitutions(institutions, {
+            query: 'top',
+            institutionLevel: 'top_level',
+        });
+
+        expect(actual.map((i) => i.id)).toEqual([1, 3]);
+    });
+
+    test('ignores null entries safely', () => {
+        const actual = filterInstitutions([null, ...institutions], {
+            institutionLevel: 'top_level',
+        });
 
         expect(actual.map((i) => i.id)).toEqual([1, 3]);
     });
