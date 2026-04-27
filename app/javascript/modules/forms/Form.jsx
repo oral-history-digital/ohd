@@ -74,7 +74,6 @@ export default function Form({
         values,
         errors,
         touched,
-        isDirty,
         updateField,
         handleErrors,
         touchField,
@@ -86,7 +85,13 @@ export default function Form({
         replaceNestedFormValues,
         markCurrentValuesAsClean,
         getDirtyStateForValues,
-    } = useFormState(initialValues, data, elements);
+        submitButtonState,
+    } = useFormState(initialValues, data, elements, {
+        fetching,
+        hasValidationErrors,
+        submitted,
+        disableIfUnchanged,
+    });
 
     const { t } = useI18n();
 
@@ -163,28 +168,6 @@ export default function Form({
         ));
     }
 
-    // Determine why submit button should be disabled and appropriate help text
-    function getDisabledState() {
-        if (fetching) {
-            return { disabled: true, helpText: null };
-        }
-        if (hasValidationErrors) {
-            return {
-                disabled: true,
-                helpText: t('edit.form.fix_validation_errors'),
-            };
-        }
-        if (submitted && !valid()) {
-            return { disabled: true, helpText: t('edit.form.fix_errors') };
-        }
-        if (disableIfUnchanged && !isDirty) {
-            return { disabled: true, helpText: t('edit.form.no_changes') };
-        }
-        return { disabled: false, helpText: null };
-    }
-
-    const submitButtonState = getDisabledState();
-
     function elementComponent(element) {
         const preparedProps = { ...element };
         preparedProps.scope = element.scope || scope;
@@ -200,6 +183,7 @@ export default function Form({
                 ? values[element.attribute]
                 : element.value;
         preparedProps.data = data;
+        preparedProps.formValues = values;
         preparedProps.accept = element.accept;
 
         // Set defaults for the possibility to shorten elements list

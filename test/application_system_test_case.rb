@@ -2,6 +2,7 @@ require "test_helper"
 require_relative "system/helpers/form_testing_helper"
 require_relative "system/helpers/form_fields_discovery_helper"
 require_relative "system/helpers/redirect_system_test_helper"
+require_relative "system/helpers/test_id_helper"
 
 Capybara.configure do |c|
   url = URI.parse(OHD_DOMAIN)
@@ -43,25 +44,5 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   teardown do
     Capybara.reset_sessions!
-  end
-
-  # --- helpers ---
-
-  def click_test_id(test_id)
-    find("[data-testid=\"#{test_id}\"]").click
-  end
-
-  def find_test_id(test_id)
-    find("[data-testid=\"#{test_id}\"]")
-  end
-
-  def select_test_id_option(test_id, option_text)
-    find_test_id(test_id).find('option', text: option_text).select_option
-  end
-
-  def assert_test_id_text(test_id, text)
-    within find_test_id(test_id) do
-      assert_text text
-    end
   end
 end

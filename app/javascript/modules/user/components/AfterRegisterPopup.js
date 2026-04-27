@@ -13,14 +13,13 @@ export default function AfterRegisterPopup() {
 
     if (!isRegistered) return null;
 
-    function handleClose(closeModal) {
+    function handleClose() {
         // Redirect to the stored return path after user confirms registration
         const rawPath = sessionStorage.getItem('registrationReturnPath');
         sessionStorage.removeItem('registrationReturnPath');
 
         const returnPath = sanitizeInternalReturnPath(rawPath);
 
-        closeModal();
         navigate(returnPath);
     }
 
@@ -31,6 +30,7 @@ export default function AfterRegisterPopup() {
             trigger={t('user.registration')}
             showDialogInitially={true}
             hideButton={true}
+            onClose={handleClose}
         >
             {(close) => (
                 <>
@@ -40,7 +40,7 @@ export default function AfterRegisterPopup() {
                         type="button"
                         className="Button Button--primaryAction"
                         value={t('ok')}
-                        onClick={() => handleClose(close)}
+                        onClick={close}
                     />
                 </>
             )}

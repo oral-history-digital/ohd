@@ -11,7 +11,7 @@
   margin: 2vh auto;
   padding: 1.5rem;
   position: relative;
-  width: 96vw;
+  width: min(96vw, clamp(22rem, 70vw, 56rem));
   box-shadow: 3px 3px 10px 5px rgba(0, 0, 0, 0.125);
 
   a {
@@ -23,12 +23,10 @@
   @include screen-m {
     margin: 10vh auto;
     padding: 1.5rem;
-    width: 70vw;
   }
 
   @include screen-xl {
     padding: 1.5rem;
-    width: 60vw;
   }
   .small-right {
     font-size: 1em;

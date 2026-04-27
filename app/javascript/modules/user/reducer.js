@@ -2,6 +2,7 @@ import {
     AUTH_ERROR,
     CHANGED_PASSWORD,
     CHANGE_PASSWORD,
+    CLEAR_REGISTRATION_STATUS,
     LOGGED_IN,
     LOGIN,
     LOGOUT,
@@ -9,6 +10,7 @@ import {
     ORDER_NEW_PASSWORD,
     REGISTER,
     REGISTERED,
+    REGISTER_ERROR,
 } from './action-types';
 
 const user = (state = { isLoggedIn: false }, action) => {
@@ -46,11 +48,24 @@ const user = (state = { isLoggedIn: false }, action) => {
         case REGISTER:
             return Object.assign({}, state, {
                 isRegistering: true,
+                registrationStatus: null,
+                registered: false,
             });
         case REGISTERED:
             return Object.assign({}, state, {
                 isRegistering: false,
                 registered: true,
+                registrationStatus: null,
+            });
+        case REGISTER_ERROR:
+            return Object.assign({}, state, {
+                isRegistering: false,
+                registered: false,
+                registrationStatus: action.registrationStatus,
+            });
+        case CLEAR_REGISTRATION_STATUS:
+            return Object.assign({}, state, {
+                registrationStatus: null,
             });
         case CHANGE_PASSWORD:
             return Object.assign({}, state, {
