@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2026-04-27
+
+### Changed
+
+- chore: update exported translation strings ([4d4e2dd43](https://github.com/oral-history-digital/ohd/commit/4d4e2dd43d1b57720a9c12d7ff44ac63dc37ff8e))
+
+### Fixed
+
+- fix: update filterInstitutions function to accept an object for parameters and improve usage in InstitutionsList ([b49d3ef46](https://github.com/oral-history-digital/ohd/commit/b49d3ef463e2f31fd1809005723696884d5a4800))
+- fix(styles): correct paddings and margins ([577f482a8](https://github.com/oral-history-digital/ohd/commit/577f482a87380adbccc4f76773741a3aae7ecb56))
+
 ## [2.3.0] - 2026-04-27
 
 ### Added
@@ -488,6 +499,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.3.1]: https://github.com/oral-history-digital/ohd/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/oral-history-digital/ohd/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/oral-history-digital/ohd/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/oral-history-digital/ohd/compare/v2.1.0...v2.2.0
