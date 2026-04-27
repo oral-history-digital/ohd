@@ -81,7 +81,7 @@ export default function EventTypesAdminPage() {
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {t(`activerecord.models.${scope}.other`)}
                     </h1>
 

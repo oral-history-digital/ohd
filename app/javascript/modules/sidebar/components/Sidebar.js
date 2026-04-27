@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { getCurrentUser } from 'modules/data';
+import { ExplorerSidebarSearch } from 'modules/explorer';
 import {
     ActivationActions,
     ActivationFlow,
@@ -8,7 +9,6 @@ import {
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import CurrentArchive from './CurrentArchive';
 import LocaleButtons from './LocaleButtons';
 import SessionButtons from './SessionButtons';
 import SidebarTabsContainer from './SidebarTabsContainer';
@@ -25,16 +25,19 @@ export default function Sidebar({ className }) {
                 <SessionButtons className="u-ml" />
             </header>
 
-            <div className="u-mb u-ml">
-                <CurrentArchive className="Sidebar-title u-mt-none u-mb-none" />
-                {showToggleEditViewButton && <ToggleEditView />}
-            </div>
+            {showToggleEditViewButton && (
+                <div className="u-mb u-ml">
+                    <ToggleEditView />
+                </div>
+            )}
 
             <ActivationFlow className="u-mr u-mb u-ml" />
 
             <ActivationActions className="u-mr u-mb u-ml" />
 
             <SidebarTabsContainer />
+
+            <ExplorerSidebarSearch />
         </div>
     );
 }

@@ -121,8 +121,8 @@ $font-path: '../fonts/' !default;
 
 $line-length: 32.5rem;
 
-$site-header-height-mobile: 5rem;
-$site-header-height-desktop: 6.25rem;
+$site-header-height-mobile: $base-unit * 4;
+$site-header-height-desktop: $base-unit * 6;
 $horizontal-tabs-height: $base-unit * 2;
 
 // Miscellaneous
@@ -158,7 +158,7 @@ $screen-l: 990px !default;
 $screen-l-min: $screen-l !default;
 
 // Extra large screen
-$screen-xl: 1200px !default;
+$screen-xl: 1280px !default;
 $screen-xl-min: $screen-xl !default;
 
 $screen-xs-max: ($screen-s-min - 1) !default;

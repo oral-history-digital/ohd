@@ -19,7 +19,7 @@ export default function OrderNewPassword({ orderNewPasswordStatus, error }) {
                     <div className="text">{t(orderNewPasswordStatus)}</div>
                 ) : (
                     <div>
-                        <h1 className="forgot-password-header">
+                        <h1 className="Page-main-title forgot-password-header">
                             {t('devise.passwords.forgot')}
                         </h1>
                         <p className="forgot-passord-text">

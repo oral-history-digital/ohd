@@ -25,7 +25,7 @@ export default function HelpTextAdminPage() {
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {t('activerecord.models.help_text.other')}
                     </h1>
 

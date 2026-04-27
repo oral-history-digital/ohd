@@ -34,6 +34,8 @@ class HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
                 text: 'Startseitentext',
                 button_primary_label: 'Archive',
                 button_secondary_label: 'Institutionen',
+                button_primary_description: 'Beschreibung Primar',
+                button_secondary_description: 'Beschreibung Sekundar',
                 image_alt: 'Startseite Bild'
               },
               {
@@ -42,6 +44,8 @@ class HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
                 text: 'Homepage text',
                 button_primary_label: 'Archives',
                 button_secondary_label: 'Institutions',
+                button_primary_description: 'Primary description',
+                button_secondary_description: 'Secondary description',
                 image_alt: 'Homepage image'
               }
             ]
@@ -54,6 +58,8 @@ class HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
 
     body = JSON.parse(response.body)
     assert_equal 'Neue Startseite', body.dig('data', 'blocks', 'hero', 'heading')
+    assert_equal 'Beschreibung Primar', body.dig('data', 'blocks', 'hero', 'button_primary_description')
+    assert_equal 'Beschreibung Sekundar', body.dig('data', 'blocks', 'hero', 'button_secondary_description')
   end
 
   test 'should reject non-admin updates' do

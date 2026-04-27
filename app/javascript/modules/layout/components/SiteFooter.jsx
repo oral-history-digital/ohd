@@ -13,6 +13,8 @@ export function SiteFooter() {
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
 
+    if (!project) return null;
+
     const links = project.external_links || {};
     const sponsorLogos = project.sponsor_logos || [];
 
@@ -37,9 +39,9 @@ export function SiteFooter() {
                             href={`${OHD_DOMAINS[railsMode]}/${locale}/conditions`}
                             target="_blank"
                             rel="noreferrer"
-                            title={`${t('conditions')} (OHD)`}
+                            title={`${t('conditions')} (oh.d)`} // TODO: Replace hardcoded string with umbrella project shortname
                         >
-                            {`${t('conditions')} (OHD)`}
+                            {`${t('conditions')} (oh.d)`}
                         </a>
                     </li>
                 }

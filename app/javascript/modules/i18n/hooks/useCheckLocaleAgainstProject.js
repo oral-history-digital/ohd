@@ -16,8 +16,12 @@ export function useCheckLocaleAgainstProject() {
     const { locale } = useI18n();
 
     useEffect(() => {
+        if (!project?.available_locales || !project.default_locale) {
+            return;
+        }
+
         checkLocaleAgainstProject();
-    });
+    }, [project, projectId, locale, location.pathname]);
 
     function checkLocaleAgainstProject() {
         const found = location.pathname.match(MATCH_PATH_BASE_PART);
@@ -50,7 +54,7 @@ export function useCheckLocaleAgainstProject() {
     }
 
     function projectHasLocale(aLocale) {
-        return project.available_locales.includes(aLocale);
+        return project?.available_locales?.includes(aLocale) || false;
     }
 
     function setStateLocaleIfNecessary(newLocale) {
@@ -60,6 +64,10 @@ export function useCheckLocaleAgainstProject() {
     }
 
     function redirectToDefaultLocale() {
+        if (!project?.default_locale) {
+            return;
+        }
+
         const newPathBase = pathBase({
             projectId,
             locale: project.default_locale,

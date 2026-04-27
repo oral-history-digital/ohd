@@ -24,7 +24,13 @@ export default function useProject() {
 
     return {
         project: currentProject,
+        // `projectShortname` is the backend "shortname" identifier used in URLs.
+        projectShortname: currentProject?.shortname,
+        // Keep `projectId` as a backward-compatible alias for now (maps to shortname).
+        // TODO: Refactor code to use `projectShortname` and remove `projectId` to avoid confusion with numeric database ID.
         projectId: currentProject?.shortname,
+        // Numeric database id when available — useful for API calls that require the real id.
+        projectDbId: currentProject?.id,
         isOhd: currentProject?.is_ohd,
     };
 }

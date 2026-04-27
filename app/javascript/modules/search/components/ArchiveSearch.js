@@ -35,7 +35,7 @@ function ArchiveSearch() {
     return (
         <>
             <div className="SearchResults-header">
-                <h1 className="search-results-title SearchResults-headerTitle">
+                <h1 className="Page-main-title search-results-title SearchResults-headerTitle">
                     {total?.toLocaleString(locale)} {t('interviews')}
                 </h1>
                 <div className="SearchResults-headerActions">

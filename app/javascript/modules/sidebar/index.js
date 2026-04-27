@@ -1,9 +1,6 @@
-export { NAME as SIDEBAR_NAME } from './constants';
-
-export { showSidebar, hideSidebar, toggleSidebar } from './actions';
-
-export { default as sidebarReducer } from './reducer';
-
-export { getSidebarVisible } from './selectors';
-
+export { hideSidebar, showSidebar, toggleSidebar } from './actions';
 export { default as Sidebar } from './components/Sidebar';
+export { NAME as SIDEBAR_NAME } from './constants';
+export * from './hooks';
+export { default as sidebarReducer } from './reducer';
+export { getSidebarVisible } from './selectors';

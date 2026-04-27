@@ -1,0 +1,65 @@
+.ProjectDetails {
+  .ProjectDetails-title {
+    text-wrap: balance;
+  }
+  .ProjectDetails-layout {
+    display: flex;
+    flex-direction: column;
+
+    @include screen-l {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: $base-unit * 2;
+    }
+  }
+
+  .ProjectDetails-main {
+    min-width: 0;
+
+    @include screen-l {
+      flex: 1 1 auto;
+    }
+  }
+
+  .ProjectDetails-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $base-unit;
+    margin-bottom: $base-unit * 1.5;
+  }
+
+  .ProjectDetails-sidebar {
+    display: none;
+
+    @include screen-l {
+      display: block;
+      flex: 0 0 33.333%;
+      max-width: 33.333%;
+    }
+  }
+
+  .ProjectDetails-logo {
+    display: block;
+    height: auto;
+  }
+
+  .ProjectDetails-logo--inline {
+    width: clamp(5.5rem, 30vw, 8.5rem);
+    max-width: 45%;
+    flex-shrink: 0;
+
+    @include screen-l {
+      display: none;
+    }
+  }
+
+  .ProjectDetails-logo--sidebar {
+    display: none;
+    width: 100%;
+
+    @include screen-l {
+      display: block;
+    }
+  }
+}

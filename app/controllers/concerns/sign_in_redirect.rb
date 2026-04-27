@@ -33,7 +33,7 @@ module SignInRedirect
     if path
       # Cross-domain sign-ins start on OHD and must redirect to the project
       # domain with an access token for session handover.
-      if request.base_url == OHD_DOMAIN && @project&.archive_domain.present?
+      if is_cross_domain_project_redirect?
         @path = path
         respond_with resource, location: url_with_access_token
       else
@@ -48,7 +48,7 @@ module SignInRedirect
     # JSON-based passkey flow needs the same redirect decision as HTML login.
     path = current_return_path(resource)
     if path
-      if request.base_url == OHD_DOMAIN && @project&.archive_domain.present?
+      if is_cross_domain_project_redirect?
         @path = path
         url_with_access_token
       else
@@ -87,5 +87,16 @@ module SignInRedirect
     uri.to_s
   rescue URI::InvalidURIError
     path
+  end
+
+  def is_cross_domain_project_redirect?
+    return false if @project&.archive_domain.blank?
+
+    archive_uri = URI.parse(@project.archive_domain)
+    return false if archive_uri.host.blank?
+
+    request.host != archive_uri.host
+  rescue URI::InvalidURIError
+    false
   end
 end

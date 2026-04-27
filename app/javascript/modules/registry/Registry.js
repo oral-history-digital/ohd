@@ -34,7 +34,7 @@ export default function Registry({
                 <title>{t('registry')}</title>
             </Helmet>
             <div className="wrapper-content register">
-                <h1 className="registry-entries-title">
+                <h1 className="Page-main-title">
                     {t('registry')}
                     <AuthorizedContent
                         object={rootRegistryEntry}

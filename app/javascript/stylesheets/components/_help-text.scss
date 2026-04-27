@@ -12,6 +12,7 @@ $help-text-background-color: #e6ffe6;
   border: 0.1rem solid $help-text-color;
   display: flex;
   margin-left: auto;
+  margin-right: $base-unit;
   max-width: 30 * $base-unit;
   padding: $base-unit * 0.5;
 }
@@ -21,15 +22,9 @@ $help-text-background-color: #e6ffe6;
   flex-shrink: 0;
 }
 
-.HelpText-body {
-}
-
 .HelpText-text {
   line-height: $base-unit;
   margin: 0 !important;
-}
-
-.HelpText-link {
 }
 
 /* Variants */

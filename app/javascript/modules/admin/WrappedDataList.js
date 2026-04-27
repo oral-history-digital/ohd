@@ -150,7 +150,7 @@ export default function WrappedDataList({
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {t(`activerecord.models.${scope}.other`)}
                     </h1>
 

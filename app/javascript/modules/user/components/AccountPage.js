@@ -23,7 +23,6 @@ export default function AccountPage() {
     const user = useSelector(getCurrentUser);
     useTrackPageView();
 
-    console.log('Rendering AccountPage with user', user);
     return (
         <div className="wrapper-content register account-page">
             <Helmet>
@@ -34,7 +33,7 @@ export default function AccountPage() {
                     {isEditor && <HelpText code="account_page" />}
 
                     <div className="account-page-header">
-                        <h1>{t('account_page')}</h1>
+                        <h1 className="Page-main-title">{t('account_page')}</h1>
 
                         <div className="edit-account-icon">
                             <Modal

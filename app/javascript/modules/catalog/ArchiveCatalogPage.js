@@ -1,10 +1,8 @@
 import { useTrackPageView } from 'modules/analytics';
 import { useLoadCompleteProject } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { useProjectTranslation } from 'modules/i18n';
+import { useI18n, useProjectTranslation } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkOrA } from 'modules/routes';
-import { Breadcrumbs } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { sanitizeHtml } from 'modules/utils';
 import { Helmet } from 'react-helmet';
@@ -30,14 +28,6 @@ export default function ArchiveCatalogPage() {
             </Helmet>
             <ErrorBoundary>
                 <div className="wrapper-content interviews">
-                    <Breadcrumbs className="u-mb">
-                        <Link to={`/${locale}/catalog`}>
-                            {t('modules.catalog.title')}
-                        </Link>
-                        {t('activerecord.models.project.other')}
-                        {title}
-                    </Breadcrumbs>
-
                     <h1 className="search-results-title u-mb">{title}</h1>
 
                     <p className="Paragraph u-mb">

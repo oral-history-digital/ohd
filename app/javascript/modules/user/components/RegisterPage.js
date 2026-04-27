@@ -15,7 +15,9 @@ export default function RegisterPage() {
                 <title>{t('modules.registration.title')}</title>
             </Helmet>
 
-            <h1>{t('modules.registration.title')}</h1>
+            <h1 className="Page-main-title">
+                {t('modules.registration.title')}
+            </h1>
 
             <RegisterForm />
         </div>

@@ -2,29 +2,50 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useTrackSiteSearch } from 'modules/analytics';
 import { AuthShowContainer } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
 import { useSearchParams } from 'modules/query-string';
+import { ResetFiltersButton } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
-import { FaUndo } from 'react-icons/fa';
 
 import defaultSortOptions from '../defaultSortOptions';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
 export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
-    const { t } = useI18n();
     const formEl = useRef(null);
     const trackSiteSearch = useTrackSiteSearch();
 
-    const { fulltext, setFulltextAndSort, resetSearchParams } =
-        useSearchParams();
+    const {
+        fulltext,
+        fulltextIsSet,
+        facets,
+        yearOfBirthMin,
+        yearOfBirthMax,
+        interviewYearMin,
+        interviewYearMax,
+        setFulltextAndSort,
+        resetSearchParams,
+    } = useSearchParams();
 
     const [fulltextInput, setFulltextInput] = useState(fulltext);
 
     useEffect(() => {
         setFulltextInput(fulltext || '');
     }, [fulltext]);
+
+    const hasFacetFilters = Object.values(facets).some((value) => {
+        if (Array.isArray(value)) return value.length > 0;
+        return value !== undefined && value !== null && value !== '';
+    });
+    const hasBirthYearFilter =
+        !Number.isNaN(yearOfBirthMin) || !Number.isNaN(yearOfBirthMax);
+    const hasInterviewYearFilter =
+        !Number.isNaN(interviewYearMin) || !Number.isNaN(interviewYearMax);
+    const hasActiveFilters =
+        fulltextIsSet ||
+        hasFacetFilters ||
+        hasBirthYearFilter ||
+        hasInterviewYearFilter;
 
     function handleReset() {
         resetSearchParams();
@@ -57,7 +78,12 @@ export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
     }
 
     return (
-        <div>
+        <div className="ArchiveSearchForm">
+            {hasActiveFilters && (
+                <div className="ResetFiltersButton-container">
+                    <ResetFiltersButton onClick={handleReset} />
+                </div>
+            )}
             <form
                 ref={formEl}
                 id="archiveSearchForm"
@@ -79,14 +105,6 @@ export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
                         />
                     </AuthShowContainer>
                 )}
-                <button
-                    type="button"
-                    className="Button reset"
-                    onClick={handleReset}
-                >
-                    {t('reset')}
-                    <FaUndo className="Icon" />
-                </button>
 
                 <ArchiveFacets />
             </form>

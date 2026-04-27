@@ -196,7 +196,7 @@ export default function UserTable() {
 
     return (
         <>
-            <h1 className="registry-entries-title">
+            <h1 className="Page-main-title">
                 {data?.total} {t('activerecord.models.user.other')}
             </h1>
             <TableWithPagination
