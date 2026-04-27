@@ -170,7 +170,7 @@ export function buildDefaultLabels(t) {
         user_page: translateWithFallback(t, 'edit.users.admin', 'Users'),
         project_admin_page: translateWithFallback(
             t,
-            'edit.administration',
+            'modules.breadcrumbs.project_admin_page',
             'Administration'
         ),
         register_page: translateWithFallback(

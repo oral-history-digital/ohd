@@ -46,6 +46,10 @@ function withProjectAndLocale(suffix, { wildcard = false } = {}) {
 
 const PAGE_DEFINITIONS = [
     {
+        pageType: 'project_admin_page',
+        patterns: withProjectAndLocale('/interviews/new'),
+    },
+    {
         pageType: 'interview_detail',
         patterns: withProjectAndLocale('/interviews/:archiveId'),
     },

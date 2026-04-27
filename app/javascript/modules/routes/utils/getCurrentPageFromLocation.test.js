@@ -47,6 +47,20 @@ describe('getCurrentPageFromLocation', () => {
         expect(result.isKnown).toBe(true);
     });
 
+    it('classifies interviews/new as project admin page', () => {
+        const result = getCurrentPageFromLocation(
+            buildLocation('/mog/de/interviews/new')
+        );
+
+        expect(result.pageType).toBe('project_admin_page');
+        expect(result.params).toEqual({
+            projectShortname: 'mog',
+            locale: 'de',
+        });
+        expect(result.pathBase).toBe('/mog/de');
+        expect(result.isKnown).toBe(true);
+    });
+
     it('classifies catalog detail and enriches catalog params', () => {
         const result = getCurrentPageFromLocation(
             buildLocation('/de/catalog/collections/90408866')
@@ -95,6 +109,7 @@ describe('getCurrentPageFromLocation', () => {
     it('classifies locale-only admin paths as project admin pages', () => {
         const paths = [
             '/de/uploads/new',
+            '/de/interviews/new',
             '/de/registry_reference_types',
             '/de/admin/instance',
             '/de/projects',
