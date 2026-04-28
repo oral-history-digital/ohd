@@ -42,49 +42,53 @@ export function HomepagePanel({ data, variant }) {
                     onClick={handleImageClick}
                     data-testid={`homepage-panel-image-${variant}`}
                 />
-                <h2 className="Panel-heading">{data.heading}</h2>
-                <p className="Panel-text">{data.text}</p>
-                <div className="CtaWrapper">
-                    {data.show_secondary_button &&
-                        data.button_secondary_target && (
-                            <LinkButton
-                                buttonText={data.button_secondary_label}
-                                to={pathBase + data.button_secondary_target}
-                                title={data.button_secondary_description}
-                                variant="outlined"
-                                size="md"
-                                className={`Panel-cta--secondary`}
-                                data-testid={`homepage-panel-cta-secondary-${variant}`}
-                                isExternal={isExternalTarget(
-                                    data.button_secondary_target
-                                )}
-                                isDisabled={isDisabledWhenLoggedIn(
-                                    data.button_secondary_target,
-                                    isLoggedIn
-                                )}
-                            >
-                                {data.button_secondary_label}
-                            </LinkButton>
-                        )}
-                    <LinkButton
-                        buttonText={data.button_primary_label}
-                        to={pathBase + data.button_primary_target}
-                        title={data.button_primary_description}
-                        variant="contained"
-                        size="md"
-                        className={`Panel-cta--primary`}
-                        data-testid={`homepage-panel-cta-primary-${variant}`}
-                        isExternal={isExternalTarget(
-                            data.button_primary_target
-                        )}
-                        isDisabled={isDisabledWhenLoggedIn(
-                            data.button_primary_target,
-                            isLoggedIn
-                        )}
-                        endIcon={<FaArrowRight />}
-                    >
-                        {data.button_primary_label}
-                    </LinkButton>
+                <div
+                    className={`Panel-textContent Panel-textContent--${variant}`}
+                >
+                    <h2 className="Panel-heading">{data.heading}</h2>
+                    <p className="Panel-text">{data.text}</p>
+                    <div className="CtaWrapper">
+                        {data.show_secondary_button &&
+                            data.button_secondary_target && (
+                                <LinkButton
+                                    buttonText={data.button_secondary_label}
+                                    to={pathBase + data.button_secondary_target}
+                                    title={data.button_secondary_description}
+                                    variant="outlined"
+                                    size="md"
+                                    className={`Panel-cta--secondary`}
+                                    data-testid={`homepage-panel-cta-secondary-${variant}`}
+                                    isExternal={isExternalTarget(
+                                        data.button_secondary_target
+                                    )}
+                                    isDisabled={isDisabledWhenLoggedIn(
+                                        data.button_secondary_target,
+                                        isLoggedIn
+                                    )}
+                                >
+                                    {data.button_secondary_label}
+                                </LinkButton>
+                            )}
+                        <LinkButton
+                            buttonText={data.button_primary_label}
+                            to={pathBase + data.button_primary_target}
+                            title={data.button_primary_description}
+                            variant="contained"
+                            size="md"
+                            className={`Panel-cta--primary`}
+                            data-testid={`homepage-panel-cta-primary-${variant}`}
+                            isExternal={isExternalTarget(
+                                data.button_primary_target
+                            )}
+                            isDisabled={isDisabledWhenLoggedIn(
+                                data.button_primary_target,
+                                isLoggedIn
+                            )}
+                            endIcon={<FaArrowRight />}
+                        >
+                            {data.button_primary_label}
+                        </LinkButton>
+                    </div>
                 </div>
             </div>
         </section>

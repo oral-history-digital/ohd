@@ -61,6 +61,7 @@ export default function Layout({ children }) {
     const currentPage = useCurrentPage();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
+    const isHomepage = currentPage.pageType === 'site_startpage';
     const isInterviewPage = currentPage.pageType === 'interview_detail';
     const isPeopleAdminPage =
         currentPage.pageType === 'project_admin_page' &&
@@ -153,6 +154,7 @@ export default function Layout({ children }) {
                 className={classNames('Layout', {
                     'is-logged-in': isLoggedIn,
                     'sidebar-is-visible': sidebarVisible,
+                    'is-homepage': isHomepage,
                     'is-interview-page': isInterviewPage,
                     'is-wide-layout': isWideLayout,
                     'is-sticky':
