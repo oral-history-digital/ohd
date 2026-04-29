@@ -32,12 +32,17 @@ body {
 footer {
   background: #fff; //$gray-dark;
   border-top: 1px solid $gray-dark;
-  padding: $base-unit * 2 0;
+  padding: $base-unit * 2 $base-unit * 0.5;
+
   p {
     margin-top: 10px;
     padding-top: 5px;
     font-size: $font-size-medium;
     color: $gray-dark;
+  }
+
+  @include screen-m {
+    padding: $base-unit * 2 0;
   }
 }
 
