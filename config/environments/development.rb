@@ -48,6 +48,22 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
+  # Optional in development: only enable explicit AR encryption keys when all are provided.
+  encryption_keys = {
+    primary_key: ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY'].presence,
+    deterministic_key: ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY'].presence,
+    key_derivation_salt: ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT'].presence
+  }
+
+  provided_count = encryption_keys.values.compact.size
+  if provided_count == encryption_keys.size
+    config.active_record.encryption.primary_key = encryption_keys[:primary_key]
+    config.active_record.encryption.deterministic_key = encryption_keys[:deterministic_key]
+    config.active_record.encryption.key_derivation_salt = encryption_keys[:key_derivation_salt]
+  elsif provided_count.positive?
+    raise 'Set all ACTIVE_RECORD_ENCRYPTION_* variables or none in development.'
+  end
+
   # Raise exceptions for disallowed deprecations.
   config.active_support.disallowed_deprecation = :raise
 
