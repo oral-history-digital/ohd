@@ -6,14 +6,21 @@ import queryString from 'query-string';
 import useSWRImmutable from 'swr/immutable';
 
 export default function useFacets() {
-    const { fulltext, facets, yearOfBirthMin, yearOfBirthMax } =
-        useSearchParams();
+    const {
+        fulltext,
+        facets,
+        yearOfBirthMin,
+        yearOfBirthMax,
+        interviewYearMin,
+        interviewYearMax,
+    } = useSearchParams();
     const pathBase = usePathBase();
 
     const params = {
         fulltext,
         ...facets,
         year_of_birth: range(yearOfBirthMin, yearOfBirthMax + 1),
+        interview_year: range(interviewYearMin, interviewYearMax + 1),
     };
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
     const path = `${pathBase}/searches/facets?${paramStr}`;
