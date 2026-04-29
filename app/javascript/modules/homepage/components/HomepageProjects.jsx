@@ -120,12 +120,12 @@ export function HomepageProjects({ className }) {
                 className="HomepageProjects-header"
                 data-testid="homepage-projects-header"
             >
-                <h3
+                <h2
                     className="Homepage-heading u-mt-none u-mb-none"
                     data-testid="homepage-projects-heading"
                 >
                     {t('modules.homepage.sample_archives')}
-                </h3>
+                </h2>
 
                 <div
                     className="HomepageProjects-nav"

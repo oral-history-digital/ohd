@@ -2,11 +2,6 @@
   margin: 0 0 $base-unit * 2;
   padding: 0;
 
-  .Homepage-heading {
-    font-size: 1.75rem;
-    line-height: $base-unit * 2;
-  }
-
   .Homepage-icon {
     font-size: $base-unit * 2;
   }
@@ -15,6 +10,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 $base-unit * 0.5;
+
+    @include screen-m {
+      padding: 0;
+    }
+
+    h2 {
+      font-weight: 700;
+    }
   }
 
   .HomepageProjects-nav {
@@ -91,6 +95,8 @@
   }
 
   .Hero {
+    margin-bottom: $base-unit;
+
     // On larger screens, hero image is displayed as a background
     @include screen-m {
       position: relative;
@@ -99,7 +105,6 @@
       background-position: center;
       background-repeat: no-repeat;
       display: flex;
-      margin-bottom: $base-unit;
 
       @include screen-xs-s {
         background-position: right top;
@@ -178,6 +183,16 @@
   .Hero-cta--secondary,
   .Hero-cta--secondary:hover {
     background: $gray-paler !important;
+  }
+
+  .HomepagePanelsGrid {
+    gap: $base-unit * 2;
+  }
+
+  @include screen-m {
+    .HomepagePanelsGrid {
+      gap: $base-unit;
+    }
   }
 
   .Panel-content {
@@ -286,11 +301,10 @@
 
     .ProjectTile-image {
       background-color: white;
-      border-bottom: none;
-      border: 1px solid lightgrey;
       background-repeat: no-repeat;
       background-position: 50% 50%;
       background-size: contain;
+      border-bottom: 1px solid $gray-pale;
       height: auto;
       display: block;
       padding: calc($base-unit / 2);
