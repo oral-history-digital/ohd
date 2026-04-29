@@ -68,7 +68,13 @@ class SessionsController < Devise::SessionsController
     resource = User.find_by(id: session[:otp_user_id])
     
     if resource.nil? 
-      redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated")
+      # A fast second submit can arrive after a successful OTP verification
+      # already consumed otp_user_id. If the user is signed in, finish redirect.
+      if current_user
+        after_sign_in(current_user)
+      else
+        redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated")
+      end
       return
     end
 
