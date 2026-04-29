@@ -286,7 +286,7 @@ class SearchesController < ApplicationController
     scope = show_all &&
             current_user &&
             (current_user.admin? || current_user.roles?(current_project, 'General', 'edit')) ?
-            'all' : 'public'
+            ['public', 'restricted', 'unshared'] : 'public'
   end
 
   def highlighted_text(interview, hit, field_name = 'text')
