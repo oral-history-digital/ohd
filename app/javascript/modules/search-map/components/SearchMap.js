@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import 'leaflet/dist/leaflet.css';
 import { useTrackPageView } from 'modules/analytics';
@@ -29,16 +29,43 @@ export default function SearchMap() {
     const isEditor = useIsEditor();
     const pathBase = usePathBase();
     const { project } = useProject();
-    const [currentSection, setCurrentSection] = useState(mapSections[0].name);
+
+    const [currentSection, setCurrentSection] = useState(
+        mapSections[0]?.name || null
+    );
     const { t } = useI18n();
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
     const { isLoading: locationsLoading } = useMapLocations();
     useTrackPageView();
 
-    const defaultSection = mapSections.find(
-        (section) => section.name === currentSection
-    );
+    // Map sections can arrive asynchronously after route changes.
+    // Keep currentSection valid, otherwise we may keep a stale selection
+    // and derive bounds from the wrong (or missing) section.
+    useEffect(() => {
+        if (!mapSections.length) {
+            return;
+        }
+
+        const selectedSectionExists = mapSections.some(
+            (section) => section.name === currentSection
+        );
+
+        // If the current section is missing, reset to the first one.
+        // This can happen when sections are loaded asynchronously after route changes.
+        if (!selectedSectionExists) {
+            setCurrentSection(mapSections[0].name);
+        }
+    }, [mapSections, currentSection]);
+
+    const defaultSection =
+        mapSections.find((section) => section.name === currentSection) ||
+        mapSections[0];
+
+    if (!defaultSection) {
+        return null;
+    }
+
     const bounds = [
         [defaultSection.corner1_lat, defaultSection.corner1_lon],
         [defaultSection.corner2_lat, defaultSection.corner2_lon],
@@ -53,7 +80,7 @@ export default function SearchMap() {
         );
     }
 
-    if (!project.has_map) {
+    if (project && !project.has_map) {
         return <Navigate to={`${pathBase}/not_found`} replace />;
     }
 

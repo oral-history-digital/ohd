@@ -142,7 +142,7 @@ export default function EditProjectConfig() {
                     <title>{t(`edit.project.config`)}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {t(`edit.project.config`)}
                     </h1>
                     <EditData

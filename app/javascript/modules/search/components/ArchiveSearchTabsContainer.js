@@ -1,5 +1,4 @@
 import { getViewMode, getViewModes, setViewMode } from 'modules/archive';
-import { hideSidebar } from 'modules/sidebar';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -14,7 +13,6 @@ const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
             setViewMode,
-            hideSidebar,
         },
         dispatch
     );

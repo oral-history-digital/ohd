@@ -17,6 +17,8 @@ class Admin::HomepageBlockSerializer < ActiveModel::Serializer
         text: translation.text,
         button_primary_label: translation.button_primary_label,
         button_secondary_label: translation.button_secondary_label,
+        button_primary_description: translation.button_primary_description,
+        button_secondary_description: translation.button_secondary_description,
         image_alt: translation.image_alt
       }
     end

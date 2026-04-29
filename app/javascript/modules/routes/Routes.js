@@ -5,8 +5,9 @@ import {
     HelpTextAdminPage,
     WrappedInstitutionsContainer,
 } from 'modules/admin';
-import { SiteStartpage } from 'modules/site-startpage';
-import { HomeContainer } from 'modules/startpage';
+import { Homepage } from 'modules/homepage';
+import { ProjectHome } from 'modules/project-home';
+import PropTypes from 'prop-types';
 import { Route, Routes } from 'react-router-dom';
 
 import CatalogRoutes from './CatalogRoutes';
@@ -18,7 +19,7 @@ const RoutesWithoutProjectId = ({ project }) => (
         <Route path="/:locale/not_found" element={<NotFoundPage />} />
         {project.is_ohd ? (
             <>
-                <Route exact path="/:locale" element={<SiteStartpage />} />
+                <Route exact path="/:locale" element={<Homepage />} />
                 <Route
                     exact
                     path="/:locale/projects"
@@ -37,7 +38,7 @@ const RoutesWithoutProjectId = ({ project }) => (
                 <Route path="/:locale/catalog/*" element={<CatalogRoutes />} />
             </>
         ) : (
-            <Route exact path="/:locale" element={<HomeContainer />} />
+            <Route exact path="/:locale" element={<ProjectHome />} />
         )}
         <Route path="/:locale/*" element={<ProjectRoutes />} />
     </Routes>
@@ -48,9 +49,13 @@ export const MemoizedRoutesWithoutProjectId = memo(RoutesWithoutProjectId);
 const RoutesWithProjectId = () => (
     <Routes>
         <Route path="/:locale/not_found" element={<NotFoundPage />} />
-        <Route exact path="/:projectId/:locale" element={<HomeContainer />} />
+        <Route exact path="/:projectId/:locale" element={<ProjectHome />} />
         <Route path="/:projectId/:locale/*" element={<ProjectRoutes />} />
     </Routes>
 );
 
 export const MemoizedRoutesWithProjectId = memo(RoutesWithProjectId);
+
+RoutesWithoutProjectId.propTypes = {
+    project: PropTypes.object,
+};

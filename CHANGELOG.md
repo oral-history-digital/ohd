@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2026-04-27
+
+### Changed
+
+- chore: update exported translation strings ([4d4e2dd43](https://github.com/oral-history-digital/ohd/commit/4d4e2dd43d1b57720a9c12d7ff44ac63dc37ff8e))
+
+### Fixed
+
+- fix: update filterInstitutions function to accept an object for parameters and improve usage in InstitutionsList ([b49d3ef46](https://github.com/oral-history-digital/ohd/commit/b49d3ef463e2f31fd1809005723696884d5a4800))
+- fix(styles): correct paddings and margins ([577f482a8](https://github.com/oral-history-digital/ohd/commit/577f482a87380adbccc4f76773741a3aae7ecb56))
+
+## [2.3.0] - 2026-04-27
+
+### Added
+
+- 322: Add basic ClamAV virus check for PDF uploads ([#102](https://github.com/oral-history-digital/ohd/pull/102))
+- feat: add ClamAV installation to Dockerfile and CI workflow ([2d7b77495](https://github.com/oral-history-digital/ohd/commit/2d7b7749525a073ad054e18b943679252dc56559))
+- feat: add export_uploaded_files task to export paths for UploadedFile blobs ([00960bf0f](https://github.com/oral-history-digital/ohd/commit/00960bf0f8e338584744d910453657555a2b7a07))
+- feat: redesign homepage, catalog, and project homepages ([#103](https://github.com/oral-history-digital/ohd/pull/103))
+
+### Changed
+
+- reindexing segments as well in reindex job ([e6047614b](https://github.com/oral-history-digital/ohd/commit/e6047614bcb7c6a1a7300beea82922595357adbb))
+- Update create_minimal_db.py script ([d05f064ca](https://github.com/oral-history-digital/ohd/commit/d05f064ca66d387f104050d2a56dd7eadc8f1d58))
+
+### Fixed
+
+- fix: hide empty labels and menu items without accessible content ([#99](https://github.com/oral-history-digital/ohd/pull/99))
+- fix: slow select all and metadata export URL overflow ([#100](https://github.com/oral-history-digital/ohd/pull/100))
+- fix: prevent registration form submission without result ([#101](https://github.com/oral-history-digital/ohd/pull/101))
+- fix: improve ownership handling for volume mount points in entrypoint script ([68cdb992e](https://github.com/oral-history-digital/ohd/commit/68cdb992e111488e72ab821b5a248eecec98b7e9))
+
+### Removed
+
+- chore: remove legacy cedis_archive plugin (unused) ([#98](https://github.com/oral-history-digital/ohd/pull/98))
+
 ## [2.2.1] - 2026-04-09
 
 ### Fixed
@@ -463,6 +499,8 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.3.1]: https://github.com/oral-history-digital/ohd/compare/v2.3.0...v2.3.1
+[2.3.0]: https://github.com/oral-history-digital/ohd/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/oral-history-digital/ohd/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/oral-history-digital/ohd/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/oral-history-digital/ohd/compare/v2.0.0...v2.1.0

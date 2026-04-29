@@ -633,6 +633,65 @@ describe('useFormState', () => {
     });
 
     describe('getSubmitButtonState', () => {
+        it('keeps submit enabled for untouched missing required field', () => {
+            render({
+                initialValues: {
+                    title: '',
+                },
+                data: {},
+                elements: [
+                    {
+                        attribute: 'title',
+                        validate: (value) => Boolean(value),
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            expect(hook.hasMissingRequired).toBe(true);
+            expect(hook.submitButtonState).toEqual({
+                disabled: false,
+                helpText: null,
+            });
+        });
+
+        it('shows validation help text for touched missing required field', () => {
+            render({
+                initialValues: {
+                    title: '',
+                },
+                data: {},
+                elements: [
+                    {
+                        attribute: 'title',
+                        validate: (value) => Boolean(value),
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            act(() => {
+                hook.touchField('title');
+            });
+            wrapper.update();
+
+            expect(hook.hasMissingRequired).toBe(true);
+            expect(hook.submitButtonState).toEqual({
+                disabled: true,
+                helpText: 'edit.form.fix_validation_errors',
+            });
+        });
+
         it('does not stay disabled from stale touched password confirmation errors', () => {
             let password = 'secret1';
 

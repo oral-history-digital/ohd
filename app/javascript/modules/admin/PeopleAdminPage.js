@@ -46,7 +46,7 @@ export default function PeopleAdminPage() {
                 </Helmet>
 
                 <AuthShowContainer ifLoggedIn>
-                    <h1 className="registry-entries-title">
+                    <h1 className="Page-main-title">
                         {peopleCount} {t('activerecord.models.person.other')}
                     </h1>
 

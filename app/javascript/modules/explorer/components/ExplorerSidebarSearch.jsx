@@ -1,0 +1,205 @@
+import { useGetInstitutionsList, useGetProjects } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { useCurrentPage } from 'modules/routes';
+import { ResetFiltersButton } from 'modules/ui';
+import { useSearchParams } from 'react-router-dom';
+
+import {
+    useExplorerInterviewRange,
+    useExplorerProjectInstitutions,
+    useProjectsAndCollectionsRange,
+} from '../hooks';
+import {
+    FILTER_PARAMS,
+    applyCollectionRangeParams,
+    applyInstitutionLevelParam,
+    applyInstitutionParam,
+    applyInterviewRangeParams,
+    applyQueryParam,
+    resetExplorerFilters,
+} from '../utils';
+import { ExplorerInstitutionFilter } from './ExplorerInstitutionFilter';
+import { ExplorerInstitutionLevelFilter } from './ExplorerInstitutionLevelFilter';
+import { ExplorerRangeFilter } from './ExplorerRangeFilter';
+import { ExplorerSearchInput } from './ExplorerSearchInput';
+
+export function ExplorerSidebarSearch() {
+    const { t } = useI18n();
+    const currentPage = useCurrentPage();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const { projects } = useGetProjects({
+        all: true,
+        workflowState: 'public',
+    });
+    const { institutions: institutionsList } = useGetInstitutionsList({
+        all: true,
+    });
+
+    const isCatalogPage = currentPage.pageType === 'catalog_page';
+    const isCatalogRoot =
+        isCatalogPage && currentPage.params.catalogType === 'root';
+    const isInstitutionsIndex =
+        isCatalogPage &&
+        currentPage.params.catalogType === 'institutions' &&
+        !currentPage.params.id;
+    const showSidebarFilters = isCatalogRoot || isInstitutionsIndex;
+
+    const isInstitutionsList =
+        isCatalogPage && currentPage.params.catalogType === 'institutions';
+    const isProjectsList = !isInstitutionsList;
+
+    const projectInstitutions = useExplorerProjectInstitutions({
+        projects: projects,
+    });
+    const { globalMin, globalMax } = useExplorerInterviewRange({
+        items: isProjectsList ? projects : (institutionsList ?? []),
+    });
+    const { globalCollectionMin, globalCollectionMax } =
+        useProjectsAndCollectionsRange({ items: projects });
+
+    const query = searchParams.get('explorer_q') || '';
+    const interviewMin = searchParams.has('explorer_interviews_min')
+        ? Number(searchParams.get('explorer_interviews_min'))
+        : globalMin;
+    const interviewMax = searchParams.has('explorer_interviews_max')
+        ? Number(searchParams.get('explorer_interviews_max'))
+        : globalMax;
+    const collectionMin = searchParams.has('explorer_collections_min')
+        ? Number(searchParams.get('explorer_collections_min'))
+        : globalCollectionMin;
+    const collectionMax = searchParams.has('explorer_collections_max')
+        ? Number(searchParams.get('explorer_collections_max'))
+        : globalCollectionMax;
+    const institutionIds = searchParams.has('explorer_institution')
+        ? searchParams
+              .get('explorer_institution')
+              .split(',')
+              .map(Number)
+              .filter(Boolean)
+        : [];
+    const institutionLevelParam = searchParams.get(
+        'explorer_institution_level'
+    );
+    const institutionLevel = ['top_level'].includes(institutionLevelParam)
+        ? institutionLevelParam
+        : 'all';
+
+    const titleLabel = isProjectsList
+        ? 'modules.sidebar.catalog'
+        : 'activerecord.models.institution.other';
+
+    if (!showSidebarFilters) return null;
+
+    const handleQueryChange = (e) =>
+        setSearchParams((prev) => applyQueryParam(prev, e.target.value), {
+            replace: true,
+        });
+
+    const handleClear = () =>
+        setSearchParams((prev) => applyQueryParam(prev, ''), { replace: true });
+
+    const handleInterviewRangeChange = ([min, max]) =>
+        setSearchParams(
+            (prev) =>
+                applyInterviewRangeParams(prev, min, max, globalMin, globalMax),
+            { replace: true }
+        );
+
+    const handleCollectionRangeChange = ([min, max]) =>
+        setSearchParams(
+            (prev) =>
+                applyCollectionRangeParams(
+                    prev,
+                    min,
+                    max,
+                    globalCollectionMin,
+                    globalCollectionMax
+                ),
+            { replace: true }
+        );
+
+    const handleInstitutionChange = (id) => {
+        const next = institutionIds.includes(id)
+            ? institutionIds.filter((x) => x !== id)
+            : [...institutionIds, id];
+        setSearchParams((prev) => applyInstitutionParam(prev, next), {
+            replace: true,
+        });
+    };
+
+    const handleInstitutionClearAll = () =>
+        setSearchParams((prev) => applyInstitutionParam(prev, []), {
+            replace: true,
+        });
+
+    const handleInstitutionLevelChange = (e) =>
+        setSearchParams(
+            (prev) => applyInstitutionLevelParam(prev, e.target.value),
+            {
+                replace: true,
+            }
+        );
+
+    const hasActiveFilters = FILTER_PARAMS.some((key) => searchParams.has(key));
+    const searchPlaceholderKey = isProjectsList
+        ? 'explorer.search_placeholder.projects'
+        : 'explorer.search_placeholder.institutions';
+
+    const handleResetAll = () =>
+        setSearchParams((prev) => resetExplorerFilters(prev), {
+            replace: true,
+        });
+
+    return (
+        <>
+            <h3 className="SidebarTabs-title">{t(titleLabel)}</h3>
+            <div className="ExplorerSidebarSearch">
+                {hasActiveFilters && (
+                    <ResetFiltersButton onClick={handleResetAll} />
+                )}
+                <ExplorerSearchInput
+                    value={query}
+                    onChange={handleQueryChange}
+                    onClear={handleClear}
+                    placeholderKey={searchPlaceholderKey}
+                />
+
+                <ExplorerRangeFilter
+                    label={t('explorer.filter.interviews')}
+                    globalMin={globalMin}
+                    globalMax={globalMax}
+                    value={[interviewMin, interviewMax]}
+                    onChange={handleInterviewRangeChange}
+                />
+
+                {isProjectsList && (
+                    <ExplorerRangeFilter
+                        label={t('explorer.filter.collections')}
+                        globalMin={globalCollectionMin}
+                        globalMax={globalCollectionMax}
+                        value={[collectionMin, collectionMax]}
+                        onChange={handleCollectionRangeChange}
+                    />
+                )}
+
+                {isProjectsList && (
+                    <ExplorerInstitutionFilter
+                        institutions={projectInstitutions}
+                        values={institutionIds}
+                        onChange={handleInstitutionChange}
+                        onClearAll={handleInstitutionClearAll}
+                    />
+                )}
+
+                {!isProjectsList && (
+                    <ExplorerInstitutionLevelFilter
+                        value={institutionLevel}
+                        onChange={handleInstitutionLevelChange}
+                    />
+                )}
+            </div>
+        </>
+    );
+}
+
+export default ExplorerSidebarSearch;

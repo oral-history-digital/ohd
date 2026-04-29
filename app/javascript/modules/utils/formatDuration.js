@@ -63,3 +63,5 @@ export function formatDuration(value, none = '---') {
 
     return none;
 }
+
+export default formatDuration;

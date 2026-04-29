@@ -76,8 +76,8 @@ class BasicsTest < ApplicationSystemTestCase
     sleep 1
     click_on 'Request activation for this archive'
 
-    # Verifiy that submit is disabled
-    assert_test_id_button_state('submit-button', disabled: true)
+    # Verifiy that submit is enabled on first load
+    assert_test_id_button_state('submit-button', disabled: false)
 
     # Fill in form
     fill_in_test_id('user_project-organization-text-input', with: 'Nowhere University')

@@ -2,12 +2,10 @@ import { useTrackPageView } from 'modules/analytics';
 import { Fetch, getInstitutions } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { Breadcrumbs } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import InstitutionCatalog from './InstitutionCatalog';
 
@@ -48,14 +46,6 @@ export default function InstitutionCatalogPage() {
                     testIdOrDesc={id}
                 >
                     <div className="wrapper-content interviews">
-                        <Breadcrumbs className="u-mb">
-                            <Link to={`/${locale}/catalog`}>
-                                {t('modules.catalog.title')}
-                            </Link>
-                            {t('activerecord.models.institution.other')}
-                            {title}
-                        </Breadcrumbs>
-
                         <h1 className="search-results-title u-mb">{title}</h1>
 
                         <dl className="DescriptionList">

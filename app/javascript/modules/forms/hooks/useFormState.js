@@ -303,13 +303,6 @@ export function useFormState(
             };
         }
 
-        if (hasMissingRequired) {
-            return {
-                disabled: true,
-                helpText: null,
-            };
-        }
-
         if (submitted && !valid()) {
             return {
                 disabled: true,

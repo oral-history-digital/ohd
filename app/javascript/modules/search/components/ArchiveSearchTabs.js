@@ -10,6 +10,7 @@ import {
 import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { useSidebar } from 'modules/sidebar';
 import PropTypes from 'prop-types';
 
 import ResultGrid from './ResultGrid';
@@ -24,19 +25,23 @@ export default function ArchiveSearchTabs({
     className,
     viewModes,
     currentViewMode,
-    hideSidebar,
     setViewMode,
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { project } = useProject();
+    const { hide, show } = useSidebar();
 
     function handleTabClick(tabIndex) {
-        setViewMode(viewModes[tabIndex]);
+        const nextViewMode = viewModes[tabIndex];
+        setViewMode(nextViewMode);
 
-        if (viewModes[tabIndex] === VIEWMODE_WORKFLOW) {
-            hideSidebar();
+        if (nextViewMode === VIEWMODE_WORKFLOW) {
+            hide();
+            return;
         }
+
+        show();
     }
 
     return (
@@ -154,6 +159,5 @@ ArchiveSearchTabs.propTypes = {
     className: PropTypes.string,
     viewModes: PropTypes.array.isRequired,
     currentViewMode: PropTypes.string.isRequired,
-    hideSidebar: PropTypes.func.isRequired,
     setViewMode: PropTypes.func.isRequired,
 };

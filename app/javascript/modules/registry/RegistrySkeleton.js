@@ -3,8 +3,8 @@ import Skeleton from 'react-loading-skeleton';
 export default function RegistrySkeleton() {
     return (
         <div className="wrapper-content register">
-            <div className="registry-entries-title" style={{ width: '25%' }}>
-                <h1 className="registry-entries-title">
+            <div style={{ width: '25%' }}>
+                <h1 className="Page-main-title">
                     <Skeleton />
                 </h1>
             </div>

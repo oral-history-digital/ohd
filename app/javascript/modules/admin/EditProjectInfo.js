@@ -66,8 +66,8 @@ export default function EditProjectInfo() {
                     <title>{t('edit.project.info')}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className="registry-entries-title">
-                        {t('edit.project.info')}
+                    <h1 className="Page-main-title">
+                        {t(`edit.project.info`)}
                     </h1>
                     <EditData
                         data={project}

@@ -303,9 +303,33 @@ export const getIsCatalog = createSelector(
     }
 );
 
+export const getCurrentProjectMapSectionsHydrating = createSelector(
+    [getCurrentProject, (state) => getStatuses(state)?.projects],
+    (currentProject, projectsStatus) => {
+        if (!currentProject?.id) {
+            return false;
+        }
+
+        return (
+            projectsStatus?.[currentProject.id] === 'fetching' &&
+            !currentProject.map_sections
+        );
+    }
+);
+
 export const getMapSections = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
+    [getCurrentProject, getCurrentProjectMapSectionsHydrating],
+    (currentProject, isHydrating) => {
+        if (!currentProject) {
+            return [];
+        }
+
+        // While project details are still loading, return no section to avoid
+        // a temporary jump to fallback bounds.
+        if (isHydrating) {
+            return [];
+        }
+
         if (!currentProject.map_sections) {
             return [DEFAULT_MAP_SECTION];
         }

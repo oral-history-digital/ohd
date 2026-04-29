@@ -28,6 +28,8 @@ export default function LocaleButtons({ className }) {
     const [searchParams] = useSearchParams();
     const [loadingLocale, setLoadingLocale] = useState(null);
 
+    if (!project) return null;
+
     function handleButtonClick(locale) {
         // Prevent multiple clicks while loading
         if (loadingLocale || !locale) return;
