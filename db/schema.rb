@@ -51,6 +51,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "affiliates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "type"
+    t.string "name_type"
+    t.string "name"
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.index ["project_id"], name: "index_affiliates_on_project_id"
+  end
+
   create_table "annotation_translations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "annotation_id"
     t.string "locale", limit: 255
@@ -294,8 +306,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
     t.string "button_primary_label"
     t.string "button_secondary_label"
     t.string "image_alt"
-    t.text "button_primary_description"
-    t.text "button_secondary_description"
     t.index ["homepage_block_id"], name: "index_homepage_block_translations_on_homepage_block_id"
     t.index ["locale"], name: "index_homepage_block_translations_on_locale"
   end
@@ -391,6 +401,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
     t.text "observations", size: :long
     t.integer "interview_id"
     t.text "description"
+    t.index ["interview_id", "locale"], name: "index_interview_translations_on_ass_id_and_locale", unique: true
   end
 
   create_table "interviews", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -470,7 +481,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
     t.index ["project_id"], name: "index_map_sections_on_project_id"
   end
 
-  create_table "material_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "material_translations", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "material_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -482,7 +493,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
     t.index ["material_id"], name: "index_material_translations_on_material_id"
   end
 
-  create_table "materials", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "materials", charset: "utf8mb3", force: :cascade do |t|
     t.string "attachable_type"
     t.bigint "attachable_id"
     t.string "workflow_state", default: "unshared", null: false
@@ -552,7 +563,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "normdata_api_statistics", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "normdata_api_statistics", charset: "utf8mb3", force: :cascade do |t|
     t.string "search_term"
     t.string "saved_entry"
     t.integer "registry_entry_id"
@@ -697,10 +708,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
     t.string "domain"
     t.string "archive_domain"
     t.string "doi"
-    t.string "cooperation_partner"
-    t.string "leader"
-    t.string "manager"
-    t.string "funder_names"
     t.string "contact_email"
     t.boolean "has_newsletter"
     t.boolean "is_catalog"

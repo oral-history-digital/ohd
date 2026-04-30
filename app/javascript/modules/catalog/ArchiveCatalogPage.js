@@ -3,6 +3,7 @@ import { useLoadCompleteProject } from 'modules/data';
 import { useI18n, useProjectTranslation } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkOrA } from 'modules/routes';
+import { pluralize } from 'modules/strings';
 import { ScrollToTop } from 'modules/user-agent';
 import { sanitizeHtml } from 'modules/utils';
 import { Helmet } from 'react-helmet';
@@ -85,39 +86,27 @@ export default function ArchiveCatalogPage() {
                         </div>
                     )}
 
-                    {project.cooperation_partner && (
-                        <div className="DescriptionList-group">
-                            <dt className="DescriptionList-term">
-                                {t(
-                                    'activerecord.attributes.project.cooperation_partner'
-                                )}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                {project.cooperation_partner}
-                            </dd>
-                        </div>
-                    )}
-
-                    {project.leader && (
-                        <div className="DescriptionList-group">
-                            <dt className="DescriptionList-term">
-                                {t('activerecord.attributes.project.leader')}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                {project.leader}
-                            </dd>
-                        </div>
-                    )}
-
-                    {project.manager && (
-                        <div className="DescriptionList-group">
-                            <dt className="DescriptionList-term">
-                                {t('activerecord.attributes.project.manager')}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                {project.manager}
-                            </dd>
-                        </div>
+                    {['cooperation_partner', 'leader', 'manager', 'funder'].map(
+                        (affiliate) =>
+                            Object.values(project[pluralize(affiliate)])
+                                .length > 0 && (
+                                <div className="DescriptionList-group">
+                                    <dt className="DescriptionList-term">
+                                        {t(
+                                            `activerecord.attributes.project.${affiliate}`
+                                        )}
+                                    </dt>
+                                    <dd className="DescriptionList-description">
+                                        <ul className="UnorderedList">
+                                            {Object.values(
+                                                project[pluralize(affiliate)]
+                                            ).map((a) => (
+                                                <li key={name}>{a.name}</li>
+                                            ))}
+                                        </ul>
+                                    </dd>
+                                </div>
+                            )
                     )}
 
                     {project.domain && (
@@ -133,25 +122,6 @@ export default function ArchiveCatalogPage() {
                                 >
                                     {project.domain}
                                 </a>
-                            </dd>
-                        </div>
-                    )}
-
-                    {project.pseudo_funder_names?.length > 0 && (
-                        <div className="DescriptionList-group">
-                            <dt className="DescriptionList-term">
-                                {t(
-                                    'activerecord.attributes.project.pseudo_funder_names'
-                                )}
-                            </dt>
-                            <dd className="DescriptionList-description">
-                                <ul className="UnorderedList">
-                                    {project.pseudo_funder_names?.map(
-                                        (name) => (
-                                            <li key={name}>{name}</li>
-                                        )
-                                    )}
-                                </ul>
                             </dd>
                         </div>
                     )}

@@ -5,10 +5,14 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
+import CooperationPartnersContainer from './CooperationPartnersContainer';
 import EditData from './EditData';
 import EditViewOrRedirect from './EditViewOrRedirect';
 import ExternalLinksContainer from './ExternalLinksContainer';
+import FundersContainer from './FundersContainer';
 import InstitutionProjectsContainer from './InstitutionProjectsContainer';
+import LeadersContainer from './LeadersContainer';
+import ManagersContainer from './ManagersContainer';
 
 export default function EditProjectInfo() {
     const { t } = useI18n();
@@ -50,18 +54,6 @@ export default function EditProjectInfo() {
             help: 'activerecord.attributes.project.restricted_landing_page_edit_help',
         },
         {
-            attribute: 'cooperation_partner',
-        },
-        {
-            attribute: 'leader',
-        },
-        {
-            attribute: 'manager',
-        },
-        {
-            attribute: 'pseudo_funder_names',
-        },
-        {
             attribute: 'media_missing_text',
             multiLocale: true,
         },
@@ -71,7 +63,7 @@ export default function EditProjectInfo() {
         <EditViewOrRedirect>
             <div className="wrapper-content register">
                 <Helmet>
-                    <title>{t(`edit.project.info`)}</title>
+                    <title>{t('edit.project.info')}</title>
                 </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
                     <h1 className="Page-main-title">
@@ -85,8 +77,18 @@ export default function EditProjectInfo() {
                         submitData={submitHandler}
                         isLoading={isLoading}
                     />
+                    <h2>{t('edit.cooperation_partner.admin')}</h2>
+                    <CooperationPartnersContainer />
+                    <h2>{t('edit.leader.admin')}</h2>
+                    <LeadersContainer />
+                    <h2>{t('edit.manager.admin')}</h2>
+                    <ManagersContainer />
+                    <h2>{t('edit.funder.admin')}</h2>
+                    <FundersContainer />
+
                     <h2>{t(`edit.external_link.admin`)}</h2>
                     <ExternalLinksContainer />
+
                     <h2>{t(`edit.institution_project.admin`)}</h2>
                     <InstitutionProjectsContainer />
                 </AuthShowContainer>

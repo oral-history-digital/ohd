@@ -49,18 +49,18 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
         end
 
         %w(leader manager cooperation_partner).each do |role|
-          if interview.project.send(role).present?
+          interview.project.send(role.pluralize).each do |affiliate|
             xml.respStmt do
               %w(de en).each do |locale|
                 xml.resp TranslationValue.for("activerecord.attributes.project.#{role}", locale).strip, "xml:lang": ISO_639.find(locale).alpha3
               end
-              xml.tag! %w(leader manager).include?(role) ? 'persName' : 'orgName', interview.project.send(role).strip
+              xml.tag! %w(leader manager).include?(role) ? 'persName' : 'orgName', affiliate.name
             end
           end
         end
 
-        interview.project.funder_names.each do |funder|
-          xml.funder funder
+        interview.project.funders.each do |funder|
+          xml.funder funder.name
         end
       end
 

@@ -1,0 +1,2 @@
+class AffiliatePolicy < ApplicationPolicy
+end
