@@ -7,6 +7,8 @@ class Institution < ApplicationRecord
   has_many :interviews, ->{ where("projects.workflow_state = 'public'") }, through: :projects
   has_many :collections
 
+  scope :leaf, -> { where.not(id: Institution.select(:parent_id).where.not(parent_id: nil)) }
+
   translates :name, :description, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
@@ -21,7 +23,7 @@ class Institution < ApplicationRecord
       ancestors << current
       current = current.parent
     end
-    ancestors.reverse
+    ancestors
   end
 
   def num_projects
