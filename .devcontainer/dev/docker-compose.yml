@@ -1,15 +1,6 @@
 services:
   app:
     image: ohd-devcontainer-app:local
-    build:
-      # With multiple compose files, relative paths resolve from the first file
-      # (repo root), so use root-relative paths here.
-      context: .
-      dockerfile: .devcontainer/Dockerfile
-    # Entrypoint runs as root to fix mount ownership; interactive shell runs as vscode.
-    entrypoint: ['bash', '/workspace/.devcontainer/scripts/entrypoint.sh']
-    command: sleep infinity
-    working_dir: /workspace
     ports:
       - '127.0.0.1:3000:3000'
       - '127.0.0.1:3035:3035'
@@ -20,7 +11,7 @@ services:
       context: ../..
       dockerfile: .devcontainer/Dockerfile
     volumes:
-      - .:/workspace:cached
+      - ../..:/workspace:cached
       # Exclude node_modules from the mount to prevent host/container conflicts
       - /workspace/node_modules
       - /workspace/tmp/cache
@@ -34,11 +25,12 @@ services:
       - 'portal.oral-history.localhost:127.0.0.1'
       - 'test.portal.oral-history.localhost:127.0.0.1'
     depends_on:
+      db:
+        condition: service_healthy
       solr:
         condition: service_healthy
-      redis:
-        condition: service_healthy
     environment:
+      # Critical environment settings
       RAILS_ENV: development
       RACK_ENV: development
       NODE_ENV: development
@@ -59,6 +51,10 @@ services:
       NODE_OPTIONS: '--max-old-space-size=2048'
 
   db:
+    image: mariadb:10.5
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: ohd_development
@@ -82,6 +78,7 @@ services:
       retries: 5
 
   solr:
+    image: solr:5.5
     platform: linux/amd64 # No multi-arch image available, force AMD64
     ports:
       - '127.0.0.1:8983:8983'
@@ -108,22 +105,6 @@ services:
 
 volumes:
   db-data:
-    name: ohd_dev_db_data
   solr-data:
-    name: ohd_dev_solr_data
-  redis-data:
-    name: ohd_dev_redis_data
-  app-cache:
-    name: ohd_dev_app_cache
-  app-files:
-    name: ohd_dev_app_files
-  app-logs:
-    name: ohd_dev_app_logs
-  bundle-data:
-    name: ohd_dev_bundle_data
   setup-logs:
-    name: ohd_dev_setup_logs
-
-networks:
-  ohd-network:
-    name: ohd_dev_network
+  bundle-data:

@@ -1,8 +1,8 @@
 {
   "name": "Oral History Digital Dev Container",
 
-  // Reuse the root runtime stack and apply dev-only overrides.
-  "dockerComposeFile": ["../../docker-compose.yml", "./docker-compose.yml"],
+  // Point at your Compose file(s)
+  "dockerComposeFile": ["./docker-compose.yml"],
   "service": "app",
   "workspaceFolder": "/workspace",
 
@@ -19,7 +19,7 @@
   "postStartCommand": "bash .devcontainer/scripts/start-app.sh",
 
   // Additional services that should be running
-  "runServices": ["app", "db", "solr", "redis"],
+  "runServices": ["app", "db", "solr"],
 
   // Ports to forward
   "forwardPorts": [3000, 8983, 3035, 6080], // 6080 for noVNC
