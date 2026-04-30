@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2] - 2026-04-30
+
+### Changed
+
+- feat: improve responsiveness ([#104](https://github.com/oral-history-digital/ohd/pull/104))
+- updated Delayed::Worker.max_run_time to 30.minutes ([41fabb778](https://github.com/oral-history-digital/ohd/commit/41fabb7784d16d581530eedf60875f339b03f257))
+
+### Fixed
+
+- 488: Fix interview year facet not restricting other facet values ([#107](https://github.com/oral-history-digital/ohd/pull/107))
+- fix: handle media unavailability by resetting player reference ([#105](https://github.com/oral-history-digital/ohd/pull/105))
+- fix(search_map): correctly pass workflow types for all parameter ([#106](https://github.com/oral-history-digital/ohd/pull/106))
+
 ## [2.3.1] - 2026-04-27
 
 ### Changed
@@ -499,6 +512,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.3.2]: https://github.com/oral-history-digital/ohd/compare/v2.3.1...v2.3.2
 [2.3.1]: https://github.com/oral-history-digital/ohd/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/oral-history-digital/ohd/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/oral-history-digital/ohd/compare/v2.2.0...v2.2.1
