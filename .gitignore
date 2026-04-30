@@ -24,6 +24,7 @@ coverage
 /storage/*
 !/storage/.keep
 .env*
+!/.env.defaults
 !.env.example
 
 # Ruby/Bundler
