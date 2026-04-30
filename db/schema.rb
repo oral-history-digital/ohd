@@ -306,6 +306,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
     t.string "button_primary_label"
     t.string "button_secondary_label"
     t.string "image_alt"
+    t.text "button_primary_description"
+    t.text "button_secondary_description"
     t.index ["homepage_block_id"], name: "index_homepage_block_translations_on_homepage_block_id"
     t.index ["locale"], name: "index_homepage_block_translations_on_locale"
   end
@@ -1245,15 +1247,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_28_145714) do
   add_foreign_key "access_configs", "projects"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "archiving_batches", "projects"
-  add_foreign_key "chats", "models"
   add_foreign_key "event_types", "projects"
   add_foreign_key "homepage_blocks", "instance_settings"
   add_foreign_key "instance_settings", "projects", column: "umbrella_project_id"
   add_foreign_key "map_sections", "projects"
-  add_foreign_key "messages", "chats"
-  add_foreign_key "messages", "models"
-  add_foreign_key "messages", "tool_calls"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
-  add_foreign_key "tool_calls", "messages"
 end
