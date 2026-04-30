@@ -22,7 +22,7 @@ module Project::OaiDc
       institutions.leaf.each do |i|
         xml.tag!('dc:creator', i.name(:en), "xml:lang": :en)
       end
-      xml.tag!('dc:publisher', oai_publisher(:en), "xml:lang": :en)
+      xml.tag!('dc:publisher', oai_publisher(:en), "xml:lang": :en) unless oai_publisher(:en).blank?
 
       oai_leaders.each do |leader_name|
         xml.tag!('dc:contributor', leader_name.strip)

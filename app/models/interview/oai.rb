@@ -53,7 +53,6 @@ module Interview::Oai
   end
 
   def oai_publisher(locale)
-    #project.root_institutions_names(locale)
     project.institutions_with_ancestors_names(locale)
   end
 

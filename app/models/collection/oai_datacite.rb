@@ -60,7 +60,9 @@ module Collection::OaiDatacite
         end
       end
 
-      xml.publisher oai_publisher(:en), "xml:lang": "en"
+      unless oai_publisher(:en).blank?
+        xml.publisher oai_publisher(:en), "xml:lang": "en"
+      end
 
       if oai_publication_date
         xml.publicationYear oai_publication_date

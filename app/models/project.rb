@@ -312,10 +312,6 @@ class Project < ApplicationRecord
     institutions.map{|i| i.root }.uniq
   end
 
-  def root_institutions_names(locale = I18n.locale)
-    root_institutions.map{|i| i.name(locale) }.join(", ")
-  end
-
   def institutions_with_ancestors
     institutions.map do |institution|
       institution.with_ancestors
