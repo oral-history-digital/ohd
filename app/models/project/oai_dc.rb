@@ -19,7 +19,9 @@ module Project::OaiDc
       (oai_locales | ['en']).each do |locale|
         xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
       end
-      xml.tag!('dc:creator', oai_creator(:en), "xml:lang": :en)
+      institutions.leaf.each do |i|
+        xml.tag!('dc:creator', i.name(:en), "xml:lang": :en)
+      end
       xml.tag!('dc:publisher', oai_publisher(:en), "xml:lang": :en)
 
       oai_leaders.each do |leader_name|

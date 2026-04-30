@@ -22,9 +22,8 @@ module Collection::OaiDc
         xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
       end
 
-      creator = oai_creator('en')
-      unless creator.blank?
-        xml.tag!('dc:creator', creator, "xml:lang": 'en')
+      project.institutions.leaf.each do |i|
+        xml.tag!('dc:creator', i.name(:en), "xml:lang": :en)
       end
       xml.tag!('dc:publisher', oai_publisher('en'), "xml:lang": 'en')
 

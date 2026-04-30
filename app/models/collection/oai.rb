@@ -40,10 +40,6 @@ module Collection::Oai
     #project.institutions_with_ancestors_names(locale)
   end
 
-  def oai_creator(locale)
-    project.institutions.first&.name(locale)
-  end
-
   def oai_publisher(locale)
     project.root_institutions_names(locale)
   end

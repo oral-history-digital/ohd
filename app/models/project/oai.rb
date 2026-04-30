@@ -34,11 +34,6 @@ module Project::Oai
     "Oral-History.Digital / University Library of Freie Universität Berlin"
   end
 
-  def oai_creator(locale)
-    #institutions.first&.name(locale)
-    institutions_with_ancestors_names(locale)
-  end
-
   def oai_publisher(locale)
     root_institutions_names(locale)
   end

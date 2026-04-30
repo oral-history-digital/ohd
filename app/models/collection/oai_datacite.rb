@@ -48,9 +48,15 @@ module Collection::OaiDatacite
         end
       end
 
-      xml.creators do
-        xml.creator do
-          xml.creatorName oai_creator(:en), "xml:lang": "en"
+      project.institutions.leaf.each do |leaf|
+        xml.creators do
+          leaf.with_ancestors.each do |institution|
+            xml.creator do
+              xml.creatorName institution.name(:en), "xml:lang": "en", nameType: "Organizational"
+              xml.nameIdentifier institution.isil, schemeURI: "https://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
+              xml.nameIdentifier institution.gnd, schemeURI: "http://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
+            end
+          end
         end
       end
 
