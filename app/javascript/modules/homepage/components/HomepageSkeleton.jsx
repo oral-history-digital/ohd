@@ -72,9 +72,9 @@ export default function HomepageSkeleton() {
 
             <article className="u-mt-xlarge">
                 <div className="HomepageProjects-header">
-                    <h3 className="Homepage-heading u-mt-none u-mb-none">
+                    <h2 className="Homepage-heading u-mt-none u-mb-none">
                         <Skeleton width={320} height={28} />
-                    </h3>
+                    </h2>
                 </div>
 
                 <div

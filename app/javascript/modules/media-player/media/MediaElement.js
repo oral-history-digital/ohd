@@ -216,6 +216,13 @@ export default function MediaElement({
         return resetMedia;
     }, []);
 
+    // When media becomes unavailable, drop any stale player instance reference.
+    useEffect(() => {
+        if (interview.media_missing) {
+            playerRef.current = null;
+        }
+    }, [interview.media_missing]);
+
     // Update sources and tracks if tape has been changed.
     useEffect(() => {
         const player = playerRef.current;
@@ -243,6 +250,7 @@ export default function MediaElement({
     // Also syncs Redux isPlaying=false → pauses the actual player.
     // Runs on every render so that tape and time params are always recognised.
     useEffect(() => {
+        if (interview.media_missing) return;
         checkForTimeChangeRequest();
     });
 
@@ -286,6 +294,8 @@ export default function MediaElement({
     }
 
     function checkForTimeChangeRequest() {
+        if (interview.media_missing) return;
+
         // We use Redux as an event system here.
         // If a request is available, it is immediately cleared and processed.
         const player = playerRef.current;

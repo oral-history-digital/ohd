@@ -39,7 +39,11 @@ export default function useMapReferences(registryEntryId) {
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
 
     const path = `${pathBase}/searches/map_references/${registryEntryId}?${paramStr}`;
-    const { isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const {
+        isValidating,
+        data,
+        error: mapReferencesError,
+    } = useSWRImmutable(path, fetcher);
 
     const interviewReferences = data?.interview_references;
     const segmentReferences = filter.includes('segment')
@@ -73,6 +77,6 @@ export default function useMapReferences(registryEntryId) {
         referenceGroups,
         segmentRefGroups,
         numSegmentRefs,
-        error,
+        error: mapReferencesError || referenceTypesError,
     };
 }

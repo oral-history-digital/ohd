@@ -18,7 +18,10 @@ export default function Homepage() {
     return (
         <div className="Homepage project-index" data-testid="homepage-root">
             <Hero data={data?.blocks?.hero} />
-            <div className="Grid Grid--2" data-testid="homepage-panels-grid">
+            <div
+                className="HomepagePanelsGrid Grid Grid--2"
+                data-testid="homepage-panels-grid"
+            >
                 <PanelInterviews data={data?.blocks?.panel_interview} />
                 <PanelRegister data={data?.blocks?.panel_register} />
             </div>

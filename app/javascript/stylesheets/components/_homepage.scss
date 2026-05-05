@@ -2,11 +2,6 @@
   margin: 0 0 $base-unit * 2;
   padding: 0;
 
-  .Homepage-heading {
-    font-size: 1.75rem;
-    line-height: $base-unit * 2;
-  }
-
   .Homepage-icon {
     font-size: $base-unit * 2;
   }
@@ -15,6 +10,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 $base-unit * 0.5;
+
+    @include screen-m {
+      padding: 0;
+    }
+
+    h2 {
+      font-weight: 700;
+    }
   }
 
   .HomepageProjects-nav {
@@ -60,6 +64,7 @@
     gap: $base-unit * 0.75;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
     align-items: flex-start;
 
     // Hide scrollbar visually but allow touch/swipe scroll
@@ -73,14 +78,11 @@
       // 1 card on small mobile, 2 on larger mobile, 3 on tablet+
       flex: 0 0 calc(100%);
       min-width: 0;
+      scroll-snap-align: start;
 
       // ProjectTile has a global max-width; unset it in the scroller so
       // the calculated flex-basis can fully control visible card count.
       max-width: none;
-
-      @include screen-xs-s {
-        flex: 0 0 calc((100% - #{$base-unit * 0.75}) / 2);
-      }
 
       @include screen-s {
         flex: 0 0 calc((100% - #{$base-unit * 0.75}) / 2);
@@ -93,49 +95,58 @@
   }
 
   .Hero {
-    position: relative;
-    // `cover` avoids top/bottom or side gaps when aspect ratios differ.
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
     margin-bottom: $base-unit;
 
-    @include screen-xs-s {
-      background-position: right top;
-    }
+    // On larger screens, hero image is displayed as a background
+    @include screen-m {
+      position: relative;
+      // `cover` avoids top/bottom or side gaps when aspect ratios differ.
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.1);
-      z-index: 1;
+      @include screen-xs-s {
+        background-position: right top;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.1);
+        z-index: 1;
+      }
     }
   }
 
   .Hero-content {
     position: relative;
     z-index: 2;
-    color: white;
     padding: clamp($base-unit * 0.75, 2vw, $base-unit * 1.75)
       clamp($base-unit, 4vw, $base-unit * 2.5);
     width: 100%;
   }
 
+  .Hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   .Hero-heading {
     margin: 0 0 $base-unit 0;
-    color: white;
     font-size: 2rem;
     font-weight: 700;
     line-height: 1.2;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
     @include screen-m {
       font-size: 2.5rem;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     @include screen-l {
@@ -145,27 +156,23 @@
 
   .Hero-text {
     margin: 0 0 $base-unit * 1.5 0;
-    font-size: 1.5rem;
-    line-height: 1.6;
-    color: white;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    font-size: $font-size-heading-h2-large;
+    line-height: $line-height-heading-h2;
 
     @include screen-m {
-      font-size: 1.5rem;
+      line-height: $line-height-heading-h2-large;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
   }
 
   .CtaWrapper {
     display: flex;
-    flex-direction: column;
-    gap: $base-unit;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: $base-unit * 0.5;
     justify-content: flex-end;
-    align-items: center;
-
-    @include screen-m {
-      flex-direction: row;
-      gap: $base-unit;
-    }
+    align-items: flex-end;
   }
 
   .Hero-cta--secondary,
@@ -178,10 +185,31 @@
     background: $gray-paler !important;
   }
 
+  .HomepagePanelsGrid {
+    gap: $base-unit * 2;
+  }
+
+  @include screen-m {
+    .HomepagePanelsGrid {
+      gap: $base-unit;
+    }
+  }
+
   .Panel-content {
     display: flex;
     flex-direction: column;
     gap: $base-unit * 0.5;
+
+    .Panel-textContent {
+      display: flex;
+      flex-direction: column;
+      gap: $base-unit * 0.5;
+      padding: 0 $base-unit * 0.5;
+
+      @include screen-m {
+        padding: 0;
+      }
+    }
 
     .CtaWrapper {
       gap: $base-unit * 0.5;
@@ -220,7 +248,6 @@
     margin: 0;
     font-size: 1rem;
     line-height: $line-height-large;
-    color: $gray-dark;
   }
 
   .ProjectTile {
@@ -228,7 +255,7 @@
     flex-direction: column;
     transition: opacity $transition-duration;
     box-sizing: border-box;
-    max-width: 410px;
+    max-width: 100%;
     width: 100%;
     padding: 0;
     border: 1px solid $gray-pale;
@@ -274,11 +301,10 @@
 
     .ProjectTile-image {
       background-color: white;
-      border-bottom: none;
-      border: 1px solid lightgrey;
       background-repeat: no-repeat;
       background-position: 50% 50%;
       background-size: contain;
+      border-bottom: 1px solid $gray-pale;
       height: auto;
       display: block;
       padding: calc($base-unit / 2);
