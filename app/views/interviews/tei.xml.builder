@@ -217,7 +217,7 @@ xml.TEI xmlns: "http://www.tei-c.org/ns/1.0",
                 if person&.has_biography?(locale) && person&.biography_public?
                   xml.note type: TranslationValue.for("biography", locale), "xml:lang": ISO_639.find(locale).alpha3 do
                     person&.biographical_entries.each do |biographical_entry|
-                      biographical_entry.text(locale)&.split(/[\n\r]+/).each do |line|
+                      biographical_entry.text(locale)&.split(/[\n\r]+/)&.each do |line|
                         xml.p line.strip unless line.strip.blank?
                       end
                     end
