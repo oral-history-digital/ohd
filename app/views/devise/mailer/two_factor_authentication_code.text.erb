@@ -2,7 +2,7 @@
    when :en -%>
 Hello <%= @resource.display_name %>,
 
-You have requested a two factor authentication code for the Oral-History.Digital platform.
+You have requested a one-time code for the Oral-History.Digital platform.
 
 <%= @code %>
 
@@ -12,31 +12,37 @@ With best regards
 
 Oral-History. Digital
 <% when :ru -%>
-Добрый день, <%= @resource.display_name %>,
+Добрый день <%= @resource.display_name %>,
+
+Вы запросили одноразовый код для платформы Oral-History.Digital.
 
 <%= @code %>
 
-The code is valid for <%= @valid_for %> minutes.
+Код действителен в течение <%= @valid_for %> минут.
 
 С уважением,
 
 Oral-History.Digital
 <% when :uk -%>
-Доброго дня, <%= @resource.display_name %>,
+Доброго дня<%= @resource.display_name %>,
+
+Ви подали запит на отримання одноразового коду для платформи Oral-History.Digital.
 
 <%= @code %>
 
-The code is valid for <%= @valid_for %> minutes.
+Код дійсний протягом <%= @valid_for %> хвилин.
 
 З найкращими побажаннями
 
-Усна історія. цифровий
+Oral-History.Digital
 <% when :el -%>
-Καλημέρα <%= @resource.display_name %>,
+Γεια σας <%= @resource.display_name %>,
+
+Ζητήσατε έναν κωδικό μίας χρήσης για την πλατφόρμα Oral-History.Digital.
 
 <%= @code %>
 
-The code is valid for <%= @valid_for %> minutes.
+Ο κωδικός ισχύει για <%= @valid_for %> λεπτά.
 
 Με εκτίμηση,
 
@@ -45,20 +51,33 @@ Oral-History.Digital
 <% when :es -%>
 Hola <%= @resource.display_name %>,
 
-Ha solicitado un codigo 2FA para la plataforma Oral-History.Digital.
+Ha solicitado un código de un solo uso para la plataforma Oral-History.Digital.
 
 <%= @code %>
 
-El codigo es valido para <%= @valid_for %> minutos.
+El código es válido por <%= @valid_for %> minutos.
 
 Saludos cordiales,
 
 Oral-History.Digital
 
+<% when :ar -%>
+  مرحبًا <%= @resource.display_name %>,
+
+  لقد طلبت رمزًا لمرة واحدة لمنصة Oral-History.Digital.
+  
+  <%= @code %>
+  
+  الرمز صالح لمدة <%= @valid_for %> دقائق.
+
+  مع أطيب التحيات
+
+  Oral-History.Digital
+
 <% else -%>
 Guten Tag <%= @resource.display_name %>,
 
-Sie haben einen zwei Faktor Authentifizierungscode für die Plattform Oral-History.Digital angefordert.
+ie haben einen Einmal-Code für die Plattform Oral-History.Digital angefordert.
 
 <%= @code %>
 
