@@ -59,7 +59,10 @@ export default function ArchiveFacets() {
                             />
                         </FacetDropdown>
                     );
-                } else if (facetName === 'interview_year') {
+                } else if (
+                    facetName === 'interview_year' &&
+                    facetData.type !== 'RegistryReferenceType'
+                ) {
                     if (!isFacetDataValid(facetData, locale, true)) {
                         return null;
                     }
