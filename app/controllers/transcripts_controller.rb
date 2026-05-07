@@ -20,7 +20,7 @@ class TranscriptsController < ApplicationController
 
     update_contributions(interview, transcript_params[:contributions_attributes])
 
-    locale = Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]
+    locale = Language.find(transcript_params[:transcript_language_id]).code
 
     ReadTranscriptFileJob.perform_later({
       interview: interview,
