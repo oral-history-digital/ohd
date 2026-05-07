@@ -3,6 +3,7 @@ import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { CancelButton } from 'modules/ui';
+import PropTypes from 'prop-types';
 import { FaQrcode } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
@@ -15,7 +16,7 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
     return (
         <Modal
             key="after-enable-2fa-popup"
-            triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
+            triggerClassName="Button Button--transparent Button--primaryColor"
             title={t('after_enable_2fa.title')}
             showDialogInitially={showDialogInitially}
             hideButton={showDialogInitially}
@@ -33,6 +34,7 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
                         <img
                             src={`data:image/svg+xml;utf8,${encodeURIComponent(user.otp_qrcode)}`}
                             className="u-mr-auto u-ml-auto u-mb-2 u-block u-width-third"
+                            alt={t('after_enable_2fa.text')}
                         />
                     </p>
                     <CancelButton
@@ -44,3 +46,7 @@ export default function TwoFAPopup({ showDialogInitially = true }) {
         </Modal>
     );
 }
+
+TwoFAPopup.propTypes = {
+    showDialogInitially: PropTypes.bool,
+};

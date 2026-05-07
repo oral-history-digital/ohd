@@ -35,29 +35,31 @@ export default function AccountPage() {
                     <div className="account-page-header">
                         <h1 className="Page-main-title">{t('account_page')}</h1>
 
-                        <div className="edit-account-icon">
-                            <Modal
-                                title={t('edit.user.edit')}
-                                trigger={
-                                    <FaPencilAlt className="Icon Icon--primary" />
-                                }
-                            >
-                                {(close) => (
-                                    <UserDetailsFormContainer
-                                        onSubmit={close}
-                                        onCancel={close}
-                                    />
-                                )}
-                            </Modal>
-                        </div>
-                        <div className="edit-account-icon">
+                        <div className="account-actions">
+                            <div className="account-actions-icon edit-account-icon">
+                                <Modal
+                                    title={t('edit.user.edit')}
+                                    trigger={
+                                        <FaPencilAlt className="Icon Icon--primary" />
+                                    }
+                                >
+                                    {(close) => (
+                                        <UserDetailsFormContainer
+                                            onSubmit={close}
+                                            onCancel={close}
+                                        />
+                                    )}
+                                </Modal>
+                            </div>
                             {user?.otp_required_for_login && (
-                                <TwoFAPopup showDialogInitially={false} />
+                                <div className="account-actions-icon two-fa-icon">
+                                    <TwoFAPopup showDialogInitially={false} />
+                                </div>
                             )}
-                        </div>
-                        <div className="edit-account-icon">
                             {user?.passkey_required_for_login && (
-                                <PasskeyPopup showDialogInitially={false} />
+                                <div className="account-actions-icon passkey-icon">
+                                    <PasskeyPopup showDialogInitially={false} />
+                                </div>
                             )}
                         </div>
                     </div>
