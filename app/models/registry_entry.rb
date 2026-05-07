@@ -290,7 +290,14 @@ class RegistryEntry < ApplicationRecord
   def create_child(name, locale)
     child = RegistryEntry.create workflow_state: "public", list_priority: false, project_id: project.id
     RegistryHierarchy.create(ancestor_id: self.id, descendant_id: child.id)
-    child.registry_names << RegistryName.create(registry_entry_id: child.id, registry_name_type_id: 1, name_position: 0, descriptor: name, locale: locale)
+    default_name_type = RegistryNameType.find_by project_id: project.id, code: "spelling"
+    child.registry_names << RegistryName.create(
+      registry_entry_id: child.id,
+      registry_name_type_id: default_name_type&.id,
+      name_position: 0,
+      descriptor: name,
+      locale: locale
+    )
     child
   end
 
