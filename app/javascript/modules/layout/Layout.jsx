@@ -2,7 +2,12 @@
 import { useEffect } from 'react';
 
 import classNames from 'classnames';
-import { getProjectId, getViewMode, setProjectId } from 'modules/archive';
+import {
+    getProjectId,
+    getViewMode,
+    setProjectId,
+    useIsEditor,
+} from 'modules/archive';
 import {
     Banner,
     bannerHasNotBeenHiddenByUser,
@@ -56,6 +61,7 @@ export default function Layout({ children }) {
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
     const isLoggedIn = useSelector(getIsLoggedIn);
+    const isEditviewActive = useIsEditor();
 
     const { project } = useProject();
     const currentPage = useCurrentPage();
@@ -160,6 +166,7 @@ export default function Layout({ children }) {
                     'is-sticky':
                         isInterviewPage && scrollPositionBelowThreshold,
                     'is-mobile': isMobile(),
+                    'is-editview-active': isEditviewActive,
                 })}
             >
                 <AfterRegisterPopup />

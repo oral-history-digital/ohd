@@ -65,6 +65,10 @@
   }
 }
 
+.is-mobile.is-interview-page .wrapper-content {
+  padding: $base-unit;
+}
+
 .Layout-sidebar {
   bottom: 0;
   display: none;
