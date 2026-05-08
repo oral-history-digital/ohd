@@ -110,7 +110,7 @@ class SessionsController < Devise::SessionsController
   def resend_otp
     user = User.find_by(id: session[:otp_user_id])
     if user
-      user.send_new_otp_code
+      user.send_new_otp_code(@locale)
       flash.now[:notice] = tv("sent_otp_per_mail")
       render :otp
     else

@@ -63,9 +63,16 @@ class CustomDeviseMailer < Devise::Mailer
     devise_mail(record, :email_changed, opts)
   end
 
-  def two_factor_authentication_code(user, code)
+  def two_factor_authentication_code(user, code, locale = nil)
     @code = code
     @valid_for = User::EMAIL_OTP_VALID_FOR / 60
-    devise_mail(user, :two_factor_authentication_code, scope: :user)
+    locale = locale || user.default_locale || 'de'
+
+    devise_opts = {
+      scope: :user,
+      subject: TranslationValue.for('devise.mailer.two_factor_authentication_code.subject', locale)
+    }
+
+    devise_mail(user, :two_factor_authentication_code, devise_opts)
   end
 end
