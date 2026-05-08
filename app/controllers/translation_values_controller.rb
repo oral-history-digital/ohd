@@ -87,6 +87,14 @@ class TranslationValuesController < ApplicationController
     end
   end
 
+  def digest
+    respond_to do |format|
+      format.json do
+        render json: { digest: TranslationValue.cache_digest }
+      end
+    end
+  end
+
   private
 
   def translation_value_params

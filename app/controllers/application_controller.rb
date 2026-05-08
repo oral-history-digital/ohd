@@ -115,6 +115,7 @@ class ApplicationController < ActionController::Base
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
         translations: TranslationValue.all_for_locale_json(I18n.locale),
+        translationsDigest: TranslationValue.cache_digest,
         countryKeys: country_keys,
       },
       user: {

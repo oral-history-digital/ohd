@@ -14,6 +14,10 @@ class TranslationValue < ApplicationRecord
     where(translations: { locale: locale })
   }
 
+  def self.cache_digest
+    "#{count}-#{maximum(:updated_at).to_i}"
+  end
+
   def self.all_for_locale_json(locale=I18n.locale)
     Rails.cache.fetch("translations-#{maximum(:updated_at)}-#{locale}") do    
       all_for_locale(locale).inject({}) do |mem, tv|    

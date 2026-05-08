@@ -11,6 +11,7 @@ import {
     SET_LOCALE,
     SET_PROJECT_ID,
     SET_SELECTED_ARCHIVE_IDS,
+    SET_TRANSLATIONS_DIGEST,
     SET_VIEW_MODE,
     UPDATE_SELECTED_ARCHIVE_IDS,
     UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
@@ -127,30 +128,49 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 doiResult: action.result,
             });
-        case MERGE_TRANSLATIONS: {
-            // Merge new translations with existing ones
-            const existingTranslations = state.translations || {};
-            const newTranslations = action.translations || {};
+        //case MERGE_TRANSLATIONS: {
+        //// Merge new translations with existing ones
+        //const existingTranslations = state.translations || {};
+        //const newTranslations = action.translations || {};
 
-            // Deep merge the translation objects
-            const mergedTranslations = { ...existingTranslations };
-            Object.keys(newTranslations).forEach((key) => {
-                if (mergedTranslations[key]) {
-                    // Merge locale-specific translations for this key
-                    mergedTranslations[key] = {
-                        ...mergedTranslations[key],
-                        ...newTranslations[key],
-                    };
-                } else {
-                    // Add new translation key
-                    mergedTranslations[key] = newTranslations[key];
-                }
-            });
+        //// Deep merge the translation objects
+        //const mergedTranslations = { ...existingTranslations };
+        //Object.keys(newTranslations).forEach((key) => {
+        //if (mergedTranslations[key]) {
+        //// Merge locale-specific translations for this key
+        //mergedTranslations[key] = {
+        //...mergedTranslations[key],
+        //...newTranslations[key],
+        //};
+        //} else {
+        //// Add new translation key
+        //mergedTranslations[key] = newTranslations[key];
+        //}
+        //});
 
-            return Object.assign({}, state, {
-                translations: mergedTranslations,
-            });
-        }
+        //return Object.assign({}, state, {
+        //translations: mergedTranslations,
+        //});
+        //}
+        case MERGE_TRANSLATIONS:
+            return {
+                ...state,
+                translations: {
+                    ...state.translations,
+                    ...Object.keys(action.translations).reduce((acc, key) => {
+                        acc[key] = {
+                            ...(state.translations?.[key] || {}),
+                            ...action.translations[key],
+                        };
+                        return acc;
+                    }, {}),
+                },
+            };
+        case SET_TRANSLATIONS_DIGEST:
+            return {
+                ...state,
+                translationsDigest: action.digest,
+            };
         case REQUEST_TRANSLATIONS:
             // We could add a loading state here if needed
             return state;
