@@ -63,6 +63,33 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert data['data'].is_a?(Array)
   end
 
+  test 'should exclude umbrella project by default when include_umbrella is omitted' do
+    get list_projects_path(locale: 'en', format: :json), params: { all: true }
+    assert_response :success
+
+    data = JSON.parse(response.body)
+    shortnames = data.fetch('data', []).map { |project| project['shortname'] }
+    assert_not_includes shortnames, 'ohd'
+  end
+
+  test 'should exclude umbrella project when include_umbrella is false' do
+    get list_projects_path(locale: 'en', format: :json), params: { all: true, include_umbrella: 'false' }
+    assert_response :success
+
+    data = JSON.parse(response.body)
+    shortnames = data.fetch('data', []).map { |project| project['shortname'] }
+    assert_not_includes shortnames, 'ohd'
+  end
+
+  test 'should include umbrella project when include_umbrella is true' do
+    get list_projects_path(locale: 'en', format: :json), params: { all: true, include_umbrella: 'true' }
+    assert_response :success
+
+    data = JSON.parse(response.body)
+    shortnames = data.fetch('data', []).map { |project| project['shortname'] }
+    assert_includes shortnames, 'ohd'
+  end
+
   test 'should hide unshared projects in index all mode for anonymous users' do
     reset!
     host! 'test.portal.oral-history.localhost:47001'
