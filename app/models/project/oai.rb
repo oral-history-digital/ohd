@@ -25,6 +25,10 @@ module Project::Oai
     "#{domain_with_optional_identifier}/#{locale}"
   end
 
+  def oai_doi_identifier
+    "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{shortname}"
+  end
+
   def oai_title(locale)
     name(locale)
   end
@@ -42,11 +46,15 @@ module Project::Oai
   end
 
   def oai_leaders
-    leader&.split(/\s*,\s*/) || []
+    leaders.map{|l| "#{l.first_name} #{l.last_name}"}
   end
 
   def oai_managers
-    manager&.split(/\s*,\s*/) || []
+    managers.map{|m| "#{m.first_name} #{m.last_name}"}
+  end
+
+  def oai_funders
+    funders.map{|f| "#{f.first_name} #{f.last_name}"}
   end
 
   def oai_publication_date
@@ -69,7 +77,13 @@ module Project::Oai
       when 'audio'
         "audio/mp3"
       end
-    end.compact
+    end.compact + [
+      'video/mp4',
+      'transcript/pdf',
+      'transcript/csv',
+      'transcript/vtt',
+      'transcript/tei-xml'
+    ]
   end
 
   def oai_size
@@ -88,14 +102,6 @@ module Project::Oai
   def oai_birth_years
     birthyears = interviews.map{|i| Date.parse(i.interviewee.date_of_birth).year rescue nil}.compact.uniq
     "#{birthyears.min}-#{birthyears.max}" rescue nil
-  end
-
-  def oai_subject_registry_entry_ids
-    ohd_subject_registry_entry_ids
-  end
-
-  def oai_subject_registry_entries
-    RegistryEntry.where(id: ohd_subject_registry_entry_ids)
   end
 
   def oai_abstract_description(locale)

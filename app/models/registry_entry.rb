@@ -210,6 +210,14 @@ class RegistryEntry < ApplicationRecord
       find 21898470 rescue nil
     end
 
+    def ohd_countries
+      find 21898760 rescue nil
+    end
+
+    def ohd_findability
+      find 103654836 rescue nil
+    end
+
     def merge(opts={})
       merge_to_id = opts[:id]
       where(id: opts[:ids]).each do |registry_entry|

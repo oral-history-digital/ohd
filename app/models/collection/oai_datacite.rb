@@ -15,23 +15,24 @@ module Collection::OaiDatacite
 
       xml.alternateIdentifiers do
         xml.alternateIdentifier oai_catalog_identifier(:en), alternateIdentifierType: "URL"
+        xml.alternateIdentifier oai_doi_identifier, alternateIdentifierType: "DOI"
       end
 
       xml.relatedIdentifiers do
         xml.relatedIdentifier OHD_DOMAIN,
           relatedIdentifierType: "URL",
           relationType: "IsPartOf",
-          resourceTypeGeneral: "Collection"
+          resourceTypeGeneral: "Dataset"
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}",
           relatedIdentifierType: "URL",
           relationType: "IsPartOf",
-          resourceTypeGeneral: "Collection"
+          resourceTypeGeneral: "Dataset"
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/oai_repository?verb=GetRecord&metadataPrefix=oai_datacite&identifier=oai:oral-history.digital:#{project.shortname}",
           relatedIdentifierType: "URL",
           relationType: "IsPartOf",
-          resourceTypeGeneral: "Collection"
-        if project.domain
-          xml.relatedIdentifier project.domain,
+          resourceTypeGeneral: "Dataset"
+        if homepage.present?
+          xml.relatedIdentifier homepage,
             relatedIdentifierType: "URL",
             relationType: "IsSupplementTo",
             resourceTypeGeneral: "Collection"
@@ -39,7 +40,7 @@ module Collection::OaiDatacite
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=collection:#{id}",
           relatedIdentifierType: "URL",
           relationType: "HasPart",
-          resourceTypeGeneral: "Collection"
+          resourceTypeGeneral: "Audiovisual"
       end
 
       xml.titles do
@@ -69,11 +70,27 @@ module Collection::OaiDatacite
       end
 
       xml.contributors do
-        xml.contributor contributorType: "DataManager" do
-          xml.contributorName project.leader,
-            "xml:lang": "en",
-            nameType: "Personal"
+        project.cooperation_partners.each do |cooperation_partner|
+          xml.contributor contributorType: "DataCollector" do
+            xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Kooperationspartner)",
+              "xml:lang": "en",
+              nameType: "Organizational"
+          end
         end
+        project.oai_leaders.each do |leader|
+          xml.contributor contributorType: "ProjectLeader" do
+            xml.contributorName leader.name,
+              "xml:lang": "en",
+              nameType: "Personal"
+          end
+        end
+        #project.oai_managers.each do |manager|
+          #xml.contributor contributorType: "ProjectManager" do
+            #xml.contributorName manager.name,
+              #"xml:lang": "en",
+              #nameType: "Personal"
+          #end
+        #end
         xml.contributor contributorType: "HostingInstitution" do
           xml.contributorName oai_contributor(:en),
             "xml:lang": "en",
@@ -104,7 +121,9 @@ module Collection::OaiDatacite
 
       xml.subjects do
         oai_base_subject_tags(xml, :datacite)
-        oai_subject_tags(xml, :datacite)
+        oai_subjects_tags(xml, :datacite)
+        oai_countries_tags(xml, :datacite)
+        oai_findability_tags(xml, :datacite)
       end
 
       xml.rightsList do

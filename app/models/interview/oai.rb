@@ -30,7 +30,7 @@ module Interview::Oai
   end
 
   def oai_doi_identifier
-    "#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
+    "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
   end
 
   def oai_url_identifier(locale)

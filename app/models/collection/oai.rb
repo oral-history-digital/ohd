@@ -27,6 +27,10 @@ module Collection::Oai
     #"#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
   #end
 
+  def oai_doi_identifier
+    "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.collection-#{id}"
+  end
+
   def oai_catalog_identifier(locale)
     "#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
   end
@@ -84,14 +88,6 @@ module Collection::Oai
 
   def oai_languages
     Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
-  end
-
-  def oai_subject_registry_entry_ids
-    ohd_subject_registry_entry_ids
-  end
-
-  def oai_subject_registry_entries
-    RegistryEntry.where(id: ohd_subject_registry_entry_ids)
   end
 
   def oai_abstract_description(locale)

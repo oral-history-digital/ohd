@@ -47,7 +47,9 @@ module Project::OaiDc
       xml.tag!('dc:language', oai_languages)
 
       oai_base_subject_tags(xml, :dc)
-      oai_subject_tags(xml, :dc)
+      oai_subjects_tags(xml, :dc)
+      oai_countries_tags(xml, :dc)
+      oai_findability_tags(xml, :dc)
 
       xml.tag!('dc:relation', domain_with_optional_identifier)
       xml.tag!('dc:relation', "#{OHD_DOMAIN}")

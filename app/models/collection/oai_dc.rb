@@ -27,7 +27,7 @@ module Collection::OaiDc
       end
       xml.tag!('dc:publisher', oai_publisher('en'), "xml:lang": 'en') unless oai_publisher('en').blank?
 
-      xml.tag!('dc:contributor', project.manager)
+      xml.tag!('dc:contributor', project.oai_managers.map(&:strip))
       xml.tag!('dc:contributor', oai_contributor(:de))
 
       if oai_publication_date
@@ -43,7 +43,9 @@ module Collection::OaiDc
       xml.tag!('dc:language', oai_languages)
 
       oai_base_subject_tags(xml, :dc)
-      oai_subject_tags(xml, :dc)
+      oai_subjects_tags(xml, :dc)
+      oai_countries_tags(xml, :dc)
+      oai_findability_tags(xml, :dc)
 
       xml.tag!('dc:relation', OHD_DOMAIN)
       xml.tag!('dc:relation', "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}")

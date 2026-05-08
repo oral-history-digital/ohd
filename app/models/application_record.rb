@@ -28,27 +28,57 @@ class ApplicationRecord < ActiveRecord::Base
     self.id
   end
 
-  def ohd_subject_registry_entry_ids
-    if respond_to?(:interviews) && RegistryEntry.ohd_subjects
-      RegistryReference.where(
-        registry_entry_id: RegistryEntry.ohd_subjects.children.pluck(:id),
-        ref_object_id: interviews.pluck(:id),
-        ref_object_type: "Interview",
-      ).pluck(:registry_entry_id).uniq
-    else
-      []
+  SUBJECT_SCHEMES = {
+    subjects: {
+      de: "Gemeinsame Normdatei (GND-Sachschlagworte)",
+      en: "Integrated Authority File (GND-Subject headings)"
+    },
+    countries: {
+      de: "Gemeinsame Normdatei (GND-Geografika)",
+      en: "Integrated Authority File (GND-Geografic names)"
+    }
+  }.freeze
+
+  %w(subjects countries findability).each do |ref_type|
+    define_method("ohd_#{ref_type}_registry_entry_ids") do
+      if respond_to?(:interviews) && RegistryEntry.send("ohd_#{ref_type}")&.children&.any?
+        RegistryReference.where(
+          registry_entry_id: RegistryEntry.send("ohd_#{ref_type}").children.pluck(:id),
+          ref_object_id: interviews.pluck(:id),
+          ref_object_type: "Interview",
+        ).pluck(:registry_entry_id).uniq
+      else
+        []
+      end
     end
   end
 
-  def ohd_subject_registry_entries
-    if respond_to?(:interviews)
-      ohd_subject_registry_entry_ids.map do |id|
-        {
-          descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
-        }
+
+  %w(subjects countries).each do |ref_type|
+    define_method("oai_#{ref_type}_tags") do |xml, format=:dc|
+      RegistryEntry.where(id: send("ohd_#{ref_type}_registry_entry_ids")).each do |registry_entry|
+        opts = {}
+        [:de, :en].each do |locale|
+          entry_name = registry_entry.to_s(locale, fallback: false)
+          if !entry_name.blank?
+            if registry_entry.norm_data.gnd.any?
+              opts[:schemeURI] = "http://dnb.de/gnd/"
+              opts[:valueURI] = "https://d-nb.info/gnd/#{registry_entry.norm_data.gnd.first.nid}"
+              opts[:subjectScheme] = SUBJECT_SCHEMES[ref_type.to_sym][locale]
+            end
+            opts = opts.merge({ "xml:lang": locale })
+            xml.tag! "#{format == :dc ? 'dc:' : ''}subject", entry_name, opts
+          end
+        end
       end
-    else
-      []
+    end
+  end
+
+  def oai_findability_tags(xml, format=:dc)
+    RegistryEntry.where(id: ohd_findability_registry_entry_ids).each do |registry_entry|
+      xml.tag! "#{format == :dc ? 'dc:' : ''}subject",
+        registry_entry[:descriptor][:en],
+        "xml:lang": :en
     end
   end
 
@@ -91,21 +121,15 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
-  def oai_subject_tags(xml, format=:dc)
-    oai_subject_registry_entries.each do |registry_entry|
-      opts = {}
-      if registry_entry.norm_data.gnd.any?
-        opts[:schemeURI] = "http://dnb.de/gnd/"
-        opts[:valueURI] = "https://d-nb.info/gnd/#{registry_entry.norm_data.gnd.first.nid}"
-        opts[:subjectScheme] = "Gemeinsame Normdatei (GND)"
+  def ohd_subject_registry_entries
+    if respond_to?(:interviews)
+      send("ohd_#{ref_type}_registry_entry_ids").map do |id|
+        {
+          descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
+        }
       end
-      [:de, :en].each do |locale|
-        entry_name = registry_entry.to_s(locale, fallback: false)
-        if !entry_name.blank?
-          opts = opts.merge({ "xml:lang": locale })
-          xml.tag! "#{format == :dc ? 'dc:' : ''}subject", entry_name, opts
-        end
-      end
+    else
+      []
     end
   end
 

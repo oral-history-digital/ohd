@@ -70,14 +70,14 @@ module Interview::OaiDatacite
               nameType: "Personal"
           end
         end
-        project.leaders.each do |leader|
+        project.oai_leaders.each do |leader|
           xml.contributor contributorType: "ProjectLeader" do
             xml.contributorName leader.name,
               "xml:lang": "en",
               nameType: "Personal"
           end
         end
-        project.managers.each do |manager|
+        project.oai_managers.each do |manager|
           xml.contributor contributorType: "ProjectManager" do
             xml.contributorName manager.name,
               "xml:lang": "en",
@@ -124,7 +124,9 @@ module Interview::OaiDatacite
 
       xml.subjects do
         oai_base_subject_tags(xml, :datacite)
-        oai_subject_tags(xml, :datacite)
+        oai_subjects_tags(xml, :datacite)
+        oai_countries_tags(xml, :datacite)
+        oai_findability_tags(xml, :datacite)
       end
 
       xml.rightsList do
