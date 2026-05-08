@@ -1,10 +1,34 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['digit', 'hidden', 'form'];
+    static get targets() {
+        return ['digit', 'hidden', 'form', 'submit'];
+    }
 
     connect() {
+        this.isSubmitting = false;
         this.digitTargets[0].focus();
+    }
+
+    // Handle form submission state to prevent multiple submissions
+    handleSubmitState(event) {
+        if (this.isSubmitting) {
+            event.preventDefault();
+            return;
+        }
+        this.isSubmitting = true;
+        this.disableOtpInputs();
+    }
+
+    // Disable all OTP input fields and the submit button
+    disableOtpInputs() {
+        this.digitTargets.forEach((input) => {
+            input.readOnly = true;
+        });
+
+        if (this.hasSubmitTarget) {
+            this.submitTarget.disabled = true;
+        }
     }
 
     handleInput(event) {
@@ -69,8 +93,9 @@ export default class extends Controller {
         const otp = this.digitTargets.map((input) => input.value).join('');
         this.hiddenTarget.value = otp;
 
-        if (otp.length === 6) {
+        if (otp.length === 6 && !this.isSubmitting) {
             setTimeout(() => {
+                if (this.isSubmitting) return; // Prevent multiple submissions
                 this.formTarget.requestSubmit();
             }, 200);
         }

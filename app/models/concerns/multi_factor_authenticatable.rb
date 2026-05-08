@@ -66,6 +66,9 @@ module MultiFactorAuthenticatable
     end
 
     false
+  rescue ActiveRecord::Encryption::Errors::Decryption
+    # Legacy/corrupted encrypted secrets should not crash the login flow.
+    false
   end
 
   def otp(otp_secret = self.otp_secret)
