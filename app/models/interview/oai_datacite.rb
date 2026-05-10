@@ -2,11 +2,11 @@ module Interview::OaiDatacite
   def to_oai_datacite(xml = Builder::XmlMarkup.new)
     xml.tag!(
       "resource",
-      "xmlns": "http://datacite.org/schema/kernel-4",
-      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+      "xmlns": "https://datacite.org/schema/kernel-4",
+      "xmlns:xsi": "https://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
-        http://datacite.org/schema/kernel-4
-        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
+        https://datacite.org/schema/kernel-4
+        https://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
 
@@ -72,14 +72,14 @@ module Interview::OaiDatacite
         end
         project.oai_leaders.each do |leader|
           xml.contributor contributorType: "ProjectLeader" do
-            xml.contributorName leader.name,
+            xml.contributorName leader,
               "xml:lang": "en",
               nameType: "Personal"
           end
         end
         project.oai_managers.each do |manager|
           xml.contributor contributorType: "ProjectManager" do
-            xml.contributorName manager.name,
+            xml.contributorName manager,
               "xml:lang": "en",
               nameType: "Personal"
           end

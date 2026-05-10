@@ -88,7 +88,7 @@ class UsageReport < ApplicationRecord
   def country
     require 'net/http'
     require 'uri'
-    @@geolocation_base ||= 'http://freegeoip.net/csv'
+    @@geolocation_base ||= 'https://freegeoip.net/csv'
     @@resolved_ips ||= {}
     # check user country or IP geolocation
     # add to country row and specific_range column

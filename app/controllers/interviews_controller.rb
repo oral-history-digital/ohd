@@ -364,27 +364,11 @@ class InterviewsController < ApplicationController
   def dois
     results = {}
 
-    # curl -X POST -H "Content-Type: application/vnd.api+json" --user YOUR_CLIENT_ID:YOUR_PASSWORD -d @my_draft_doi.json https://api.test.datacite.org/dois
-    uri = URI.parse(Rails.configuration.datacite["url"])
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-
     params[:archive_ids].each do |archive_id|
       interview = Interview.find_by_archive_id(archive_id)
       authorize interview
 
-      unless interview.doi_status == "created"
-        request = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/vnd.api+json" })
-        request.basic_auth(Rails.configuration.datacite["client_id"], Rails.configuration.datacite["password"])
-        request.body = doi_json(archive_id)
-
-        response = http.request(request)
-
-        status = response.code == "201" ? "created" : JSON.parse(response.body)["errors"][0]["title"]
-        interview.update doi_status: status
-      else
-        status = "created"
-      end
+      status = register_doi(interview)
 
       results[archive_id] = status
     end
@@ -585,29 +569,6 @@ class InterviewsController < ApplicationController
 
   def speakers
     update_speakers_params[:speakers].to_h
-  end
-
-  def doi_json(archive_id)
-    interview = Interview.find_by_archive_id(archive_id)
-    locale = params[:locale]
-    xml = render_to_string(
-      template: "interviews/datacite",
-      layout: false,
-      formats: :xml,
-      locals: {interview: interview, locale: locale}
-    )
-    {
-      "data": {
-        "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.shortname}.#{archive_id}",
-        "type": "dois",
-        "attributes": {
-          "doi": "#{Rails.configuration.datacite["prefix"]}/#{current_project.shortname}.#{archive_id}",
-          "event": "publish",
-          "url": "#{current_project.domain_with_optional_identifier}/#{locale}/interviews/#{archive_id}",
-          "xml": Base64.encode64(xml),
-        },
-      },
-    }.to_json
   end
 
 end

@@ -62,7 +62,7 @@ class ApplicationRecord < ActiveRecord::Base
           entry_name = registry_entry.to_s(locale, fallback: false)
           if !entry_name.blank?
             if registry_entry.norm_data.gnd.any?
-              opts[:schemeURI] = "http://dnb.de/gnd/"
+              opts[:schemeURI] = "https://dnb.de/gnd/"
               opts[:valueURI] = "https://d-nb.info/gnd/#{registry_entry.norm_data.gnd.first.nid}"
               opts[:subjectScheme] = SUBJECT_SCHEMES[ref_type.to_sym][locale]
             end
@@ -87,14 +87,14 @@ class ApplicationRecord < ActiveRecord::Base
       {
         lang: :de,
         scheme: "Gemeinsame Normdatei (GND)",
-        schemURI: "http://dnb.de/gnd/",
+        schemURI: "https://dnb.de/gnd/",
         valueURI: "https://d-nb.info/gnd/4115456-3",
         descriptor: "Oral History",
       },
       {
         lang: :en,
         scheme: "Gemeinsame Normdatei (GND)",
-        schemURI: "http://dnb.de/gnd/",
+        schemURI: "https://dnb.de/gnd/",
         valueURI: "https://d-nb.info/gnd/4115456-3",
         descriptor: "Oral History",
       },
@@ -123,9 +123,9 @@ class ApplicationRecord < ActiveRecord::Base
 
   def ohd_subject_registry_entries
     if respond_to?(:interviews)
-      send("ohd_#{ref_type}_registry_entry_ids").map do |id|
+      RegistryEntry.where(id: ohd_subjects_registry_entry_ids).map do |entry|
         {
-          descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
+          descriptor: entry.localized_hash(:descriptor),
         }
       end
     else

@@ -3,11 +3,11 @@ module Project::OaiDatacite
     xml = Builder::XmlMarkup.new
     xml.tag!(
       "resource",
-      "xmlns": "http://datacite.org/schema/kernel-4",
-      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+      "xmlns": "https://datacite.org/schema/kernel-4",
+      "xmlns:xsi": "https://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
-        http://datacite.org/schema/kernel-4
-        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
+        https://datacite.org/schema/kernel-4
+        https://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
 
@@ -53,7 +53,7 @@ module Project::OaiDatacite
             xml.creator do
               xml.creatorName institution.name(:en), "xml:lang": "en", nameType: "Organizational"
               xml.nameIdentifier institution.isil, schemeURI: "https://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
-              xml.nameIdentifier institution.gnd, schemeURI: "http://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
+              xml.nameIdentifier institution.gnd, schemeURI: "https://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
             end
           end
         end

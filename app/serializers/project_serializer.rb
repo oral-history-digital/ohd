@@ -26,6 +26,8 @@ class ProjectSerializer < ApplicationSerializer
     :archive_domain,
     :domain_with_optional_identifier,
     :doi,
+    :doi_status,
+    :used_doi_prefix,
     :has_newsletter,
     :logged_out_visible_registry_entry_ids,
     :pseudo_logged_out_visible_registry_entry_ids,

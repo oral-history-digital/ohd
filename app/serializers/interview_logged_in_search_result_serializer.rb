@@ -6,6 +6,7 @@ class InterviewLoggedInSearchResultSerializer < InterviewBaseSerializer
     :workflow_state,
     :workflow_states,
     :doi_status,
+    :used_doi_prefix,
     :properties,
     :signature_original,
     :task_ids,
