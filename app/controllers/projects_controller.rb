@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
       #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
-           :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy] +
+           :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy, :doi] +
            Project.non_public_method_names
 
   # GET /projects
@@ -200,6 +200,11 @@ class ProjectsController < ApplicationController
         }
       end
     end
+  end
+
+  def doi
+    status = register_doi(@project)
+    respond @project
   end
 
   # DELETE /projects/1

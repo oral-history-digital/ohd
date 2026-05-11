@@ -30,7 +30,13 @@ const mapStateToProps = (state) => {
         scope: 'collection',
         sortAttribute: 'name',
         sortAttributeTranslated: true,
-        detailsAttributes: ['name', 'homepage', 'responsibles', 'notes'],
+        detailsAttributes: [
+            'name',
+            'homepage',
+            'responsibles',
+            'notes',
+            'doi_status',
+        ],
         initialFormValues: { project_id: project.id },
         formElements: [
             {
@@ -62,6 +68,7 @@ const mapStateToProps = (state) => {
                 elementType: 'richTextEditor',
             },
         ],
+        registerDOI: true,
         joinedData: {},
         helpTextCode: 'collection_form',
     };

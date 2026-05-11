@@ -1,6 +1,5 @@
 module Collection::OaiDatacite
-  def to_oai_datacite
-    xml = Builder::XmlMarkup.new
+  def to_oai_datacite(xml = Builder::XmlMarkup.new)
     xml.tag!(
       "resource",
       "xmlns": "https://datacite.org/schema/kernel-4",
@@ -79,14 +78,14 @@ module Collection::OaiDatacite
         end
         project.oai_leaders.each do |leader|
           xml.contributor contributorType: "ProjectLeader" do
-            xml.contributorName leader.name,
+            xml.contributorName leader,
               "xml:lang": "en",
               nameType: "Personal"
           end
         end
         #project.oai_managers.each do |manager|
           #xml.contributor contributorType: "ProjectManager" do
-            #xml.contributorName manager.name,
+            #xml.contributorName manager,
               #"xml:lang": "en",
               #nameType: "Personal"
           #end

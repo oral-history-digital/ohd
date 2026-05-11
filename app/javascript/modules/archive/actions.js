@@ -222,3 +222,17 @@ export function fetchTranslationsForLocale(locale, pathBase) {
             });
     };
 }
+
+export function registerDoi(pathBase, dataType, id) {
+    return (dispatch) => {
+        request
+            .post(`${pathBase}/${dataType}/${id}/doi`)
+            //.send({})
+            .set('Accept', 'application/json')
+            .then((res) => {
+                if (res) {
+                    dispatch(receiveResult(JSON.parse(res.text)));
+                }
+            });
+    };
+}

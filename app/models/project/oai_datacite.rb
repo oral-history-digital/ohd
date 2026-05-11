@@ -1,6 +1,5 @@
 module Project::OaiDatacite
-  def to_oai_datacite
-    xml = Builder::XmlMarkup.new
+  def to_oai_datacite(xml = Builder::XmlMarkup.new)
     xml.tag!(
       "resource",
       "xmlns": "https://datacite.org/schema/kernel-4",

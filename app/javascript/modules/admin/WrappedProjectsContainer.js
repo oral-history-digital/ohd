@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
         query: state.search.projects.query,
         scope: 'project',
         sensitiveAttributes: ['contact_email'],
-        detailsAttributes: ['title', 'workflow_state'],
+        detailsAttributes: ['title', 'workflow_state', 'doi_status'],
         initialFormValues: {
             display_ohd_link: true,
             pseudo_view_modes: 'grid,list,workflow',
@@ -74,6 +74,7 @@ const mapStateToProps = (state) => {
                 optionsScope: 'workflow_states',
             },
         ],
+        registerDOI: true,
         showComponent: ProjectTile,
         helpTextCode: 'archive_form',
     };

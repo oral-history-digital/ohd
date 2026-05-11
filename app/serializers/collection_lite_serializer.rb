@@ -18,10 +18,6 @@ class CollectionLiteSerializer < ActiveModel::Serializer
     :subjects,
     :levels_of_indexing
 
-  def project_id
-    object.project_id
-  end
-
   def project_name
     object.project&.name
   end

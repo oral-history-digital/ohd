@@ -1,7 +1,12 @@
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
-export default function DeleteItemForm({ children, onSubmit, onCancel }) {
+export default function DeleteItemForm({
+    children,
+    onSubmit,
+    onCancel,
+    submitTextKey = 'delete',
+}) {
     const { t } = useI18n();
 
     return (
@@ -15,7 +20,7 @@ export default function DeleteItemForm({ children, onSubmit, onCancel }) {
                     onClick={onSubmit}
                     data-testid="delete-item-confirm-button"
                 >
-                    {t('delete')}
+                    {t(submitTextKey)}
                 </button>
                 <button
                     type="button"

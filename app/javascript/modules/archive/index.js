@@ -15,6 +15,7 @@ export {
     clearViewModes,
     submitSelectedArchiveIds,
     fetchTranslationsForLocale,
+    registerDoi,
 } from './actions';
 
 export { default as archiveReducer } from './reducer';

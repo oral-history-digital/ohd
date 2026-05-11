@@ -33,6 +33,7 @@ export default function WrappedDataList({
     interview,
     task,
     hideAdd,
+    registerDOI,
     outerScope,
     outerScopeId,
     resultPagesCount,
@@ -176,6 +177,7 @@ export default function WrappedDataList({
                             form={createForm}
                             showComponent={showComponent}
                             hideEdit={hideEdit}
+                            registerDOI={registerDOI}
                             hideDelete={hideDelete}
                             key={`${scope}-${data.id}`}
                         />

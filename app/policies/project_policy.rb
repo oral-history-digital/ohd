@@ -64,6 +64,10 @@ class ProjectPolicy < ApplicationPolicy
     update?
   end
 
+  def doi?
+    update?
+  end
+
   Project.non_public_method_names.each do |m|
     define_method "#{m}?" do
       update?

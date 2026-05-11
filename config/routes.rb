@@ -99,6 +99,9 @@ Rails.application.routes.draw do
       collection do
         get :countries
       end
+      member do
+        post :doi
+      end
     end
 
     resources :transcripts, only: [:new, :create]
@@ -290,6 +293,7 @@ Rails.application.routes.draw do
       member do
         get :collections, to: 'collections#for_project'
         get :contact_email
+        post :doi
       end
     end
   end
