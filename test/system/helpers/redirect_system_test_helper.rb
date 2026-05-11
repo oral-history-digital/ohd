@@ -18,6 +18,9 @@ module RedirectSystemTestHelper
   end
 
   def assert_redirected_to_project_subpage
+    # Wait for the destination page to finish rendering before checking URL.
+    assert_text 'Redirect Project'
+
     redirected_url = URI.parse(current_url)
     redirected_query = Rack::Utils.parse_nested_query(redirected_url.query)
 
@@ -25,6 +28,5 @@ module RedirectSystemTestHelper
     assert_equal '/en/searches/archive', redirected_url.path
     assert_equal 'random', redirected_query['sort']
     assert_nil redirected_query['checked_ohd_session']
-    assert_text 'Redirect Project'
   end
 end

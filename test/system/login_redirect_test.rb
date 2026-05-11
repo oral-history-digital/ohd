@@ -66,7 +66,7 @@ class LoginRedirectTest < ApplicationSystemTestCase
     assert_equal '/ohf/de', current_path
   end
 
-  test "login with TOTP from project subpage redirects back to that subpage" do
+  test "login with TOTP from project subpage keeps redirect context on quick click" do
     project = setup_redirect_project_for_user(email: EMAIL)
     user = User.find_by(email: EMAIL)
 
@@ -88,13 +88,19 @@ class LoginRedirectTest < ApplicationSystemTestCase
     click_on 'Login'
 
     assert_current_path users_otp_path(locale: I18n.locale), ignore_query: true
-    assert_text 'One-time code'
+
+    # Verify redirect context is present on OTP form before submitting.
+    assert_selector "input[name='path'][value='/en/searches/archive?sort=random']", visible: false
+    assert_selector "input[name='project'][value='redirproj']", visible: false
 
     user.current_otp.chars.each_with_index do |digit, index|
-      find("input.otp-digit[data-index='#{index}']").set(digit)
+      input = find("input.otp-digit[data-index='#{index}']")
+      input.click
+      input.send_keys(digit)
     end
 
-    sleep 0.3
+    # Reproduce user behavior: click quickly after entering the last digit.
+    click_on 'Login'
 
     assert_redirected_to_project_subpage
   end

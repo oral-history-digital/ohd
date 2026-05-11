@@ -62,6 +62,8 @@
     <!-- ***
       Changes:
       - charFilter with "mapping-ISOLatin1Accent.txt" for folding diacritical characters.
+      - KeywordMarkerFilter with protected words list in "protwords.txt"
+      - StemmerOverrideFilter with dictionary in "stemdict.txt"
       - GermanLightStemFilter for analyzing German language
       *** -->
     <fieldType name="text" class="solr.TextField" omitNorms="false">

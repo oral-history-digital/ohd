@@ -9,11 +9,23 @@
 
 .Layout-page {
   width: 100%;
-  padding: 0 $base-unit * 2;
+  padding: 0 $base-unit;
+
+  @include screen-m {
+    padding: 0 $base-unit * 2;
+  }
 
   .fa-eye,
   .fa-globe {
     color: var(--primary-color) !important;
+  }
+}
+
+.is-homepage .Layout-page {
+  padding: 0;
+
+  @include screen-m {
+    padding: 0 $base-unit;
   }
 }
 
@@ -46,7 +58,15 @@
 }
 
 .wrapper-content {
-  padding: ($base-unit * 2);
+  padding: $base-unit 0;
+
+  @include screen-m {
+    padding: ($base-unit * 2);
+  }
+}
+
+.is-mobile.is-interview-page .wrapper-content {
+  padding: $base-unit;
 }
 
 .Layout-sidebar {

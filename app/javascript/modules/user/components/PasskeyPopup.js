@@ -1,3 +1,4 @@
+/* global railsMode */
 import { useRef } from 'react';
 
 import { OHD_DOMAINS } from 'modules/constants';
@@ -5,6 +6,7 @@ import { getCurrentUser } from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
+import PropTypes from 'prop-types';
 import { FaKey } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
@@ -31,7 +33,7 @@ export default function PasskeyPopup({ showDialogInitially = true }) {
     return (
         <Modal
             key="passkeys-popup"
-            triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
+            triggerClassName="Button Button--transparent Button--primaryColor"
             title={t('passkey.title')}
             showDialogInitially={showDialogInitially}
             hideButton={showDialogInitially}
@@ -54,6 +56,7 @@ export default function PasskeyPopup({ showDialogInitially = true }) {
                             frameBorder="0"
                             allow={`publickey-credentials-create ${OHD_DOMAINS[railsMode]};
                                 publickey-credentials-get ${OHD_DOMAINS[railsMode]}`}
+                            title={t('passkey.title')}
                         />
                     </>
                 );
@@ -61,3 +64,7 @@ export default function PasskeyPopup({ showDialogInitially = true }) {
         </Modal>
     );
 }
+
+PasskeyPopup.propTypes = {
+    showDialogInitially: PropTypes.bool,
+};

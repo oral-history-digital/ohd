@@ -29,9 +29,9 @@
   <p>El equipo del proyecto "<%= @project_name %>"</p>
   <% else -%>
   <p>Sehr geehrte/r <%= @resource.display_name %>,</p>
-  <p>Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= @project_name %>" geändert.</p>
-  <p>Bitte bestätigen Sie diese Änderung mit dem folgenden Link:</p>
-  <p><%= link_to 'Neue E-Mail Adresse bestätigen', @url %></p>
+  <p>Sie haben die E-Mail-Adresse für Ihren Account in der Anwendung "<%= @project_name %>" geändert.</p>
+  <p>Bitte bestätigen Sie diese Änderung, indem Sie auf den folgenden Link klicken:</p>
+  <p><%= link_to 'Neue E-Mail-Adresse bestätigen', @url %></p>
   <p>Mit freundlichen Grüßen,</p>
   <p>Das Projekt-Team "<%= @project_name %>"</p>
 <% end -%>

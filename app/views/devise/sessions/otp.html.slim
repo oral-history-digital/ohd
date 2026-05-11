@@ -2,7 +2,7 @@ h2= tv("activerecord.attributes.user.otp_attempt")
 
 = form_with url: users_verify_otp_path,
   method: :post,
-  data: { controller: "otp", otp_target: "form" },
+  data: { controller: "otp", otp_target: "form", action: "submit->otp#handleSubmitState" },
   html: {class: 'Form'} do |f|
 
   = hidden_field_tag :path, @path

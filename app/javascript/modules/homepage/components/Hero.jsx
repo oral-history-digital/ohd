@@ -1,20 +1,35 @@
 import { usePathBase } from 'modules/routes';
-import { LinkButton } from 'modules/ui';
+import { LinkButton, SmartImage } from 'modules/ui';
+import { useIsMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 
 import { isExternalTarget } from '../utils';
 
 export function Hero({ data }) {
     const pathBase = usePathBase();
+    const isMobile = useIsMobile();
 
     if (!data) return null;
 
+    const heroStyle =
+        !isMobile && data.image?.src
+            ? { backgroundImage: `url(${data.image.src})` }
+            : undefined;
+
+    const buttonSize = isMobile ? 'md' : 'lg';
+
     return (
-        <section
-            className="Hero"
-            style={{ backgroundImage: `url(${data.image?.src})` }}
-            data-testid="homepage-hero"
-        >
+        <section className="Hero" style={heroStyle} data-testid="homepage-hero">
+            {isMobile && data.image?.src && (
+                <SmartImage
+                    src={data.image.src}
+                    alt={data.image_alt || data.heading || ''}
+                    className="Hero-image"
+                    aspectRatio="3/1"
+                    objectFit="cover"
+                    data-testid="homepage-hero-image"
+                />
+            )}
             <div className="Hero-content" data-testid="homepage-hero-content">
                 <h1
                     className="Hero-heading"
@@ -30,7 +45,7 @@ export function Hero({ data }) {
                         <LinkButton
                             buttonText={data.button_secondary_label}
                             variant="outlined"
-                            size="lg"
+                            size={buttonSize}
                             to={pathBase + data.button_secondary_target}
                             className="Hero-cta--secondary"
                             data-testid="homepage-hero-cta-secondary"
@@ -43,7 +58,7 @@ export function Hero({ data }) {
                     <LinkButton
                         buttonText={data.button_primary_label}
                         variant="contained"
-                        size="lg"
+                        size={buttonSize}
                         to={pathBase + data.button_primary_target}
                         className="Hero-cta--primary"
                         data-testid="homepage-hero-cta-primary"

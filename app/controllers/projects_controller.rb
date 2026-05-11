@@ -55,6 +55,7 @@ class ProjectsController < ApplicationController
 
     scoped_projects = policy_scope(Project)
     scoped_projects = scoped_projects.where(workflow_state: normalized_workflow_states) if normalized_workflow_states
+    scoped_projects = scoped_projects.where.not(shortname: 'ohd') unless normalized_include_umbrella
 
     if params.keys.include?('all')
       projects = scoped_projects.order(created_at: :desc)
@@ -84,6 +85,7 @@ class ProjectsController < ApplicationController
       extra_params,
       projects_cache_scope_key,
       normalized_workflow_states&.join(','),
+      "include-umbrella-#{normalized_include_umbrella}",
       I18n.locale,
       Project.count,
       Project.maximum(:updated_at),
@@ -263,6 +265,14 @@ class ProjectsController < ApplicationController
 
       # Invalid-only input falls back to no filter.
       @normalized_workflow_states = filtered_states.presence
+    end
+
+    def normalized_include_umbrella
+      return @normalized_include_umbrella if defined?(@normalized_include_umbrella)
+
+      value = params[:include_umbrella]
+      # Exclude umbrella by default unless include_umbrella is explicitly true.
+      @normalized_include_umbrella = (value.to_s.downcase == 'true')
     end
 
     def serialized_projects(projects, interview_counts, collection_counts, interview_languages_by_project)

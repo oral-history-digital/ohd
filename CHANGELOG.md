@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.3] - 2026-05-08
+
+### Changed
+
+- set default registry_name_type spelling on registry_entry.create_child ([91b859989](https://github.com/oral-history-digital/ohd/commit/91b859989e96f2e29668ff98f9f8ec0de74d9921))
+
+### Fixed
+
+- fix: quick click redirect on login ([#108](https://github.com/oral-history-digital/ohd/pull/108))
+- fix: exclude umbrella projects by default and add include_umbrella option ([#110](https://github.com/oral-history-digital/ohd/pull/110))
+- fix: correct mail template texts and add missing translations ([#111](https://github.com/oral-history-digital/ohd/pull/111))
+- fix: fetch missing project data on account page ([#112](https://github.com/oral-history-digital/ohd/pull/112))
+- fix reindex job ([1b6f8eb13](https://github.com/oral-history-digital/ohd/commit/1b6f8eb132b6a3e08977efda9c821acd5f7b6ee8))
+- fix if biographical_entry is empty ([25539216b](https://github.com/oral-history-digital/ohd/commit/25539216bd3b4944df4494bc6714a8d5e89c043a))
+- fix empty bios again ([e06d52146](https://github.com/oral-history-digital/ohd/commit/e06d52146284fdb4f5fd0f2ad6a0fb58c00c19f0))
+- do not split language codes on - anymore ([e3d0a074d](https://github.com/oral-history-digital/ohd/commit/e3d0a074d7d3c098df73ef0d9c35847567e028ad))
+- fix(style): add padding to interview text in mobile and add is-editview-active class ([437cd924d](https://github.com/oral-history-digital/ohd/commit/437cd924dea3635d363bf6b779617b176f4eb164))
+
+### Removed
+
+- chore: remove legacy catalog ([#109](https://github.com/oral-history-digital/ohd/pull/109))
+
+## [2.3.2] - 2026-04-30
+
+### Changed
+
+- feat: improve responsiveness ([#104](https://github.com/oral-history-digital/ohd/pull/104))
+- updated Delayed::Worker.max_run_time to 30.minutes ([41fabb778](https://github.com/oral-history-digital/ohd/commit/41fabb7784d16d581530eedf60875f339b03f257))
+
+### Fixed
+
+- 488: Fix interview year facet not restricting other facet values ([#107](https://github.com/oral-history-digital/ohd/pull/107))
+- fix: handle media unavailability by resetting player reference ([#105](https://github.com/oral-history-digital/ohd/pull/105))
+- fix(search_map): correctly pass workflow types for all parameter ([#106](https://github.com/oral-history-digital/ohd/pull/106))
+
 ## [2.3.1] - 2026-04-27
 
 ### Changed
@@ -499,6 +534,8 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.3.3]: https://github.com/oral-history-digital/ohd/compare/v2.3.2...v2.3.3
+[2.3.2]: https://github.com/oral-history-digital/ohd/compare/v2.3.1...v2.3.2
 [2.3.1]: https://github.com/oral-history-digital/ohd/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/oral-history-digital/ohd/compare/v2.2.1...v2.3.0
 [2.2.1]: https://github.com/oral-history-digital/ohd/compare/v2.2.0...v2.2.1

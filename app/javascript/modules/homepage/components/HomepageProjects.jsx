@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useGetProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useIsMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 
 import ProjectTile from './ProjectTile';
@@ -14,6 +15,7 @@ export function HomepageProjects({ className }) {
         workflowState: 'public',
     });
     const { t } = useI18n();
+    const isMobile = useIsMobile();
     const scrollRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
@@ -48,15 +50,19 @@ export function HomepageProjects({ className }) {
         setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
     }, []);
 
-    const scroll = useCallback((direction) => {
-        const el = scrollRef.current;
-        if (!el) return;
-        const cardWidth = getCardWidth();
-        el.scrollBy({
-            left: direction * cardWidth * CARDS_PER_SCROLL,
-            behavior: 'smooth',
-        });
-    }, []);
+    const scroll = useCallback(
+        (direction) => {
+            const el = scrollRef.current;
+            if (!el) return;
+            const cardWidth = getCardWidth();
+            const cardsPerScroll = isMobile ? 1 : CARDS_PER_SCROLL;
+            el.scrollBy({
+                left: direction * cardWidth * cardsPerScroll,
+                behavior: 'smooth',
+            });
+        },
+        [isMobile]
+    );
 
     useEffect(() => {
         updateScrollButtons();
@@ -114,12 +120,12 @@ export function HomepageProjects({ className }) {
                 className="HomepageProjects-header"
                 data-testid="homepage-projects-header"
             >
-                <h3
+                <h2
                     className="Homepage-heading u-mt-none u-mb-none"
                     data-testid="homepage-projects-heading"
                 >
                     {t('modules.homepage.sample_archives')}
-                </h3>
+                </h2>
 
                 <div
                     className="HomepageProjects-nav"

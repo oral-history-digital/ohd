@@ -1,12 +1,21 @@
 div.account-page {
   div.account-page-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
+    margin-bottom: $base-unit;
 
-    .edit-account-icon {
-      cursor: pointer;
-      margin: 2rem 0 11px 0;
+    h1 {
+      margin: 0;
+    }
+
+    .account-actions {
+      display: flex;
+      gap: 0.5rem;
+
+      .account-actions-icon {
+        cursor: pointer;
+      }
     }
   }
 

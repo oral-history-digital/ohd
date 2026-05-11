@@ -239,10 +239,15 @@ The Solr configuration is saved in _solr/configsets/sunspot/conf/schema.xml_.
 The configuration is automatically picked up when using Sunspot Solr in
 development but needs to be set up by hand in staging or production.
 
-Two changes to the original config file have been made so far:
+These changes to the original config file have been made so far:
 
 - charFilter with "mapping-ISOLatin1Accent.txt" for folding diacritical characters
 - GermanMinimalStemFilter for analyzing German language
+- KeywordMarkerFilter with protected words list in "protwords.txt"
+- StemmerOverrideFilter with dictionary in "stemdict.txt"
+
+The files "mapping-ISOLatin1Accent.txt", "protwords.txt" and "stemdict.txt" are also
+important files that belong to the configuration.
 
 ## Tests
 

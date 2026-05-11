@@ -43,4 +43,5 @@ solr/pids
 .devcontainer/logs
 .devcontainer/db/*.sql.gz
 .devcontainer/.env
+.devcontainer/dev/.env
 .directory

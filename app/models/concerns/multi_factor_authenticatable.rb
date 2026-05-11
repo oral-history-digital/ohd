@@ -66,6 +66,9 @@ module MultiFactorAuthenticatable
     end
 
     false
+  rescue ActiveRecord::Encryption::Errors::Decryption
+    # Legacy/corrupted encrypted secrets should not crash the login flow.
+    false
   end
 
   def otp(otp_secret = self.otp_secret)
@@ -81,9 +84,9 @@ module MultiFactorAuthenticatable
     Time.now.utc.to_i / otp.interval
   end
 
-  def send_new_otp_code
+  def send_new_otp_code(locale = nil)
     email_otp = generate_email_otp!
-    CustomDeviseMailer.two_factor_authentication_code(self, email_otp).deliver_later
+    CustomDeviseMailer.two_factor_authentication_code(self, email_otp, locale).deliver_later
   end
 
   def generate_email_otp! 

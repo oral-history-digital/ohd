@@ -2,7 +2,12 @@
 import { useEffect } from 'react';
 
 import classNames from 'classnames';
-import { getProjectId, getViewMode, setProjectId } from 'modules/archive';
+import {
+    getProjectId,
+    getViewMode,
+    setProjectId,
+    useIsEditor,
+} from 'modules/archive';
 import {
     Banner,
     bannerHasNotBeenHiddenByUser,
@@ -56,11 +61,13 @@ export default function Layout({ children }) {
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
     const isLoggedIn = useSelector(getIsLoggedIn);
+    const isEditviewActive = useIsEditor();
 
     const { project } = useProject();
     const currentPage = useCurrentPage();
     const { locale } = useI18n();
     const [searchParams, setSearchParams] = useSearchParams();
+    const isHomepage = currentPage.pageType === 'site_startpage';
     const isInterviewPage = currentPage.pageType === 'interview_detail';
     const isPeopleAdminPage =
         currentPage.pageType === 'project_admin_page' &&
@@ -153,11 +160,13 @@ export default function Layout({ children }) {
                 className={classNames('Layout', {
                     'is-logged-in': isLoggedIn,
                     'sidebar-is-visible': sidebarVisible,
+                    'is-homepage': isHomepage,
                     'is-interview-page': isInterviewPage,
                     'is-wide-layout': isWideLayout,
                     'is-sticky':
                         isInterviewPage && scrollPositionBelowThreshold,
                     'is-mobile': isMobile(),
+                    'is-editview-active': isEditviewActive,
                 })}
             >
                 <AfterRegisterPopup />

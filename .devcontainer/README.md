@@ -98,6 +98,22 @@ The setup automatically configures several important files:
 - `datacite.yml` - Settings for DataCite integration
 - `sunspot.yml` - Solr search engine configuration
 
+### Active Record Encryption Keys (development)
+
+Rails 8 uses encryption keys for encrypted attributes. In this project, these keys are optional for booting the devcontainer and are only required when using features that read/write encrypted fields.
+
+1. Copy `.devcontainer/dev/.env.example` to `.devcontainer/dev/.env` (optional)
+2. Generate keys:
+
+```sh
+bin/rails db:encryption:init
+```
+
+3. Paste the generated values into `.devcontainer/dev/.env`
+4. Rebuild/reopen the devcontainer so Docker Compose picks up the env file
+
+If you do not provide these keys, the app still starts normally, but encrypted-attribute features can raise missing encryption key errors when accessed.
+
 Database permissions are also automatically configured for proper access from the application.
 
 ## Running the Application
