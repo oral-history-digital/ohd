@@ -93,10 +93,6 @@ class ProjectSerializer < ApplicationSerializer
     map_sections
     institution_projects
     collections
-    cooperation_partners
-    leaders
-    managers
-    funders
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
