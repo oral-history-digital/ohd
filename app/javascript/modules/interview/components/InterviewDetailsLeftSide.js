@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { ContentField } from 'modules/forms';
-import { SingleValueWithForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import {
     InterviewContributorsContainer,
     InterviewInfoContainer,
+    InterviewLinksField,
     InterviewTextMaterialsContainer,
 } from 'modules/interview-metadata';
 import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
@@ -89,13 +89,7 @@ export default function InterviewDetailsLeftSide({
                     value={interview.properties.subcollection}
                 />
             )}
-            <SingleValueWithForm
-                obj={interview}
-                value={interview?.links}
-                attribute="pseudo_links"
-                hideEmpty
-                linkUrls
-            />
+            <InterviewLinksField interview={interview} />
             {projectId === 'campscapes' && (
                 <div className="footer-navigation">
                     <Link

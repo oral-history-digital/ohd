@@ -4,3 +4,4 @@ export { default as InterviewTextMaterialsContainer } from './InterviewTextMater
 export { default as ContributionFormContainer } from './ContributionFormContainer';
 export { default as CitationInfoContainer } from './CitationInfoContainer';
 export { default as CatalogLink } from './CatalogLink';
+export { default as InterviewLinksField } from './InterviewLinksField';

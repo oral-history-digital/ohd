@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import { useIsEditor } from 'modules/archive';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { PROJECT_CAMPSCAPES } from 'modules/constants';
-import { SingleValueWithForm } from 'modules/forms';
 import { GalleryContainer } from 'modules/gallery';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
@@ -17,6 +16,7 @@ import {
     CitationInfoContainer,
     InterviewContributorsContainer,
     InterviewInfoContainer,
+    InterviewLinksField,
     InterviewTextMaterialsContainer,
 } from 'modules/interview-metadata';
 import { MaterialList } from 'modules/materials';
@@ -150,16 +150,9 @@ export default function InterviewTabPanel({
                                     <InterviewInfoContainer />
                                     <InterviewContributorsContainer />
                                     <InterviewTextMaterialsContainer />
-                                    {(isEditor ||
-                                        interview?.links.length > 0) && (
-                                        <SingleValueWithForm
-                                            obj={interview}
-                                            value={interview?.links}
-                                            attribute="pseudo_links"
-                                            hideEmpty
-                                            linkUrls
-                                        />
-                                    )}
+                                    <InterviewLinksField
+                                        interview={interview}
+                                    />
                                 </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>

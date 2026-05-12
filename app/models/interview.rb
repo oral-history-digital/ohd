@@ -992,7 +992,14 @@ class Interview < ApplicationRecord
   end
 
   def pseudo_links=(string)
-    write_attribute(:links, string.strip.split(/,\s*/)) if string
+    return unless string
+
+    links = string
+      .split(/[\r\n,]+/) # split by newlines and commas
+      .map(&:strip)
+      .reject(&:blank?)
+
+    write_attribute(:links, links)
   end
   def pseudo_links
     read_attribute :links
