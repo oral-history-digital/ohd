@@ -46,19 +46,19 @@ export default function AffiliateForm({
                 {
                     attribute: 'name',
                     hidden: isPersonal,
-                    multilocale: true,
+                    multiLocale: true,
                     baseLocales: ['de', 'en'],
                 },
                 {
                     attribute: 'first_name',
                     hidden: !isPersonal,
-                    multilocale: true,
+                    multiLocale: true,
                     baseLocales: ['de', 'en'],
                 },
                 {
                     attribute: 'last_name',
                     hidden: !isPersonal,
-                    multilocale: true,
+                    multiLocale: true,
                     baseLocales: ['de', 'en'],
                 },
                 {
