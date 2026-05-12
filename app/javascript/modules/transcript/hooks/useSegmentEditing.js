@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { togglePlayerWidth } from 'modules/media-player';
 
@@ -108,18 +108,31 @@ export function useSegmentEditing() {
         return true;
     }, [handleUnsavedChangesAttempt]);
 
-    return {
-        editingSegmentId,
-        setEditingSegmentId,
-        editingSegmentHasUnsavedChanges,
-        setEditingSegmentHasUnsavedChanges,
-        showUnsavedWarning,
-        setShowUnsavedWarning,
-        dismissUnsavedWarning,
-        continueAfterUnsavedWarning,
-        editingSegmentIdRef,
-        handleUnsavedChangesAttempt,
-        handleEditStart,
-        handleEditEnd,
-    };
+    return useMemo(
+        () => ({
+            editingSegmentId,
+            setEditingSegmentId,
+            editingSegmentHasUnsavedChanges,
+            setEditingSegmentHasUnsavedChanges,
+            showUnsavedWarning,
+            setShowUnsavedWarning,
+            dismissUnsavedWarning,
+            continueAfterUnsavedWarning,
+            editingSegmentIdRef,
+            handleUnsavedChangesAttempt,
+            handleEditStart,
+            handleEditEnd,
+        }),
+        [
+            editingSegmentId,
+            editingSegmentHasUnsavedChanges,
+            showUnsavedWarning,
+            dismissUnsavedWarning,
+            continueAfterUnsavedWarning,
+            editingSegmentIdRef,
+            handleUnsavedChangesAttempt,
+            handleEditStart,
+            handleEditEnd,
+        ]
+    );
 }

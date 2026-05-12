@@ -2,7 +2,6 @@ import { memo } from 'react';
 
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
-import { useWorkbook } from 'modules/workbook';
 import PropTypes from 'prop-types';
 import {
     FaHeading,
@@ -12,27 +11,25 @@ import {
     FaTag,
 } from 'react-icons/fa';
 
-import { BookmarkSegmentModal } from '.';
-import { getSegmentAnnotations, getSegmentWorkbookAnnotations } from '../utils';
+import { getSegmentAnnotations } from '../utils';
 
 function SegmentButtons({
     segment,
     contentLocale,
     onEditStart,
     onViewContentType,
+    onBookmarkCreate,
     isEditingSegment,
     canEditSegment,
+    hasBookmarks,
 }) {
     const { t } = useI18n();
-    const { savedSegments } = useWorkbook();
 
     const hasHeadings = segment.has_heading;
 
     // Annotations are tied to the content locales
     const hasAnnotations =
         getSegmentAnnotations(segment, contentLocale).length > 0;
-    const hasBookmarks =
-        getSegmentWorkbookAnnotations(savedSegments, segment.id).length > 0;
     const hasReferences = (segment.registry_references_count || 0) > 0;
 
     const showEditButton = canEditSegment;
@@ -44,8 +41,10 @@ function SegmentButtons({
         if (hasBookmarks) {
             // If bookmarks exist, show the viewer
             onViewContentType?.('bookmarks');
+            return;
         }
-        // If no bookmarks, opening modal is handled by BookmarkSegmentModal
+
+        onBookmarkCreate?.(segment);
     };
 
     const handleEditClick = () => {
@@ -91,19 +90,29 @@ function SegmentButtons({
                 className={classNames('Segment-buttons')}
                 data-testid="segment-buttons"
             >
-                {hasBookmarks ? (
-                    <button
-                        type="button"
-                        className="Button Button--transparent Button--icon"
-                        title={t('modules.workbook.bookmarks')}
-                        onClick={handleBookmarkClick}
-                        data-testid="segment-button-bookmarks"
-                    >
-                        <FaStar className="Icon Icon--primary" />
-                    </button>
-                ) : (
-                    <BookmarkSegmentModal segment={segment} />
-                )}
+                <button
+                    type="button"
+                    className={classNames(
+                        'Button Button--transparent Button--icon',
+                        {
+                            'Segment-hiddenButton Button--hover': !hasBookmarks,
+                        }
+                    )}
+                    title={t(
+                        hasBookmarks
+                            ? 'modules.workbook.bookmarks'
+                            : 'save_user_annotation'
+                    )}
+                    onClick={handleBookmarkClick}
+                    data-testid="segment-button-bookmarks"
+                >
+                    <FaStar
+                        className={classNames(
+                            'Icon',
+                            hasBookmarks ? 'Icon--primary' : 'Icon--unobtrusive'
+                        )}
+                    />
+                </button>
                 {showEditButton && (
                     <button
                         type="button"
@@ -191,8 +200,10 @@ SegmentButtons.propTypes = {
     contentLocale: PropTypes.string.isRequired,
     onEditStart: PropTypes.func.isRequired,
     onViewContentType: PropTypes.func,
+    onBookmarkCreate: PropTypes.func,
     isEditingSegment: PropTypes.bool,
     canEditSegment: PropTypes.bool,
+    hasBookmarks: PropTypes.bool,
 };
 
 export default memo(SegmentButtons);
