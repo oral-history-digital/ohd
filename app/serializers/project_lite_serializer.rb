@@ -1,6 +1,5 @@
 class ProjectLiteSerializer < ProjectArchiveSerializer
-  attributes :cooperation_partner,
-    :cooperation_partners,
+  attributes :cooperation_partners,
     :leaders,
     :managers,
     :funders,
@@ -64,9 +63,9 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
 
   def contact_people
     {
-      cooperation_partner: object.cooperation_partner,
-      leader: object.leader,
-      manager: object.manager
+      cooperation_partner: object.cooperation_partners.map { |a| a.name }.join(', '),
+      leader: object.leaders.map { |a| a.name }.join(', '),
+      manager: object.managers.map { |a| a.name }.join(', '),
     }
   end
 
