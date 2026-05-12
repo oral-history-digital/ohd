@@ -30,32 +30,38 @@ export default function EditProjectInfo() {
         {
             attribute: 'name',
             multiLocale: true,
+            baseLocales: ['de', 'en'],
         },
         {
             attribute: 'introduction',
             elementType: 'richTextEditor',
             multiLocale: true,
+            baseLocales: ['de', 'en'],
         },
         {
             attribute: 'more_text',
             elementType: 'richTextEditor',
             multiLocale: true,
+            baseLocales: ['de', 'en'],
         },
         {
             attribute: 'landing_page_text',
             elementType: 'richTextEditor',
             multiLocale: true,
+            baseLocales: ['de', 'en'],
             help: 'activerecord.attributes.project.landing_page_edit_help',
         },
         {
             attribute: 'restricted_landing_page_text',
             elementType: 'richTextEditor',
             multiLocale: true,
+            baseLocales: ['de', 'en'],
             help: 'activerecord.attributes.project.restricted_landing_page_edit_help',
         },
         {
             attribute: 'media_missing_text',
             multiLocale: true,
+            baseLocales: ['de', 'en'],
         },
     ];
 
