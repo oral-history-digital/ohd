@@ -51,15 +51,24 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_08_132348) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "affiliate_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "affiliate_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "first_name"
+    t.string "last_name"
+    t.index ["affiliate_id"], name: "index_affiliate_translations_on_affiliate_id"
+    t.index ["locale"], name: "index_affiliate_translations_on_locale"
+  end
+
   create_table "affiliates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "type"
     t.string "name_type"
-    t.string "name"
     t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "first_name"
-    t.string "last_name"
     t.index ["project_id"], name: "index_affiliates_on_project_id"
   end
 

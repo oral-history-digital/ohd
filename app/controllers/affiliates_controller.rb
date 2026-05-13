@@ -69,6 +69,12 @@ class AffiliatesController < ApplicationController
     end
 
     def affiliate_params
-      params.expect(affiliate: [:type, :name_type, :name, :first_name, :last_name, :project_id])
+      params.require(:affiliate).
+        permit(
+          :name_type,
+          :type,
+          :project_id,
+          translations_attributes: [:locale, :id, :name, :first_name, :last_name]
+      )
     end
 end
