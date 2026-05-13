@@ -2,11 +2,11 @@ module Collection::OaiDatacite
   def to_oai_datacite(xml = Builder::XmlMarkup.new)
     xml.tag!(
       "resource",
-      "xmlns": "https://datacite.org/schema/kernel-4",
-      "xmlns:xsi": "https://www.w3.org/2001/XMLSchema-instance",
+      "xmlns": "http://datacite.org/schema/kernel-4",
+      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
-        https://datacite.org/schema/kernel-4
-        https://schema.datacite.org/meta/kernel-4.6/metadata.xsd
+        http://datacite.org/schema/kernel-4
+        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
 

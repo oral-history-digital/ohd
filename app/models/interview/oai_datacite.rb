@@ -2,11 +2,11 @@ module Interview::OaiDatacite
   def to_oai_datacite(xml = Builder::XmlMarkup.new)
     xml.tag!(
       "resource",
-      "xmlns": "https://datacite.org/schema/kernel-4",
-      "xmlns:xsi": "https://www.w3.org/2001/XMLSchema-instance",
+      "xmlns": "http://datacite.org/schema/kernel-4",
+      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
-        https://datacite.org/schema/kernel-4
-        https://schema.datacite.org/meta/kernel-4.6/metadata.xsd
+        http://datacite.org/schema/kernel-4
+        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
 
@@ -145,7 +145,7 @@ module Interview::OaiDatacite
           #xml.rights "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International",
             #"xml:lang": locale,
             #rightsIdentifier: "CC-BY-4.0",
-            #rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            #rightsURI: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
         #end
       end
 

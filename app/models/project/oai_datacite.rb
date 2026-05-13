@@ -2,11 +2,11 @@ module Project::OaiDatacite
   def to_oai_datacite(xml = Builder::XmlMarkup.new)
     xml.tag!(
       "resource",
-      "xmlns": "https://datacite.org/schema/kernel-4",
-      "xmlns:xsi": "https://www.w3.org/2001/XMLSchema-instance",
+      "xmlns": "http://datacite.org/schema/kernel-4",
+      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation": %(
-        https://datacite.org/schema/kernel-4
-        https://schema.datacite.org/meta/kernel-4.6/metadata.xsd
+        http://datacite.org/schema/kernel-4
+        http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
       ).gsub(/\s+/, " ")
     ) do
 
@@ -51,8 +51,8 @@ module Project::OaiDatacite
           leaf.with_ancestors.each do |institution|
             xml.creator do
               xml.creatorName institution.name(:en), "xml:lang": "en", nameType: "Organizational"
-              xml.nameIdentifier institution.isil, schemeURI: "https://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
-              xml.nameIdentifier institution.gnd, schemeURI: "https://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
+              xml.nameIdentifier institution.isil, schemeURI: "http://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
+              xml.nameIdentifier institution.gnd, schemeURI: "http://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
             end
           end
         end
@@ -156,7 +156,7 @@ module Project::OaiDatacite
           #xml.rights "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International",
             #"xml:lang": locale,
             #rightsIdentifier: "CC-BY-4.0",
-            #rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            #rightsURI: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
         #end
       end
 
