@@ -86,14 +86,14 @@ class ApplicationRecord < ActiveRecord::Base
     subjects = [
       {
         lang: :de,
-        scheme: "Gemeinsame Normdatei (GND)",
+        scheme: "Gemeinsame Normdatei (GND-Sachschlagworte)",
         schemURI: "https://dnb.de/gnd/",
         valueURI: "https://d-nb.info/gnd/4115456-3",
         descriptor: "Oral History",
       },
       {
         lang: :en,
-        scheme: "Gemeinsame Normdatei (GND)",
+        scheme: "Gemeinsame Normdatei (GND-Sachschlagworte)",
         schemURI: "https://dnb.de/gnd/",
         valueURI: "https://d-nb.info/gnd/4115456-3",
         descriptor: "Oral History",

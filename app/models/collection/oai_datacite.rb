@@ -71,7 +71,7 @@ module Collection::OaiDatacite
       xml.contributors do
         project.cooperation_partners.each do |cooperation_partner|
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Kooperationspartner)",
+            xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Cooperation Partner)",
               "xml:lang": "en",
               nameType: "Organizational"
           end

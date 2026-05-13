@@ -39,8 +39,9 @@ module Project::Oai
   end
 
   def oai_publisher(locale)
-    primary_institution = institution_projects.where(primary: true).first&.institution
-    [primary_institution, primary_institution&.parent].compact.map do |ip|
+    primary_institution = institution_projects.where(primary: true).first&.institution ||
+      institutions.first
+    [primary_institution&.parent, primary_institution].compact.map do |ip|
       ip.name(locale)
     end.join(', ')
   end
@@ -78,7 +79,6 @@ module Project::Oai
         "audio/mp3"
       end
     end.compact + [
-      'video/mp4',
       'transcript/pdf',
       'transcript/csv',
       'transcript/vtt',

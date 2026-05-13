@@ -46,11 +46,11 @@ module Project::OaiDatacite
         end
       end
 
-      institutions.leaf.each do |leaf|
+      if institutions.any?
         xml.creators do
-          leaf.with_ancestors.each do |institution|
+          institutions.leaf.each do |institution|
             xml.creator do
-              xml.creatorName institution.name(:en), "xml:lang": "en", nameType: "Organizational"
+              xml.creatorName institution.with_ancestors.map{|i| i.name(:en)}, "xml:lang": "en", nameType: "Organizational"
               xml.nameIdentifier institution.isil, schemeURI: "http://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
               xml.nameIdentifier institution.gnd, schemeURI: "http://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
             end
@@ -76,7 +76,7 @@ module Project::OaiDatacite
 
         cooperation_partners.each do |cooperation_partner|
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Kooperationspartner)",
+            xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Cooperation Partner)",
               "xml:lang": "en",
               nameType: "Organizational"
           end
