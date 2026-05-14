@@ -109,6 +109,7 @@ export default function MultiLocaleWrapper(props) {
             label: labelFunc(locale),
             key: `${attribute}-${locale}`,
             id: `${attribute}_${locale}`,
+            locale: usedLocale(locale),
         });
     };
 

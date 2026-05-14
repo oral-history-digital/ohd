@@ -61,7 +61,11 @@ export default class RichTextarea extends Component {
             >
                 <div
                     className="richtextarea"
-                    data-testid={`${this.props.scope}-${this.props.attribute}-richtextarea`}
+                    data-testid={
+                        this.props.locale
+                            ? `${this.props.scope}-${this.props.attribute}-${this.props.locale}-richtextarea`
+                            : `${this.props.scope}-${this.props.attribute}-richtextarea`
+                    }
                 >
                     <RichTextEditor
                         className="Input"
@@ -83,6 +87,7 @@ RichTextarea.propTypes = {
     handlechangecallback: PropTypes.func,
     value: PropTypes.string,
     scope: PropTypes.string,
+    locale: PropTypes.string,
     label: PropTypes.string,
     labelKey: PropTypes.string,
     showErrors: PropTypes.bool,
