@@ -10,9 +10,9 @@ export default function BookmarkSegmentModal({
     segment,
     trigger,
     triggerClassName,
-    showDialogInitially,
-    hideButton,
-    onClose,
+    showDialogInitially = false,
+    hideButton = false,
+    onClose = null,
 }) {
     const { t } = useI18n();
     const interview = useSelector(getCurrentInterview);
@@ -62,10 +62,4 @@ BookmarkSegmentModal.propTypes = {
     showDialogInitially: PropTypes.bool,
     hideButton: PropTypes.bool,
     onClose: PropTypes.func,
-};
-
-BookmarkSegmentModal.defaultProps = {
-    showDialogInitially: false,
-    hideButton: false,
-    onClose: null,
 };
