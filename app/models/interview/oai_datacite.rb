@@ -96,7 +96,7 @@ module Interview::OaiDatacite
       xml.fundingReferences do
         project.funders.each do |funder|
           xml.fundingReference do
-            xml.funderName funder.name.gsub("'", ""), "xml:lang": "en"
+            xml.funderName funder.name.gsub("'", "")
           end
         end
       end
