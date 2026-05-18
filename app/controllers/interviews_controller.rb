@@ -261,17 +261,21 @@ class InterviewsController < ApplicationController
     end
   end
 
-  #def datacite
-    #interview = Interview.find_by_archive_id(params[:id])
-    #respond_to do |format|
-      #format.xml do
-        #render :datacite, locals: {
-          #interview: interview,
-          #locale: params[:locale]
-        #}
-      #end
-    #end
-  #end
+  # For OAI-PMH metadata exports. Does not trigger download, but renders XML directly.
+  # Here only to test the XML rendering and for use in OAI-PMH responses. For actual download, see download_datacite.
+  # The route is commented out in config/routes.rb, but can be used for testing the XML rendering.
+  def datacite
+    interview = Interview.find_by_archive_id(params[:id])
+    authorize interview, :download?
+    respond_to do |format|
+      format.xml do
+        render :datacite, locals: {
+          interview: interview,
+          locale: params[:locale]
+        }
+      end
+    end
+  end
 
   def download_datacite
     interview = Interview.find_by_archive_id(params[:id])
