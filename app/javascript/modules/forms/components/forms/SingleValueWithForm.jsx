@@ -20,9 +20,11 @@ export default function SingleValueWithForm({
     type,
     multiLocale,
     value,
+    editValue, // used to pass a different value to the form for editing, e.g. for arrays that need to be joined into a string
     validate,
     values,
     withEmpty,
+    help,
     individualErrorMsg,
     optionsScope,
     obj,
@@ -55,16 +57,19 @@ export default function SingleValueWithForm({
         t(`activerecord.attributes.${underscore(obj.type)}.${attribute}`);
 
     const formElements = [];
+
     const formElement = {
         elementType: elementType,
         type: type,
         multiLocale: multiLocale,
         attribute: attribute,
+        value: editValue ?? value,
         label: label,
         validate: validate,
         data: obj,
         values: values,
         withEmpty: withEmpty,
+        help: help,
         individualErrorMsg: individualErrorMsg,
         optionsScope: optionsScope,
     };
@@ -180,9 +185,11 @@ SingleValueWithForm.propTypes = {
     type: PropTypes.string,
     multiLocale: PropTypes.bool,
     value: PropTypes.any,
+    editValue: PropTypes.any,
     validate: PropTypes.func,
     values: PropTypes.array,
     withEmpty: PropTypes.bool,
+    help: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     individualErrorMsg: PropTypes.string,
     optionsScope: PropTypes.string,
     obj: PropTypes.object,

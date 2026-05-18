@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_06_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_12_141200) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -425,7 +425,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_06_120000) do
     t.integer "translation_language_id"
     t.boolean "media_missing", default: false, null: false
     t.boolean "transcript_coupled", default: true
-    t.string "links"
+    t.text "links"
     t.string "publication_date"
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
     t.index ["workflow_state"], name: "index_interviews_on_workflow_state"

@@ -101,4 +101,24 @@ class InterviewTest < ActiveSupport::TestCase
 
     assert_equal([1998,1999], interview.interview_year)
   end
+
+  test "pseudo_links= parses comma and newline separated links" do
+    interview.pseudo_links = "This Link: https://a.example, https://b.example\nAnother one: https://c.example\r\nhttps://d.example"
+
+    assert_equal(
+      [
+        "This Link: https://a.example",
+        "https://b.example",
+        "Another one: https://c.example",
+        "https://d.example"
+      ],
+      interview.links
+    )
+  end
+
+  test "pseudo_links= strips whitespace and removes empty values" do
+    interview.pseudo_links = "  https://a.example  , ,\n  Another Link: https://b.example  \n\n"
+
+    assert_equal(["https://a.example", "Another Link: https://b.example"], interview.links)
+  end
 end
