@@ -34,7 +34,9 @@ export default function InputField({
 }) {
     const onBlur = useTouchFieldOnBlur(touchField);
 
-    const defaultValue = value || data?.[attribute];
+    // Keep explicit empty-string edits; || would incorrectly fall back to persisted data.
+    const defaultValue = value ?? data?.[attribute];
+
     const [changeFile, setChangeFile] = useState(false);
 
     const onChange = (event) => {

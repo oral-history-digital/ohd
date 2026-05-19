@@ -81,10 +81,14 @@ export function useFormState(
                         []
                 )
                 .map((t) => t[element.attribute]);
+
+            // Use current form value first for live validation; fall back to
+            // element default, then persisted data for untouched fields.
             const elementValue =
-                element.value ||
-                values?.[element.attribute] ||
+                values?.[element.attribute] ??
+                element.value ??
                 data?.[element.attribute];
+
             error = element.multiLocale
                 ? !elementValues?.some((value) => element.validate(value))
                 : !(elementValue && element.validate(elementValue));
