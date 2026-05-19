@@ -47,6 +47,8 @@ function EditableSegment({
     isEditingSegment,
     prevSegmentTimecode,
     nextSegmentTimecode,
+    hasBookmarks,
+    onBookmarkCreate,
 }) {
     const divEl = useRef();
     const { segment: segmentParam } = useTranscriptQueryString();
@@ -321,8 +323,10 @@ function EditableSegment({
                 contentLocale={contentLocale}
                 onEditStart={handleEditStart}
                 onViewContentType={handleToggleContentDisplay}
+                onBookmarkCreate={onBookmarkCreate}
                 isEditingSegment={isEditingSegment}
                 canEditSegment={canEditSegment}
+                hasBookmarks={hasBookmarks}
             />
         </div>
     );
@@ -348,6 +352,8 @@ EditableSegment.propTypes = {
     isEditingSegment: PropTypes.bool,
     prevSegmentTimecode: PropTypes.string,
     nextSegmentTimecode: PropTypes.string,
+    hasBookmarks: PropTypes.bool,
+    onBookmarkCreate: PropTypes.func,
 };
 
 const MemoizedSegment = memo(EditableSegment);

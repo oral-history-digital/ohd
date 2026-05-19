@@ -17,8 +17,16 @@ import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { EditableSegment, TranscriptSkeleton } from './components';
-import { useProcessedSegments, useSegmentEditing } from './hooks';
+import {
+    BookmarkSegmentModal,
+    EditableSegment,
+    TranscriptSkeleton,
+} from './components';
+import {
+    useProcessedSegments,
+    useSegmentEditing,
+    useTranscriptBookmarks,
+} from './hooks';
 import { getContributorInformation, isRtlLanguage } from './utils';
 
 export default function Transcript({
@@ -44,6 +52,12 @@ export default function Transcript({
         useInterviewContributors(interview?.id);
     const hasTranscript =
         interview?.alpha3s_with_transcript?.indexOf(transcriptLocale) > -1;
+    const {
+        bookmarkedSegmentIds,
+        selectedBookmarkSegment,
+        handleBookmarkCreate,
+        handleBookmarkModalClose,
+    } = useTranscriptBookmarks();
 
     const segmentEditing = useSegmentEditing();
     const { editingSegmentId } = segmentEditing;
@@ -131,10 +145,20 @@ export default function Transcript({
                             segmentEditing={segmentEditing}
                             prevSegmentTimecode={prevSegment?.timecode}
                             nextSegmentTimecode={nextSegment?.timecode}
+                            hasBookmarks={bookmarkedSegmentIds.has(segment.id)}
+                            onBookmarkCreate={handleBookmarkCreate}
                         />
                     );
                 })}
             </div>
+            {selectedBookmarkSegment && (
+                <BookmarkSegmentModal
+                    segment={selectedBookmarkSegment}
+                    hideButton
+                    showDialogInitially
+                    onClose={handleBookmarkModalClose}
+                />
+            )}
         </>
     );
 }
