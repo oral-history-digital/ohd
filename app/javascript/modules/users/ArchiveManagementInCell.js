@@ -1,10 +1,8 @@
 import { getProjects } from 'modules/data';
-import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 export default function ArchiveManagementInCell({ row }) {
-    const { t } = useI18n();
     const projects = useSelector(getProjects);
     const user = row.original;
 
@@ -12,13 +10,32 @@ export default function ArchiveManagementInCell({ row }) {
         <ul className="DetailList">
             {Object.values(user.user_roles).map((role) => {
                 if (role.name === 'Archivmanagement') {
-                    const project = projects[role.project_id];
+                    const project = projects?.[role.project_id];
+                    if (!project?.shortname) {
+                        console.warn(
+                            '[ArchiveManagementInCell] Missing project for user role',
+                            {
+                                roleId: role.id,
+                                projectId: role.project_id,
+                                userId: user.id,
+                            }
+                        );
+
+                        return (
+                            <li key={role.id} className="DetailList-item">
+                                {`Unknown project (ID: ${role.project_id})`}
+                            </li>
+                        );
+                    }
+
                     return (
-                        <li key={project.id} className="DetailList-item">
+                        <li key={role.id} className="DetailList-item">
                             {project.shortname}
                         </li>
                     );
                 }
+
+                return null;
             })}
         </ul>
     );
