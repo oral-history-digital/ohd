@@ -26,7 +26,9 @@ export default function Textarea({
 }) {
     const onBlur = useTouchFieldOnBlur(touchField);
 
-    const defaultValue = value || data?.[attribute];
+    // Keep explicit empty-string edits; || would incorrectly fall back to persisted data.
+    const defaultValue = value ?? data?.[attribute];
+
     // Determine text direction
     const textDir = checkTextDir(defaultValue || '');
 

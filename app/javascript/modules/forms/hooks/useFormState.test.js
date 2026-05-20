@@ -133,6 +133,69 @@ describe('useFormState', () => {
             },
         ];
 
+        it('uses current edited value for touched-field validation, not stale element fallback', async () => {
+            render({
+                initialValues: {},
+                data: null,
+                elements: [
+                    {
+                        attribute: 'email',
+                        value: 'not-an-email',
+                        validate: (v) =>
+                            typeof v === 'string' && v.includes('@'),
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            await act(async () => {
+                hook.updateField('email', 'valid@example.org');
+                hook.touchField('email');
+            });
+            wrapper.update();
+
+            expect(hook.submitButtonState).toEqual({
+                disabled: false,
+                helpText: null,
+            });
+        });
+
+        it('keeps explicit empty edited value invalid even when fallback values exist', async () => {
+            render({
+                initialValues: { title: 'preset title' },
+                data: { title: 'persisted title' },
+                elements: [
+                    {
+                        attribute: 'title',
+                        value: 'preset title',
+                        validate: (v) => Boolean(v),
+                    },
+                ],
+                submitStateOptions: {
+                    fetching: false,
+                    hasValidationErrors: false,
+                    submitted: false,
+                    disableIfUnchanged: false,
+                },
+            });
+
+            await act(async () => {
+                hook.updateField('title', '');
+                hook.touchField('title');
+            });
+            wrapper.update();
+
+            expect(hook.submitButtonState).toEqual({
+                disabled: true,
+                helpText: 'edit.form.fix_validation_errors',
+            });
+        });
+
         it('initially has no errors', () => {
             render({
                 initialValues: { email: 'a@test.com' },
