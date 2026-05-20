@@ -399,7 +399,7 @@ class ApplicationController < ActionController::Base
       request.body = doi_json(object)
       response = http.request(request)
       Logger.new(STDOUT).info "DOI registration response: #{response.code} #{response.body}"
-      status = response.code == "201" ? "created" : JSON.parse(response.body)["errors"][0]["title"]
+      status = response.code == "201" ? "created" : JSON.parse(response.body)["errors"][0]["title"][0..254]
       object.update doi_status: status, used_doi_prefix: status == "created" ? Rails.configuration.datacite["prefix"] : nil
     else
       status = "created"
@@ -412,16 +412,16 @@ class ApplicationController < ActionController::Base
 
     suffix = case object
              when Interview
-               ".#{object.archive_id}"
+               "#{current_project.shortname}.#{object.archive_id}"
              when Collection
-               ".#{object.id}"
+               "#{current_project.shortname}.#{object.id}"
              when Project
-               ""
+               object.shortname
              else
                raise "Unsupported object type for DOI generation"
              end
 
-    doi = "#{Rails.configuration.datacite["prefix"]}/#{current_project.shortname}#{suffix}"
+    doi = "#{Rails.configuration.datacite["prefix"]}/#{suffix}"
     url = "#{current_project.domain_with_optional_identifier}/#{locale}/"
     url += "interviews/#{object.archive_id}" if object.is_a?(Interview)
 

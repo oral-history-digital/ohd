@@ -106,7 +106,7 @@ module Project::OaiDatacite
         xml.fundingReferences do
           oai_funders.each do |funder|
             xml.fundingReference do
-              xml.funderName funder, "xml:lang": "en"
+              xml.funderName funder
             end
           end
         end
@@ -126,7 +126,7 @@ module Project::OaiDatacite
 
       xml.version "1.0"
 
-      xml.language oai_languages
+      #xml.language oai_languages
 
       xml.dates do
         xml.date oai_coverage, dateType: "Coverage"

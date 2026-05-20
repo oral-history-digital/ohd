@@ -25,7 +25,6 @@ class ProjectSerializer < ApplicationSerializer
     :domain,
     :archive_domain,
     :domain_with_optional_identifier,
-    :doi,
     :doi_status,
     :used_doi_prefix,
     :has_newsletter,

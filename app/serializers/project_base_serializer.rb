@@ -17,6 +17,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :leaders,
     :managers,
     :funders,
+    :doi_status,
+    :used_doi_prefix,
     :registry_reference_type_ids,
     :root_registry_entry_id,
     :workflow_state,
