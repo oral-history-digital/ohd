@@ -2,6 +2,10 @@ import timekeeper from 'timekeeper';
 
 import interviewCitation from './interviewCitation';
 
+jest.mock('modules/constants', () => ({
+    OHD_LOCATION: 'https://portal.oral-history.digital',
+}));
+
 const interview = {
     anonymous_title: { de: 'Alice H.' },
     archive_id: 'da001',
@@ -24,6 +28,14 @@ const translations = {
     },
 };
 
+const t = (k) => {
+    return (
+        translations[locale][k] ||
+        translations[locale]?.modules?.workbook?.position ||
+        k
+    );
+};
+
 beforeAll(() => {
     // Lock Time
     timekeeper.freeze(new Date('2014-01-01'));
@@ -35,13 +47,6 @@ afterAll(() => {
 });
 
 test('creates citation string for interviews', () => {
-    const t = (k) => {
-        return (
-            translations[locale][k] ||
-            translations[locale]?.modules?.workbook?.position ||
-            k
-        );
-    };
     const actual = interviewCitation(
         interview,
         project,
@@ -57,13 +62,6 @@ test('creates citation string for interviews', () => {
 });
 
 test('creates citation string for segments', () => {
-    const t = (k) => {
-        return (
-            translations[locale][k] ||
-            translations[locale]?.modules?.workbook?.position ||
-            k
-        );
-    };
     const actual = interviewCitation(interview, project, pathBase, 1, 3245, {
         t,
         locale,
@@ -78,13 +76,6 @@ test('works for projects without archive domain', () => {
     const projectWithoutDomain = {
         ...project,
         archive_domain: null,
-    };
-    const t = (k) => {
-        return (
-            translations[locale][k] ||
-            translations[locale]?.modules?.workbook?.position ||
-            k
-        );
     };
     const actual = interviewCitation(
         interview,

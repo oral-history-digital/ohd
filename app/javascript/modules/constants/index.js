@@ -1,4 +1,4 @@
-/* global railsMode */
+/* global railsMode, ohdDomain, ohdDomains */
 
 /**
  * Put global constants here.
@@ -37,15 +37,17 @@ export const METADATA_SOURCE_PERSON = 'Person';
 export const METADATA_SOURCE_REGISTRY_REFERENCE_TYPE = 'RegistryReferenceType';
 export const METADATA_SOURCE_EVENT_TYPE = 'EventType';
 
-// TODO: Replace hardcoded OHD domains with runtime-injected config (or same-origin URLs)
-// so staging/production host changes do not require frontend rebuilds.
-export const OHD_LOCATION = 'https://portal.oral-history.digital';
-export const OHD_DOMAINS = {
-    development: 'http://portal.oral-history.localhost:3000',
-    staging: 'https://staging.oral-history.digital',
-    production: 'https://portal.oral-history.digital',
-    test: 'http://test.portal.oral-history.localhost:47001',
-};
+// Prefer Rails-injected values from backend constants to avoid duplicated declarations.
+const RUNTIME_RAILS_MODE =
+    typeof railsMode === 'string' && railsMode ? railsMode : undefined;
+
+// TODO: Define current domain in backend and pass it already processed instead of doing this check in frontend.
+export const OHD_DOMAINS =
+    typeof ohdDomains === 'object' && ohdDomains !== null ? ohdDomains : {};
+
+export const OHD_LOCATION =
+    (typeof ohdDomain === 'string' && ohdDomain) ||
+    (RUNTIME_RAILS_MODE ? OHD_DOMAINS[RUNTIME_RAILS_MODE] : undefined);
 
 export const GITHUB_URL = 'https://github.com/oral-history-digital/ohd';
 

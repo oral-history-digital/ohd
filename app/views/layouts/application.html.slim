@@ -10,6 +10,8 @@ html
     javascript:
       var developmentMode = #{Rails.env == 'development' ? true : false};
       var railsMode = '#{Rails.env}';
+      var ohdDomain = #{raw OHD_DOMAIN.to_json};
+      var ohdDomains = #{raw OHD_DOMAINS.to_json};
 
     == javascript_pack_tag 'application'
     == stylesheet_pack_tag 'application'
