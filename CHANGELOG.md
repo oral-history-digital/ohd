@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.5] - 2026-05-20
+
+### Fixed
+
+- fix(users-admin): handle missing project refs in archive management cell ([#116](https://github.com/oral-history-digital/ohd/pull/116))
+- fix(forms): validate live field values instead of stale defaults ([#117](https://github.com/oral-history-digital/ohd/pull/117))
+
 ## [2.3.4] - 2026-05-19
 
 ### Fixed
@@ -541,6 +548,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.3.5]: https://github.com/oral-history-digital/ohd/compare/v2.3.4...v2.3.5
 [2.3.4]: https://github.com/oral-history-digital/ohd/compare/v2.3.3...v2.3.4
 [2.3.3]: https://github.com/oral-history-digital/ohd/compare/v2.3.2...v2.3.3
 [2.3.2]: https://github.com/oral-history-digital/ohd/compare/v2.3.1...v2.3.2
