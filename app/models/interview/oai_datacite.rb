@@ -4,10 +4,10 @@ module Interview::OaiDatacite
       "resource",
       "xmlns": "http://datacite.org/schema/kernel-4",
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-      "xsi:schemaLocation": %(
+      "xsi:schemaLocation": %w(
         http://datacite.org/schema/kernel-4
         http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
-      ).gsub(/\s+/, " ")
+      ).join(" ")
     ) do
 
       xml.identifier oai_url_identifier(project.default_locale), identifierType: "URL"
@@ -24,11 +24,13 @@ module Interview::OaiDatacite
       xml.relatedIdentifiers do
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}",
           relatedIdentifierType: "URL",
-          relationType: "IsPartOf"
+          relationType: "IsPartOf",
+          resourceTypeGeneral: "Dataset"
         if collection_id
           xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/collections/#{collection_id}",
             relatedIdentifierType: "URL",
-            relationType: "IsPartOf"
+            relationType: "IsPartOf",
+            resourceTypeGeneral: "Collection"
         end
       end
 
@@ -56,6 +58,11 @@ module Interview::OaiDatacite
       end
 
       xml.contributors do
+        xml.contributor contributorType: "DataManager" do
+          xml.contributorName project.name(:en),
+            "xml:lang": "en",
+            nameType: "Organizational"
+        end
         project.cooperation_partners.each do |cooperation_partner|
           xml.contributor contributorType: "DataCollector" do
             xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Cooperation Partner)",
@@ -77,9 +84,9 @@ module Interview::OaiDatacite
               nameType: "Personal"
           end
         end
-        project.oai_managers.each do |manager|
-          xml.contributor contributorType: "ProjectManager" do
-            xml.contributorName manager,
+        project.oai_managers.each do |manager_name|
+          xml.contributor contributorType: "ContactPerson" do
+            xml.contributorName manager_name.strip,
               "xml:lang": "en",
               nameType: "Personal"
           end
