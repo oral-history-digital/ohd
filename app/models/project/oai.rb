@@ -55,7 +55,7 @@ module Project::Oai
   end
 
   def oai_funders
-    funders.map{|f| "#{f.first_name} #{f.last_name}"}
+    funders.map(&:name)
   end
 
   def oai_publication_date
@@ -71,19 +71,23 @@ module Project::Oai
   end
 
   def oai_formats
-    interviews.pluck(:media_type).uniq.map do |mt|
+    formats = interviews.pluck(:media_type).uniq.map do |mt|
       case mt
       when 'video'
         "video/mp4"
       when 'audio'
         "audio/mp3"
       end
-    end.compact + [
+    end.compact
+    if Segment.where(interview_id: interviews.pluck(:id)).exists?
+      formats += [
       'transcript/pdf',
       'transcript/csv',
       'transcript/vtt',
       'transcript/tei-xml'
-    ]
+      ]
+    end
+    formats
   end
 
   def oai_size

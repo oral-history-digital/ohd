@@ -14,7 +14,9 @@ module Project::OaiDatacite
 
       xml.alternateIdentifiers do
         xml.alternateIdentifier oai_catalog_identifier(:en), alternateIdentifierType: "URL"
-        xml.alternateIdentifier oai_doi_identifier, alternateIdentifierType: "DOI"
+        if doi_status == "created"
+          xml.alternateIdentifier oai_doi_identifier, alternateIdentifierType: "DOI"
+        end
       end
 
       xml.relatedIdentifiers do
@@ -41,7 +43,7 @@ module Project::OaiDatacite
       end
 
       xml.titles do
-        (oai_locales | ['en']).each do |locale|
+        [:de, :en].each do |locale|
           xml.title oai_title(locale), "xml:lang": locale
         end
       end

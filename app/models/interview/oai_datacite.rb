@@ -17,8 +17,10 @@ module Interview::OaiDatacite
           xml.alternateIdentifier oai_url_identifier(locale),
             alternateIdentifierType: "URL"
         end
-        xml.alternateIdentifier oai_doi_identifier,
-          alternateIdentifierType: "DOI"
+        if doi_status == "created"
+          xml.alternateIdentifier oai_doi_identifier,
+            alternateIdentifierType: "DOI"
+        end
       end
 
       xml.relatedIdentifiers do
@@ -35,7 +37,7 @@ module Interview::OaiDatacite
       end
 
       xml.titles do
-        (oai_locales | ['en']).each do |locale|
+        [:de, :en].each do |locale|
           xml.title oai_title(locale), "xml:lang": locale
         end
       end
@@ -101,9 +103,9 @@ module Interview::OaiDatacite
       end
 
       xml.fundingReferences do
-        project.funders.each do |funder|
+        project.oai_funders.each do |funder|
           xml.fundingReference do
-            xml.funderName funder.name.gsub("'", "")
+            xml.funderName funder
           end
         end
       end

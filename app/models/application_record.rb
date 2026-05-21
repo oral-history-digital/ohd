@@ -93,7 +93,7 @@ class ApplicationRecord < ActiveRecord::Base
       },
       {
         lang: :en,
-        scheme: "Gemeinsame Normdatei (GND-Sachschlagworte)",
+        scheme: "Integrated Authority File (GND-Subject headings)",
         schemURI: "https://dnb.de/gnd/",
         valueURI: "https://d-nb.info/gnd/4115456-3",
         descriptor: "Oral History",

@@ -28,6 +28,7 @@ class OaiTest < ActionDispatch::IntegrationTest
     "/de/oai_repository?verb=GetRecord&metadataPrefix=oai_datacite&identifier=oai:oral-history.digital:collection-COLLECTION_ID",
   ].each do |url|
     test "OAI request #{url}" do
+      puts "Testing OAI request #{url}"
       get url.sub('COLLECTION_ID', @oai_collection.id.to_s).sub('INTERVIEW_ID', @oai_interview.id.to_s)
       #assert_includes @response.body, "OAI-PMH xsi:schemaLocation=\"http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd\""
       assert_includes @response.body, "OAI-PMH xmlns=\"http://www.openarchives.org/OAI/2.0/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd\""

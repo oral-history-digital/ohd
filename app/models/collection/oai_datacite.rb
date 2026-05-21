@@ -14,7 +14,9 @@ module Collection::OaiDatacite
 
       xml.alternateIdentifiers do
         xml.alternateIdentifier oai_catalog_identifier(:en), alternateIdentifierType: "URL"
-        xml.alternateIdentifier oai_doi_identifier, alternateIdentifierType: "DOI"
+        if doi_status == "created"
+          xml.alternateIdentifier oai_doi_identifier, alternateIdentifierType: "DOI"
+        end
       end
 
       xml.relatedIdentifiers do
@@ -43,7 +45,7 @@ module Collection::OaiDatacite
       end
 
       xml.titles do
-        (oai_locales | ['en']).each do |locale|
+        [:de, :en].each do |locale|
           xml.title oai_title(locale), "xml:lang": locale
         end
       end
@@ -79,6 +81,13 @@ module Collection::OaiDatacite
         project.oai_leaders.each do |leader|
           xml.contributor contributorType: "ProjectLeader" do
             xml.contributorName leader,
+              "xml:lang": "en",
+              nameType: "Personal"
+          end
+        end
+        if project.interviewer_on_landing_page?
+          xml.contributor contributorType: "DataCollector" do
+            xml.contributorName interviewers.map(&:full_name).join(", "),
               "xml:lang": "en",
               nameType: "Personal"
           end

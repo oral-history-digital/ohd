@@ -57,12 +57,16 @@ module Collection::Oai
     "Collection"
   end
 
+  def oai_doi_identifier
+    "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{id}"
+  end
+
   def type
     'Collection'
   end
 
   def oai_formats
-    interviews.pluck(:media_type).uniq.map do |mt|
+    formats = interviews.pluck(:media_type).uniq.map do |mt|
       case mt
       when 'video'
         "video/mp4"
@@ -70,6 +74,15 @@ module Collection::Oai
         "audio/mp3"
       end
     end.compact
+    if Segment.where(interview_id: interviews.pluck(:id)).exists?
+      formats += [
+      'transcript/pdf',
+      'transcript/csv',
+      'transcript/vtt',
+      'transcript/tei-xml'
+      ]
+    end
+    formats
   end
 
   def oai_size
