@@ -1,8 +1,8 @@
 services:
   app:
     ports:
-      - '3000:3000'
-      - '3035:3035'
+      - '127.0.0.1:3000:3000'
+      - '127.0.0.1:3035:3035'
     # Entrypoint runs as root: fixes volume ownership, then exec's sleep infinity.
     # VS Code's remoteUser:vscode ensures all interactive processes run as vscode.
     entrypoint: ['bash', '/workspace/.devcontainer/scripts/entrypoint.sh']
@@ -58,7 +58,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: ohd_development
     ports:
-      - '3306:3306'
+      - '127.0.0.1:3306:3306'
     healthcheck:
       test:
         [
@@ -80,7 +80,7 @@ services:
     image: solr:5.5
     platform: linux/amd64 # No multi-arch image available, force AMD64
     ports:
-      - '8983:8983'
+      - '127.0.0.1:8983:8983'
     volumes:
       - solr-data:/var/solr
       - ../../solr/configsets:/opt/solr/server/solr/configsets:ro
