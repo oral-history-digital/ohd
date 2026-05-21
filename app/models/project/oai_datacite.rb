@@ -50,7 +50,7 @@ module Project::OaiDatacite
         xml.creators do
           institutions.leaf.each do |institution|
             xml.creator do
-              xml.creatorName institution.with_ancestors.map{|i| i.name(:en)}, "xml:lang": "en", nameType: "Organizational"
+              xml.creatorName institution.with_ancestors.map{|i| i.name(:en)}.join(", "), "xml:lang": "en", nameType: "Organizational"
               xml.nameIdentifier institution.isil, schemeURI: "http://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
               xml.nameIdentifier institution.gnd, schemeURI: "http://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
             end
