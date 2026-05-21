@@ -1,4 +1,5 @@
 export * from './useArchiveSearchIds';
+export * from './useCurrentProject';
 export * from './useGetCollection';
 export * from './useGetHomepageSettings';
 export * from './useGetInstitution';
@@ -7,6 +8,7 @@ export * from './useGetInstitutionsList';
 export * from './useGetProject';
 export * from './useGetProjectCollections';
 export * from './useGetProjects';
+export * from './useHydrateProjectsByIds';
 export * from './useHumanReadable';
 export * from './useInstanceSettings';
 export * from './useLoadCompleteProject';
