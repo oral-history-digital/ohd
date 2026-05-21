@@ -12,7 +12,7 @@ export default function InterviewImage({ interview, project }) {
     const [loaded, setLoaded] = useState(false);
 
     let imageAvailable =
-        (project.show_preview_img || projectAccessGranted) &&
+        (project?.show_preview_img || projectAccessGranted) &&
         interview.still_url &&
         !error;
 
@@ -49,5 +49,5 @@ export default function InterviewImage({ interview, project }) {
 
 InterviewImage.propTypes = {
     interview: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
+    project: PropTypes.object,
 };

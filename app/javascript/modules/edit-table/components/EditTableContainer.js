@@ -22,7 +22,6 @@ const mapStateToProps = (state) => ({
     mediaTime: getMediaTime(state),
     filter: getFilter(state),
     segmentsStatus: getSegmentsStatus(state),
-    project: getCurrentProject(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

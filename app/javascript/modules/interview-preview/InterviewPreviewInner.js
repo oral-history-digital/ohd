@@ -59,7 +59,7 @@ export default function InterviewPreviewInner({
                 )}
             </div>
 
-            {currentProject.is_ohd && (
+            {currentProject?.is_ohd && (
                 <InterviewArchiveDisplay project={project} />
             )}
 
@@ -70,7 +70,7 @@ export default function InterviewPreviewInner({
 
 InterviewPreviewInner.propTypes = {
     interview: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
+    project: PropTypes.object,
     locale: PropTypes.string.isRequired,
     isExpanded: PropTypes.bool.isRequired,
 };

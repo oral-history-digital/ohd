@@ -37,6 +37,12 @@ export default function SidebarTabs({
 
     const hasMap = project?.has_map;
     const isCampscapesProject = project?.shortname === 'campscapes';
+    const projectName =
+        (typeof project?.name === 'object' && project?.name?.[locale]) ||
+        project?.name ||
+        project?.display_name ||
+        project?.shortname ||
+        '';
 
     const [tabIndex, setTabIndex] = useState(() =>
         tabIndexFromRoute(pathBase, pathname, isCampscapesProject)
@@ -44,7 +50,7 @@ export default function SidebarTabs({
 
     useEffect(() => {
         setTabIndex(tabIndexFromRoute(pathBase, pathname, isCampscapesProject));
-    }, [pathname]);
+    }, [pathBase, pathname, isCampscapesProject]);
 
     function handleTabClick(index) {
         setTabIndex(index);
@@ -81,23 +87,34 @@ export default function SidebarTabs({
         }
     }
 
-    const showCatalogTab = project.is_ohd;
+    const showCatalogTab = project?.is_ohd;
     const showInterviewTab = !!interview;
     const showRegistryTab =
         (!isLoggedIn &&
-            project.logged_out_visible_registry_entry_ids?.length > 0) ||
+            project?.logged_out_visible_registry_entry_ids?.length > 0) ||
         isLoggedIn;
-    const showMapTab = hasMap && !project.is_ohd;
+    const showMapTab = hasMap && !project?.is_ohd;
     const showWorkbookTab = isLoggedIn;
     const showIndexingTab = isAuthorized({ type: 'General' }, 'edit');
     const showAdministrationTab = isAuthorized({ type: 'General' }, 'edit');
     const showProjectAdminTab = isAuthorized({ type: 'Project' }, 'update');
     const showProjectsTab =
-        project.is_ohd && isAuthorized({ type: 'Project' }, 'create');
+        project?.is_ohd && isAuthorized({ type: 'Project' }, 'create');
     const showInstitutionsTab =
-        project.is_ohd && isAuthorized({ type: 'Institution' }, 'create');
+        project?.is_ohd && isAuthorized({ type: 'Institution' }, 'create');
     const showHelpTextsTab =
-        project.is_ohd && isAuthorized({ type: 'HelpText' }, 'update');
+        project?.is_ohd && isAuthorized({ type: 'HelpText' }, 'update');
+
+    // TODO: Remove this special handling
+    const isCampscapesWithoutArchive = isCampscapesProject && !archiveId;
+    const searchTabLabelKey = isCampscapesWithoutArchive
+        ? 'user.notes_on_tos_agreement'
+        : project?.is_ohd
+          ? 'modules.sidebar.search'
+          : 'archive_search';
+    const searchTabLabelParams = isCampscapesWithoutArchive
+        ? { project: projectName }
+        : undefined;
 
     return (
         <Tabs
@@ -125,14 +142,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab key="3" className="SidebarTabs-tab">
-                    {t(
-                        isCampscapesProject && !archiveId
-                            ? ('user.notes_on_tos_agreement',
-                              { project: project.name[locale] })
-                            : project.is_ohd
-                              ? 'modules.sidebar.search'
-                              : 'archive_search'
-                    )}
+                    {t(searchTabLabelKey, searchTabLabelParams)}
                 </Tab>
 
                 <Tab

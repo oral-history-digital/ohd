@@ -63,7 +63,7 @@ export default function InterviewPreview({
                 numSearchResults={numResults}
                 onClick={() => setIsExpanded((prev) => !prev)}
             />
-            {isLoggedIn && (
+            {isLoggedIn && project && (
                 <Modal
                     title={
                         isInWorkbook
@@ -107,7 +107,7 @@ export default function InterviewPreview({
                 />
             </LinkOrA>
 
-            {isExpanded && searchResults && numResults > 0 && (
+            {isExpanded && project && searchResults && numResults > 0 && (
                 <div className="slider">
                     <div className="archive-search-found-segments">
                         <SlideShowSearchResults
