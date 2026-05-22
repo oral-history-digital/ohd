@@ -12,11 +12,7 @@ services:
     #   dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
-      # Mount secrets from host (managed by Capistrano linked files)
-      - ./config/database.yml:/app/config/database.yml:ro
-      - ./config/secrets.yml:/app/config/secrets.yml:ro
-      - ./config/storage.yml:/app/config/storage.yml:ro
-      - ./config/datacite.yml:/app/config/datacite.yml:ro
+      # Mount secrets from host
       - ./config/hls:/app/config/hls:ro
       # Persistent data
       - app-cache:/app/tmp/cache
@@ -112,10 +108,6 @@ services:
     command: ['bundle', 'exec', 'rake', 'jobs:work']
     volumes:
       # Same secret mounts as app
-      - ./config/database.yml:/app/config/database.yml:ro
-      - ./config/secrets.yml:/app/config/secrets.yml:ro
-      - ./config/storage.yml:/app/config/storage.yml:ro
-      - ./config/datacite.yml:/app/config/datacite.yml:ro
       - ./config/hls:/app/config/hls:ro
       # Shared volumes
       - app-cache:/app/tmp/cache
