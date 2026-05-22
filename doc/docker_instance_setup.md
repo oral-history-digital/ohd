@@ -293,6 +293,19 @@ Compose should pass env vars as overrides, not duplicate app defaults.
 - `LETSENCRYPT_DOMAIN`
 - `LETSENCRYPT_EMAIL`
 
+### HLS decryption key
+
+For encrypted HLS playback, mount the key file into the app container:
+
+- Host path: `./config/hls/file_single_encryption.key`
+- Container path: `/app/config/hls/file_single_encryption.key`
+
+Notes:
+
+- Do not commit this file to git.
+- Keep permissions restricted on host (owner-read only where possible).
+- The app serves this key via `/de/hls.key` for authorized users.
+
 ### Optional
 
 - `ALLOW_LOCALHOST_IN_PRODUCTION` (default `false`)
@@ -364,6 +377,7 @@ docker compose -f docker-compose.yml logs --tail=200 certbot
 - OIDC issuer/signing key match instance URL
 - Worker processes jobs
 - Solr ping/search works
+- Authorized request to `/de/hls.key` succeeds and unauthorized request is denied
 
 ## TLS and Certificates
 

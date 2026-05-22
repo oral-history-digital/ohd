@@ -1,6 +1,8 @@
 class MediaStreamsController < ApplicationController
   require 'open-uri'
 
+  HLS_KEY_DEFAULT_PATH = File.join(Rails.root, 'config', 'hls', 'file_single_encryption.key').freeze
+
   def show
     interview = Interview.find_by_archive_id(params[:archive_id])
     authorize interview
@@ -14,9 +16,12 @@ class MediaStreamsController < ApplicationController
 
   def hls
     authorize MediaStream, :hls?
+
+    return head :service_unavailable unless File.file?(HLS_KEY_DEFAULT_PATH)
+
     respond_to do |format|
       format.key do
-        send_file File.join(Rails.root, 'config', 'hls', 'file_single_encryption.key'), filename: 'hls.key'
+        send_file HLS_KEY_DEFAULT_PATH, filename: 'hls.key', type: Mime[:key]
       end
     end
   end

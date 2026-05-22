@@ -17,6 +17,7 @@ services:
       - ./config/secrets.yml:/app/config/secrets.yml:ro
       - ./config/storage.yml:/app/config/storage.yml:ro
       - ./config/datacite.yml:/app/config/datacite.yml:ro
+      - ./config/hls:/app/config/hls:ro
       # Persistent data
       - app-cache:/app/tmp/cache
       - app-files:/app/tmp/files
@@ -115,6 +116,7 @@ services:
       - ./config/secrets.yml:/app/config/secrets.yml:ro
       - ./config/storage.yml:/app/config/storage.yml:ro
       - ./config/datacite.yml:/app/config/datacite.yml:ro
+      - ./config/hls:/app/config/hls:ro
       # Shared volumes
       - app-cache:/app/tmp/cache
       - app-files:/app/tmp/files

@@ -99,3 +99,12 @@ For both paths:
 4. DataCite actions can authenticate (if used in this instance).
 
 For Docker path, `docker:deploy` already includes migration and verification steps.
+
+## HLS key provisioning
+
+For encrypted HLS playback, provide the key file on the host and mount it read-only into the app container:
+
+- Host path: `./config/hls/file_single_encryption.key`
+- Container path: `/app/config/hls/file_single_encryption.key`
+
+The legacy endpoint remains unchanged at `/de/hls.key` and is still protected by authorization.
