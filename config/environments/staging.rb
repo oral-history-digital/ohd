@@ -26,7 +26,7 @@ Rails.application.configure do
   #config.assets.compile = false
 
   # File storage configuration
-  config.active_storage.service = :staging
+  config.active_storage.service = :file_storage
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 

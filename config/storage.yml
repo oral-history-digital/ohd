@@ -6,10 +6,12 @@ test:
   service: Disk
   root: <%= ENV.fetch('STORAGE_TEST_ROOT', Rails.root.join('tmp/storage')) %>
 
-staging:
+file_storage:
   service: Disk
-  root: <%= ENV.fetch('STORAGE_STAGING_ROOT', '/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage') %>
+  root: <%= ENV.fetch('STORAGE_FILE_ROOT', Rails.env.production? ? ENV.fetch('STORAGE_PROD_ROOT', '/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage') : ENV.fetch('STORAGE_STAGING_ROOT', '/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage')) %>
 
-prod:
+# Compatibility aliases for existing blob.service_name values.
+fu_server:
   service: Disk
-  root: <%= ENV.fetch('STORAGE_PROD_ROOT', '/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage') %>
+  root: <%= ENV.fetch('STORAGE_FILE_ROOT', Rails.env.production? ? ENV.fetch('STORAGE_PROD_ROOT', '/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage') : ENV.fetch('STORAGE_STAGING_ROOT', '/mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/ohd/storage')) %>
+

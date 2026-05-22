@@ -30,7 +30,7 @@ Rails.application.configure do
   #config.assets.compile = false
 
   # File storage configuration
-  config.active_storage.service = :prod
+  config.active_storage.service = :file_storage
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
