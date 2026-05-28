@@ -27,7 +27,11 @@ import {
     useSegmentEditing,
     useTranscriptBookmarks,
 } from './hooks';
-import { getContributorInformation, isRtlLanguage } from './utils';
+import {
+    getContributorInformation,
+    getSegmentTimecodeBounds,
+    isRtlLanguage,
+} from './utils';
 
 export default function Transcript({
     transcriptLocale,
@@ -127,6 +131,12 @@ export default function Transcript({
                 {processedSegments.map((segment, index, array) => {
                     const prevSegment = array[index - 1];
                     const nextSegment = array[index + 1];
+                    const { prevSegmentTimecode, nextSegmentTimecode } =
+                        getSegmentTimecodeBounds(
+                            segment,
+                            prevSegment,
+                            nextSegment
+                        );
                     const isEditingSegment =
                         isEditviewActive && editingSegmentId === segment.id;
 
@@ -143,8 +153,8 @@ export default function Transcript({
                             nextSegmentTape={nextSegment?.tape_nbr}
                             isEditingSegment={isEditingSegment}
                             segmentEditing={segmentEditing}
-                            prevSegmentTimecode={prevSegment?.timecode}
-                            nextSegmentTimecode={nextSegment?.timecode}
+                            prevSegmentTimecode={prevSegmentTimecode}
+                            nextSegmentTimecode={nextSegmentTimecode}
                             hasBookmarks={bookmarkedSegmentIds.has(segment.id)}
                             onBookmarkCreate={handleBookmarkCreate}
                         />
