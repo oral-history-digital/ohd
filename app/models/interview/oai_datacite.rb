@@ -74,7 +74,7 @@ module Interview::OaiDatacite
         end
         if project.interviewer_on_landing_page?
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName interviewers.map(&:full_name).join(", "),
+            xml.contributorName interviewers.map{|i| i.full_name(:en)}.join(", "),
               "xml:lang": "en",
               nameType: "Personal"
           end

@@ -45,7 +45,7 @@ module Collection::OaiDatacite
       end
 
       xml.titles do
-        [:de, :en].each do |locale|
+        oai_locales.each do |locale|
           xml.title oai_title(locale), "xml:lang": locale
         end
       end
@@ -71,27 +71,27 @@ module Collection::OaiDatacite
       end
 
       xml.contributors do
-        project.cooperation_partners.each do |cooperation_partner|
-          xml.contributor contributorType: "DataCollector" do
-            xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Cooperation Partner)",
-              "xml:lang": "en",
-              nameType: "Organizational"
-          end
-        end
-        project.oai_leaders.each do |leader|
-          xml.contributor contributorType: "ProjectLeader" do
-            xml.contributorName leader,
-              "xml:lang": "en",
-              nameType: "Personal"
-          end
-        end
-        if project.interviewer_on_landing_page?
-          xml.contributor contributorType: "DataCollector" do
-            xml.contributorName interviewers.map(&:full_name).join(", "),
-              "xml:lang": "en",
-              nameType: "Personal"
-          end
-        end
+        #project.cooperation_partners.each do |cooperation_partner|
+          #xml.contributor contributorType: "DataCollector" do
+            #xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Cooperation Partner)",
+              #"xml:lang": "en",
+              #nameType: "Organizational"
+          #end
+        #end
+        #project.oai_leaders.each do |leader|
+          #xml.contributor contributorType: "ProjectLeader" do
+            #xml.contributorName leader,
+              #"xml:lang": "en",
+              #nameType: "Personal"
+          #end
+        #end
+        #if project.interviewer_on_landing_page?
+          #xml.contributor contributorType: "DataCollector" do
+            #xml.contributorName interviewers.map(&:full_name).join(", "),
+              #"xml:lang": "en",
+              #nameType: "Personal"
+          #end
+        #end
         #project.oai_managers.each do |manager|
           #xml.contributor contributorType: "ProjectManager" do
             #xml.contributorName manager,

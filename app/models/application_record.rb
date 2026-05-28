@@ -108,12 +108,13 @@ class ApplicationRecord < ActiveRecord::Base
     ]
     subjects.each do |subject|
       opts = {
-        subjectScheme: subject[:scheme],
         schemeURI: subject[:schemURI],
       }
       if subject[:valueURI]
         opts[:valueURI] = subject[:valueURI]
       end
+      opts[:subjectScheme] = subject[:scheme]
+
       if subject[:classificationCode]
         opts[:classificationCode] = subject[:classificationCode]
       end
