@@ -33,72 +33,49 @@ Important:
 - Do not alternate both paths on the same target instance without a planned handover.
 - Legacy uses release symlinks/linked files; Docker uses `docker-compose.yml` and container runtime mounts.
 
-## Required changes for legacy deploy (env-first migration)
+## Legacy deploy model: linked-files-first
 
-For legacy deploy, these values must now be provided via environment variables on the target host/runtime.
+For `cap <stage> deploy`, runtime configuration comes from shared linked files.
 
-Capistrano now loads a stage-specific host env file:
+### Required linked files and key material for legacy deploy
 
-- `ohd_archive`: `/data/applications/ohd_archive/shared/config/deploy.env`
-- `ohd_archive_staging`: `/data/applications/ohd_archive_staging/shared/config/deploy.env`
+These must exist on the target host in the shared path before deploy:
 
-Use standard env-file lines (`KEY=value`) in these files.
+- `config/database.yml`
+- `config/secrets.yml`
+- `config/sunspot.yml`
+- `config/datacite.yml`
+- `config/storage.yml`
+- `config/master.key`
+- `config/hls/file_single_encryption.key`
 
-### Required for staging (`ohd_archive_staging`)
+Notes:
 
-```bash
-SECRET_KEY_BASE=
-OIDC_SIGNING_KEY=
-OIDC_ISSUER=
+- Same-named files in the repository are expected; Capistrano replaces them in each release with symlinks to shared files.
+- Shared linked files are instance-owned runtime config and must stay in sync with application expectations.
+- The HLS key file is required runtime key material and is provided through the linked `config/hls` directory.
 
-MYSQL_HOST_STAGING=
-MYSQL_DATABASE_STAGING=
-MYSQL_USER_STAGING=
-MYSQL_PASSWORD_STAGING=
+## deploy.env policy for legacy deploy
 
-DATACITE_CLIENT_ID_STAGING=
-DATACITE_PASSWORD_STAGING=
+By default, legacy stage configs do not source `deploy.env`.
+With linked files + decryptable credentials in place, no env vars are required by default.
+
+### How to enable deploy-time env loading (if needed)
+
+If you need temporary variables for Capistrano task shell commands (for example `bundle`, `rake`, or `rails` during deploy), add guarded sourcing in the stage `:rbenv_prefix`:
+
+```ruby
+set :deploy_env_file, "#{fetch(:deploy_to)}/shared/config/deploy.env"
+set :rbenv_prefix, -> {
+	"bash -lc 'set -a; [ -f #{fetch(:deploy_env_file)} ] && . #{fetch(:deploy_env_file)}; set +a; export RAILS_ENV=staging RACK_ENV=staging; exec #{fetch(:rbenv_custom_path)}/bin/rbenv exec \"$@\"' bash"
+}
 ```
 
-### Required for production (`ohd_archive`)
+Limitations:
 
-```bash
-SECRET_KEY_BASE=
-OIDC_SIGNING_KEY=
-OIDC_ISSUER=
-
-MYSQL_HOST_PRODUCTION=
-MYSQL_DATABASE_PRODUCTION=
-MYSQL_USER_PRODUCTION=
-MYSQL_PASSWORD_PRODUCTION=
-
-DATACITE_CLIENT_ID_PRODUCTION=
-DATACITE_PASSWORD_PRODUCTION=
-```
-
-## Optional but recommended vars
-
-Set these explicitly to avoid relying on defaults:
-
-- `OHD_DOMAIN_STAGING` / `OHD_DOMAIN_PRODUCTION`
-- `STORAGE_STAGING_ROOT` / `STORAGE_PROD_ROOT`
-- `RAILS_MAX_THREADS`
-
-Optional host tuning:
-
-- `OHD_EXTRA_HOSTS_STAGING` / `OHD_EXTRA_HOSTS_PRODUCTION`
-- `ALLOW_LOCALHOST_IN_PRODUCTION=true` (only for controlled smoke tests)
-
-## Quick verification after deploy
-
-For both paths:
-
-1. App boots and serves the expected host/domain.
-2. Worker is running and jobs are processed.
-3. Database connectivity works.
-4. DataCite actions can authenticate (if used in this instance).
-
-For Docker path, `docker:deploy` already includes migration and verification steps.
+- This affects Capistrano task shell commands only.
+- Passenger app runtime does not inherit these values automatically.
+- If runtime env vars are required, set them in Passenger/service environment configuration.
 
 ## HLS key provisioning
 
