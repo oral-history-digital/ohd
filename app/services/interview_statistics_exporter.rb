@@ -328,30 +328,13 @@ class InterviewStatisticsExporter < ApplicationService
     #
     #   { institution_id => interview_count }
     #
-    # It combines two institution lookup strategies:
-    #
-    # 1. Interview -> Collection -> Institution
-    # 2. Interview -> Project -> Institutions,
-    #    but only when the collection itself has no institution.
-    counts = Hash.new(0)
-
-    # Case 1: Count interviews whose collection has an institution.
+    # Count interviews by top-level institutions linked to interview projects.
+    # Child institutions (with parent_id present) are excluded.
     relation
-      .joins(collection: :institution)
-      .group('institutions.id')
-      .count('DISTINCT interviews.id')
-      .each { |institution_id, count| counts[institution_id] += count }
-
-    # Case 2: If collection has no institution, count interviews under the institutions connected to its project.
-    relation
-      .joins(:collection)
-      .where(collections: { institution_id: nil })
       .joins(project: :institutions)
+      .where(institutions: { parent_id: nil })
       .group('institutions.id')
       .count('DISTINCT interviews.id')
-      .each { |institution_id, count| counts[institution_id] += count }
-
-    counts
   end
 
   def institution_country_counts(relation)
@@ -359,27 +342,13 @@ class InterviewStatisticsExporter < ApplicationService
     #
     #   { country => interview_count }
     #
-    # It uses the same fallback logic as institution_counts, but groups by
-    # institution country instead of institution ID.
-    counts = Hash.new(0)
-
-    # Case 1: Count by country of the collection's institution.
+    # Count interviews by country of top-level institutions linked to
+    # interview projects. Child institutions (with parent_id present) are excluded.
     relation
-      .joins(collection: :institution)
-      .group('institutions.country')
-      .count('DISTINCT interviews.id')
-      .each { |country, count| counts[country] += count }
-
-    # Case 2: If collection has no institution, count by country of the project's institutions.
-    relation
-      .joins(:collection)
-      .where(collections: { institution_id: nil })
       .joins(project: :institutions)
+      .where(institutions: { parent_id: nil })
       .group('institutions.country')
       .count('DISTINCT interviews.id')
-      .each { |country, count| counts[country] += count }
-
-    counts
   end
 
   def indexing_level_counts(relation, level_ids)

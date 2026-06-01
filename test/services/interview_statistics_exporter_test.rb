@@ -2,20 +2,28 @@ require 'test_helper'
 require 'securerandom'
 
 class InterviewStatisticsExporterTest < ActiveSupport::TestCase
-  test 'institution_counts uses collection institution and falls back to project institutions' do
+  test 'institution_counts uses top-level project institutions for all project interviews' do
     project = DataHelper.test_project(shortname: unique_shortname('isf'))
+
+    top_level_institution = Institution.create!(
+      name: 'Top Level Institution',
+      shortname: "ti-#{SecureRandom.hex(3)}",
+      country: 'fr',
+      projects: [project]
+    )
+
+    child_institution = Institution.create!(
+      name: 'Child Institution',
+      shortname: "chi-#{SecureRandom.hex(3)}",
+      country: 'fr',
+      parent: top_level_institution,
+      projects: [project]
+    )
 
     collection_institution = Institution.create!(
       name: 'Collection Institution',
       shortname: "ci-#{SecureRandom.hex(3)}",
       country: 'de'
-    )
-
-    fallback_institution = Institution.create!(
-      name: 'Fallback Institution',
-      shortname: "fi-#{SecureRandom.hex(3)}",
-      country: 'fr',
-      projects: [project]
     )
 
     collection_with_institution = Collection.create!(
@@ -27,18 +35,17 @@ class InterviewStatisticsExporterTest < ActiveSupport::TestCase
     collection_without_institution = Collection.create!(
       name: 'Collection without institution',
       project: project,
-      institution: collection_institution
+      institution: nil
     )
-    collection_without_institution.update_column(:institution_id, nil)
 
-    interview_using_collection_institution = create_interview(
+    interview_one = create_interview(
       project: project,
       collection: collection_with_institution,
       suffix: 1,
       media_type: 'video'
     )
 
-    interview_using_fallback_institution = create_interview(
+    interview_two = create_interview(
       project: project,
       collection: collection_without_institution,
       suffix: 2,
@@ -48,11 +55,12 @@ class InterviewStatisticsExporterTest < ActiveSupport::TestCase
     exporter = InterviewStatisticsExporter.new(project: project, locale: :en)
     counts = exporter.send(
       :institution_counts,
-      Interview.where(id: [interview_using_collection_institution.id, interview_using_fallback_institution.id])
+      Interview.where(id: [interview_one.id, interview_two.id])
     )
 
-    assert_equal 1, counts[collection_institution.id]
-    assert_equal 1, counts[fallback_institution.id]
+    assert_equal 2, counts[top_level_institution.id]
+    assert_nil counts[child_institution.id]
+    assert_nil counts[collection_institution.id]
     assert_equal 2, counts.values.sum
   end
 
