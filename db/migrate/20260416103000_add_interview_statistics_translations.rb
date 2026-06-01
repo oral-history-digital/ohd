@@ -44,69 +44,6 @@ class AddInterviewStatisticsTranslations < ActiveRecord::Migration[8.0]
       ru: 'Не указано',
       uk: 'Не вказано',
       ar: 'غير محدد'
-    },
-    'interview_statistics.section.workflow_state': {
-      de: 'Workflow-Status',
-      en: 'Workflow state',
-      el: 'Κατασταση ροης εργασιας',
-      es: 'Estado del flujo de trabajo',
-      ru: 'Состояние рабочего процесса',
-      uk: 'Стан робочого процесу',
-      ar: 'حالة سير العمل'
-    },
-    'interview_statistics.section.project': {
-      de: 'Projekt',
-      en: 'Project',
-      el: 'Εργο',
-      es: 'Proyecto',
-      ru: 'Проект',
-      uk: 'Проєкт',
-      ar: 'المشروع'
-    },
-    'interview_statistics.section.institution': {
-      de: 'Institution',
-      en: 'Institution',
-      el: 'Ιδρυμα',
-      es: 'Institucion',
-      ru: 'Организация',
-      uk: 'Установа',
-      ar: 'المؤسسة'
-    },
-    'interview_statistics.section.institution_country': {
-      de: 'Institution (Land)',
-      en: 'Institution country',
-      el: 'Χωρα ιδρυματος',
-      es: 'Pais de la institucion',
-      ru: 'Страна организации',
-      uk: 'Країна установи',
-      ar: 'بلد المؤسسة'
-    },
-    'interview_statistics.section.language': {
-      de: 'Sprache',
-      en: 'Language',
-      el: 'Γλωσσα',
-      es: 'Idioma',
-      ru: 'Язык',
-      uk: 'Мова',
-      ar: 'اللغة'
-    },
-    'interview_statistics.section.media_type': {
-      de: 'Medientyp',
-      en: 'Multimedia type',
-      el: 'Τυπος πολυμεσων',
-      es: 'Tipo multimedia',
-      ru: 'Тип мультимедиа',
-      uk: 'Тип мультимедіа',
-      ar: 'نوع الوسائط المتعددة'
-    },
-    'interview_statistics.section.indexing_level': {
-      de: 'Niveau der Indexierung/Kuration',
-      en: 'Level of indexing/curation',
-      el: 'Επιπεδο ευρετηριασης/επιμελειας',
-      es: 'Nivel de indexacion/curaduria',
-      ru: 'Уровень индексации/кураторства',
-      uk: 'Рівень індексації/курації',
-      ar: 'مستوى الفهرسة/التنسيق'
     }
   }.freeze
 

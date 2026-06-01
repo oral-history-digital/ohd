@@ -96,9 +96,18 @@ class InterviewStatisticsExporter < ApplicationService
 
     sorted_groups = groups.sort_by { |_group, count| -count }
 
+    # Load project records once so that translated names can be fetched efficiently.
+    projects = Project
+      .where(id: sorted_groups.map { |((project_id, _shortname), _count)| project_id })
+      .includes(:translations)
+      .index_by(&:id)
+
     add_simple_group_section(csv, slots, 'project', sorted_groups) do |(project_id, shortname)|
+      project_name = projects[project_id]&.name(@locale)
+      label = project_name.present? ? "#{project_name} (#{shortname})" : shortname
+
       [
-        shortname,
+        label,
         { project_id: project_id }
       ]
     end
@@ -125,7 +134,7 @@ class InterviewStatisticsExporter < ApplicationService
 
       # Use the translated institution name if available.
       # If no institution record is found, use a translated "not specified" label.
-      label = institution ? institution.name(@locale) : not_specified_label(translate('interview_statistics.section.institution'))
+      label = institution ? institution.name(@locale) : not_specified_label(translate(section_translation_key_for('institution')))
 
       # For each time slot, calculate the institution counts for interviews in that slot,
       # then pick the count for the current institution.
@@ -170,7 +179,7 @@ class InterviewStatisticsExporter < ApplicationService
       language = languages[language_id]
 
       # Use translated language name or else translated "not specified" label.
-      label = language ? language.name(@locale) : not_specified_label(translate('interview_statistics.section.language'))
+      label = language ? language.name(@locale) : not_specified_label(translate(section_translation_key_for('language')))
 
       # For each time slot, calculate language counts and select the current language.
       csv << [label] + slots.map do |(_name, conditions)|
@@ -213,7 +222,7 @@ class InterviewStatisticsExporter < ApplicationService
       registry_entry = registry_entries[entry_id]
 
       # Use the translated registry entry label or else a translated "not specified".
-      label = registry_entry&.to_s(@locale) || not_specified_label(translate('interview_statistics.section.indexing_level'))
+      label = registry_entry&.to_s(@locale) || not_specified_label(translate('modules.catalog.level_of_indexing'))
 
       # For each time slot, count interviews assigned to this indexing level.
       csv << [label] + slots.map do |(_name, conditions)|
@@ -261,10 +270,22 @@ class InterviewStatisticsExporter < ApplicationService
     #
     # Example output:
     #
-    #   === Workflow State ===
+    #   === State ===
     #
     # The section title itself is translated.
-    csv << ["=== #{translate("interview_statistics.section.#{section_key}")} ==="]
+    csv << ["=== #{translate(section_translation_key_for(section_key))} ==="]
+  end
+
+  def section_translation_key_for(section_key)
+    {
+      'workflow_state' => 'metadata_labels.workflow_state',
+      'project' => 'activerecord.models.project.one',
+      'institution' => 'activerecord.models.institution.one',
+      'institution_country' => 'activerecord.attributes.default.country',
+      'language' => 'activerecord.attributes.interview.language',
+      'media_type' => 'activerecord.attributes.interview.media_type',
+      'indexing_level' => 'modules.catalog.level_of_indexing'
+    }.fetch(section_key.to_s)
   end
 
   def language_counts(relation)
@@ -349,15 +370,15 @@ class InterviewStatisticsExporter < ApplicationService
 
   def label_for_workflow(value)
     # If the workflow state is blank/nil, display a translated "not specified" label.
-    return not_specified_label(translate('interview_statistics.section.workflow_state')) if value.blank?
+    return not_specified_label(translate(section_translation_key_for('workflow_state'))) if value.blank?
 
     # Otherwise translate the workflow state value.
-    translate("activerecord.attributes.interview.workflow_states.#{value}")
+    translate("workflow_states.#{value}")
   end
 
   def label_for_media_type(value)
     # If the media type is blank/nil, display a translated "not specified" label.
-    return not_specified_label(translate('interview_statistics.section.media_type')) if value.blank?
+    return not_specified_label(translate(section_translation_key_for('media_type'))) if value.blank?
 
     # Otherwise translate the media type value.
     translate("search_facets.#{value}")
@@ -365,7 +386,7 @@ class InterviewStatisticsExporter < ApplicationService
 
   def country_label(value)
     # If the country is blank/nil, display a translated "not specified" label.
-    return not_specified_label(translate('interview_statistics.section.institution_country')) if value.blank?
+    return not_specified_label(translate(section_translation_key_for('institution_country'))) if value.blank?
 
     # Otherwise translate the country value.
     translate("countries.#{value}")
