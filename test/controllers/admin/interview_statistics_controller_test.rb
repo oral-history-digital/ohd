@@ -12,8 +12,22 @@ class Admin::InterviewStatisticsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes response.headers['Content-Disposition'], '.csv'
-    assert_includes response.body, 'workflow_state'
-    assert_includes response.body, 'media_type'
+
+    workflow_section = TranslationValue.for(
+      'metadata_labels.workflow_state',
+      :de,
+      {},
+      true
+    )
+    media_type_section = TranslationValue.for(
+      'activerecord.attributes.interview.media_type',
+      :de,
+      {},
+      true
+    )
+
+    assert_includes response.body, workflow_section
+    assert_includes response.body, media_type_section
   end
 
   test 'should reject non admin user' do

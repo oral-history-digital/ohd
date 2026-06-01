@@ -187,6 +187,58 @@ class InterviewStatisticsExporterTest < ActiveSupport::TestCase
     assert_includes slots, old_timestamp.strftime('%m.%Y')
   end
 
+  test 'month slot includes records from noon of the last day of the month' do
+    project = DataHelper.test_project(shortname: unique_shortname('ism'))
+    institution = Institution.create!(
+      name: 'Month Boundary Institution',
+      shortname: "mb-#{SecureRandom.hex(3)}",
+      projects: [project]
+    )
+    collection = Collection.create!(
+      name: 'Month Boundary Collection',
+      project: project,
+      institution: institution
+    )
+
+    interview = create_interview(
+      project: project,
+      collection: collection,
+      suffix: 44,
+      media_type: 'video'
+    )
+
+    month_end_noon = 1.month.ago.end_of_month.change(hour: 12, min: 0, sec: 0)
+    interview.update_columns(created_at: month_end_noon, updated_at: month_end_noon)
+
+    exporter = InterviewStatisticsExporter.new(project: project, locale: :en)
+    slots = exporter.send(:time_slots)
+    label = month_end_noon.strftime('%m.%Y')
+    conditions = slots.find { |slot_label, _conditions| slot_label == label }&.last
+
+    assert_not_nil conditions
+    assert_equal 1, Interview.where(id: interview.id).where(conditions).count
+  end
+
+  test 'does not add indexing level header when level root is missing' do
+    ohd_project = Project.find_by!(shortname: 'ohd')
+    exporter = InterviewStatisticsExporter.new(project: ohd_project, locale: :en)
+    original_method = RegistryEntry.method(:ohd_level_of_indexing)
+
+    # Stub the OHD level of indexing method to return nil, simulating a missing level root.
+    RegistryEntry.define_singleton_method(:ohd_level_of_indexing) { nil }
+
+    begin
+      csv = exporter.perform
+      expected_header = "=== #{TranslationValue.for('modules.catalog.level_of_indexing', :en, {}, true)} ==="
+
+      # The header should not be included since the level root is missing.
+      refute_includes csv, expected_header
+    ensure
+      # Restore the original method to avoid side effects on other tests.
+      RegistryEntry.define_singleton_method(:ohd_level_of_indexing, original_method)
+    end
+  end
+
   private
 
   def create_interview(project:, collection:, suffix:, media_type:)

@@ -116,9 +116,8 @@ class InterviewStatisticsExporter < ApplicationService
   def add_institution_section(csv, slots)
     # Count interviews by institution.
     #
-    # institution_counts handles two cases:
-    # 1. The interview's collection has an institution.
-    # 2. The interview's collection has no institution, so the project's institutions are used.
+    # institution_counts groups interviews by project institutions and buckets
+    # child institutions under their top-level parent institutions.
     rows = institution_counts(@interviews).sort_by { |_institution_id, count| -count }
 
     # Load institution records once so that translated names can be fetched efficiently.
@@ -152,9 +151,8 @@ class InterviewStatisticsExporter < ApplicationService
   def add_institution_country_section(csv, slots)
     # Count interviews by institution country.
     #
-    # Like institution_counts, this considers:
-    # 1. Collection institution country.
-    # 2. Project institution country when the collection has no institution.
+    # Like institution_counts, child institutions contribute to the
+    # country of their top-level parent institution.
     rows = institution_country_counts(@interviews).sort_by { |_country, count| -count }
 
     add_section_header(csv, 'institution_country')
@@ -216,13 +214,13 @@ class InterviewStatisticsExporter < ApplicationService
   end
 
   def add_indexing_level_section(csv, slots)
-    add_section_header(csv, 'indexing_level')
-
     # Find the registry root entry that represents "level of indexing".
     level_root = RegistryEntry.ohd_level_of_indexing
 
     # Indexing level statistics are only relevant for OHD projects.
-    return unless @project.is_ohd? && level_root
+    return unless level_root
+
+    add_section_header(csv, 'indexing_level')
 
     # Get all child registry entries under the "level of indexing" root.
     level_ids = level_root.children.pluck(:id)
@@ -443,7 +441,7 @@ class InterviewStatisticsExporter < ApplicationService
     # 2. first interview creation date
     #
     # compact removes nil values before calling min.
-    [@live_since, @interviews.minimum(:created_at)].compact.min
+    [@live_since, @interviews.minimum(:created_at), Time.current].compact.min
   end
 
   def total(date_attribute)
@@ -467,12 +465,15 @@ class InterviewStatisticsExporter < ApplicationService
     #     ["interviews.created_at > ? AND interviews.created_at <= ?", 2024-12-31, 2025-12-31]
     #   ]
     (start_date.year..Time.current.year).inject([]) do |mem, year|
+      year_start = Time.zone.local(year, 1, 1)
+      next_year_start = Time.zone.local(year + 1, 1, 1)
+
       mem << [
         year,
         [
-          "#{date_attribute} > ? AND #{date_attribute} <= ?",
-          Date.parse("31.12.#{year - 1}"),
-          Date.parse("31.12.#{year}")
+          "#{date_attribute} >= ? AND #{date_attribute} < ?",
+          year_start,
+          next_year_start
         ]
       ]
       mem
@@ -490,9 +491,12 @@ class InterviewStatisticsExporter < ApplicationService
     # The reverse call ensures the output is chronological:
     # oldest month first, current month last.
     (0..month_span).to_a.reverse.inject([]) do |mem, month_offset|
+      month_start = (current - month_offset.months).beginning_of_month
+      next_month_start = month_start.next_month.beginning_of_month
+
       mem << [
         # Month label, for example "05.2026".
-        (current - month_offset.months).strftime('%m.%Y'),
+        month_start.strftime('%m.%Y'),
 
         # Date condition for the month.
         #
@@ -502,9 +506,9 @@ class InterviewStatisticsExporter < ApplicationService
         #   created_at <= 2026-05-31
         #
         [
-          "#{date_attribute} > ? AND #{date_attribute} <= ?",
-          (current - (month_offset + 1).months).end_of_month.to_date,
-          (current - month_offset.months).end_of_month.to_date
+          "#{date_attribute} >= ? AND #{date_attribute} < ?",
+          month_start,
+          next_month_start
         ]
       ]
 
