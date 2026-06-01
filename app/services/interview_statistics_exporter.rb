@@ -299,7 +299,15 @@ class InterviewStatisticsExporter < ApplicationService
     #   === State ===
     #
     # The section title itself is translated.
-    csv << ["=== #{translate(section_translation_key_for(section_key))} ==="]
+    csv << ["=== #{section_label_for(section_key)} ==="]
+  end
+
+  def section_label_for(section_key)
+    if section_key.to_s == 'institution_country'
+      "#{translate('activerecord.attributes.default.country')} (#{translate('activerecord.models.institution.one')})"
+    else
+      translate(section_translation_key_for(section_key))
+    end
   end
 
   def section_translation_key_for(section_key)
@@ -328,12 +336,14 @@ class InterviewStatisticsExporter < ApplicationService
     #
     #   { institution_id => interview_count }
     #
-    # Count interviews by top-level institutions linked to interview projects.
-    # Child institutions (with parent_id present) are excluded.
+    # Count interviews by top-level institution buckets.
+    #
+    # If a project is linked to child institutions, their interviews are counted
+    # under the corresponding top-level parent institution.
     relation
       .joins(project: :institutions)
-      .where(institutions: { parent_id: nil })
-      .group('institutions.id')
+      # Bucket each institution to its top-level id (parent when present, else itself).
+      .group('COALESCE(institutions.parent_id, institutions.id)')
       .count('DISTINCT interviews.id')
   end
 
@@ -342,12 +352,14 @@ class InterviewStatisticsExporter < ApplicationService
     #
     #   { country => interview_count }
     #
-    # Count interviews by country of top-level institutions linked to
-    # interview projects. Child institutions (with parent_id present) are excluded.
+    # Count interviews by country of top-level institution buckets.
+    #
+    # Child institutions contribute to the country of their top-level parent.
     relation
       .joins(project: :institutions)
-      .where(institutions: { parent_id: nil })
-      .group('institutions.country')
+      # Resolve each linked institution to its top-level institution for country grouping.
+      .joins('LEFT JOIN institutions root_institutions ON root_institutions.id = COALESCE(institutions.parent_id, institutions.id)')
+      .group('root_institutions.country')
       .count('DISTINCT interviews.id')
   end
 

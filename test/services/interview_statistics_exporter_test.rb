@@ -2,7 +2,7 @@ require 'test_helper'
 require 'securerandom'
 
 class InterviewStatisticsExporterTest < ActiveSupport::TestCase
-  test 'institution_counts uses top-level project institutions for all project interviews' do
+  test 'institution_counts aggregates child-linked projects under top-level institutions' do
     project = DataHelper.test_project(shortname: unique_shortname('isf'))
 
     top_level_institution = Institution.create!(
@@ -52,16 +52,40 @@ class InterviewStatisticsExporterTest < ActiveSupport::TestCase
       media_type: 'audio'
     )
 
+    fallback_project = DataHelper.test_project(shortname: unique_shortname('isg'))
+
+    fallback_child_institution = Institution.create!(
+      name: 'Fallback Child Institution',
+      shortname: "fci-#{SecureRandom.hex(3)}",
+      country: 'uk',
+      parent: top_level_institution,
+      projects: [fallback_project]
+    )
+
+    fallback_collection = Collection.create!(
+      name: 'Fallback Collection',
+      project: fallback_project,
+      institution: nil
+    )
+
+    fallback_interview = create_interview(
+      project: fallback_project,
+      collection: fallback_collection,
+      suffix: 3,
+      media_type: 'video'
+    )
+
     exporter = InterviewStatisticsExporter.new(project: project, locale: :en)
     counts = exporter.send(
       :institution_counts,
-      Interview.where(id: [interview_one.id, interview_two.id])
+      Interview.where(id: [interview_one.id, interview_two.id, fallback_interview.id])
     )
 
-    assert_equal 2, counts[top_level_institution.id]
+    assert_equal 3, counts[top_level_institution.id]
     assert_nil counts[child_institution.id]
+    assert_nil counts[fallback_child_institution.id]
     assert_nil counts[collection_institution.id]
-    assert_equal 2, counts.values.sum
+    assert_equal 3, counts.values.sum
   end
 
   test 'indexing_level_counts groups by OHD indexing level registry entries' do
