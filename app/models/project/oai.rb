@@ -47,15 +47,15 @@ module Project::Oai
   end
 
   def oai_leaders
-    leaders.map{|l| "#{l.first_name} #{l.last_name}"}
+    leaders.map{|l| "#{l.first_name(:en)} #{l.last_name(:en)}"}
   end
 
   def oai_managers
-    managers.map{|m| "#{m.first_name} #{m.last_name}"}
+    managers.map{|m| "#{m.first_name(:en)} #{m.last_name(:en)}"}
   end
 
   def oai_funders
-    funders.map(&:name)
+    funders.map{|f| f.name(:en)}
   end
 
   def oai_publication_date

@@ -77,10 +77,13 @@ module Project::OaiDatacite
         end
 
         cooperation_partners.each do |cooperation_partner|
+          name = cooperation_partner.name_type == "Personal" ?
+            "#{cooperation_partner.first_name(:en)} #{cooperation_partner.last_name(:en)}" :
+            cooperation_partner.name(:en).gsub("'", "")
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName "#{cooperation_partner.name.gsub("'", "")} (Cooperation Partner)",
+            xml.contributorName "#{name} (Cooperation Partner)",
               "xml:lang": "en",
-              nameType: "Organizational"
+              nameType: cooperation_partner.name_type
           end
         end
         oai_leaders.each do |leader_name|

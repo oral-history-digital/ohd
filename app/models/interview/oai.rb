@@ -49,7 +49,8 @@ module Interview::Oai
   end
 
   def oai_contributor(locale)
-    project.institutions_with_ancestors_names(locale)
+    "Oral-History.Digital / University Library of Freie Universität Berlin"
+    #project.institutions_with_ancestors_names(locale)
   end
 
   def oai_publisher(locale)
