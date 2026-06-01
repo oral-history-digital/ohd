@@ -32,7 +32,7 @@ namespace :segments do
       elsif tc.match?(/\A\d{1,2}:\d{2}:\d{2}:\d{2}\z/)
         frames = tc[-2..].to_i
         ms = frames_to_ms(frames)
-        tc = "#{tc[0..-4].sub(/:(\d{2})\z/, '')}#{format('%03d', ms)}"
+        tc = "#{tc.sub(/:(\d{2})\z/, '')}#{format('%03d', ms)}"
         # Rebuild properly
         parts = tc.split(':')
         # parts might be wrong, redo:
