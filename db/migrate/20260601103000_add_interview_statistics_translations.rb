@@ -44,6 +44,15 @@ class AddInterviewStatisticsTranslations < ActiveRecord::Migration[8.0]
       ru: 'Не указано',
       uk: 'Не вказано',
       ar: 'غير محدد'
+    },
+    'edit.statistics.title': {
+      de: 'Statistik',
+      en: 'Statistics',
+      el: 'Στατιστικά',
+      es: 'Estadísticas',
+      ru: 'Статистика',
+      uk: 'Статистика',
+      ar: 'الإحصائيات',
     }
   }.freeze
 

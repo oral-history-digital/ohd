@@ -1,28 +1,29 @@
 import { useState } from 'react';
 
-import { AuthorizedContent, useAuthorization } from 'modules/auth';
-import { getCurrentUser } from 'modules/data';
+import { getCountryKeys } from 'modules/archive';
+import { useAuthorization } from 'modules/auth';
+import { getCurrentProject, getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
-import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
 
 import AdminSubTab from './AdminSubTab';
-import SubTab from './SubTab';
 
-export default function UsersAdminTabPanel({ countryKeys, project }) {
+export default function AdminTabPanel() {
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const user = useSelector(getCurrentUser);
+    const project = useSelector(getCurrentProject);
+    const countryKeys = useSelector(getCountryKeys);
 
     const [selectedCountries, setSelectedCountries] = useState([]);
 
     function countryKeyOptions() {
-        return countryKeys[locale].map((x) => ({
+        return (countryKeys[locale] || []).map((x) => ({
             label: t(`countries.${x}`),
             value: x,
         }));
@@ -38,10 +39,7 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
     }
 
     function onCountrySelectorChange(value) {
-        let array = [];
-        for (var o in value) {
-            array.push(value[o]['value']);
-        }
+        const array = (value || []).map((item) => item.value);
         setSelectedCountries(array);
     }
 
@@ -53,6 +51,14 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
         <ErrorBoundary small>
             <h3 className="SidebarTabs-title">{t('edit.administration')}</h3>
             <div className="flyout-sub-tabs-container flyout-video">
+                {project?.is_ohd && user?.admin && (
+                    <AdminSubTab
+                        title="edit.instance.title"
+                        url={`${pathBase}/admin/instance`}
+                        obj={{ type: 'InstanceSetting' }}
+                        action="update"
+                    />
+                )}
                 <AdminSubTab
                     title="edit.users.admin"
                     url={`${pathBase}/users`}
@@ -69,17 +75,6 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
                                 {t('download_user_statistics')}
                             </a>
                         </div>
-                        <div>
-                            <a
-                                href={`${pathBase}/admin/interview_statistics.csv`}
-                            >
-                                <FaDownload
-                                    className="Icon Icon--primary"
-                                    title={t('download_interview_statistics')}
-                                />{' '}
-                                {t('download_interview_statistics')}
-                            </a>
-                        </div>
                         <Select
                             options={countryKeyOptions()}
                             className="basic-multi-select"
@@ -90,14 +85,10 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
                                     ...provided,
                                     cursor: 'text',
                                 }),
-                                menu: (provided) => ({
-                                    ...provided,
-                                    position: 'relative',
-                                }),
                             }}
                             placeholder={t('filter_by_countries')}
                         />
-                        {project.has_newsletter && (
+                        {project?.has_newsletter && (
                             <div>
                                 <a
                                     href={`${pathBase}/users/newsletter_recipients.csv`}
@@ -114,23 +105,13 @@ export default function UsersAdminTabPanel({ countryKeys, project }) {
                         )}
                     </div>
                 </AdminSubTab>
-                {project.is_ohd && user?.admin && (
-                    <AuthorizedContent
-                        object={{ type: 'InstanceSetting' }}
-                        action="update"
-                    >
-                        <SubTab
-                            title={t('edit.instance.title')}
-                            url={`${pathBase}/admin/instance`}
-                        />
-                    </AuthorizedContent>
-                )}
+                <AdminSubTab
+                    title="edit.statistics.title"
+                    url={`${pathBase}/admin/statistics`}
+                    obj={{ type: 'General' }}
+                    action="edit"
+                />
             </div>
         </ErrorBoundary>
     );
 }
-
-UsersAdminTabPanel.propTypes = {
-    countryKeys: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
-};
