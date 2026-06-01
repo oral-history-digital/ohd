@@ -75,10 +75,10 @@ class InterviewStatisticsExporter < ApplicationService
     #
     groups = @interviews.group(:workflow_state).count.sort_by { |_state, count| -count }
 
-    add_simple_group_section(csv, slots, 'workflow_state', groups) do |state|
+    add_simple_group_section(csv, slots, 'workflow_state', groups, group_by: :workflow_state) do |state|
       [
         label_for_workflow(state),
-        { workflow_state: state }
+        state
       ]
     end
   end
@@ -102,13 +102,13 @@ class InterviewStatisticsExporter < ApplicationService
       .includes(:translations)
       .index_by(&:id)
 
-    add_simple_group_section(csv, slots, 'project', sorted_groups) do |(project_id, shortname)|
+    add_simple_group_section(csv, slots, 'project', sorted_groups, group_by: :project_id) do |(project_id, shortname)|
       project_name = projects[project_id]&.name(@locale)
       label = project_name.present? ? "#{project_name} (#{shortname})" : shortname
 
       [
         label,
-        { project_id: project_id }
+        project_id
       ]
     end
   end
@@ -129,6 +129,11 @@ class InterviewStatisticsExporter < ApplicationService
 
     add_section_header(csv, 'institution')
 
+    # Compute institution counts once per time slot to avoid per-cell queries.
+    slot_counts = slots.map do |(_name, conditions)|
+      institution_counts(@interviews.where(conditions))
+    end
+
     rows.each do |institution_id, _count|
       institution = institutions[institution_id]
 
@@ -138,8 +143,8 @@ class InterviewStatisticsExporter < ApplicationService
 
       # For each time slot, calculate the institution counts for interviews in that slot,
       # then pick the count for the current institution.
-      csv << [label] + slots.map do |(_name, conditions)|
-        institution_counts(@interviews.where(conditions))[institution_id] || 0
+      csv << [label] + slot_counts.map do |counts|
+        counts[institution_id] || 0
       end
     end
   end
@@ -154,10 +159,15 @@ class InterviewStatisticsExporter < ApplicationService
 
     add_section_header(csv, 'institution_country')
 
+    # Compute country counts once per time slot to avoid per-cell queries.
+    slot_counts = slots.map do |(_name, conditions)|
+      institution_country_counts(@interviews.where(conditions))
+    end
+
     rows.each do |country, _count|
       # country_label translates the country value, or returns a "not specified" label
-      csv << [country_label(country)] + slots.map do |(_name, conditions)|
-        institution_country_counts(@interviews.where(conditions))[country] || 0
+      csv << [country_label(country)] + slot_counts.map do |counts|
+        counts[country] || 0
       end
     end
   end
@@ -175,6 +185,11 @@ class InterviewStatisticsExporter < ApplicationService
 
     add_section_header(csv, 'language')
 
+    # Compute language counts once per time slot to avoid per-cell queries.
+    slot_counts = slots.map do |(_name, conditions)|
+      language_counts(@interviews.where(conditions))
+    end
+
     groups.each do |language_id, _count|
       language = languages[language_id]
 
@@ -182,8 +197,8 @@ class InterviewStatisticsExporter < ApplicationService
       label = language ? language.name(@locale) : not_specified_label(translate(section_translation_key_for('language')))
 
       # For each time slot, calculate language counts and select the current language.
-      csv << [label] + slots.map do |(_name, conditions)|
-        language_counts(@interviews.where(conditions))[language_id] || 0
+      csv << [label] + slot_counts.map do |counts|
+        counts[language_id] || 0
       end
     end
   end
@@ -192,10 +207,10 @@ class InterviewStatisticsExporter < ApplicationService
     # Count interviews by media_type, for example audio/video.
     groups = @interviews.group(:media_type).count.sort_by { |_media_type, count| -count }
 
-    add_simple_group_section(csv, slots, 'media_type', groups) do |media_type|
+    add_simple_group_section(csv, slots, 'media_type', groups, group_by: :media_type) do |media_type|
       [
         label_for_media_type(media_type),
-        { media_type: media_type }
+        media_type
       ]
     end
   end
@@ -218,6 +233,11 @@ class InterviewStatisticsExporter < ApplicationService
     # Load the registry entries so their translated labels can be used.
     registry_entries = RegistryEntry.where(id: grouped.map(&:first)).index_by(&:id)
 
+    # Compute indexing-level counts once per time slot to avoid per-cell queries.
+    slot_counts = slots.map do |(_name, conditions)|
+      indexing_level_counts(@interviews.where(conditions), level_ids)
+    end
+
     grouped.each do |entry_id, _count|
       registry_entry = registry_entries[entry_id]
 
@@ -225,13 +245,13 @@ class InterviewStatisticsExporter < ApplicationService
       label = registry_entry&.to_s(@locale) || not_specified_label(translate('modules.catalog.level_of_indexing'))
 
       # For each time slot, count interviews assigned to this indexing level.
-      csv << [label] + slots.map do |(_name, conditions)|
-        indexing_level_counts(@interviews.where(conditions), [entry_id])[entry_id] || 0
+      csv << [label] + slot_counts.map do |counts|
+        counts[entry_id] || 0
       end
     end
   end
 
-  def add_simple_group_section(csv, slots, section_key, groups)
+  def add_simple_group_section(csv, slots, section_key, groups, group_by:)
     # Adds a section for simple grouped fields.
     #
     # Used by:
@@ -239,28 +259,34 @@ class InterviewStatisticsExporter < ApplicationService
     # - project
     # - media_type
     #
+    # groups is an array of:
+    #
+    #   [group_value, total_count]
+    #
+    # total_count is used only for row ordering (prepared by the caller).
+    # Cell values are computed from per-slot grouped counts below.
+    #
     # The caller provides a block that converts each group value into:
     #
-    #   [label, where_conditions]
+    #   [label, group_value]
     #
     # Example:
     #
-    #   ["Published", { workflow_state: "public" }]
+    #   ["Published", "public"]
     #
     add_section_header(csv, section_key)
 
-    groups.each do |group, _count|
-      label, where_conditions = yield(group)
+    # Compute grouped counts once per time slot.
+    slot_counts = slots.map do |(_name, conditions)|
+      @interviews.where(conditions).group(group_by).count
+    end
 
-      # For each time slot, count records that match:
-      # 1. the base interview scope
-      # 2. the time-slot condition
-      # 3. the group-specific condition
-      csv << [label] + slots.map do |(_name, conditions)|
-        @interviews
-          .where(conditions)
-          .where(where_conditions)
-          .count
+    groups.each do |group, _count|
+      label, group_value = yield(group)
+
+      # For each time slot, pick the count for the current group from precomputed hashes.
+      csv << [label] + slot_counts.map do |counts|
+        counts[group_value] || 0
       end
     end
   end
