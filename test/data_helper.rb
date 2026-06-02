@@ -266,19 +266,19 @@ module DataHelper
         project: project,
         interview_languages: [
           InterviewLanguage.new(
-            language: Language.create!(code: 'rus', name: 'Russisch', locale: 'de'),
+            language: Language.find_or_create_by!(code: 'rus') { |language| language.name = 'Russisch' },
             spec: 'primary'
           ),
           InterviewLanguage.new(
-            language: Language.create!(code: 'pol', name: 'Polnisch', locale: 'de'),
+            language: Language.find_or_create_by!(code: 'pol') { |language| language.name = 'Polnisch' },
             spec: 'secondary'
           ),
           InterviewLanguage.new(
-            language: Language.create!(code: 'ger', name: 'Deutsch', locale: 'de'),
+            language: Language.find_or_create_by!(code: 'ger') { |language| language.name = 'Deutsch' },
             spec: 'primary_translation'
           ),
           InterviewLanguage.new(
-            language: Language.create!(code: 'eng', name: 'Englisch', locale: 'de'),
+            language: Language.find_or_create_by!(code: 'eng') { |language| language.name = 'Englisch' },
             spec: 'secondary_translation'
           )
         ],
