@@ -10,6 +10,8 @@ class Language < ApplicationRecord
   has_many :interview_languages, dependent: :destroy
   has_many :interviews, through: :interview_languages
 
+  validates :code, presence: true, uniqueness: true
+
   after_update :touch_interviews
 
   class << self
