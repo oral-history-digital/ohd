@@ -1,7 +1,7 @@
 <% unless interview.place_of_interview.nil? %>
   \par{<%= latex_escape( "#{TranslationValue.for('place_of_interview', header_locale)}: #{interview.place_of_interview.descriptor(header_locale)}" ) %>}
 <% end %>
-\par{<%= latex_escape( "#{TranslationValue.for('date', header_locale)}: #{Date.parse(interview.interview_date).strftime("%d.%m.%Y") rescue interview.interview_date}" ) %>}
+\par{<%= latex_escape( "#{interview_metadata_label_for_pdf(interview, :interview_date, header_locale)}: #{interview_date_for_pdf(interview.interview_date)}" ) %>}
 \par{<%= latex_escape( "#{TranslationValue.for('language', header_locale)}: #{interview.language.to_s(header_locale)} #{(interview.translated) ? TranslationValue.for('status.translated', header_locale) : ''}" ) %>}
 <% unless interview.duration.nil? %>
   \par{<%= latex_escape( "#{TranslationValue.for('duration', header_locale)}: #{Time.at(interview.duration).utc.strftime("%H:%M:%S")}" ) %>}
