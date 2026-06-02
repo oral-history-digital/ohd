@@ -415,6 +415,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_04_142500) do
     t.integer "interview_id"
     t.text "description"
     t.index ["interview_id", "locale"], name: "index_interview_translations_on_ass_id_and_locale", unique: true
+    t.text "notes"
   end
 
   create_table "interviews", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -453,6 +454,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_04_142500) do
     t.text "links"
     t.string "publication_date"
     t.string "used_doi_prefix"
+    t.boolean "include_notes_in_transcript_pdf", default: false, null: false
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
     t.index ["workflow_state"], name: "index_interviews_on_workflow_state"
   end

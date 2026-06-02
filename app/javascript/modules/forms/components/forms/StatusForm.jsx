@@ -5,10 +5,17 @@ import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
-export default function StatusForm({ data, scope, attribute, value }) {
+export default function StatusForm({
+    data,
+    scope,
+    attribute,
+    value,
+    labelKey = 'activerecord.attributes.default.publish',
+}) {
     const { project, projectId } = useProject();
     const { t, locale } = useI18n();
     const dispatch = useDispatch();
@@ -35,7 +42,7 @@ export default function StatusForm({ data, scope, attribute, value }) {
                     elementType: 'input',
                     attribute: attribute,
                     value: value,
-                    labelKey: 'activerecord.attributes.default.publish',
+                    labelKey: labelKey,
                     type: 'checkbox',
                 },
             ]}
@@ -57,3 +64,11 @@ export default function StatusForm({ data, scope, attribute, value }) {
         </AuthorizedContent>
     );
 }
+
+StatusForm.propTypes = {
+    data: PropTypes.object.isRequired,
+    scope: PropTypes.string.isRequired,
+    attribute: PropTypes.string.isRequired,
+    value: PropTypes.bool.isRequired,
+    labelKey: PropTypes.string,
+};

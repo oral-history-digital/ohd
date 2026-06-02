@@ -59,6 +59,23 @@ export default function InterviewInfo({ interview, languages }) {
             />
             <SingleValueWithForm
                 obj={interview}
+                attribute={'notes'}
+                value={interview.notes?.[locale]}
+                elementType="textarea"
+                multiLocale
+                linkUrls
+                extraStatusCheckboxes={[
+                    {
+                        attribute: 'include_notes_in_transcript_pdf',
+                        value: !!interview.include_notes_in_transcript_pdf,
+                        labelKey:
+                            'activerecord.attributes.interview.include_notes_in_transcript_pdf',
+                    },
+                ]}
+                hideEmpty
+            />
+            <SingleValueWithForm
+                obj={interview}
                 optionsScope={'search_facets'}
                 elementType={'select'}
                 values={['video', 'audio']}
