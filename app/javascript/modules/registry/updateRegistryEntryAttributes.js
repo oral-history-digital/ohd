@@ -90,9 +90,11 @@ export function setDescriptor(
     translation.descriptor = Array.isArray(value) ? value[0] : value;
 }
 
-export function updateRegistryEntryTranslationsAttributes(entry, project) {
-    let translationsAttributes = [];
-
+export function updateRegistryEntryTranslationsAttributes(
+    entry,
+    project,
+    translationsAttributes
+) {
     project.available_locales.map((lang) => {
         const description = Array.isArray(entry.Description)
             ? entry.Description.find((n) => n.Lang === lang && n.Description)
@@ -109,7 +111,7 @@ export function updateRegistryEntryTranslationsAttributes(entry, project) {
         }
     });
 
-    return { translations_attributes: translationsAttributes };
+    return translationsAttributes;
 }
 
 export function prepareNormDataAttributes(entry, normDataProviders) {

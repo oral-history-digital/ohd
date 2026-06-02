@@ -58,10 +58,14 @@ function UpdateRegistryEntryAttributesModal({
                                         entry.Location?.Longitude
                                     ),
                                     delete_persistent_values: true,
-                                    ...updateRegistryEntryTranslationsAttributes(
-                                        entry,
-                                        project
-                                    ),
+                                    translations_attributes:
+                                        updateRegistryEntryTranslationsAttributes(
+                                            entry,
+                                            project,
+                                            [
+                                                ...registryEntryAttributes.translations_attributes,
+                                            ]
+                                        ),
                                 });
                                 (replaceNestedFormValues(
                                     'registry_names_attributes',
