@@ -91,7 +91,7 @@ module Project::Oai
   end
 
   def oai_size
-    "#{interviews.shared.count} Interviews"
+    "#{interviews.count} Interviews"
   end
 
   def oai_languages

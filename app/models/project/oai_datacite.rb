@@ -70,11 +70,11 @@ module Project::OaiDatacite
 
 
       xml.contributors do
-        xml.contributor contributorType: "DataManager" do
-          xml.contributorName oai_title(:en),
-            "xml:lang": "en",
-            nameType: "Organizational"
-        end
+        #xml.contributor contributorType: "DataManager" do
+          #xml.contributorName oai_title(:en),
+            #"xml:lang": "en",
+            #nameType: "Organizational"
+        #end
 
         cooperation_partners.each do |cooperation_partner|
           name = cooperation_partner.name_type == "Personal" ?
@@ -135,7 +135,7 @@ module Project::OaiDatacite
 
       xml.dates do
         xml.date oai_coverage, dateType: "Coverage"
-        xml.date oai_birth_years, dateType: "Other", dateInformation: "years of birth"
+        xml.date oai_birth_years, dateType: "Other", dateInformation: "Years of birth"
       end
 
       xml.subjects do
@@ -170,12 +170,16 @@ module Project::OaiDatacite
           xml.description oai_abstract_description(locale), "xml:lang": locale, descriptionType: "Abstract"
         end
         %w(de en).each do |locale|
-          xml.description oai_media_files_description(locale),
-            "xml:lang": locale,
-            descriptionType: "TechnicalInfo"
-          xml.description oai_transcript_description(locale),
-            "xml:lang": locale,
-            descriptionType: "TechnicalInfo"
+          if has_media_files?
+            xml.description oai_media_files_description(locale),
+              "xml:lang": locale,
+              descriptionType: "TechnicalInfo"
+          end
+          if has_transcripts?
+            xml.description oai_transcript_description(locale),
+              "xml:lang": locale,
+              descriptionType: "TechnicalInfo"
+          end
         end
       end
 

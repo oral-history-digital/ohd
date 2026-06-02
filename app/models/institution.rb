@@ -23,7 +23,7 @@ class Institution < ApplicationRecord
       ancestors << current
       current = current.parent
     end
-    ancestors
+    ancestors.reverse
   end
 
   def num_projects

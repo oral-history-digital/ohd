@@ -50,13 +50,13 @@ module Collection::OaiDatacite
         end
       end
 
-      project.institutions.leaf.each do |leaf|
+      if project.institutions.any?
         xml.creators do
-          leaf.with_ancestors.each do |institution|
+          project.institutions.leaf.each do |institution|
             xml.creator do
-              xml.creatorName institution.name(:en), "xml:lang": "en", nameType: "Organizational"
-              xml.nameIdentifier institution.isil, schemeURI: "https://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
-              xml.nameIdentifier institution.gnd, schemeURI: "https://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
+              xml.creatorName institution.with_ancestors.map{|i| i.name(:en)}.join(", "), "xml:lang": "en", nameType: "Organizational"
+              xml.nameIdentifier institution.isil, schemeURI: "http://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
+              xml.nameIdentifier institution.gnd, schemeURI: "http://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
             end
           end
         end
@@ -124,7 +124,7 @@ module Collection::OaiDatacite
 
       xml.dates do
         xml.date oai_coverage, dateType: "Coverage"
-        xml.date oai_birth_years, dateType: "Other", dateInformation: "years of birth"
+        xml.date oai_birth_years, dateType: "Other", dateInformation: "Years of birth"
       end
 
       xml.subjects do
@@ -136,15 +136,12 @@ module Collection::OaiDatacite
 
       xml.rightsList do
         oai_locales.each do |locale|
-          xml.rights "#{TranslationValue.for('conditions', locale)} (#{name(locale)})",
+          xml.rights "#{TranslationValue.for('conditions', locale)} (#{project.name(locale)})",
             "xml:lang": locale,
             rightsURI: "#{project.domain_with_optional_identifier}/#{locale}/conditions"
           xml.rights "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions"
-          xml.rights TranslationValue.for('privacy_protection', locale),
-            "xml:lang": locale,
-            rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection"
           xml.rights TranslationValue.for('privacy_protection', locale),
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection"
@@ -164,12 +161,16 @@ module Collection::OaiDatacite
             descriptionType: "Abstract"
         end
         %w(de en).each do |locale|
-          xml.description oai_media_files_description(locale),
-            "xml:lang": locale,
-            descriptionType: "TechnicalInfo"
-          xml.description oai_transcript_description(locale),
-            "xml:lang": locale,
-            descriptionType: "TechnicalInfo"
+          if has_media_files?
+            xml.description oai_media_files_description(locale),
+              "xml:lang": locale,
+              descriptionType: "TechnicalInfo"
+          end
+          if has_transcripts?
+            xml.description oai_transcript_description(locale),
+              "xml:lang": locale,
+              descriptionType: "TechnicalInfo"
+          end
         end
       end
 

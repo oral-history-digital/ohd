@@ -210,6 +210,14 @@ class RegistryEntry < ApplicationRecord
       find 21898470 rescue nil
     end
 
+    def ohd_level_of_indexing_transcript
+      find 21898475 rescue nil
+    end
+
+    def ohd_level_of_indexing_media
+      find 21898474 rescue nil
+    end
+
     def ohd_countries
       find 21898760 rescue nil
     end
