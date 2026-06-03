@@ -63,7 +63,8 @@ function UpdateRegistryEntryAttributesModal({
                                             entry,
                                             project,
                                             [
-                                                ...registryEntryAttributes.translations_attributes,
+                                                ...(registryEntryAttributes.translations_attributes ||
+                                                    []),
                                             ]
                                         ),
                                 });
