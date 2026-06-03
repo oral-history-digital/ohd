@@ -468,6 +468,13 @@ GEM
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
     semantic_range (3.1.0)
+    sentry-rails (6.6.0)
+      railties (>= 5.2.0)
+      sentry-ruby (~> 6.6.0)
+    sentry-ruby (6.6.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      logger
     shakapacker (8.0.2)
       activesupport (>= 5.2)
       package_json
@@ -628,6 +635,8 @@ DEPENDENCIES
   rotp
   rqrcode (~> 3.0)
   selenium-webdriver
+  sentry-rails (~> 6.6.0)
+  sentry-ruby (~> 6.6.0)
   shakapacker (~> 8.0.2)
   simplecov
   slim-rails
