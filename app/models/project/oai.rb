@@ -100,15 +100,15 @@ module Project::Oai
 
   def oai_coverage
     metrics = ProjectMetricsRepository.new([id])
-    min = metrics.interview_year_ranges_by_project[id][:min]
-    max = metrics.interview_year_ranges_by_project[id][:max]
+    min = metrics.interview_year_ranges_by_project.dig(id, :min)
+    max = metrics.interview_year_ranges_by_project.dig(id, :max)
     "#{min}-#{max}" rescue nil
   end
 
   def oai_birth_years
     metrics = ProjectMetricsRepository.new([id])
-    min = metrics.birth_year_ranges_by_project[id][:min]
-    max = metrics.birth_year_ranges_by_project[id][:max]
+    min = metrics.birth_year_ranges_by_project.dig(id, :min)
+    max = metrics.birth_year_ranges_by_project.dig(id, :max)
     "#{min}-#{max}" rescue nil
   end
 
