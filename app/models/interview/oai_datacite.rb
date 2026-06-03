@@ -126,7 +126,7 @@ module Interview::OaiDatacite
 
       xml.formats do
         xml.format oai_format
-        if has_transcript?
+        if segments.exists?
           xml.format "transcript/pdf"
           xml.format "transcript/csv"
           xml.format "transcript/vtt"

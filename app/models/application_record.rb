@@ -45,7 +45,7 @@ class ApplicationRecord < ActiveRecord::Base
       if RegistryEntry.send("ohd_#{ref_type}")&.children&.any?
         RegistryReference.where(
           registry_entry_id: RegistryEntry.send("ohd_#{ref_type}").children.pluck(:id),
-          ref_object_id: interviews_ids,
+          ref_object_id: interview_ids,
           ref_object_type: "Interview",
         ).pluck(:registry_entry_id).uniq
       else
