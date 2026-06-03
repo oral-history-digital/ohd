@@ -136,13 +136,15 @@ module Collection::OaiDatacite
 
       xml.rightsList do
         oai_locales.each do |locale|
-          xml.rights "#{TranslationValue.for('conditions', locale)} (#{project.name(locale)})",
-            "xml:lang": locale,
-            rightsURI: "#{project.domain_with_optional_identifier}/#{locale}/conditions"
+          unless (project.grant_project_access_instantly || project.grant_access_without_login)
+            xml.rights "#{TranslationValue.for('conditions', locale)} (#{project.name(locale)})",
+              "xml:lang": locale,
+              rightsURI: "#{project.domain_with_optional_identifier}/#{locale}/conditions"
+          end
           xml.rights "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions"
-          xml.rights TranslationValue.for('privacy_protection', locale),
+          xml.rights "#{TranslationValue.for('privacy_protection', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection"
         end
