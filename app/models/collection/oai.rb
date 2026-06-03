@@ -90,15 +90,21 @@ module Collection::Oai
   end
 
   def oai_coverage
-    interview_year_range = CollectionMetricsRepository.new(21894738).interview_year_range
+    interview_year_range = CollectionMetricsRepository.new(id).interview_year_range
     min = interview_year_range[:min]
     max = interview_year_range[:max]
-    "#{min}-#{max}" rescue nil
+    if min.nil? && max.nil?
+      return nil
+    end
+    "#{min}-#{max}"
   end
 
   def oai_birth_years
-    birthdays = CollectionMetricsRepository.new(21894738).birthdays
-    "#{birthdays.min}-#{birthdays.max}" rescue nil
+    birthdays = CollectionMetricsRepository.new(id).birth_year_range
+    if birthdays[:min].nil? && birthdays[:max].nil?
+      return nil
+    end
+    "#{birthdays[:min]}-#{birthdays[:max]}"
   end
 
   def oai_languages

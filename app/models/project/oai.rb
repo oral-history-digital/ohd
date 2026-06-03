@@ -102,14 +102,20 @@ module Project::Oai
     metrics = ProjectMetricsRepository.new([id])
     min = metrics.interview_year_ranges_by_project.dig(id, :min)
     max = metrics.interview_year_ranges_by_project.dig(id, :max)
-    "#{min}-#{max}" rescue nil
+    if min.nil? && max.nil?
+      return nil
+    end
+    "#{min}-#{max}"
   end
 
   def oai_birth_years
     metrics = ProjectMetricsRepository.new([id])
     min = metrics.birth_year_ranges_by_project.dig(id, :min)
     max = metrics.birth_year_ranges_by_project.dig(id, :max)
-    "#{min}-#{max}" rescue nil
+    if min.nil? && max.nil?
+      return nil
+    end
+    "#{min}-#{max}"
   end
 
   def oai_abstract_description(locale)
