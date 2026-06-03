@@ -90,13 +90,15 @@ module Collection::Oai
   end
 
   def oai_coverage
-    dates = interviews.pluck(:interview_date).map{|d| Date.parse(d).year rescue nil}.compact.uniq
-    "#{dates.min}-#{dates.max}" rescue nil
+    interview_year_range = CollectionMetricsRepository.new(21894738).interview_year_range
+    min = interview_year_range[:min]
+    max = interview_year_range[:max]
+    "#{min}-#{max}" rescue nil
   end
 
   def oai_birth_years
-    birthyears = interviews.map{|i| Date.parse(i.interviewee.date_of_birth).year rescue nil}.compact.uniq
-    "#{birthyears.min}-#{birthyears.max}" rescue nil
+    birthdays = CollectionMetricsRepository.new(21894738).birthdays
+    "#{birthdays.min}-#{birthdays.max}" rescue nil
   end
 
   def oai_languages

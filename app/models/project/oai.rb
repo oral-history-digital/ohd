@@ -99,13 +99,17 @@ module Project::Oai
   end
 
   def oai_coverage
-    dates = interviews.pluck(:interview_date).map{|d| Date.parse(d).year rescue nil}.compact.uniq
-    "#{dates.min}-#{dates.max}" rescue nil
+    metrics = ProjectMetricsRepository.new([id])
+    min = metrics.interview_year_ranges_by_project[id][:min]
+    max = metrics.interview_year_ranges_by_project[id][:max]
+    "#{min}-#{max}" rescue nil
   end
 
   def oai_birth_years
-    birthyears = interviews.map{|i| Date.parse(i.interviewee.date_of_birth).year rescue nil}.compact.uniq
-    "#{birthyears.min}-#{birthyears.max}" rescue nil
+    metrics = ProjectMetricsRepository.new([id])
+    min = metrics.birth_year_ranges_by_project[id][:min]
+    max = metrics.birth_year_ranges_by_project[id][:max]
+    "#{min}-#{max}" rescue nil
   end
 
   def oai_abstract_description(locale)
