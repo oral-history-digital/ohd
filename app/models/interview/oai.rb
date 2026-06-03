@@ -54,7 +54,7 @@ module Interview::Oai
   end
 
   def oai_publisher(locale)
-    project.institutions_with_ancestors_names(locale)
+    project.oai_publisher(locale)
   end
 
   def oai_date

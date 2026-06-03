@@ -41,10 +41,11 @@ class ApplicationRecord < ActiveRecord::Base
 
   %w(subjects countries findability).each do |ref_type|
     define_method("ohd_#{ref_type}_registry_entry_ids") do
-      if respond_to?(:interviews) && RegistryEntry.send("ohd_#{ref_type}")&.children&.any?
+      interview_ids = respond_to?(:interviews) ? interviews.pluck(:id) : [id]
+      if RegistryEntry.send("ohd_#{ref_type}")&.children&.any?
         RegistryReference.where(
           registry_entry_id: RegistryEntry.send("ohd_#{ref_type}").children.pluck(:id),
-          ref_object_id: interviews.pluck(:id),
+          ref_object_id: interviews_ids,
           ref_object_type: "Interview",
         ).pluck(:registry_entry_id).uniq
       else
