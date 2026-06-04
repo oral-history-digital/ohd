@@ -1,11 +1,11 @@
-export function toDateString(value, locale) {
-    if (!value) {
-        return '';
-    }
-    const trimmedDate = value.trim();
-    const date = new Date(trimmedDate);
+import { isDate } from './isDate';
+import { parseDate } from './parseDate';
 
-    if (isNaN(date)) return trimmedDate;
+export function toDateString(value, locale) {
+    if (!value) return '';
+
+    const date = parseDate(value);
+    if (!isDate(date)) return date;
 
     return date.toLocaleDateString(localeString(locale));
 }

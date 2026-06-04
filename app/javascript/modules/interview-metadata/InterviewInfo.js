@@ -1,4 +1,5 @@
 import { AuthorizedContent } from 'modules/auth';
+import { toDateString } from 'modules/data';
 import { SingleValueWithForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
@@ -32,7 +33,9 @@ export default function InterviewInfo({ interview, languages }) {
             <SingleValueWithForm
                 obj={interview}
                 attribute={'interview_date'}
-                value={interview.interview_date}
+                value={toDateString(interview.interview_date, locale)}
+                editValue={interview.interview_date}
+                help={'help_texts.date_field'}
                 hideEmpty
             />
             <SingleValueWithForm
