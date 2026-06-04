@@ -173,6 +173,13 @@ class CollectionsController < ApplicationController
     render json: json
   end
 
+  def doi
+    @collection = Collection.find(params[:id])
+    authorize @collection
+    status = register_doi(@collection)
+    respond @collection
+  end
+
   def destroy
     @collection = Collection.find(params[:id])
     authorize @collection

@@ -27,6 +27,10 @@ module Collection::Oai
     #"#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
   #end
 
+  def oai_doi_identifier
+    "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.collection-#{id}"
+  end
+
   def oai_catalog_identifier(locale)
     "#{OHD_DOMAIN}/#{locale}/catalog/collections/#{id}"
   end
@@ -40,12 +44,8 @@ module Collection::Oai
     #project.institutions_with_ancestors_names(locale)
   end
 
-  def oai_creator(locale)
-    project.institutions.first&.name(locale)
-  end
-
   def oai_publisher(locale)
-    project.root_institutions_names(locale)
+    project.oai_publisher(locale)
   end
 
   def oai_publication_date
@@ -57,12 +57,16 @@ module Collection::Oai
     "Collection"
   end
 
+  def oai_doi_identifier
+    "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{id}"
+  end
+
   def type
     'Collection'
   end
 
   def oai_formats
-    interviews.pluck(:media_type).uniq.map do |mt|
+    formats = interviews.pluck(:media_type).uniq.map do |mt|
       case mt
       when 'video'
         "video/mp4"
@@ -70,32 +74,46 @@ module Collection::Oai
         "audio/mp3"
       end
     end.compact
+    if Segment.where(interview_id: interviews.pluck(:id)).exists?
+      formats += [
+      'transcript/pdf',
+      'transcript/csv',
+      'transcript/vtt',
+      'transcript/tei-xml'
+      ]
+    end
+    formats
   end
 
   def oai_size
-    "#{interviews.shared.count} Interviews"
+    "#{interviews.count} Interviews"
   end
 
   def oai_coverage
-    dates = interviews.pluck(:interview_date).map{|d| Date.parse(d).year rescue nil}.compact.uniq
-    "#{dates.min}-#{dates.max}" rescue nil
+    interview_year_range = CollectionMetricsRepository.new(id).interview_year_range
+    min = interview_year_range[:min]
+    max = interview_year_range[:max]
+    if min.nil? && max.nil?
+      return nil
+    end
+    "#{min}-#{max}"
   end
 
   def oai_birth_years
-    birthyears = interviews.map{|i| Date.parse(i.interviewee.date_of_birth).year rescue nil}.compact.uniq
-    "#{birthyears.min}-#{birthyears.max}" rescue nil
+    birthdays = CollectionMetricsRepository.new(id).birth_year_range
+    if birthdays[:min].nil? && birthdays[:max].nil?
+      return nil
+    end
+    "#{birthdays[:min]}-#{birthdays[:max]}"
   end
 
   def oai_languages
-    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
-  end
-
-  def oai_subject_registry_entry_ids
-    ohd_subject_registry_entry_ids
-  end
-
-  def oai_subject_registry_entries
-    RegistryEntry.where(id: ohd_subject_registry_entry_ids)
+    # return 'mul' if more than 1 language, otherwise the code of the single language
+    if interviews.joins(:interview_languages).group(:id).having("COUNT(DISTINCT interview_languages.language_id) > 1").exists?
+      'mul'
+    else
+      interviews.first&.interview_languages&.first&.language&.code || ''
+    end
   end
 
   def oai_abstract_description(locale)

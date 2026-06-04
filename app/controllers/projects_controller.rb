@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
       #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
-           :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy] +
+           :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy, :doi] +
            Project.non_public_method_names
 
   # GET /projects
@@ -204,6 +204,11 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def doi
+    status = register_doi(@project)
+    respond @project
+  end
+
   # DELETE /projects/1
   def destroy
     @project.destroy
@@ -314,7 +319,6 @@ class ProjectsController < ApplicationController
           "pseudo_available_locales",
           "pseudo_view_modes",
           "pseudo_upload_types",
-          "pseudo_funder_names",
           "pseudo_logged_out_visible_registry_entry_ids",
           "pseudo_hidden_registry_entry_ids",
           "pseudo_pdf_registry_entry_ids",
@@ -331,9 +335,6 @@ class ProjectsController < ApplicationController
           "archive_id_number_length",
           "domain",
           "doi",
-          "cooperation_partner",
-          "leader",
-          "manager",
           "hosting_institution",
           "contact_email",
           "has_newsletter",

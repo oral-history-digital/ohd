@@ -1,0 +1,3 @@
+class Funder < Affiliate
+end
+

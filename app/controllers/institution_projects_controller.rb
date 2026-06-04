@@ -88,7 +88,8 @@ class InstitutionProjectsController < ApplicationController
     def institution_project_params
       params.require(:institution_project).permit(
         :project_id,
-        :institution_id
+        :institution_id,
+        :primary
       )
 
     end

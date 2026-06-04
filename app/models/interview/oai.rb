@@ -30,7 +30,7 @@ module Interview::Oai
   end
 
   def oai_doi_identifier
-    "#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
+    "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
   end
 
   def oai_url_identifier(locale)
@@ -49,12 +49,12 @@ module Interview::Oai
   end
 
   def oai_contributor(locale)
-    project.institutions_with_ancestors_names(locale)
+    "Oral-History.Digital / University Library of Freie Universität Berlin"
+    #project.institutions_with_ancestors_names(locale)
   end
 
   def oai_publisher(locale)
-    #project.root_institutions_names(locale)
-    project.institutions_with_ancestors_names(locale)
+    project.oai_publisher(locale)
   end
 
   def oai_date

@@ -1,0 +1,3 @@
+class Leader < Affiliate
+end
+

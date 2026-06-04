@@ -53,6 +53,11 @@ Rails.application.routes.draw do
     get "translation_strings", to: "translation_values#translations_by_locale"
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]
+    resources :affiliates, only: [:create, :update, :destroy]
+    resources :cooperation_partners, only: [:create, :update, :destroy]
+    resources :leaders, only: [:create, :update, :destroy]
+    resources :managers, only: [:create, :update, :destroy]
+    resources :funders#, only: [:create, :update, :destroy]
     resources :institution_projects
     resources :comments
 
@@ -93,6 +98,9 @@ Rails.application.routes.draw do
     resources :collections do
       collection do
         get :countries
+      end
+      member do
+        post :doi
       end
     end
 
@@ -285,6 +293,7 @@ Rails.application.routes.draw do
       member do
         get :collections, to: 'collections#for_project'
         get :contact_email
+        post :doi
       end
     end
   end

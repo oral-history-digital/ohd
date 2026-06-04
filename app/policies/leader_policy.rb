@@ -1,0 +1,2 @@
+class LeaderPolicy < AffiliatePolicy
+end

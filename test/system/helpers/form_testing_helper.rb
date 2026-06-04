@@ -16,6 +16,7 @@ module FormTestingHelper
   #       - :index [Integer] For :rich_text, which editor instance (default: 0)
   #   - :ui_assertions [Array] Strings expected to appear in UI after save
   #   - :db_assertions [Hash] Field name => expected value for database verification
+  #   - :db_translation_assertions [Hash] Field name => expected value for translated database verification
   #   - :db_model [Class] Model class for db_assertions (default: Project)
   #   - :db_lookup_field [Symbol] Field to use for lookup (default: :shortname)
   #   - :db_lookup_value [String] Value to search for (default: 'test')
@@ -86,6 +87,18 @@ module FormTestingHelper
       end
     end
 
+    if config[:db_translation_assertions]
+      db_model = config[:db_model] || Project
+      db_lookup_field = config[:db_lookup_field] || :shortname
+      db_lookup_value = config[:db_lookup_value] || 'test'
+      verify_translated_database_fields(
+        config[:db_translation_assertions],
+        db_model,
+        db_lookup_field,
+        db_lookup_value
+      )
+    end
+
     # Verify database assertions
     if config[:db_assertions]
       db_model = config[:db_model] || Project
@@ -117,46 +130,37 @@ module FormTestingHelper
     when :textarea
       fill_in field_name, with: value
     when :rich_text
-      fill_in_draft_editor(value, index: index)    when :select
-      select value, from: field_name    else
+      fill_in_draft_editor_by_test_id(field_name, value)
+    when :select
+      select value, from: field_name
+    else
       raise ArgumentError, "Unknown field type: #{type}"
     end
   end
 
   # Fill a Draft.js rich text editor with real keyboard input
   #
+  # @param test_id [String] data-testid attribute of the editor wrapper element
   # @param text [String] Text to fill
-  # @param index [Integer] Which editor instance (0 for first, etc.)
-  def fill_in_draft_editor(text, index: 0)
-    editor = all('.public-DraftEditor-content', wait: 5)[index]
-    
-    # Scroll into view and click to focus
+  def fill_in_draft_editor_by_test_id(test_id, text)
+    wrapper = find("[data-testid='#{test_id}']", wait: 5)
+    editor = wrapper.find('.public-DraftEditor-content', wait: 5)
+
     page.execute_script("arguments[0].scrollIntoView(true);", editor.native)
     editor.click
-    
-    # Wait for editor to be focused and ready
     sleep 0.5
-    
-    # Clear existing content multiple times to ensure it's truly empty
-    # This is kind of haccky but necessary to prevent flaky tests in CI 
-    # where the editor may not clear properly on first try
+
     3.times do
       editor.send_keys([:control, 'a'])
       sleep 0.1
       editor.send_keys(:backspace)
       sleep 0.1
     end
-    
-    # Critical: longer wait after clearing to ensure editor is ready for new input
-    # This prevents the first character from being lost in slow CI environments
+
     sleep 2.0
-    
-    # Verify editor is ready by checking it can receive focus
     editor.click
     sleep 0.3
-    
-    # Type the first character separately to ensure editor is fully ready
-    # This prevents the first character from being lost in CI
+
     if text.length > 0
       editor.send_keys(text[0])
       sleep 0.2
@@ -177,6 +181,22 @@ module FormTestingHelper
     assertions.each do |field_name, expected_value|
       actual_value = instance.send(field_name)
       assert_equal expected_value, actual_value, "#{field_name} should be #{expected_value.inspect}"
+    end
+  end
+
+  def verify_translated_database_fields(assertions_by_locale, model_class = Project, lookup_field = :shortname, lookup_value = 'test')
+    instance = model_class.find_by(lookup_field => lookup_value)
+    raise "Could not find #{model_class} with #{lookup_field}=#{lookup_value}" unless instance
+
+    assertions_by_locale.each do |locale, assertions|
+      assertions.each do |field_name, expected_value|
+        actual_value = instance.public_send(field_name, locale.to_sym)
+        assert_equal(
+          expected_value,
+          actual_value,
+          "#{field_name}(#{locale}) should be #{expected_value.inspect}"
+        )
+      end
     end
   end
 

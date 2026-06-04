@@ -13,6 +13,12 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :grid_fields,
     :metadata_fields,
     :collection_ids,
+    :cooperation_partners,
+    :leaders,
+    :managers,
+    :funders,
+    :doi_status,
+    :used_doi_prefix,
     :registry_reference_type_ids,
     :root_registry_entry_id,
     :workflow_state,
@@ -25,6 +31,17 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :subjects,
     :levels_of_indexing,
     :default_search_order
+
+  %w(
+    cooperation_partners
+    leaders
+    managers
+    funders
+  ).each do |m|
+    define_method m do
+      object.send(m).inject({}) { |mem, c| mem[c.id] = AffiliateSerializer.new(c); mem }
+    end
+  end
 
   def display_name
     object.localized_hash(:display_name)

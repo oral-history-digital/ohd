@@ -51,6 +51,12 @@ class Project < ApplicationRecord
   has_many :texts, dependent: :destroy
   has_many :materials, as: :attachable
 
+  has_many :affiliates, dependent: :destroy
+  has_many :cooperation_partners, dependent: :destroy
+  has_many :leaders, dependent: :destroy
+  has_many :managers, dependent: :destroy
+  has_many :funders, dependent: :destroy
+
   translates :name, :display_name, :introduction, :more_text, :landing_page_text, :restricted_landing_page_text,
     :media_missing_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
@@ -59,7 +65,6 @@ class Project < ApplicationRecord
   serialize :available_locales, type: Array
   serialize :upload_types, type: Array
   #serialize :name, type: Array
-  serialize :funder_names, type: Array
   serialize :logged_out_visible_registry_entry_ids, type: Array
   serialize :hidden_registry_entry_ids, type: Array
   serialize :hidden_transcript_registry_entry_ids, type: Array
@@ -82,7 +87,6 @@ class Project < ApplicationRecord
   [:view_modes,
     :available_locales,
     :upload_types,
-    :funder_names,
     :logged_out_visible_registry_entry_ids,
     :hidden_registry_entry_ids,
     :pdf_registry_entry_ids,
@@ -187,6 +191,14 @@ class Project < ApplicationRecord
   #
   def available_locales
     read_attribute :available_locales
+  end
+
+  def has_media_files?
+    RegistryEntry.ohd_level_of_indexing_media.registry_references.where(interview_id: interviews.pluck(:id)).exists?
+  end
+
+  def has_transcripts?
+    RegistryEntry.ohd_level_of_indexing_transcript.registry_references.where(interview_id: interviews.pluck(:id)).exists?
   end
 
   def logo
@@ -310,10 +322,6 @@ class Project < ApplicationRecord
 
   def root_institutions
     institutions.map{|i| i.root }.uniq
-  end
-
-  def root_institutions_names(locale = I18n.locale)
-    root_institutions.map{|i| i.name(locale) }.join(", ")
   end
 
   def institutions_with_ancestors

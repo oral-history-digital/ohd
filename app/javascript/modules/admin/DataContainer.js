@@ -1,3 +1,4 @@
+import { registerDoi } from 'modules/archive';
 import { deleteData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -8,6 +9,7 @@ const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
             deleteData,
+            registerDoi,
         },
         dispatch
     );

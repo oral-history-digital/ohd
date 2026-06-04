@@ -6,12 +6,16 @@ class EditTableExportTest < ActiveSupport::TestCase
     @interview = DataHelper.interview_with_everything(@project, 1)
     @csv = EditTableExport.new(@interview.archive_id, :de).process
     @rows = @csv.split(/\n/)
+    @header_row_entries = @rows[0].split(/\t/)
+    @header_indices = @header_row_entries.each_with_index.to_h
     @first_row_entries = @rows[1].split(/\t/)
     @second_row_entries = @rows[2].split(/\t/)
   end
 
   test 'should write a csv containing all relevant data' do
-    assert_equal "Band\tTimecode\tSprecher\tTranskript (rus)\tÜbersetzung (ger)\tÜbersetzung (eng)\tHauptüberschrift (rus)\tZwischenüberschrift (rus)\tHauptüberschrift (ger)\tZwischenüberschrift (ger)\tVerknüpfungen\tAnmerkungen (rus)\tAnmerkungen (pol)\tAnmerkungen (ger)\tAnmerkungen (eng)", @rows[0]
+    expected_header = @interview.edit_table_headers(:de).values.join("\t")
+
+    assert_equal expected_header, @rows[0]
 
     assert_equal "1", @first_row_entries[0]
     assert_equal "00:00:02.00", @first_row_entries[1]
@@ -23,8 +27,9 @@ class EditTableExportTest < ActiveSupport::TestCase
     assert_equal "Einleitung", @first_row_entries[8]
     assert_equal "", @first_row_entries[9]
     assert_equal @interview.segments.first.registry_references.first.registry_entry_id.to_i, @first_row_entries[10].to_i
-    assert_equal "Главное местонахождение — Берлин Филиал по добыче", @first_row_entries[11]
-    assert_equal "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen", @first_row_entries[13]
+    # Use header indices for metadata fields to avoid hardcoding column positions, which may change as fields are added/removed.
+    assert_equal "Главное местонахождение — Берлин Филиал по добыче", @first_row_entries[@header_indices['Anmerkungen (rus)']]
+    assert_equal "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen", @first_row_entries[@header_indices['Anmerkungen (ger)']]
 
     assert_equal "2", @second_row_entries[0]
     assert_equal "00:02:02.00", @second_row_entries[1]
@@ -36,7 +41,8 @@ class EditTableExportTest < ActiveSupport::TestCase
     assert_equal "", @second_row_entries[8]
     assert_equal "Leben", @second_row_entries[9]
     assert_equal @interview.segments.first(2).last.registry_references.map(&:registry_entry_id).join('#'), @second_row_entries[10]
-    assert_equal "Построенный для размещения восточных рабочих барачный", @second_row_entries[11]
-    assert_equal "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager", @second_row_entries[13]
+    # Again, use header indices for metadata fields to avoid hardcoding column positions.
+    assert_equal "Построенный для размещения восточных рабочих барачный", @second_row_entries[@header_indices['Anmerkungen (rus)']]
+    assert_equal "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager", @second_row_entries[@header_indices['Anmerkungen (ger)']]
   end
 end

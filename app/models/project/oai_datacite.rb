@@ -1,20 +1,22 @@
 module Project::OaiDatacite
-  def to_oai_datacite
-    xml = Builder::XmlMarkup.new
+  def to_oai_datacite(xml = Builder::XmlMarkup.new)
     xml.tag!(
       "resource",
       "xmlns": "http://datacite.org/schema/kernel-4",
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-      "xsi:schemaLocation": %(
+      "xsi:schemaLocation": %w(
         http://datacite.org/schema/kernel-4
         http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
-      ).gsub(/\s+/, " ")
+      ).join(" ")
     ) do
 
       xml.identifier oai_catalog_identifier(:de), identifierType: "URL"
 
       xml.alternateIdentifiers do
         xml.alternateIdentifier oai_catalog_identifier(:en), alternateIdentifierType: "URL"
+        if doi_status == "created"
+          xml.alternateIdentifier oai_doi_identifier, alternateIdentifierType: "DOI"
+        end
       end
 
       xml.relatedIdentifiers do
@@ -32,27 +34,35 @@ module Project::OaiDatacite
           xml.relatedIdentifier domain,
             relatedIdentifierType: "URL",
             relationType: "IsSupplementTo",
-            resourceTypeGeneral: "Dataset"
+            resourceTypeGeneral: "Collection"
         end
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/oai_repository?verb=ListRecords&metadataPrefix=oai_datacite&set=archive:#{shortname}",
           relatedIdentifierType: "URL",
           relationType: "HasPart",
-          resourceTypeGeneral: "Dataset"
+          resourceTypeGeneral: "Audiovisual"
       end
 
       xml.titles do
-        (oai_locales | ['en']).each do |locale|
+        oai_locales.each do |locale|
           xml.title oai_title(locale), "xml:lang": locale
         end
       end
 
-      xml.creators do
-        xml.creator do
-          xml.creatorName oai_creator(:en), "xml:lang": "en"
+      if institutions.any?
+        xml.creators do
+          institutions.leaf.each do |institution|
+            xml.creator do
+              xml.creatorName institution.with_ancestors.map{|i| i.name(:en)}.join(", "), "xml:lang": "en", nameType: "Organizational"
+              xml.nameIdentifier institution.isil, schemeURI: "http://isil.staatsbibliothek-berlin.de/isil/", nameIdentifierScheme: "ISIL" unless institution.isil.blank?
+              xml.nameIdentifier institution.gnd, schemeURI: "http://dnb.de/gnd/", nameIdentifierScheme: "Gemeinsame Normdatei (GND-Organisationen)" unless institution.gnd.blank?
+            end
+          end
         end
       end
 
-      xml.publisher oai_publisher(:en), "xml:lang": "en"
+      unless oai_publisher(:en).blank?
+        xml.publisher oai_publisher(:en), "xml:lang": "en"
+      end
 
       if oai_publication_date
         xml.publicationYear oai_publication_date
@@ -60,6 +70,22 @@ module Project::OaiDatacite
 
 
       xml.contributors do
+        #xml.contributor contributorType: "DataManager" do
+          #xml.contributorName oai_title(:en),
+            #"xml:lang": "en",
+            #nameType: "Organizational"
+        #end
+
+        cooperation_partners.each do |cooperation_partner|
+          name = cooperation_partner.name_type == "Personal" ?
+            "#{cooperation_partner.first_name(:en)} #{cooperation_partner.last_name(:en)}" :
+            cooperation_partner.name(:en).gsub("'", "")
+          xml.contributor contributorType: "DataCollector" do
+            xml.contributorName "#{name} (Cooperation Partner)",
+              "xml:lang": "en",
+              nameType: cooperation_partner.name_type
+          end
+        end
         oai_leaders.each do |leader_name|
           xml.contributor contributorType: "ProjectLeader" do
             xml.contributorName leader_name.strip,
@@ -81,10 +107,12 @@ module Project::OaiDatacite
         end
       end
 
-      xml.fundingReferences do
-        funder_names.each do |funder|
-          xml.fundingReference do
-            xml.funderName funder, "xml:lang": "en"
+      if oai_funders.any?
+        xml.fundingReferences do
+          oai_funders.each do |funder|
+            xml.fundingReference do
+              xml.funderName funder
+            end
           end
         end
       end
@@ -107,23 +135,27 @@ module Project::OaiDatacite
 
       xml.dates do
         xml.date oai_coverage, dateType: "Coverage"
-        xml.date oai_birth_years, dateType: "Other", dateInformation: "years of birth"
+        xml.date oai_birth_years, dateType: "Other", dateInformation: "Years of birth"
       end
 
       xml.subjects do
         oai_base_subject_tags(xml, :datacite)
-        oai_subject_tags(xml, :datacite)
+        oai_subjects_tags(xml, :datacite)
+        oai_countries_tags(xml, :datacite)
+        oai_findability_tags(xml, :datacite)
       end
 
       xml.rightsList do
         oai_locales.each do |locale|
-          xml.rights "#{TranslationValue.for('conditions', locale)} (#{name(locale)})",
-            "xml:lang": locale,
-            rightsURI: "#{domain_with_optional_identifier}/#{locale}/conditions"
+          unless (grant_project_access_instantly || grant_access_without_login)
+            xml.rights "#{TranslationValue.for('conditions', locale)} (#{name(locale)})",
+              "xml:lang": locale,
+              rightsURI: "#{domain_with_optional_identifier}/#{locale}/conditions"
+          end
           xml.rights "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions"
-          xml.rights TranslationValue.for('privacy_protection', locale),
+          xml.rights "#{TranslationValue.for('privacy_protection', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection"
         end
@@ -131,7 +163,7 @@ module Project::OaiDatacite
           #xml.rights "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International",
             #"xml:lang": locale,
             #rightsIdentifier: "CC-BY-4.0",
-            #rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            #rightsURI: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
         #end
       end
 
@@ -140,12 +172,16 @@ module Project::OaiDatacite
           xml.description oai_abstract_description(locale), "xml:lang": locale, descriptionType: "Abstract"
         end
         %w(de en).each do |locale|
-          xml.description oai_media_files_description(locale),
-            "xml:lang": locale,
-            descriptionType: "TechnicalInfo"
-          xml.description oai_transcript_description(locale),
-            "xml:lang": locale,
-            descriptionType: "TechnicalInfo"
+          if has_media_files?
+            xml.description oai_media_files_description(locale),
+              "xml:lang": locale,
+              descriptionType: "TechnicalInfo"
+          end
+          if has_transcripts?
+            xml.description oai_transcript_description(locale),
+              "xml:lang": locale,
+              descriptionType: "TechnicalInfo"
+          end
         end
       end
 

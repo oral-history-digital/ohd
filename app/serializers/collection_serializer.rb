@@ -7,6 +7,8 @@ class CollectionSerializer < ApplicationSerializer
     :project_id,
     :homepage,
     :notes,
+    :doi_status,
+    :used_doi_prefix,
     :responsibles,
     :num_interviews,
     :subjects,

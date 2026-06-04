@@ -10,6 +10,7 @@ export default function Textarea({
     attribute,
     htmlOptions,
     scope,
+    locale,
     label,
     labelKey,
     className,
@@ -79,7 +80,11 @@ export default function Textarea({
                     direction: textDir,
                     textAlign: textDir === 'rtl' ? 'right' : 'left',
                 }}
-                data-testid={`${scope}-${attribute}-textarea`}
+                data-testid={
+                    locale
+                        ? `${scope}-${attribute}-${locale}-textarea`
+                        : `${scope}-${attribute}-textarea`
+                }
             />
         </Element>
     );
@@ -90,6 +95,7 @@ Textarea.propTypes = {
     data: PropTypes.object,
     htmlOptions: PropTypes.object,
     scope: PropTypes.string,
+    locale: PropTypes.string,
     attribute: PropTypes.string,
     label: PropTypes.string,
     labelKey: PropTypes.string,

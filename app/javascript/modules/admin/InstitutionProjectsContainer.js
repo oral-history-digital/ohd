@@ -31,6 +31,11 @@ const mapStateToProps = (state) => {
                 values: getInstitutions(state),
                 withEmpty: true,
             },
+            {
+                attribute: 'primary',
+                elementType: 'input',
+                type: 'checkbox',
+            },
         ],
     };
 };
