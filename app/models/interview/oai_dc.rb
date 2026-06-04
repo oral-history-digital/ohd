@@ -40,7 +40,9 @@ module Interview::OaiDc
       xml.tag!('dc:language', oai_language)
 
       oai_base_subject_tags(xml, :dc)
-      oai_subject_tags(xml, :dc)
+      oai_subjects_tags(xml, :dc)
+      oai_countries_tags(xml, :dc)
+      oai_findability_tags(xml, :dc)
 
       oai_locales.each do |locale|
         xml.tag!('dc:rights', "#{project.domain_with_optional_identifier}/#{locale}/conditions", "xml:lang": locale)

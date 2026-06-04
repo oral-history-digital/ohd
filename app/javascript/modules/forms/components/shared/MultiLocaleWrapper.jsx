@@ -25,10 +25,14 @@ export default function MultiLocaleWrapper(props) {
         handleErrors,
         validate,
         origAsLocale,
+        baseLocales,
     } = props;
 
     const localEditedValuesRef = useRef({});
-    const usedLocales = origAsLocale ? [...locales, 'orig'] : locales;
+    let usedLocales = origAsLocale ? [...locales, 'orig'] : locales;
+    if (baseLocales?.length) {
+        usedLocales = Array.from(new Set([...usedLocales, ...baseLocales]));
+    }
 
     const usedLocale = (locale) => {
         const alpha3 = ALPHA2_TO_ALPHA3[locale];
@@ -105,6 +109,7 @@ export default function MultiLocaleWrapper(props) {
             label: labelFunc(locale),
             key: `${attribute}-${locale}`,
             id: `${attribute}_${locale}`,
+            locale: usedLocale(locale),
         });
     };
 

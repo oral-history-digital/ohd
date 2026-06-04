@@ -3,7 +3,7 @@ import { useSensitiveData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { pluralize } from 'modules/strings';
 import { AdminMenu } from 'modules/ui';
 import PropTypes from 'prop-types';
@@ -27,15 +27,19 @@ export default function Data({
     showComponent,
     hideShow,
     hideEdit,
+    registerDOI,
     hideDelete,
     optionsScope,
     disabled = false,
     detailsAttributes,
     deleteData,
+    submitData,
+    registerDoi,
     handleDelete,
 }) {
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
+    const pathBase = usePathBase();
 
     useSensitiveData(data, sensitiveAttributes);
 
@@ -65,6 +69,11 @@ export default function Data({
             null,
             true
         );
+        close();
+    }
+
+    function postDOI(close) {
+        registerDoi(pathBase, pluralize(scope), data.id);
         close();
     }
 
@@ -126,6 +135,23 @@ export default function Data({
                                     )}
                                     {form(data, close, close)}
                                 </>
+                            )}
+                        </Item>
+                    )}
+                    {registerDOI && (
+                        <Item
+                            name="register_doi"
+                            label={t('register_doi')}
+                            dialogTitle={`${displayName} ${t('register_doi')}`}
+                        >
+                            {(close) => (
+                                <DeleteItemForm
+                                    onSubmit={() => postDOI(close)}
+                                    onCancel={close}
+                                    submitTextKey="register_doi"
+                                >
+                                    <p>{displayName}</p>
+                                </DeleteItemForm>
                             )}
                         </Item>
                     )}

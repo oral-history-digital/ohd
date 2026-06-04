@@ -9,6 +9,10 @@ class CollectionPolicy < ApplicationPolicy
     true
   end
 
+  def doi?
+    update?
+  end
+
   class Scope < Scope
     def resolve
       return scope.all if user&.admin?

@@ -25,6 +25,10 @@ module Project::Oai
     "#{domain_with_optional_identifier}/#{locale}"
   end
 
+  def oai_doi_identifier
+    "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{shortname}"
+  end
+
   def oai_title(locale)
     name(locale)
   end
@@ -34,21 +38,24 @@ module Project::Oai
     "Oral-History.Digital / University Library of Freie Universität Berlin"
   end
 
-  def oai_creator(locale)
-    #institutions.first&.name(locale)
-    institutions_with_ancestors_names(locale)
-  end
-
   def oai_publisher(locale)
-    root_institutions_names(locale)
+    primary_institution = institution_projects.where(primary: true).first&.institution ||
+      institutions.first
+    [primary_institution&.parent, primary_institution].compact.map do |ip|
+      ip.name(locale)
+    end.join(', ')
   end
 
   def oai_leaders
-    leader&.split(/\s*,\s*/) || []
+    leaders.map{|l| "#{l.first_name(:en)} #{l.last_name(:en)}"}
   end
 
   def oai_managers
-    manager&.split(/\s*,\s*/) || []
+    managers.map{|m| "#{m.first_name(:en)} #{m.last_name(:en)}"}
+  end
+
+  def oai_funders
+    funders.map{|f| f.name(:en)}
   end
 
   def oai_publication_date
@@ -64,7 +71,7 @@ module Project::Oai
   end
 
   def oai_formats
-    interviews.pluck(:media_type).uniq.map do |mt|
+    formats = interviews.pluck(:media_type).uniq.map do |mt|
       case mt
       when 'video'
         "video/mp4"
@@ -72,32 +79,48 @@ module Project::Oai
         "audio/mp3"
       end
     end.compact
+    if Segment.where(interview_id: interviews.pluck(:id)).exists?
+      formats += [
+      'transcript/pdf',
+      'transcript/csv',
+      'transcript/vtt',
+      'transcript/tei-xml'
+      ]
+    end
+    formats
   end
 
   def oai_size
-    "#{interviews.shared.count} Interviews"
+    "#{interviews.count} Interviews"
   end
 
   def oai_languages
-    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
+    # return 'mul' if more than 1 language, otherwise the code of the single language
+    if interviews.joins(:interview_languages).group(:id).having("COUNT(DISTINCT interview_languages.language_id) > 1").exists?
+      'mul'
+    else
+      interviews.first&.interview_languages&.first&.language&.code || ''
+    end
   end
 
   def oai_coverage
-    dates = interviews.pluck(:interview_date).map{|d| Date.parse(d).year rescue nil}.compact.uniq
-    "#{dates.min}-#{dates.max}" rescue nil
+    metrics = ProjectMetricsRepository.new([id])
+    min = metrics.interview_year_ranges_by_project.dig(id, :min)
+    max = metrics.interview_year_ranges_by_project.dig(id, :max)
+    if min.nil? && max.nil?
+      return nil
+    end
+    "#{min}-#{max}"
   end
 
   def oai_birth_years
-    birthyears = interviews.map{|i| Date.parse(i.interviewee.date_of_birth).year rescue nil}.compact.uniq
-    "#{birthyears.min}-#{birthyears.max}" rescue nil
-  end
-
-  def oai_subject_registry_entry_ids
-    ohd_subject_registry_entry_ids
-  end
-
-  def oai_subject_registry_entries
-    RegistryEntry.where(id: ohd_subject_registry_entry_ids)
+    metrics = ProjectMetricsRepository.new([id])
+    min = metrics.birth_year_ranges_by_project.dig(id, :min)
+    max = metrics.birth_year_ranges_by_project.dig(id, :max)
+    if min.nil? && max.nil?
+      return nil
+    end
+    "#{min}-#{max}"
   end
 
   def oai_abstract_description(locale)

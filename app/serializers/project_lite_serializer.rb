@@ -1,9 +1,9 @@
 class ProjectLiteSerializer < ProjectArchiveSerializer
-  attributes :cooperation_partner,
-    :leader,
-    :manager,
+  attributes :cooperation_partners,
+    :leaders,
+    :managers,
+    :funders,
     :domain,
-    :pseudo_funder_names,
     :subjects,
     :levels_of_indexing,
     :sponsors,
@@ -11,6 +11,17 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
     :media_types,
     :interview_year_range,
     :birth_year_range
+
+  %w(
+    cooperation_partners
+    leaders
+    managers
+    funders
+  ).each do |m|
+    define_method m do
+      object.send(m).inject({}) { |mem, c| mem[c.id] = AffiliateSerializer.new(c); mem }
+    end
+  end
 
   def media_types
     source = instance_options[:media_types_by_project] || {}
@@ -52,9 +63,9 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
 
   def contact_people
     {
-      cooperation_partner: object.cooperation_partner,
-      leader: object.leader,
-      manager: object.manager
+      cooperation_partner: object.cooperation_partners.map { |a| a.name }.join(', '),
+      leader: object.leaders.map { |a| a.name }.join(', '),
+      manager: object.managers.map { |a| a.name }.join(', '),
     }
   end
 

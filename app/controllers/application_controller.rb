@@ -385,4 +385,64 @@ class ApplicationController < ActionController::Base
   def store_user_location!
     store_location_for(:user, request.fullpath)
   end
+
+  def register_doi(object)
+    status = nil
+    unless object.doi_status == "created"
+      # curl -X POST -H "Content-Type: application/vnd.api+json" --user YOUR_CLIENT_ID:YOUR_PASSWORD -d @my_draft_doi.json https://api.test.datacite.org/dois
+      uri = URI.parse(Rails.configuration.datacite["url"])
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+
+      request = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/vnd.api+json" })
+      request.basic_auth(Rails.configuration.datacite["client_id"], Rails.configuration.datacite["password"])
+      request.body = doi_json(object)
+      response = http.request(request)
+      Logger.new(STDOUT).info "DOI registration response: #{response.code} #{response.body}"
+      status = response.code == "201" ? "created" : JSON.parse(response.body)["errors"][0]["title"][0..254]
+      object.update doi_status: status, used_doi_prefix: status == "created" ? Rails.configuration.datacite["prefix"] : nil
+    else
+      status = "created"
+    end
+    status
+  end
+
+  def doi_json(object)
+    locale = params[:locale]
+
+    suffix = case object
+             when Interview
+               "#{current_project.shortname}.#{object.archive_id}"
+             when Collection
+               "#{current_project.shortname}.#{object.id}"
+             when Project
+               object.shortname
+             else
+               raise "Unsupported object type for DOI generation"
+             end
+
+    doi = "#{Rails.configuration.datacite["prefix"]}/#{suffix}"
+    url = "#{current_project.domain_with_optional_identifier}/#{locale}/"
+    url += "interviews/#{object.archive_id}" if object.is_a?(Interview)
+
+    xml = render_to_string(
+      template: "shared/datacite",
+      layout: false,
+      formats: :xml,
+      locals: {object: object, locale: locale}
+    )
+
+    {
+      "data": {
+        "id": doi,
+        "type": "dois",
+        "attributes": {
+          "doi": doi,
+          "event": "publish",
+          "url": url,
+          "xml": Base64.encode64(xml),
+        },
+      },
+    }.to_json
+  end
 end

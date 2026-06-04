@@ -1,0 +1,2 @@
+class FundersController < AffiliatesController
+end

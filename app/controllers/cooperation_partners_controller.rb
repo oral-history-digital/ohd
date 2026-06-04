@@ -1,0 +1,3 @@
+class CooperationPartnersController < AffiliatesController
+end
+

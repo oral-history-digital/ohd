@@ -1,0 +1,3 @@
+class ManagersController < AffiliatesController
+end
+

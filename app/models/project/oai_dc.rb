@@ -19,8 +19,10 @@ module Project::OaiDc
       (oai_locales | ['en']).each do |locale|
         xml.tag!('dc:title', oai_title(locale), "xml:lang": locale)
       end
-      xml.tag!('dc:creator', oai_creator(:en), "xml:lang": :en)
-      xml.tag!('dc:publisher', oai_publisher(:en), "xml:lang": :en)
+      institutions.leaf.each do |i|
+        xml.tag!('dc:creator', i.name(:en), "xml:lang": :en)
+      end
+      xml.tag!('dc:publisher', oai_publisher(:en), "xml:lang": :en) unless oai_publisher(:en).blank?
 
       oai_leaders.each do |leader_name|
         xml.tag!('dc:contributor', leader_name.strip)
@@ -45,7 +47,9 @@ module Project::OaiDc
       xml.tag!('dc:language', oai_languages)
 
       oai_base_subject_tags(xml, :dc)
-      oai_subject_tags(xml, :dc)
+      oai_subjects_tags(xml, :dc)
+      oai_countries_tags(xml, :dc)
+      oai_findability_tags(xml, :dc)
 
       xml.tag!('dc:relation', domain_with_optional_identifier)
       xml.tag!('dc:relation', "#{OHD_DOMAIN}")

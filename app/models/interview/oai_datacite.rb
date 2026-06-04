@@ -4,10 +4,10 @@ module Interview::OaiDatacite
       "resource",
       "xmlns": "http://datacite.org/schema/kernel-4",
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-      "xsi:schemaLocation": %(
+      "xsi:schemaLocation": %w(
         http://datacite.org/schema/kernel-4
         http://schema.datacite.org/meta/kernel-4.6/metadata.xsd
-      ).gsub(/\s+/, " ")
+      ).join(" ")
     ) do
 
       xml.identifier oai_url_identifier(project.default_locale), identifierType: "URL"
@@ -17,23 +17,27 @@ module Interview::OaiDatacite
           xml.alternateIdentifier oai_url_identifier(locale),
             alternateIdentifierType: "URL"
         end
-        xml.alternateIdentifier oai_doi_identifier,
-          alternateIdentifierType: "DOI"
+        if doi_status == "created"
+          xml.alternateIdentifier oai_doi_identifier,
+            alternateIdentifierType: "DOI"
+        end
       end
 
       xml.relatedIdentifiers do
         xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/archives/#{project_id}",
           relatedIdentifierType: "URL",
-          relationType: "IsPartOf"
+          relationType: "IsPartOf",
+          resourceTypeGeneral: "Dataset"
         if collection_id
           xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/collections/#{collection_id}",
             relatedIdentifierType: "URL",
-            relationType: "IsPartOf"
+            relationType: "IsPartOf",
+            resourceTypeGeneral: "Collection"
         end
       end
 
       xml.titles do
-        (oai_locales | ['en']).each do |locale|
+        [:de, :en].each do |locale|
           xml.title oai_title(locale), "xml:lang": locale
         end
       end
@@ -56,30 +60,38 @@ module Interview::OaiDatacite
       end
 
       xml.contributors do
-        if !project.cooperation_partner.blank?
+        xml.contributor contributorType: "DataManager" do
+          xml.contributorName project.name(:en),
+            "xml:lang": "en",
+            nameType: "Organizational"
+        end
+        project.cooperation_partners.each do |cooperation_partner|
+          name = cooperation_partner.name_type == "Personal" ?
+            "#{cooperation_partner.first_name(:en)} #{cooperation_partner.last_name(:en)}" :
+            cooperation_partner.name(:en).gsub("'", "")
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName "#{project.cooperation_partner.gsub("'", "")} (Kooperationspartner)",
+            xml.contributorName "#{name} (Cooperation Partner)",
               "xml:lang": "en",
-              nameType: "Organizational"
+              nameType: cooperation_partner.name_type
           end
         end
         if project.interviewer_on_landing_page?
           xml.contributor contributorType: "DataCollector" do
-            xml.contributorName interviewers.map(&:full_name).join(", "),
+            xml.contributorName interviewers.map{|i| i.full_name(:en)}.join(", "),
               "xml:lang": "en",
               nameType: "Personal"
           end
         end
-        if !project.leader.blank?
+        project.oai_leaders.each do |leader|
           xml.contributor contributorType: "ProjectLeader" do
-            xml.contributorName project.leader,
+            xml.contributorName leader,
               "xml:lang": "en",
               nameType: "Personal"
           end
         end
-        if !project.manager.blank?
-          xml.contributor contributorType: "ProjectManager" do
-            xml.contributorName project.manager,
+        project.oai_managers.each do |manager_name|
+          xml.contributor contributorType: "ContactPerson" do
+            xml.contributorName manager_name.strip,
               "xml:lang": "en",
               nameType: "Personal"
           end
@@ -94,9 +106,9 @@ module Interview::OaiDatacite
       end
 
       xml.fundingReferences do
-        project.funder_names.each do |funder|
+        project.oai_funders.each do |funder|
           xml.fundingReference do
-            xml.funderName funder.gsub("'", ""), "xml:lang": "en"
+            xml.funderName funder
           end
         end
       end
@@ -114,6 +126,12 @@ module Interview::OaiDatacite
 
       xml.formats do
         xml.format oai_format
+        if segments.exists?
+          xml.format "transcript/pdf"
+          xml.format "transcript/csv"
+          xml.format "transcript/vtt"
+          xml.format "transcript/tei-xml"
+        end
       end
 
       xml.sizes do
@@ -124,18 +142,22 @@ module Interview::OaiDatacite
 
       xml.subjects do
         oai_base_subject_tags(xml, :datacite)
-        oai_subject_tags(xml, :datacite)
+        oai_subjects_tags(xml, :datacite)
+        oai_countries_tags(xml, :datacite)
+        oai_findability_tags(xml, :datacite)
       end
 
       xml.rightsList do
         oai_locales.each do |locale|
-          xml.rights "#{TranslationValue.for('conditions', locale)} (#{project.name(locale)})",
-            "xml:lang": locale,
-            rightsURI: "#{project.domain_with_optional_identifier}/#{locale}/conditions"
+          unless (project.grant_project_access_instantly || project.grant_access_without_login)
+            xml.rights "#{TranslationValue.for('conditions', locale)} (#{project.name(locale)})",
+              "xml:lang": locale,
+              rightsURI: "#{project.domain_with_optional_identifier}/#{locale}/conditions"
+          end
           xml.rights "#{TranslationValue.for('conditions', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/conditions"
-          xml.rights TranslationValue.for('privacy_protection', locale),
+          xml.rights "#{TranslationValue.for('privacy_protection', locale)} (Oral-History.Digital)",
             "xml:lang": locale,
             rightsURI: "#{OHD_DOMAIN}/#{locale}/privacy_protection"
         end
@@ -143,7 +165,7 @@ module Interview::OaiDatacite
           #xml.rights "#{TranslationValue.for('metadata_licence', locale)}: Attribution-NonCommercial-ShareAlike 4.0 International",
             #"xml:lang": locale,
             #rightsIdentifier: "CC-BY-4.0",
-            #rightsURI: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            #rightsURI: "http://creativecommons.org/licenses/by-nc-sa/4.0/"
         #end
       end
 

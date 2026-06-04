@@ -14,7 +14,7 @@ export default function CitationInfo({ interview, collections }) {
 
     let doiLink;
     if (interview.doi_status === 'created') {
-        doiLink = `https://doi.org/${project?.doi}/${projectId}.${interview.archive_id}`;
+        doiLink = `https://doi.org/${interview.used_doi_prefix}/${projectId}.${interview.archive_id}`;
     }
 
     let collectionName;

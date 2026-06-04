@@ -295,9 +295,9 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       item.is_a?(Hash) && item['descriptor'].is_a?(String)
     end
 
-    assert_equal project.cooperation_partner, payload.dig('contact_people', 'cooperation_partner')
-    assert_equal project.leader, payload.dig('contact_people', 'leader')
-    assert_equal project.manager, payload.dig('contact_people', 'manager')
+    assert_equal project.cooperation_partners.map { |a| a.name }.join(', '), payload.dig('contact_people', 'cooperation_partner')
+    assert_equal project.leaders.map { |a| a.name }.join(', '), payload.dig('contact_people', 'leader')
+    assert_equal project.managers.map { |a| a.name }.join(', '), payload.dig('contact_people', 'manager')
   end
 
   test 'should return project payload when show id is project shortname' do

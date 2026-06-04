@@ -5,6 +5,7 @@ class InterviewSerializer < InterviewBaseSerializer
     :workflow_state,
     :workflow_states,
     :doi_status,
+    :used_doi_prefix,
     :landing_page_texts,
     :signature_original,
     :task_ids,
