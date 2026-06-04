@@ -1,36 +1,79 @@
-<% unless interview.place_of_interview.nil? %>
-  \par{<%= latex_escape( "#{TranslationValue.for('place_of_interview', header_locale)}: #{interview.place_of_interview.descriptor(header_locale)}" ) %>}
-<% end %>
-\par{<%= latex_escape( "#{interview_metadata_label_for_pdf(interview, :interview_date, header_locale)}: #{interview_date_for_pdf(interview.interview_date)}" ) %>}
-\par{<%= latex_escape( "#{TranslationValue.for('language', header_locale)}: #{interview.language.to_s(header_locale)} #{(interview.translated) ? TranslationValue.for('status.translated', header_locale) : ''}" ) %>}
-<% unless interview.duration.nil? %>
-  \par{<%= latex_escape( "#{TranslationValue.for('duration', header_locale)}: #{Time.at(interview.duration).utc.strftime("%H:%M:%S")}" ) %>}
+<% if interview.place_of_interview.present? %>
+  <%= latex_metadata_line(
+    TranslationValue.for('place_of_interview', header_locale),
+    interview.place_of_interview.descriptor(header_locale)
+  ) %>
 <% end %>
 
-<% if (interview.tapes.count > 1) %>
-  \par{<%= latex_escape( "#{TranslationValue.for('tapes', header_locale)}: #{interview.tapes.count}") %>}
+<%= latex_metadata_line(
+  interview_metadata_label_for_pdf(interview, :interview_date, header_locale),
+  interview_date_for_pdf(interview.interview_date, locale: header_locale)
+) %>
+
+<%
+  language_text = [
+    interview.language.to_s(header_locale),
+    interview.translated ? TranslationValue.for('status.translated', header_locale) : nil
+  ].compact.join(' ')
+%>
+
+<%= latex_metadata_line(
+  TranslationValue.for('language', header_locale),
+  language_text
+) %>
+
+<% if interview.duration.present? %>
+  <%= latex_metadata_line(
+    TranslationValue.for('duration', header_locale),
+    Time.at(interview.duration).utc.strftime('%H:%M:%S')
+  ) %>
+<% end %>
+
+<% if interview.tapes.count > 1 %>
+  <%= latex_metadata_line(
+    TranslationValue.for('tapes', header_locale),
+    interview.tapes.count
+  ) %>
 <% end %>
 
 <%
-  [
+  contribution_type_codes = [
     :interviewer,
     :cinematographer,
     :transcriptor,
     :translator,
-    :segmentator,
-  ].each do |contribution_type_code|
-    unless doc_type == 'transcript' && contribution_type_code == :translator
-      contributors = interview.contributors_by_code(contribution_type_code)
-      names = contributors.map{|i| "#{i.first_name(header_locale)} #{i.last_name(header_locale)}" }.join(", ")
-      unless names.blank?
+    :segmentator
+  ]
 %>
-        \par{<%= latex_escape( "#{TranslationValue.for("contributions.#{contribution_type_code}", header_locale)}: #{names}" ) %>}
-<%
-      end
-    end
-  end
-%>
+
+<% contribution_type_codes.each do |contribution_type_code| %>
+  <% next if doc_type == 'transcript' && contribution_type_code == :translator %>
+
+  <%
+    names = interview
+      .contributors_by_code(contribution_type_code)
+      .map { |contributor| "#{contributor.first_name(header_locale)} #{contributor.last_name(header_locale)}" }
+      .join(', ')
+  %>
+
+  <%= latex_metadata_line(
+    TranslationValue.for("contributions.#{contribution_type_code}", header_locale),
+    names
+  ) %>
+<% end %>
 
 \vspace*{0.5cm}
-<%= latex_escape("#{TranslationValue.for('attention_to_conditions_title_page', header_locale)}") %>
+<%= latex_multiscript(TranslationValue.for('attention_to_conditions_title_page', header_locale)) %>
 
+\vspace*{1cm}
+
+<%
+  notes_for_pdf = interview.notes(header_locale)
+%>
+
+<% if interview.include_notes_in_transcript_pdf && notes_for_pdf.present? %>
+  <%= latex_metadata_line(
+    TranslationValue.for('metadata_labels.notes', header_locale, {}, true),
+    notes_for_pdf
+  ) %>
+<% end %>

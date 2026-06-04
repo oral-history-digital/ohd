@@ -109,7 +109,69 @@ class Interview::ExportTest < ActiveSupport::TestCase
     reader = PDF::Reader.new(StringIO.new(pdf))
     assert_match(/Перевод интервью Константин Адамец/, reader.pages[0].text)
     assert_match(/Also gut, heute ist der 10. September 2005, und wir sind bei/, reader.pages[3].text)
-    assert_match(/Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte/, reader.pages[3].text)
+    assert_match(/Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie\s+bitte/, reader.pages[3].text)
+  end
+
+  test 'should include notes on transcript PDF first page when enabled' do
+    locale = 'ru'
+    interview.update!(include_notes_in_transcript_pdf: true)
+    translation = interview.translations.find_or_initialize_by(locale: locale)
+    translation.update!(notes: 'Notes for transcript PDF test')
+
+    pdf = interview.to_pdf(:ru, 'ger')
+    reader = PDF::Reader.new(StringIO.new(pdf))
+
+    assert_match(/Notes for transcript PDF test/, reader.pages[0].text)
+  end
+
+  test 'should not include notes on transcript PDF first page when disabled' do
+    locale = 'ru'
+    interview.update!(include_notes_in_transcript_pdf: false)
+    translation = interview.translations.find_or_initialize_by(locale: locale)
+    translation.update!(notes: 'Hidden notes for transcript PDF test')
+
+    pdf = interview.to_pdf(:ru, 'ger')
+    reader = PDF::Reader.new(StringIO.new(pdf))
+
+    refute_match(/Hidden notes for transcript PDF test/, reader.pages[0].text)
+  end
+
+  test 'should use ui locale notes for transcript pdf' do
+    interview.update!(include_notes_in_transcript_pdf: true)
+    interview.translations.find_or_initialize_by(locale: 'de').update!(notes: 'Deutsche Notiz')
+    interview.translations.find_or_initialize_by(locale: 'ru').update!(notes: 'Russian note')
+
+    pdf = interview.to_pdf(:ru, 'ger')
+    reader = PDF::Reader.new(StringIO.new(pdf))
+
+    assert_match(/Russian note/, reader.pages[0].text)
+    refute_match(/Deutsche Notiz/, reader.pages[0].text)
+  end
+
+  test 'should use ui locale metadata labels when exporting german transcript with english ui locale' do
+    interview.update!(include_notes_in_transcript_pdf: true)
+    interview.translations.find_or_initialize_by(locale: 'de').update!(notes: 'Deutsche Notiz')
+
+    pdf = interview.to_pdf(:en, 'ger')
+    reader = PDF::Reader.new(StringIO.new(pdf))
+    first_page = reader.pages[0].text
+
+    # Read labels from TranslationValue to keep this test stable if wording changes.
+    en_date_label = TranslationValue.for('activerecord.attributes.interview.interview_date', 'en')
+    de_date_label = TranslationValue.for('activerecord.attributes.interview.interview_date', 'de')
+    en_notes_label = TranslationValue.for('metadata_labels.notes', 'en', {}, true)
+    de_notes_label = TranslationValue.for('metadata_labels.notes', 'de', {}, true)
+
+    assert_match(/#{Regexp.escape(en_date_label)}:/, first_page)
+    refute_match(/#{Regexp.escape(de_date_label)}:/, first_page)
+
+    # Notes rendering depends on test data: if the English notes label is present,
+    # it must have content. In all cases, the German label must not appear.
+    if first_page.match?(/#{Regexp.escape(en_notes_label)}:/)
+      assert_match(/#{Regexp.escape(en_notes_label)}:\s+\S+/, first_page)
+    end
+    refute_match(/#{Regexp.escape(de_notes_label)}:/, first_page) if de_notes_label != en_notes_label
+    refute_match(/missing translation-value:/, first_page)
   end
 
   test 'should export biography PDF correctly' do

@@ -1,5 +1,4 @@
 module LatexHelper
-
   def latex_escape(text)
     LatexToPdf.escape_latex(text)
   end
@@ -9,6 +8,7 @@ module LatexHelper
       &.project
       &.metadata_fields
       &.find_by(source: 'Interview', name: attribute.to_s)
+
     custom_label = metadata_field&.label(locale)
 
     if custom_label.present?
@@ -18,40 +18,162 @@ module LatexHelper
     end
   end
 
-  def interview_date_for_pdf(interview_date, separator: ', ')
+  # Keep PDF date rendering in sync with app/javascript/modules/data/utils/toDateString.js.
+  def interview_date_for_pdf(interview_date, locale: nil)
     value = interview_date.to_s.strip
-    return value if value.blank?
+    return '' if value.blank?
 
-    # Only normalize when the entire string is made of supported date tokens
-    # and separators; otherwise keep original text as entered.
-    tokenized = value.dup
-    dates = []
+    parsed = parse_interview_date_for_pdf(value)
+    return parsed unless parsed.is_a?(Date)
 
-    # Collect YYYY-MM-DD dates not adjacent to digits, removing them from the tokenized text.
-    tokenized.gsub!(/(?<!\d)(\d{4})-(\d{1,2})-(\d{1,2})(?!\d)/) do
-      dates << Date.new(Regexp.last_match(1).to_i, Regexp.last_match(2).to_i, Regexp.last_match(3).to_i)
-      ''
+    if date_locale_for_pdf(locale) == 'en-US'
+      "#{parsed.month}/#{parsed.day}/#{parsed.year}"
+    else
+      "#{parsed.day}.#{parsed.month}.#{parsed.year}"
+    end
+  end
+
+  def parse_interview_date_for_pdf(value)
+    patterns = [
+      [/^(\d{4})-(\d{1,2})-(\d{1,2})$/, %i[year month day]],
+      [/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/, %i[day month year]],
+      [/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, %i[month day year]],
+    ]
+
+    patterns.each do |regex, order|
+      match = value.match(regex)
+      next unless match
+
+      parts = order.each_with_index.to_h { |key, index| [key, match[index + 1].to_i] }
+      date = Date.new(parts[:year], parts[:month], parts[:day])
+
+      if date.year == parts[:year] && date.month == parts[:month] && date.day == parts[:day]
+        return date
+      end
+
+      return value
     rescue ArgumentError
       return value
     end
 
-    # Collect DD.MM.YYYY dates not adjacent to digits, removing them from the tokenized text.
-    tokenized.gsub!(/(?<!\d)(\d{1,2})\.(\d{1,2})\.(\d{4})(?!\d)/) do
-      dates << Date.new(Regexp.last_match(3).to_i, Regexp.last_match(2).to_i, Regexp.last_match(1).to_i)
-      ''
-    rescue ArgumentError
-      return value
+    value
+  end
+
+  def date_locale_for_pdf(locale)
+    locale.to_s == 'en' ? 'en-US' : locale.to_s
+  end
+
+  def latex_ltr_text(text)
+    "\\textenglish{#{latex_escape(text)}}"
+  end
+
+  # Wrap text in script-aware LaTeX commands so RTL/Indic glyph shaping works.
+  def latex_multiscript(text)
+    return '' if text.nil?
+
+    value = text.to_s
+    escaped = latex_escape(value)
+
+    return "\\textarabic{#{escaped}}" if value.match?(/\p{Arabic}/)
+    return "\\texthebrew{#{escaped}}" if value.match?(/\p{Hebrew}/)
+    return "\\texttamil{#{escaped}}" if value.match?(/\p{Tamil}/)
+
+    escaped
+  end
+
+  def latex_metadata_line(label, value)
+    return if value.blank?
+
+    "\\par{#{latex_multiscript("#{label}:")} #{latex_multiscript(value)}}"
+  end
+
+  # Footer segment for interview reference.
+  # Keep archive id and date in an LTR run so numbers/order stay stable in RTL locales.
+  def latex_footer_interview_reference(interview:, header_locale:)
+    label = latex_multiscript(TranslationValue.for('interview', header_locale))
+    ref = latex_ltr_text(
+      "#{interview.archive_id}, #{interview_date_for_pdf(interview.interview_date, locale: header_locale)}",
+    )
+
+    "#{label} #{ref}"
+  end
+
+  # Generate the full footer line by joining the citation parts with commas and ending with a period.
+  def latex_footer_line(interview:, project:, header_locale:, doc_type:)
+    "#{latex_footer_citation_parts(
+      interview: interview,
+      project: project,
+      header_locale: header_locale,
+      doc_type: doc_type,
+    ).join(', ')}."
+  end
+
+  # Generate the citation fragments used in the PDF footer.
+  def latex_footer_citation_parts(interview:, project:, header_locale:, doc_type:)
+    parts = []
+
+    if interview
+      parts << latex_footer_intro(
+        interview: interview,
+        header_locale: header_locale,
+        doc_type: doc_type,
+      )
+
+      if interview.interview_date
+        parts << latex_footer_interview_reference(
+          interview: interview,
+          header_locale: header_locale,
+        )
+      end
     end
 
-    remaining = tokenized.gsub(/\s+/, '') # Remove whitespace for separator check
-    separators_only = remaining.gsub(/,|;|\//, '').empty? # Check if only supported separators remain
+    parts << latex_multiscript(project.name(header_locale))
 
-    # If there are valid dates and the remaining text only contains separators,
-    # format the dates; otherwise return original value.
-    return value unless dates.any? && separators_only
+    if deutsche_seelen_collection?(interview)
+      parts << latex_multiscript('Teilsammlung "Deutsche Seelen"')
+    end
 
-    # Normalize only clean date lists, preserving free-form text unchanged.
-    dates.map { |d| d.strftime('%d.%m.%Y') }.join(separator)
+    if interview
+      parts << latex_multiscript(
+        "#{project.domain_with_optional_identifier}/#{header_locale}/interviews/#{interview.archive_id}",
+      )
+    end
+
+    parts << latex_multiscript("(#{pdf_access_date})")
+
+    if interview&.doi_status == 'created'
+      parts << latex_doi_reference(
+        interview: interview,
+        project: project,
+        header_locale: header_locale,
+      )
+    end
+
+    parts
+  end
+
+  def latex_footer_intro(interview:, header_locale:, doc_type:)
+    interviewee_name = interview.anonymous_title(header_locale.to_sym)
+
+    latex_multiscript(
+      "#{TranslationValue.for("#{doc_type}_footer", header_locale)} #{interviewee_name}",
+    )
+  end
+
+  def latex_doi_reference(interview:, project:, header_locale:)
+    latex_multiscript(
+      "DOI: https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{interview.archive_id}, " \
+      "(#{TranslationValue.for('called', header_locale)}: #{pdf_access_date})",
+    )
+  end
+
+  # TODO: Find a better way for this special case
+  def deutsche_seelen_collection?(interview)
+    interview&.collection&.name =~ /Deutsche Seelen/
+  end
+
+  def pdf_access_date
+    Date.current.strftime('%d.%m.%Y')
   end
 
   def latex_speaker(segment, speaker_id, rtl, header_locale)
@@ -70,7 +192,6 @@ module LatexHelper
       ltr_speaker = rtl ? '' : "#{speaker}: "
     end
 
-    return speaker_id, rtl_speaker, ltr_speaker
+    [speaker_id, rtl_speaker, ltr_speaker]
   end
-
 end
