@@ -82,6 +82,7 @@ const formElements = [
     },
     {
         attribute: 'date_of_birth',
+        help: 'help_texts.date_field',
     },
     {
         elementType: 'textarea',
