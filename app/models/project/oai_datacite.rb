@@ -131,7 +131,7 @@ module Project::OaiDatacite
 
       xml.version "1.0"
 
-      #xml.language oai_languages
+      xml.language oai_languages
 
       xml.dates do
         xml.date oai_coverage, dateType: "Coverage"

@@ -95,7 +95,12 @@ module Project::Oai
   end
 
   def oai_languages
-    Language.where(id: interviews.map{|i| i.interview_languages.pluck(:language_id)}.flatten.uniq).pluck(:code).join(',')
+    # return 'mul' if more than 1 language, otherwise the code of the single language
+    if interviews.joins(:interview_languages).group(:id).having("COUNT(DISTINCT interview_languages.language_id) > 1").exists?
+      'mul'
+    else
+      interviews.first&.interview_languages&.first&.language&.code || ''
+    end
   end
 
   def oai_coverage

@@ -202,28 +202,18 @@ class RegistryEntry < ApplicationRecord
   end
 
   class << self
-    def ohd_subjects
-      find 21898673 rescue nil
-    end
 
-    def ohd_level_of_indexing
-      find 21898470 rescue nil
-    end
-
-    def ohd_level_of_indexing_transcript
-      find 21898475 rescue nil
-    end
-
-    def ohd_level_of_indexing_media
-      find 21898474 rescue nil
-    end
-
-    def ohd_countries
-      find 21898760 rescue nil
-    end
-
-    def ohd_findability
-      find 103654836 rescue nil
+    %w(
+      subjects
+      level_of_indexing
+      level_of_indexing_transcript
+      level_of_indexing_media
+      countries
+      findability
+    ).each do |code|
+      define_method "ohd_#{code}" do
+        find_by code: code
+      end
     end
 
     def merge(opts={})
