@@ -5,11 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.3.6] - 2026-06-04
+## [2.4.0] - 2026-06-05
 
-- added DOI Registration functionality to archives and collections
-- reworked DOI Registration (OAI Datacite XMLs)
-- cooperation_partners, funders, leaders and managers as associations on projects (replacing text fields therefore)
+### Added
+
+- added DOI Registration functionality to archives and collections ([9004f2d](https://github.com/oral-history-digital/ohd/commit/9004f2d8475717e58de460e214de937231158fd2))
+- reworked DOI Registration (OAI Datacite XMLs) ([9004f2d](https://github.com/oral-history-digital/ohd/commit/9004f2d8475717e58de460e214de937231158fd2))
+- cooperation_partners, funders, leaders and managers as associations on projects (replacing text fields therefore) ([9004f2d](https://github.com/oral-history-digital/ohd/commit/9004f2d8475717e58de460e214de937231158fd2))
+
+### Fixed
+
+- fix(transcript): make timecode validation tape-aware ([#118](https://github.com/oral-history-digital/ohd/pull/118))
+- fix(devcontainer): bind ports to localhost for app, db, and solr services ([5b9ae37e2](https://github.com/oral-history-digital/ohd/commit/5b9ae37e22f64ff60c44127b3217406f4bbea1d8))
+- fix unify timecode task ([9132ceabc](https://github.com/oral-history-digital/ohd/commit/9132ceabc63f3ff2254629b4517d560892f5f727))
+- validate uniqueness of language.code ([05dd83cea](https://github.com/oral-history-digital/ohd/commit/05dd83cea93837dc32fc7728582ccf5c44349355))
+- #508 fix updating of registry entries with norm data ([0ea6ec05d](https://github.com/oral-history-digital/ohd/commit/0ea6ec05dd8c9302ef87c6bcc6fb242a597f3fd5))
+- fix: make language creation idempotent using find_or_create_by ([6384eedf8](https://github.com/oral-history-digital/ohd/commit/6384eedf8abb570a20d5f8736ff673bf500a9219))
+- fix(test): update CSV header handling to use dynamic indices for metadata fields ([379b8bca9](https://github.com/oral-history-digital/ohd/commit/379b8bca92301c8f8449e9589b5a128282943466))
+- fix creation of registry entry from norm data api ([266ec536d](https://github.com/oral-history-digital/ohd/commit/266ec536d630b9cfc0f2c63f19d3b09c84cc2250))
 
 ## [2.3.5] - 2026-05-20
 
@@ -554,6 +567,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.4.0]: https://github.com/oral-history-digital/ohd/compare/v2.3.5...v2.4.0
 [2.3.5]: https://github.com/oral-history-digital/ohd/compare/v2.3.4...v2.3.5
 [2.3.4]: https://github.com/oral-history-digital/ohd/compare/v2.3.3...v2.3.4
 [2.3.3]: https://github.com/oral-history-digital/ohd/compare/v2.3.2...v2.3.3
