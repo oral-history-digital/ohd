@@ -13,17 +13,14 @@ import { getProjectUrl } from '../utils';
 import CollectionList from './CollectionList';
 import {
     Citation,
-    CooperationPartner,
     GenericDetail,
+    GenericPeople,
     IndexingLevels,
     Institutions,
     InterviewLanguages,
     InterviewStats,
-    Leader,
-    Manager,
     MediaTypes,
     ProjectDomain,
-    PseudoFunderNames,
     PublicationDate,
     RichtextDetail,
     Subjects,
@@ -121,17 +118,25 @@ export function ProjectPage() {
                                     levels={project.levels_of_indexing}
                                 />
                                 <Subjects subjects={project.subjects} />
-                                <CooperationPartner
-                                    cooperationPartner={
-                                        project.cooperation_partner
-                                    }
+                                <GenericPeople
+                                    people={project.cooperation_partners}
+                                    labelKey="activerecord.attributes.project.cooperation_partner"
+                                    groupClassName="DescriptionList-group--cooperation-partner"
                                 />
-                                <Leader leader={project.leader} />
-                                <Manager manager={project.manager} />
-                                <PseudoFunderNames
-                                    pseudoFunderNames={
-                                        project.pseudo_funder_names
-                                    }
+                                <GenericPeople
+                                    people={project.leaders}
+                                    labelKey="activerecord.attributes.project.leader"
+                                    groupClassName="DescriptionList-group--leader"
+                                />
+                                <GenericPeople
+                                    people={project.managers}
+                                    labelKey="activerecord.attributes.project.manager"
+                                    groupClassName="DescriptionList-group--manager"
+                                />
+                                <GenericPeople
+                                    people={project.funders}
+                                    labelKey="activerecord.attributes.project.funder"
+                                    groupClassName="DescriptionList-group--funders"
                                 />
                                 <PublicationDate
                                     publicationDate={project.publication_date}

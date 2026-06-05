@@ -224,6 +224,14 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       contribution_type: contribution_type
     )
 
+    leader_with_blank_name = Leader.create!(
+      project: project,
+      name_type: 'Personal',
+      name: nil,
+      first_name: 'Lastname',
+      last_name: 'Firstname'
+    )
+
     root_registry_entry = project.registry_entries.find_by!(code: 'root')
     reference_type = RegistryReferenceType.create!(
       project: project,
@@ -295,9 +303,22 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       item.is_a?(Hash) && item['descriptor'].is_a?(String)
     end
 
-    assert_equal project.cooperation_partners.map { |a| a.name }.join(', '), payload.dig('contact_people', 'cooperation_partner')
-    assert_equal project.leaders.map { |a| a.name }.join(', '), payload.dig('contact_people', 'leader')
-    assert_equal project.managers.map { |a| a.name }.join(', '), payload.dig('contact_people', 'manager')
+    assert payload['leaders'].is_a?(Array)
+    assert payload['leaders'].all? { |item| item['name'].is_a?(String) }
+    assert payload['leaders'].none? { |item| item['name'].is_a?(Hash) }
+    assert_includes payload['leaders'].map { |item| item['name'] }, 'Lastname Firstname'
+
+    assert payload['cooperation_partners'].is_a?(Array)
+    assert payload['cooperation_partners'].all? { |item| item['name'].is_a?(String) }
+    assert payload['cooperation_partners'].none? { |item| item['name'].is_a?(Hash) }
+
+    expected_cooperation_partners = project.cooperation_partners.map { |a| [a.name, a.first_name, a.last_name].compact.join(' ').strip }.reject(&:blank?).join(', ')
+    expected_leaders = project.leaders.map { |a| [a.name, a.first_name, a.last_name].compact.join(' ').strip }.reject(&:blank?).join(', ')
+    expected_managers = project.managers.map { |a| [a.name, a.first_name, a.last_name].compact.join(' ').strip }.reject(&:blank?).join(', ')
+
+    assert_equal expected_cooperation_partners, payload.dig('contact_people', 'cooperation_partners')
+    assert_equal expected_leaders, payload.dig('contact_people', 'leaders')
+    assert_equal expected_managers, payload.dig('contact_people', 'managers')
   end
 
   test 'should return project payload when show id is project shortname' do
