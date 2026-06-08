@@ -155,6 +155,7 @@ export function ProjectPage() {
                                     }
                                     projectName={title}
                                     projectId={project.id}
+                                    doiUrl={project.oai_doi_identifier}
                                 />{' '}
                                 {!project.is_catalog && (
                                     <GenericDetail

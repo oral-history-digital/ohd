@@ -145,6 +145,7 @@ export function CollectionPage() {
                             projectName={project?.display_name || project?.name}
                             collectionName={collection?.name}
                             collectionId={collection?.id}
+                            doiUrl={collection?.oai_doi_identifier}
                         />{' '}
                         {!project.is_catalog && (
                             <GenericDetail

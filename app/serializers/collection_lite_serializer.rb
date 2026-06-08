@@ -4,6 +4,7 @@ class CollectionLiteSerializer < ActiveModel::Serializer
     :project_name,
     :name,
     :shortname,
+    :oai_doi_identifier,
     :publication_date,
     :homepage,
     :notes,
@@ -26,6 +27,10 @@ class CollectionLiteSerializer < ActiveModel::Serializer
     object.shortname
   end
 
+  def oai_doi_identifier
+    return nil unless object.doi_status == "created"
+    object.oai_doi_identifier
+  end
 
   def publication_date
     object.publication_date || object.project&.publication_date

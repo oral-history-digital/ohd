@@ -4,6 +4,7 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     :display_name,
     :shortname,
     :archive_domain,
+    :oai_doi_identifier,
     :latitude,
     :longitude,
     :introduction,
@@ -31,6 +32,11 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
 
   def archive_domain
     object.archive_domain.presence
+  end
+
+  def oai_doi_identifier
+    return nil unless object.doi_status == "created"
+    object.oai_doi_identifier
   end
 
   def introduction
