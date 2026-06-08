@@ -49,7 +49,8 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
         parent: institution.parent ? {
           id: institution.parent.id,
           name: institution.parent.name
-        } : nil
+        } : nil,
+        is_primary: institution == object.primary_institution
       }
     end
   end

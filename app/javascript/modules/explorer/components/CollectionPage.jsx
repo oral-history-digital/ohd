@@ -141,6 +141,7 @@ export function CollectionPage() {
                         <Citation
                             type="collection"
                             institutions={project.institutions}
+                            primary_institution={project.primary_institution}
                             projectName={project?.display_name || project?.name}
                             collectionName={collection?.name}
                             collectionId={collection?.id}

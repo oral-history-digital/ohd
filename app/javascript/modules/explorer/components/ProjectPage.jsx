@@ -150,6 +150,9 @@ export function ProjectPage() {
                                 <Citation
                                     type="project"
                                     institutions={project.institutions}
+                                    primary_institution={
+                                        project.primary_institution
+                                    }
                                     projectName={title}
                                     projectId={project.id}
                                 />{' '}

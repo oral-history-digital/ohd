@@ -10,7 +10,8 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
     :contact_people,
     :media_types,
     :interview_year_range,
-    :birth_year_range
+    :birth_year_range,
+    :primary_institution
 
   %w(
     cooperation_partners
@@ -77,6 +78,10 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
 
   def birth_year_range
     range_for(instance_options[:birth_year_ranges_by_project])
+  end
+
+  def primary_institution
+    object.primary_institution&.id
   end
 
   private
