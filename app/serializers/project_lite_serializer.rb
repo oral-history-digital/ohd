@@ -134,14 +134,10 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
   end
 
   def localized_affiliate_attribute(affiliate, attribute_name)
-    localized = affiliate.localized_hash(attribute_name)
-    # If the localized value is not a hash, return it directly (for backward compatibility).
-    return affiliate.send(attribute_name) unless localized.is_a?(Hash)
-
-    localized[I18n.locale.to_s] || # try current locale as string
-      localized[I18n.locale.to_sym] || # try current locale as symbol
-      localized[object.default_locale.to_s] || # try default locale as string
-      localized[object.default_locale.to_sym] || # try default locale as symbol
-      localized.values.compact.first # fallback to any available value
+    localized_attribute_value(
+      affiliate,
+      attribute_name,
+      default_locale: object.default_locale
+    ) || affiliate.send(attribute_name)
   end
 end
