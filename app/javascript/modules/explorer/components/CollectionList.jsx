@@ -28,6 +28,9 @@ export function CollectionList({ project, query = '' }) {
         sortedCollections.length - INITIAL_VISIBLE_COLLECTIONS,
         0
     );
+    const hiddenByQueryCount = query
+        ? Math.max(collections.length - filteredCollections.length, 0)
+        : 0;
     const visibleCollections = showAllCollections
         ? sortedCollections
         : sortedCollections.slice(0, INITIAL_VISIBLE_COLLECTIONS);
@@ -39,6 +42,14 @@ export function CollectionList({ project, query = '' }) {
                     {t('explorer.collection_list.title', {
                         count: filteredCollections.length,
                     })}
+                    {hiddenByQueryCount > 0 && (
+                        <span className="CollectionList-hiddenByFilterInfo">
+                            {` – ${hiddenByQueryCount} `}
+                            {t('explorer.collection_list.hidden_by_filter', {
+                                count: hiddenByQueryCount,
+                            })}
+                        </span>
+                    )}
                 </p>
                 <CollectionSortControl value={sort} onChange={setSort} />
             </div>

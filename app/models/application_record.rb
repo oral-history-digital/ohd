@@ -78,7 +78,7 @@ class ApplicationRecord < ActiveRecord::Base
   def oai_findability_tags(xml, format=:dc)
     RegistryEntry.where(id: ohd_findability_registry_entry_ids).each do |registry_entry|
       xml.tag! "#{format == :dc ? 'dc:' : ''}subject",
-        registry_entry[:descriptor][:en],
+        registry_entry.to_s(:en),
         "xml:lang": :en
     end
   end

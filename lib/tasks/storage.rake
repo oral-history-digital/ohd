@@ -186,7 +186,7 @@ namespace :storage do
 
   desc "Export paths for UploadedFile blobs (STI types)"
   task export_uploaded_files: :environment do
-    types = ENV["TYPES"]&.split(",") || %w[Logo SponsorLogo]
+    types = ENV["TYPES"]&.split(",") || %w[Logo SponsorLogo HomepageImage]
     output_path = ENV["OUTPUT"] || Rails.root.join("tmp", "uploaded_files_list.txt")
 
     # Ensure directory exists

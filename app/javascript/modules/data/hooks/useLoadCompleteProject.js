@@ -1,29 +1,57 @@
-/* global railsMode */
 import { useEffect } from 'react';
 
-import { OHD_DOMAINS } from 'modules/constants';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchData } from '../redux/actions';
-import { getProjectsStatus, getPublicProjects } from '../redux/selectors';
+import { getProjects, getProjectsStatus } from '../redux/selectors';
 
-export const useLoadCompleteProject = (pId) => {
-    const projects = useSelector(getPublicProjects);
+export const useLoadCompleteProject = (
+    projectDbId,
+    { enabled = true, fallbackProject = null } = {}
+) => {
+    const { locale } = useI18n();
+    const { project: currentProject, projectId: currentProjectId } =
+        useProject();
+    const projects = useSelector(getProjects);
     const projectsStatus = useSelector(getProjectsStatus);
-    const ohdDomain = OHD_DOMAINS[railsMode];
-    const ohd = { shortname: 'ohd', archive_domain: ohdDomain };
-    const project = projects.find((p) => p.id === pId);
     const dispatch = useDispatch();
+    const loadedProject = projects?.[projectDbId] || fallbackProject;
 
     useEffect(() => {
-        if (!projectsStatus[pId]) {
+        if (!enabled || !projectDbId) {
+            return;
+        }
+
+        const status = projectsStatus?.[projectDbId];
+        const isFetched = /^fetched/.test(status || '');
+        const isFetching = /^fetching/.test(status || '');
+
+        if (!isFetched && !isFetching) {
             dispatch(
-                fetchData({ locale: 'de', project: ohd }, 'projects', pId)
+                fetchData(
+                    {
+                        locale,
+                        projectId: currentProjectId,
+                        project: currentProject,
+                    },
+                    'projects',
+                    projectDbId
+                )
             );
         }
-    }, [project]);
+    }, [
+        currentProject,
+        currentProjectId,
+        dispatch,
+        enabled,
+        locale,
+        projectDbId,
+        projectsStatus,
+    ]);
 
-    return project;
+    return loadedProject;
 };
 
 export default useLoadCompleteProject;

@@ -38,6 +38,7 @@ export default function WrappedDataList({
     outerScopeId,
     resultPagesCount,
     detailsAttributes,
+    sensitiveAttributes = [],
     joinedData,
     hideEdit,
     hideDelete,
@@ -170,6 +171,7 @@ export default function WrappedDataList({
                         <DataContainer
                             data={data}
                             scope={scope}
+                            sensitiveAttributes={sensitiveAttributes}
                             outerScope={outerScope}
                             outerScopeId={outerScopeId}
                             detailsAttributes={detailsAttributes}
@@ -222,6 +224,7 @@ WrappedDataList.propTypes = {
     sortAttribute: PropTypes.string,
     sortAttributeTranslated: PropTypes.bool,
     detailsAttributes: PropTypes.array,
+    sensitiveAttributes: PropTypes.array,
     form: PropTypes.object,
     initialFormValues: PropTypes.object,
     formElements: PropTypes.array.isRequired,
@@ -234,6 +237,8 @@ WrappedDataList.propTypes = {
     outerScopeId: PropTypes.number,
     query: PropTypes.object,
     dataStatus: PropTypes.object,
+    statuses: PropTypes.object,
+    otherDataToLoad: PropTypes.array,
     resultPagesCount: PropTypes.number,
     hideAdd: PropTypes.bool,
     hideEdit: PropTypes.bool,

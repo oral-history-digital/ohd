@@ -100,7 +100,9 @@ function AdminMenuItem({ label, dialogTitle, open, children, onClose }) {
         <Dialog isOpen={open} onDismiss={onClose} className="Modal-dialog">
             <h3 className="Modal-heading">{dialogTitle || label}</h3>
 
-            {typeof children === 'function' ? children(onClose) : children}
+            {typeof children === 'function'
+                ? children(onClose, open)
+                : children}
 
             <button type="button" className="Modal-close" onClick={onClose}>
                 <VisuallyHidden>Close</VisuallyHidden>

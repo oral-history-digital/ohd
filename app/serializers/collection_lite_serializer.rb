@@ -1,4 +1,6 @@
 class CollectionLiteSerializer < ActiveModel::Serializer
+  include LocalizedHashValue
+
   attributes :id,
     :project_id,
     :project_name,
@@ -107,19 +109,14 @@ class CollectionLiteSerializer < ActiveModel::Serializer
   private
 
   def localized_value(attribute_name)
-    localized = object.localized_hash(attribute_name)
-    return nil unless localized
-
-    localized[I18n.locale.to_s] ||
-      localized[I18n.locale.to_sym] ||
-      localized.values.compact.first
+    localized_attribute_value(
+      object,
+      attribute_name,
+      default_locale: object.project&.default_locale || I18n.default_locale
+    )
   end
 
   def localized_descriptor(value)
-    return value unless value.is_a?(Hash)
-
-    value[I18n.locale.to_s] ||
-      value[I18n.locale.to_sym] ||
-      value.values.compact.first
+    localized_hash_value(value)
   end
 end

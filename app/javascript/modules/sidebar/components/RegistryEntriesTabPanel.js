@@ -4,7 +4,7 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { RegistrySearchFormContainer } from 'modules/registry';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { FaDownload } from 'react-icons/fa';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 import DownloadRegistryEntries from './DownloadRegistryEntries';
 
@@ -13,8 +13,8 @@ function RegistryEntriesTabPanel({
     locales,
     changeRegistryEntriesViewMode,
 }) {
-    const { t, locale } = useI18n();
-    const { projectId } = useProject();
+    const { t } = useI18n();
+    const { project, projectId } = useProject();
 
     return (
         <ErrorBoundary small>
@@ -58,6 +58,25 @@ function RegistryEntriesTabPanel({
                         </div>
                     </AuthorizedContent>
                 ))}
+
+                {/* TODO: replace hardcoded project check with another solution */}
+                {project.shortname === 'adg' && (
+                    <div className="u-mt">
+                        <a
+                            href="https://ohtm-dash.oral-history.digital/"
+                            target="_blank"
+                            title={t(
+                                'modules.sidebar.registry_entries_tab_panel.dash_link_title'
+                            )}
+                            rel="noreferrer"
+                        >
+                            {t(
+                                'modules.sidebar.registry_entries_tab_panel.dash_link'
+                            )}{' '}
+                            <FaExternalLinkAlt className="Icon Icon--small" />
+                        </a>
+                    </div>
+                )}
             </div>
         </ErrorBoundary>
     );
