@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- fix: include collections in catalog search ([#123](https://github.com/oral-history-digital/ohd/pull/123))
+- fix: load project data on archive page ([#121](https://github.com/oral-history-digital/ohd/pull/121))
 - fix ohd_subjects ([d6dfdf938](https://github.com/oral-history-digital/ohd/commit/d6dfdf93887f36abae04b42a347eeee5d0ee3fff))
 - fix findability oai tags ([8b6a85c18](https://github.com/oral-history-digital/ohd/commit/8b6a85c18c3265b0134f03f5690ea7fc99f3949b))
 - fix: add HomepageImage to default types for exported UploadedFile blobs ([242009292](https://github.com/oral-history-digital/ohd/commit/242009292024e5ae586067c9b8e30b9ce8db8ab0))
@@ -582,6 +584,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.4.1]: https://github.com/oral-history-digital/ohd/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/oral-history-digital/ohd/compare/v2.3.5...v2.4.0
 [2.3.5]: https://github.com/oral-history-digital/ohd/compare/v2.3.4...v2.3.5
 [2.3.4]: https://github.com/oral-history-digital/ohd/compare/v2.3.3...v2.3.4
