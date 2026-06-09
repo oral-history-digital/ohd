@@ -20,6 +20,17 @@ export const filterProjects = (
     projects.filter((a) => {
         if (query) {
             const lower = query.toLowerCase();
+            const collectionPreview = Array.isArray(a.collection_preview)
+                ? a.collection_preview
+                : a.collection_preview &&
+                    typeof a.collection_preview === 'object'
+                  ? Object.values(a.collection_preview)
+                  : [];
+            const matchesCollections = collectionPreview.some(
+                (collection) =>
+                    collection?.name?.toLowerCase().includes(lower) ||
+                    collection?.notes?.toLowerCase().includes(lower)
+            );
             const matchesText =
                 (a.display_name || a.name)?.toLowerCase().includes(lower) ||
                 a.description?.toLowerCase().includes(lower) ||
@@ -29,7 +40,8 @@ export const filterProjects = (
                         i.name?.toLowerCase().includes(lower) ||
                         i.parent?.name?.toLowerCase().includes(lower) // Include parent institution in text search
                 ) ||
-                a.shortname?.toLowerCase().includes(lower);
+                a.shortname?.toLowerCase().includes(lower) ||
+                matchesCollections;
             if (!matchesText) return false;
         }
 
