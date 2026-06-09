@@ -1,24 +1,29 @@
 import { OHD_LOCATION } from 'modules/constants';
 
-function localizedText(value, locale) {
+export function localizedText(value, locale) {
     if (!value) return null;
     if (typeof value === 'string') return value;
 
     return value?.[locale] || Object.values(value).find(Boolean) || null;
 }
 
-function institutionNames(institutions, locale) {
+export function institutionNames(institutions, locale) {
     if (!institutions) return null;
 
     const list = Array.isArray(institutions) ? institutions : [institutions];
     const names = list
-        .map((institution) => localizedText(institution?.name, locale))
+        .map((institution) => {
+            const name = localizedText(institution?.name, locale);
+            const parentName = localizedText(institution?.parent?.name, locale);
+            // If both parent and child names are present, format as "Parent, Child"
+            return parentName && name ? `${parentName}, ${name}` : name;
+        })
         .filter(Boolean);
 
     return names.length > 0 ? names.join(', ') : null;
 }
 
-function createLink(url, label = url) {
+export function createLink(url, label = url) {
     if (!url) return null;
 
     return (
@@ -28,14 +33,14 @@ function createLink(url, label = url) {
     );
 }
 
-function catalogLink(type, id, locale, origin = OHD_LOCATION) {
+export function catalogLink(type, id, locale, origin = OHD_LOCATION) {
     if (!id || !locale) return null;
 
     const url = `${origin}/${locale}/catalog/${type}/${id}`;
     return createLink(url);
 }
 
-function joinParts(parts) {
+export function joinParts(parts) {
     // First institutions with a colon, then the rest with commas
     const filtered = parts.filter(Boolean);
     if (filtered.length === 0) return null;
@@ -58,7 +63,7 @@ function joinParts(parts) {
     );
 }
 
-function normalizedDoiUrl(doiUrl, doi) {
+export function normalizedDoiUrl(doiUrl, doi) {
     if (doiUrl) return createLink(doiUrl);
     if (doi) return createLink(`https://doi.org/${doi}`);
 
@@ -74,6 +79,15 @@ export function formatProjectCitation({
     doi,
     doiUrl,
 }) {
+    console.log('formatProjectCitation called with:', {
+        institutions,
+        projectName,
+        projectId,
+        locale,
+        origin,
+        doi,
+        doiUrl,
+    });
     const normalizedDoi = normalizedDoiUrl(doiUrl, doi);
 
     const citation = joinParts([
@@ -96,6 +110,16 @@ export function formatCollectionCitation({
     doiUrl,
     t,
 }) {
+    console.log('formatCollectionCitation called with:', {
+        institutions,
+        projectName,
+        collectionName,
+        collectionId,
+        locale,
+        origin,
+        doi,
+        doiUrl,
+    });
     const collectionLabel =
         (typeof t === 'function' && t('activerecord.models.collection.one')) ||
         'Collection';

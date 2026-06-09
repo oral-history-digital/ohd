@@ -1,7 +1,129 @@
 import {
     formatCollectionCitation,
     formatProjectCitation,
+    institutionNames,
 } from './formatCitation';
+
+describe('institutionNames', () => {
+    test('returns null when institutions is missing', () => {
+        expect(institutionNames(null, 'de')).toBeNull();
+        expect(institutionNames(undefined, 'de')).toBeNull();
+    });
+
+    test('returns institution name without parent', () => {
+        const institution = {
+            id: 1368419,
+            name: 'Universitätsbibliothek der Freien Universität Berlin',
+            parent: null,
+        };
+
+        expect(institutionNames(institution, 'de')).toBe(
+            'Universitätsbibliothek der Freien Universität Berlin'
+        );
+    });
+
+    test('returns parent and child name when parent exists', () => {
+        const institution = {
+            id: 1368419,
+            name: 'Universitätsbibliothek der Freien Universität Berlin',
+            parent: {
+                id: 1,
+                name: 'Freie Universität Berlin',
+            },
+        };
+
+        expect(institutionNames(institution, 'de')).toBe(
+            'Freie Universität Berlin, Universitätsbibliothek der Freien Universität Berlin'
+        );
+    });
+
+    test('handles an array of institutions', () => {
+        const institutions = [
+            {
+                id: 1,
+                name: 'Child A',
+                parent: {
+                    id: 10,
+                    name: 'Parent A',
+                },
+            },
+            {
+                id: 2,
+                name: 'Child B',
+                parent: null,
+            },
+        ];
+
+        expect(institutionNames(institutions, 'en')).toBe(
+            'Parent A, Child A, Child B'
+        );
+    });
+
+    test('filters institutions without a localized name', () => {
+        const institutions = [
+            {
+                id: 1,
+                name: null,
+                parent: {
+                    id: 10,
+                    name: 'Parent A',
+                },
+            },
+            {
+                id: 2,
+                name: 'Child B',
+                parent: null,
+            },
+        ];
+
+        expect(institutionNames(institutions, 'en')).toBe('Child B');
+    });
+
+    test('returns null when no institution has a displayable name', () => {
+        const institutions = [
+            {
+                id: 1,
+                name: null,
+                parent: {
+                    id: 10,
+                    name: 'Parent A',
+                },
+            },
+            {
+                id: 2,
+                name: '',
+                parent: null,
+            },
+        ];
+
+        expect(institutionNames(institutions, 'en')).toBeNull();
+    });
+
+    test('uses localized institution and parent names', () => {
+        const institution = {
+            id: 1,
+            name: {
+                de: 'Kindinstitution',
+                en: 'Child institution',
+            },
+            parent: {
+                id: 10,
+                name: {
+                    de: 'Elterninstitution',
+                    en: 'Parent institution',
+                },
+            },
+        };
+
+        expect(institutionNames(institution, 'de')).toBe(
+            'Elterninstitution, Kindinstitution'
+        );
+
+        expect(institutionNames(institution, 'en')).toBe(
+            'Parent institution, Child institution'
+        );
+    });
+});
 
 describe('formatProjectCitation', () => {
     test('formats project citation with DOI only (no catalog link)', () => {

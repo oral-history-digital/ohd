@@ -115,22 +115,21 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
 
   def localized_affiliate_value(affiliate, attribute_name)
     value = localized_affiliate_attribute(affiliate, attribute_name)
-    # If the value is blank and the attribute is 'name', attempt to construct a display name from first and last name.
-    return affiliate_display_name(affiliate) if attribute_name.to_sym == :name && value.blank?
+    # The serialized name is a display field: Personal uses first+last, Organizational uses name.
+    return affiliate_display_name(affiliate) if attribute_name.to_sym == :name
 
     value
   end
 
   def affiliate_display_name(affiliate)
-    name = localized_affiliate_attribute(affiliate, :name)
-
-    # If the name is present, use it directly. Otherwise, construct a name from first and last name.
-    return name if name.present?
-
-    [
-      localized_affiliate_attribute(affiliate, :first_name),
-      localized_affiliate_attribute(affiliate, :last_name)
-    ].compact.map(&:to_s).map(&:strip).reject(&:blank?).join(' ')
+    if affiliate.name_type == 'Personal'
+      [
+        localized_affiliate_attribute(affiliate, :first_name),
+        localized_affiliate_attribute(affiliate, :last_name)
+      ].compact.map(&:to_s).map(&:strip).reject(&:blank?).join(' ')
+    else
+      localized_affiliate_attribute(affiliate, :name).to_s.strip
+    end
   end
 
   def localized_affiliate_attribute(affiliate, attribute_name)
