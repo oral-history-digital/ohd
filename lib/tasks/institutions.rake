@@ -46,10 +46,10 @@ namespace :institutions do
     end
   end
 
-  desc 'Export institutions to CSV'
+  desc 'Export institutions to CSV (optionally specify LOCALE=<locale>)'
   task export_to_csv: :environment do
     filename = Rails.root.join('tmp', 'institutions.csv').to_s
-    locales = I18n.available_locales
+    locale = ENV['LOCALE']&.to_sym || I18n.default_locale
 
     project_counts = count_projects_by_institution
     collection_counts = count_collections_by_institution
@@ -59,6 +59,7 @@ namespace :institutions do
       # Build header with static fields and translated columns for each locale
       header = [
         'ID',
+        'Name',
         'Shortname',
         'Parent Institution',
         'Street',
@@ -72,21 +73,19 @@ namespace :institutions do
         'Website',
         'Number of Projects',
         'Number of Collections',
-        'Number of Interviews'
+        'Number of Interviews',
+        'Description'
       ]
-
-      locales.each do |locale|
-        header << "Name (#{locale})"
-        header << "Description (#{locale})"
-      end
 
       csv << header
 
       Institution.includes(:translations, :parent).find_each do |institution|
-        translations_by_locale = institution.translations.index_by(&:locale)
+        translations_by_locale = institution.translations.index_by { |t| t.locale.to_s }
+        translation = translations_by_locale[locale.to_s]
 
         row = [
           institution.id,
+          translation&.name || '',
           institution.shortname,
           institution.parent&.name || '',
           institution.street,
@@ -100,20 +99,14 @@ namespace :institutions do
           institution.website,
           project_counts[institution.id] || 0,
           collection_counts[institution.id] || 0,
-          interview_counts[institution.id] || 0
+          interview_counts[institution.id] || 0,
+          translation&.description || ''
         ]
-
-        locales.each do |locale|
-          translation = translations_by_locale[locale.to_s]
-
-          row << translation&.name
-          row << translation&.description
-        end
 
         csv << row
       end
     end
 
-    puts "Exported #{Institution.count} institutions to #{filename}"
+    puts "Exported #{Institution.count} institutions to #{filename} (locale: #{locale})"
   end
 end
