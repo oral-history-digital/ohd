@@ -207,4 +207,24 @@ class LatexHelperTest < ActiveSupport::TestCase
     assert_equal('', rtl_speaker)
     assert_equal('', ltr_speaker)
   end
+
+  test 'latex_speaker returns empty strings when speaking_person is nil' do
+    segment = OpenStruct.new(speaker_id: 5, speaking_person: nil)
+
+    speaker_id, rtl_speaker, ltr_speaker = latex_speaker(segment, 3, false, :en)
+
+    assert_equal(3, speaker_id)
+    assert_equal('', rtl_speaker)
+    assert_equal('', ltr_speaker)
+  end
+
+  test 'latex_speaker returns empty strings when speaking_person is nil with rtl' do
+    segment = OpenStruct.new(speaker_id: 8, speaking_person: nil)
+
+    speaker_id, rtl_speaker, ltr_speaker = latex_speaker(segment, 6, true, :ar)
+
+    assert_equal(6, speaker_id)
+    assert_equal('', rtl_speaker)
+    assert_equal('', ltr_speaker)
+  end
 end
