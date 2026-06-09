@@ -15,6 +15,7 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     :workflow_state,
     :languages_ui,
     :languages_interviews,
+    :collection_preview,
     :display_ohd_link,
     :has_map,
     :is_catalog,
@@ -101,6 +102,12 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
 
   def languages_interviews
     source = instance_options[:interview_languages_by_project] || {}
+    source.fetch(object.id, [])
+  end
+
+  # Lightweight collection preview data, used to search for projects and collections
+  def collection_preview
+    source = instance_options[:collection_preview_by_project] || {}
     source.fetch(object.id, [])
   end
 

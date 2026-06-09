@@ -75,10 +75,15 @@ class ProjectsController < ApplicationController
 
     project_ids = projects.map(&:id)
     metrics = ProjectMetricsRepository.new(project_ids)
+    collection_content = CollectionContentRepository.new(
+      project_ids: project_ids,
+      collections_scope: policy_scope(Collection)
+    )
 
     interview_counts = metrics.interview_counts_by_project
     collection_counts = metrics.collection_counts_by_project
     interview_languages_by_project = metrics.interview_languages_by_project
+    collection_preview_by_project = collection_content.preview_by_project
 
     cache_key = [
       'projects-list',
@@ -96,7 +101,13 @@ class ProjectsController < ApplicationController
 
     json = Rails.cache.fetch(cache_key, expires_in: 15.minutes) do
       {
-        data: serialized_projects(projects, interview_counts, collection_counts, interview_languages_by_project),
+        data: serialized_projects(
+          projects,
+          interview_counts,
+          collection_counts,
+          interview_languages_by_project,
+          collection_preview_by_project
+        ),
         page: page,
         result_pages_count: projects.respond_to?(:total_pages) ? projects.total_pages : nil
       }
@@ -275,13 +286,14 @@ class ProjectsController < ApplicationController
       @normalized_include_umbrella = (value.to_s.downcase == 'true')
     end
 
-    def serialized_projects(projects, interview_counts, collection_counts, interview_languages_by_project)
+    def serialized_projects(projects, interview_counts, collection_counts, interview_languages_by_project, collection_preview_by_project)
       ActiveModelSerializers::SerializableResource.new(
         projects,
         each_serializer: ProjectArchiveSerializer,
         interview_counts: interview_counts,
         collection_counts: collection_counts,
-        interview_languages_by_project: interview_languages_by_project
+        interview_languages_by_project: interview_languages_by_project,
+        collection_preview_by_project: collection_preview_by_project
       ).as_json
     end
 
