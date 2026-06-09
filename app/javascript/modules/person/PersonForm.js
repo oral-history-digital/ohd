@@ -126,12 +126,12 @@ export default function PersonForm({ data: person, onSubmit, onCancel }) {
                           }
 
                           mutatePeople(async (people) => {
-                              const eventHolder = people.data[person.id];
+                              const eventHolder = people?.data[person.id];
 
                               const updatedPeople = {
                                   ...people,
                                   data: {
-                                      ...people.data,
+                                      ...people?.data,
                                       [person.id]: {
                                           ...eventHolder,
                                           events: eventHolder.events.filter(
@@ -190,7 +190,7 @@ export default function PersonForm({ data: person, onSubmit, onCancel }) {
                         const updatedPeople = {
                             ...people,
                             data: {
-                                ...people.data,
+                                ...people?.data,
                                 [updatedPerson.id]: updatedPerson,
                             },
                         };

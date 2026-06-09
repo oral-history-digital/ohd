@@ -1,4 +1,6 @@
 class ProjectLiteSerializer < ProjectArchiveSerializer
+  include LocalizedHashValue
+
   attributes :cooperation_partners,
     :leaders,
     :managers,
@@ -81,12 +83,9 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
   end
 
   def localized_descriptor(value)
-    return value unless value.is_a?(Hash)
-
-    value[I18n.locale.to_s] ||
-      value[I18n.locale.to_sym] ||
-      value[object.default_locale.to_s] ||
-      value[object.default_locale.to_sym] ||
-      value.values.compact.first
+    localized_hash_value(
+      value,
+      default_locale: object.default_locale || I18n.default_locale
+    )
   end
 end
