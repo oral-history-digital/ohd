@@ -87,6 +87,82 @@ describe('filterProjects', () => {
         expect(byShortname.map((project) => project.id)).toEqual([3]);
     });
 
+    test('filters by text query across collection metadata when present', () => {
+        const withCollectionMetadata = [
+            {
+                ...projects[0],
+                collection_preview: [
+                    { id: 101, name: 'Mountain Memories', notes: '' },
+                ],
+            },
+            {
+                ...projects[1],
+                collection_preview: [
+                    {
+                        id: 202,
+                        name: 'City Life',
+                        notes: 'Stories of migration',
+                    },
+                ],
+            },
+            projects[2],
+        ];
+
+        const byCollectionName = filterProjects(
+            withCollectionMetadata,
+            'mountain memories',
+            null,
+            null,
+            null,
+            null,
+            []
+        );
+
+        const byCollectionNotes = filterProjects(
+            withCollectionMetadata,
+            'migration',
+            null,
+            null,
+            null,
+            null,
+            []
+        );
+
+        expect(byCollectionName.map((project) => project.id)).toEqual([1]);
+        expect(byCollectionNotes.map((project) => project.id)).toEqual([2]);
+    });
+
+    test('handles non-array collection_preview payloads safely', () => {
+        const withInvalidPreviewShapes = [
+            {
+                ...projects[0],
+                collection_preview: true,
+            },
+            {
+                ...projects[1],
+                collection_preview: {
+                    0: {
+                        id: 202,
+                        name: 'City Life',
+                        notes: 'Stories of migration',
+                    },
+                },
+            },
+        ];
+
+        const actual = filterProjects(
+            withInvalidPreviewShapes,
+            'migration',
+            null,
+            null,
+            null,
+            null,
+            []
+        );
+
+        expect(actual.map((project) => project.id)).toEqual([2]);
+    });
+
     test('applies inclusive interview count range', () => {
         const actual = filterProjects(projects, '', 5, 12, null, null, []);
 
