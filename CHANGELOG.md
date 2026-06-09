@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.1] - 2026-06-09
+
+### Added
+
+- add default affiliate permissions config ([d054e8bae](https://github.com/oral-history-digital/ohd/commit/d054e8bae565157ce8dc9487bc0954dba6d818b9))
+- Add OHTM dashboard link in ADG archive ([a5f332274](https://github.com/oral-history-digital/ohd/commit/a5f332274950384383370009831609f143190ddd))
+
+### Fixed
+
+- fix ohd_subjects ([d6dfdf938](https://github.com/oral-history-digital/ohd/commit/d6dfdf93887f36abae04b42a347eeee5d0ee3fff))
+- fix findability oai tags ([8b6a85c18](https://github.com/oral-history-digital/ohd/commit/8b6a85c18c3265b0134f03f5690ea7fc99f3949b))
+- fix: add HomepageImage to default types for exported UploadedFile blobs ([242009292](https://github.com/oral-history-digital/ohd/commit/242009292024e5ae586067c9b8e30b9ce8db8ab0))
+- fix: correct institution export task with calculated project, collection, and interview counts ([ed776b333](https://github.com/oral-history-digital/ohd/commit/ed776b3331617e126334b8ab67e75b8b6e3cb239))
+- fix: correctly include name and description in one locale only ([db498fbd5](https://github.com/oral-history-digital/ohd/commit/db498fbd500f9fd91bbd010458b0af2919278572))
+
 ## [2.4.0] - 2026-06-05
 
 ### Added
