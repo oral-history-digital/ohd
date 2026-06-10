@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`formatCollectionCitation formats collection citation with DOI and preserves quotation marks 1`] = `
+<React.Fragment>
+  Institut fur Geschichte und Biographie der FernUniversitat in Hagen
+  : 
+  <span>
+    Interview-Archiv "Archiv "Deutsches Gedachtnis""
+  </span>
+  <span>
+    , 
+    Collection: Sammlung "Berliner Jugend"
+  </span>
+  <span>
+    , 
+    <a
+      href="https://doi.org/10.17169/collection.90408866"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      https://doi.org/10.17169/collection.90408866
+    </a>
+  </span>
+</React.Fragment>
+`;
+
+exports[`formatCollectionCitation formats collection citation with catalog link (no DOI) and preserves quotation marks 1`] = `
+<React.Fragment>
+  Institut fur Geschichte und Biographie der FernUniversitat in Hagen
+  : 
+  <span>
+    Interview-Archiv "Archiv "Deutsches Gedachtnis""
+  </span>
+  <span>
+    , 
+    Collection: Sammlung "Berliner Jugend"
+  </span>
+  <span>
+    , 
+    <a
+      href="https://portal.oral-history.digital/de/catalog/collections/90408866"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      https://portal.oral-history.digital/de/catalog/collections/90408866
+    </a>
+  </span>
+</React.Fragment>
+`;
+
+exports[`formatProjectCitation formats project citation with DOI only (no catalog link) 1`] = `
+<React.Fragment>
+  Freie Universitat Berlin, Universitatsbibliothek der Freien Universitat Berlin
+  : 
+  <span>
+    Interview-Archiv "Eiserner Vorhang"
+  </span>
+  <span>
+    , 
+    <a
+      href="https://doi.org/10.17169/project.1368417"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      https://doi.org/10.17169/project.1368417
+    </a>
+  </span>
+</React.Fragment>
+`;
+
+exports[`formatProjectCitation formats project citation with catalog link (no DOI) 1`] = `
+<React.Fragment>
+  FernUniversitat in Hagen
+  : 
+  <span>
+    Interview Archive
+  </span>
+  <span>
+    , 
+    <a
+      href="https://portal.oral-history.digital/en/catalog/archives/42"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      https://portal.oral-history.digital/en/catalog/archives/42
+    </a>
+  </span>
+</React.Fragment>
+`;

@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/grgr/oai_repository
-  revision: fbc1ff97cea77ea9c898699dc939ab3ad242efdd
+  revision: 9ae57d6bb0554501a285bf375b41cdf968b8e4bb
   specs:
-    oai_repository (0.9.5)
+    oai_repository (0.9.6)
       oai
 
 GEM

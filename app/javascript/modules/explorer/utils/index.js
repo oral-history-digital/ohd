@@ -10,6 +10,7 @@ export * from './filterInstitutions';
 export * from './getInterviewAccessibilityText';
 export * from './getProjectUrl';
 export * from './highlightQueryInHtml';
+export * from './personName';
 export * from './sortProjects';
 export * from './sortCollections';
 export * from './sortInstitutions';

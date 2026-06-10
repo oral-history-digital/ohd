@@ -159,4 +159,30 @@ class ApplicationRecord < ActiveRecord::Base
       []
     end
   end
+
+  def has_media_files?
+    if respond_to?(:interviews)
+      loim_registry_entry = RegistryEntry.ohd_level_of_indexing_media
+      if loim_registry_entry
+        loim_registry_entry.registry_references.where(interview_id: interviews.pluck(:id)).exists?
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
+  def has_transcripts?
+    if respond_to?(:interviews)
+      loit_registry_entry = RegistryEntry.ohd_level_of_indexing_transcript
+      if loit_registry_entry
+        loit_registry_entry.registry_references.where(interview_id: interviews.pluck(:id)).exists?
+      else
+        false
+      end
+    else
+      false
+    end
+  end
 end

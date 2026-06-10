@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.2] - 2026-06-10
+
+### Added
+
+- test: add unit tests for explorerSearchParams utility functions ([7d32578eb](https://github.com/oral-history-digital/ohd/commit/7d32578ebe379ef84919aded979eb8a3a81237b9))
+
+### Changed
+
+- update oai_repository gem ([190c4272b](https://github.com/oral-history-digital/ohd/commit/190c4272bb32648f92cd79df86069987ed04a14d))
+- mv special registry-entry getter to application_record ([1ce4240c3](https://github.com/oral-history-digital/ohd/commit/1ce4240c3f3cb4ca11e998ed5343f29b41f292f7))
+- chore: update collectCoverageFrom patterns in jest.config.js ([6e57fd996](https://github.com/oral-history-digital/ohd/commit/6e57fd99623adda4eea5fd6c5d9909c53f28a258))
+
+### Fixed
+
+- fix: update serializer and explorer pages for correct affiliates display ([#122](https://github.com/oral-history-digital/ohd/pull/122))
+
+## [2.4.1] - 2026-06-09
+
+### Added
+
+- add default affiliate permissions config ([d054e8bae](https://github.com/oral-history-digital/ohd/commit/d054e8bae565157ce8dc9487bc0954dba6d818b9))
+- Add OHTM dashboard link in ADG archive ([a5f332274](https://github.com/oral-history-digital/ohd/commit/a5f332274950384383370009831609f143190ddd))
+
+### Fixed
+
+- fix: include collections in catalog search ([#123](https://github.com/oral-history-digital/ohd/pull/123))
+- fix: load project data on archive page ([#121](https://github.com/oral-history-digital/ohd/pull/121))
+- fix ohd_subjects ([d6dfdf938](https://github.com/oral-history-digital/ohd/commit/d6dfdf93887f36abae04b42a347eeee5d0ee3fff))
+- fix findability oai tags ([8b6a85c18](https://github.com/oral-history-digital/ohd/commit/8b6a85c18c3265b0134f03f5690ea7fc99f3949b))
+- fix: add HomepageImage to default types for exported UploadedFile blobs ([242009292](https://github.com/oral-history-digital/ohd/commit/242009292024e5ae586067c9b8e30b9ce8db8ab0))
+- fix: correct institution export task with calculated project, collection, and interview counts ([ed776b333](https://github.com/oral-history-digital/ohd/commit/ed776b3331617e126334b8ab67e75b8b6e3cb239))
+- fix: correctly include name and description in one locale only ([db498fbd5](https://github.com/oral-history-digital/ohd/commit/db498fbd500f9fd91bbd010458b0af2919278572))
+
 ## [2.4.0] - 2026-06-05
 
 ### Added
@@ -567,6 +600,8 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.4.2]: https://github.com/oral-history-digital/ohd/compare/v2.4.1...v2.4.2
+[2.4.1]: https://github.com/oral-history-digital/ohd/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/oral-history-digital/ohd/compare/v2.3.5...v2.4.0
 [2.3.5]: https://github.com/oral-history-digital/ohd/compare/v2.3.4...v2.3.5
 [2.3.4]: https://github.com/oral-history-digital/ohd/compare/v2.3.3...v2.3.4
