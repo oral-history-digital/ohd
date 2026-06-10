@@ -39,11 +39,8 @@ module Project::Oai
   end
 
   def oai_publisher(locale)
-    primary_institution = institution_projects.where(primary: true).first&.institution ||
-      institutions.first
-    [primary_institution&.parent, primary_institution].compact.map do |ip|
-      ip.name(locale)
-    end.join(', ')
+    institutions = primary_institution(include_parent: true)
+    institutions.map { |ip| ip.name(locale) }.join(', ')
   end
 
   def oai_leaders

@@ -12,7 +12,8 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
     :contact_people,
     :media_types,
     :interview_year_range,
-    :birth_year_range
+    :birth_year_range,
+    :primary_institution
 
   %w(
     cooperation_partners
@@ -21,7 +22,7 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
     funders
   ).each do |m|
     define_method m do
-      object.send(m).inject({}) { |mem, c| mem[c.id] = AffiliateSerializer.new(c); mem }
+      serialized_affiliates(object.send(m))
     end
   end
 
@@ -64,15 +65,25 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
   end
 
   def contact_people
+    cooperation_partners = object.cooperation_partners.map { |a| affiliate_display_name(a) }.reject(&:blank?).join(', ')
+    leaders = object.leaders.map { |a| affiliate_display_name(a) }.reject(&:blank?).join(', ')
+    managers = object.managers.map { |a| affiliate_display_name(a) }.reject(&:blank?).join(', ')
+    funders = object.funders.map { |a| affiliate_display_name(a) }.reject(&:blank?).join(', ')
+
     {
-      cooperation_partner: object.cooperation_partners.map { |a| a.name }.join(', '),
-      leader: object.leaders.map { |a| a.name }.join(', '),
-      manager: object.managers.map { |a| a.name }.join(', '),
+      cooperation_partners: cooperation_partners,
+      leaders: leaders,
+      managers: managers,
+      funders: funders
     }
   end
 
   def birth_year_range
     range_for(instance_options[:birth_year_ranges_by_project])
+  end
+
+  def primary_institution
+    object.primary_institution&.id
   end
 
   private
@@ -87,5 +98,45 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
       value,
       default_locale: object.default_locale || I18n.default_locale
     )
+  end
+
+  def serialized_affiliates(affiliates)
+    affiliates.map do |affiliate|
+      {
+        id: affiliate.id,
+        type: affiliate.type,
+        name_type: affiliate.name_type,
+        name: localized_affiliate_value(affiliate, :name),
+        first_name: localized_affiliate_value(affiliate, :first_name),
+        last_name: localized_affiliate_value(affiliate, :last_name),
+      }
+    end
+  end
+
+  def localized_affiliate_value(affiliate, attribute_name)
+    value = localized_affiliate_attribute(affiliate, attribute_name)
+    # The serialized name is a display field: Personal uses first+last, Organizational uses name.
+    return affiliate_display_name(affiliate) if attribute_name.to_sym == :name
+
+    value
+  end
+
+  def affiliate_display_name(affiliate)
+    if affiliate.name_type == 'Personal'
+      [
+        localized_affiliate_attribute(affiliate, :first_name),
+        localized_affiliate_attribute(affiliate, :last_name)
+      ].compact.map(&:to_s).map(&:strip).reject(&:blank?).join(' ')
+    else
+      localized_affiliate_attribute(affiliate, :name).to_s.strip
+    end
+  end
+
+  def localized_affiliate_attribute(affiliate, attribute_name)
+    localized_attribute_value(
+      affiliate,
+      attribute_name,
+      default_locale: object.default_locale
+    ) || affiliate.send(attribute_name)
   end
 end

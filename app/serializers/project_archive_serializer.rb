@@ -4,6 +4,7 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     :display_name,
     :shortname,
     :archive_domain,
+    :oai_doi_identifier,
     :latitude,
     :longitude,
     :introduction,
@@ -34,6 +35,11 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     object.archive_domain.presence
   end
 
+  def oai_doi_identifier
+    return nil unless object.doi_status == "created"
+    object.oai_doi_identifier
+  end
+
   def introduction
     object.introduction
   end
@@ -50,7 +56,8 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
         parent: institution.parent ? {
           id: institution.parent.id,
           name: institution.parent.name
-        } : nil
+        } : nil,
+        is_primary: institution == object.primary_institution
       }
     end
   end

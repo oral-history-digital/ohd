@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 export function Citation({
     type,
     institutions,
+    primary_institution,
     projectName,
     projectId,
     collectionName,
@@ -18,10 +19,14 @@ export function Citation({
     const origin =
         typeof window === 'undefined' ? undefined : window.location.origin;
 
+    const displayInstitutions = primary_institution
+        ? institutions.filter((inst) => inst.id === primary_institution)
+        : institutions;
+
     const citation =
         type === 'collection'
             ? formatCollectionCitation({
-                  institutions,
+                  institutions: displayInstitutions,
                   projectName,
                   collectionName,
                   collectionId,
@@ -32,7 +37,7 @@ export function Citation({
                   t,
               })
             : formatProjectCitation({
-                  institutions,
+                  institutions: displayInstitutions,
                   projectName,
                   projectId,
                   locale,
@@ -62,16 +67,18 @@ export function Citation({
 
 Citation.propTypes = {
     type: PropTypes.oneOf(['project', 'collection']).isRequired,
-    institutions: PropTypes.oneOfType([
+    institutions: PropTypes.arrayOf(
         PropTypes.shape({
-            name: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-        }),
-        PropTypes.arrayOf(
-            PropTypes.shape({
-                name: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-            })
-        ),
-    ]),
+            id: PropTypes.number,
+            name: PropTypes.string,
+            parent: PropTypes.shape({
+                id: PropTypes.number,
+                name: PropTypes.string,
+            }),
+            is_primary: PropTypes.bool,
+        })
+    ),
+    primary_institution: PropTypes.number,
     projectName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     projectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     collectionName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
