@@ -193,14 +193,6 @@ class Project < ApplicationRecord
     read_attribute :available_locales
   end
 
-  def has_media_files?
-    RegistryEntry.ohd_level_of_indexing_media.registry_references.where(interview_id: interviews.pluck(:id)).exists?
-  end
-
-  def has_transcripts?
-    RegistryEntry.ohd_level_of_indexing_transcript.registry_references.where(interview_id: interviews.pluck(:id)).exists?
-  end
-
   def logo
     logos.where(locale: I18n.locale).first || logos.first
   end
