@@ -141,7 +141,7 @@ module LatexHelper
 
     parts << latex_multiscript("(#{pdf_access_date})")
 
-    if interview&.doi_status == 'created'
+    if interview&.doi_status == 'created' && interview.used_doi_prefix.present?
       parts << latex_doi_reference(
         interview: interview,
         project: project,

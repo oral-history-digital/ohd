@@ -13,11 +13,12 @@ class LatexHelperTest < ActiveSupport::TestCase
     project
   end
 
-  def build_interview(doi_status: nil)
+  def build_interview(doi_status: nil, used_doi_prefix: nil)
     interview = OpenStruct.new(
       interview_date: '2015-08-13',
       archive_id: 'zauber0001',
       doi_status: doi_status,
+      used_doi_prefix: used_doi_prefix,
       collection: nil
     )
     interview.define_singleton_method(:anonymous_title) { |_locale| 'M., Anna' }
@@ -144,18 +145,22 @@ class LatexHelperTest < ActiveSupport::TestCase
 
   test 'latex_footer_citation_parts includes interview and doi segment when doi is created' do
     project = build_project
-    interview = build_interview(doi_status: 'created')
-
-    old_datacite = Rails.configuration.datacite
-    Rails.configuration.datacite = { 'prefix' => '10.1234' }
+    interview = build_interview(doi_status: 'created', used_doi_prefix: '10.1234')
 
     parts = latex_footer_citation_parts(interview: interview, project: project, header_locale: :en, doc_type: 'translation')
 
     assert(parts.any? { |part| part.include?('zauber0001') })
     assert(parts.any? { |part| part.include?('/en/interviews/zauber0001') })
     assert(parts.any? { |part| part.include?('DOI: https://doi.org/10.1234/') })
-  ensure
-    Rails.configuration.datacite = old_datacite
+  end
+
+  test 'latex_footer_citation_parts omits doi segment when doi prefix is missing' do
+    project = build_project
+    interview = build_interview(doi_status: 'created', used_doi_prefix: nil)
+
+    parts = latex_footer_citation_parts(interview: interview, project: project, header_locale: :en, doc_type: 'translation')
+
+    assert(parts.none? { |part| part.include?('DOI: https://doi.org/') })
   end
 
   test 'latex_footer_line renders parts with script-aware wrapping' do
