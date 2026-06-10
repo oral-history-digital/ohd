@@ -1,20 +1,14 @@
 import PropTypes from 'prop-types';
 
+import { personName } from '../../utils';
 import { GenericDetail } from './GenericDetail';
 
-function personName(person) {
-    const directName = person?.name?.trim();
-    if (directName) {
-        return directName;
-    }
-
-    const firstName = person?.first_name?.trim() || '';
-    const lastName = person?.last_name?.trim() || '';
-    return [firstName, lastName].filter(Boolean).join(' ');
-}
-
 export function GenericPeople({ people = [], labelKey, groupClassName }) {
+    if (!people?.length) return null;
+
     const names = people.map(personName).filter(Boolean);
+
+    if (!names.length) return null;
 
     return (
         <GenericDetail
