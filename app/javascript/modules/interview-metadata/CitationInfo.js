@@ -12,9 +12,17 @@ export default function CitationInfo({ interview, collections }) {
     const domain = project.archive_domain || OHD_LOCATION;
     const selfLink = `${domain}${pathBase}/interviews/${interview.archive_id}`;
 
+    // TODO: Move DOI link generation logic to backend and store generated
+    // DOI link in the interview data.
     let doiLink;
     if (interview.doi_status === 'created') {
-        doiLink = `https://doi.org/${interview.used_doi_prefix}/${projectId}.${interview.archive_id}`;
+        if (interview.used_doi_prefix) {
+            doiLink = `https://doi.org/${interview.used_doi_prefix}/${projectId}.${interview.archive_id}`;
+        } else {
+            console.warn(
+                `Interview ${interview.id} has DOI status 'created' but no used_doi_prefix. Cannot generate DOI link.`
+            );
+        }
     }
 
     let collectionName;
