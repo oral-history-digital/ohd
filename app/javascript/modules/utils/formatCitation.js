@@ -79,15 +79,6 @@ export function formatProjectCitation({
     doi,
     doiUrl,
 }) {
-    console.log('formatProjectCitation called with:', {
-        institutions,
-        projectName,
-        projectId,
-        locale,
-        origin,
-        doi,
-        doiUrl,
-    });
     const normalizedDoi = normalizedDoiUrl(doiUrl, doi);
 
     const citation = joinParts([
@@ -110,16 +101,6 @@ export function formatCollectionCitation({
     doiUrl,
     t,
 }) {
-    console.log('formatCollectionCitation called with:', {
-        institutions,
-        projectName,
-        collectionName,
-        collectionId,
-        locale,
-        origin,
-        doi,
-        doiUrl,
-    });
     const collectionLabel =
         (typeof t === 'function' && t('activerecord.models.collection.one')) ||
         'Collection';
