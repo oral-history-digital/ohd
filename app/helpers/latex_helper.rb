@@ -162,7 +162,7 @@ module LatexHelper
 
   def latex_doi_reference(interview:, project:, header_locale:)
     latex_multiscript(
-      "DOI: https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{interview.archive_id}, " \
+      "DOI: https://doi.org/#{interview.used_doi_prefix}/#{project.shortname}.#{interview.archive_id}, " \
       "(#{TranslationValue.for('called', header_locale)}: #{pdf_access_date})",
     )
   end
