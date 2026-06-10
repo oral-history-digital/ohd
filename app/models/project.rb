@@ -197,6 +197,14 @@ class Project < ApplicationRecord
     logos.where(locale: I18n.locale).first || logos.first
   end
 
+  # Returns the first primary institution of the project, or the first institution if no primary institution is set.
+  # Optionally includes the parent institution of the primary institution if it exists.
+  def primary_institution(include_parent: false)
+    primary = institution_projects.where(primary: true).first&.institution || institutions.first
+    return primary unless include_parent
+    [primary&.parent, primary].compact
+  end
+
   def root_registry_entry
     registry_entries.where(code: 'root').first
   end

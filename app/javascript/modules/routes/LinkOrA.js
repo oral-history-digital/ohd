@@ -1,6 +1,8 @@
+/* global railsMode */
 import { getLocale, getProjectId, setProjectId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
 import { getCurrentUser } from 'modules/data';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -17,6 +19,16 @@ function LinkOrA({
     const currentProjectId = useSelector(getProjectId);
     const currentAccount = useSelector(getCurrentUser);
     const dispatch = useDispatch();
+
+    // If the project doesn't exist in the store, render children without a link to prevent crashes
+    // As soon as the project data is available, this component will re-render with the correct link
+    if (!project) {
+        return (
+            <span className={className} style={style}>
+                {children}
+            </span>
+        );
+    }
 
     const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
     const projectHasOtherDomain =
@@ -69,3 +81,16 @@ function LinkOrA({
 }
 
 export default LinkOrA;
+
+LinkOrA.propTypes = {
+    to: PropTypes.string,
+    className: PropTypes.string,
+    style: PropTypes.object,
+    project: PropTypes.shape({
+        shortname: PropTypes.string.isRequired,
+        archive_domain: PropTypes.string,
+    }),
+    children: PropTypes.node.isRequired,
+    onLinkClick: PropTypes.func,
+    params: PropTypes.string,
+};

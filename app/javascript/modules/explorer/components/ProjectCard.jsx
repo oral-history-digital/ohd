@@ -115,8 +115,7 @@ export function ProjectCard({ project, query, expanded, onToggle }) {
                         />
                     </div>
 
-                    {/* Don't pass query. we want all related collections */}
-                    <CollectionList project={project} />
+                    <CollectionList project={project} query={query} />
                 </div>
             )}
         </div>
