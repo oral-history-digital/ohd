@@ -46,6 +46,24 @@ class LatexHelperTest < ActiveSupport::TestCase
     assert_match(/\}\z/, wrapped)
   end
 
+  test 'latex_multiscript keeps latin runs outside tamil wrapper for mixed text' do
+    mixed = latex_multiscript('தமிழ் interview 2026')
+
+    assert_equal('\\texttamil{தமிழ்} interview 2026', mixed)
+  end
+
+  test 'latex_multiscript keeps urls readable in mixed tamil text' do
+    mixed = latex_multiscript('தமிழ் https://example.org/interviews/A-1')
+
+    assert_equal('\\texttamil{தமிழ்} https://example.org/interviews/A-1', mixed)
+  end
+
+  test 'latex_multiscript decodes html entities and escapes latex chars' do
+    converted = latex_multiscript('archive&#39;s terms & conditions')
+
+    assert_equal("archive's terms \\& conditions", converted)
+  end
+
   test 'latex_multiscript escapes plain text without wrapping' do
     escaped = latex_multiscript('A & B')
 
@@ -132,7 +150,14 @@ class LatexHelperTest < ActiveSupport::TestCase
   test 'latex_metadata_line renders script-aware label and value' do
     line = latex_metadata_line('ملاحظات', 'نص عربي')
 
-    assert_equal('\\par{\\textarabic{ملاحظات:} \\textarabic{نص عربي}}', line)
+    assert_equal('\\par{\\textarabic{ملاحظات}: \\textarabic{نص} \\textarabic{عربي}}', line)
+  end
+
+  test 'latex_metadata_line does not emit html entities' do
+    line = latex_metadata_line("Label", "archive's note")
+
+    refute_match(/&#39;/, line)
+    assert_match(/archive's note/, line)
   end
 
   test 'latex_footer_citation_parts builds footer segments without interview' do

@@ -1,6 +1,6 @@
 module LatexHelper
   def latex_escape(text)
-    LatexToPdf.escape_latex(text)
+    LatexToPdf.escape_latex(text).html_safe
   end
 
   def interview_metadata_label_for_pdf(interview, attribute, locale)
@@ -71,20 +71,31 @@ module LatexHelper
   def latex_multiscript(text)
     return '' if text.nil?
 
-    value = text.to_s
-    escaped = latex_escape(value)
+    # Unescape HTML entities to avoid issues with LaTeX escaping.
+    value = CGI.unescapeHTML(text.to_s)
+    
+    # Split into runs of Arabic, Hebrew, Tamil, or other text to apply appropriate LaTeX commands.
+    runs = value.scan(/\p{Arabic}+|\p{Hebrew}+|\p{Tamil}+|[^\p{Arabic}\p{Hebrew}\p{Tamil}]+/u)
 
-    return "\\textarabic{#{escaped}}" if value.match?(/\p{Arabic}/)
-    return "\\texthebrew{#{escaped}}" if value.match?(/\p{Hebrew}/)
-    return "\\texttamil{#{escaped}}" if value.match?(/\p{Tamil}/)
+    runs.map do |run|
+      escaped = latex_escape(run)
 
-    escaped
+      if run.match?(/\p{Arabic}/)
+        "\\textarabic{#{escaped}}"
+      elsif run.match?(/\p{Hebrew}/)
+        "\\texthebrew{#{escaped}}"
+      elsif run.match?(/\p{Tamil}/)
+        "\\texttamil{#{escaped}}"
+      else
+        escaped
+      end
+    end.join.html_safe
   end
 
   def latex_metadata_line(label, value)
     return if value.blank?
 
-    "\\par{#{latex_multiscript("#{label}:")} #{latex_multiscript(value)}}"
+    "\\par{#{latex_multiscript("#{label}:")} #{latex_multiscript(value)}}".html_safe
   end
 
   # Footer segment for interview reference.
@@ -95,7 +106,7 @@ module LatexHelper
       "#{interview.archive_id}, #{interview_date_for_pdf(interview.interview_date, locale: header_locale)}",
     )
 
-    "#{label} #{ref}"
+    "#{label} #{ref}".html_safe
   end
 
   # Generate the full footer line by joining the citation parts with commas and ending with a period.
@@ -105,7 +116,7 @@ module LatexHelper
       project: project,
       header_locale: header_locale,
       doc_type: doc_type,
-    ).join(', ')}."
+    ).join(', ')}.".html_safe
   end
 
   # Generate the citation fragments used in the PDF footer.

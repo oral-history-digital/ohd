@@ -174,6 +174,17 @@ class Interview::ExportTest < ActiveSupport::TestCase
     refute_match(/missing translation-value:/, first_page)
   end
 
+  test 'content locale label falls back to ISO language name when translation is missing' do
+    label = interview.send(
+      :content_locale_human_label_for_pdf,
+      content_label_locale: 'ta',
+      header_locale: 'de',
+      content_locale: 'tam',
+    )
+
+    assert_equal('Tamil', label)
+  end
+
   test 'should export biography PDF correctly' do
     pdf = interview.biography_pdf(:de, :de)
     #pdf_analysis = PDF::Inspector::Text.analyze(pdf)
