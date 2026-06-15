@@ -218,7 +218,7 @@ export default function WrappedDataList({
 }
 
 WrappedDataList.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     joinedData: PropTypes.object,
     helpTextCode: PropTypes.string,
     sortAttribute: PropTypes.string,
@@ -243,7 +243,7 @@ WrappedDataList.propTypes = {
     hideAdd: PropTypes.bool,
     hideEdit: PropTypes.bool,
     hideDelete: PropTypes.bool,
-    showComponent: PropTypes.object,
+    showComponent: PropTypes.elementType,
     submitData: PropTypes.func.isRequired,
     setQueryParams: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,

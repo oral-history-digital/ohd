@@ -18,5 +18,5 @@ BaseData.propTypes = {
     name: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
     scope: PropTypes.string.isRequired,
-    showComponent: PropTypes.element,
+    showComponent: PropTypes.elementType,
 };
