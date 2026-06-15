@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import {
     fetchData,
@@ -24,6 +24,7 @@ export function useHydrateProjectsByIds(
     projectIds = [],
     { needsHydration = DEFAULT_NEEDS_HYDRATION } = {}
 ) {
+    const attemptedHydrationIds = useRef(new Set());
     const dispatch = useDispatch();
     const { locale } = useI18n();
     const currentProject = useSelector(getCurrentProject);
@@ -43,8 +44,16 @@ export function useHydrateProjectsByIds(
             const status =
                 projectsStatus?.[projectIdStr] || projectsStatus?.[projectId];
             const project = projects?.[projectId];
+            const hasAttemptedHydration =
+                attemptedHydrationIds.current.has(projectIdStr);
 
-            if (needsHydration(project) && !/^fetching/.test(status || '')) {
+            if (
+                needsHydration(project) &&
+                !hasAttemptedHydration &&
+                !/^fetching/.test(status || '')
+            ) {
+                // Mark the project ID as attempted for hydration
+                attemptedHydrationIds.current.add(projectIdStr);
                 dispatch(
                     fetchData(
                         { locale, project: currentProject },

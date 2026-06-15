@@ -3,6 +3,7 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import keyBy from 'lodash.keyby';
 import { AuthorizedContent } from 'modules/auth';
+import { useHydrateProjectsByIds } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { useInterviewSearch } from 'modules/interview-search';
@@ -28,6 +29,7 @@ export default function InterviewPreview({
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const { t, locale } = useI18n();
+    useHydrateProjectsByIds([interview.project_id]);
     const project = projects[interview.project_id];
     const { fulltext } = useArchiveSearch();
     const { savedInterviews } = useWorkbook();

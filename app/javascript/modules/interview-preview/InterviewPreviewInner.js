@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
-import { getCurrentUser } from 'modules/data';
-import { useProject } from 'modules/routes';
+import { getCurrentUser, useCurrentProject } from 'modules/data';
 import PropTypes from 'prop-types';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
 import Skeleton from 'react-loading-skeleton';
@@ -19,7 +18,7 @@ export default function InterviewPreviewInner({
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const { isAuthorized } = useAuthorization();
-    const { project: currentProject } = useProject();
+    const { project: currentProject } = useCurrentProject();
     const currentUser = useSelector(getCurrentUser);
     const permitted = currentUser?.interview_permissions.some(
         (p) => p.interview_id === interview.id

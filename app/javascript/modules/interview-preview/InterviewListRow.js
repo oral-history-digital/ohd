@@ -3,7 +3,11 @@ import {
     METADATA_SOURCE_EVENT_TYPE,
     METADATA_SOURCE_INTERVIEW,
 } from 'modules/constants';
-import { getCurrentUser, useHumanReadable } from 'modules/data';
+import {
+    getCurrentUser,
+    useHumanReadable,
+    useHydrateProjectsByIds,
+} from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { useInterviewSearch } from 'modules/interview-search';
@@ -25,6 +29,7 @@ export default function InterviewListRow({
 }) {
     const { locale } = useI18n();
     const { humanReadable } = useHumanReadable();
+    useHydrateProjectsByIds([interview.project_id]);
     const { project } = useProject();
     const projectOfInterview = projects[interview.project_id];
     const { isAuthorized } = useAuthorization();

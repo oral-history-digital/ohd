@@ -1,13 +1,7 @@
-/* global railsMode */
 import { useEffect } from 'react';
 
 import classNames from 'classnames';
-import {
-    getProjectId,
-    getViewMode,
-    setProjectId,
-    useIsEditor,
-} from 'modules/archive';
+import { getViewMode, useIsEditor } from 'modules/archive';
 import {
     Banner,
     bannerHasNotBeenHiddenByUser,
@@ -15,12 +9,17 @@ import {
     getBannerActive,
     hideBanner,
 } from 'modules/banner';
-import { OHD_DOMAINS, VIEWMODE_WORKFLOW } from 'modules/constants';
-import { fetchData, getProjectsStatus } from 'modules/data';
+import { VIEWMODE_WORKFLOW } from 'modules/constants';
+import {
+    getOHDProject,
+    useCurrentProject,
+    useHydrateProjectsByIds,
+} from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { useCurrentPage, useProject } from 'modules/routes';
+import { useCurrentPage, useSyncLegacyProjectId } from 'modules/routes';
 import { Sidebar, getSidebarVisible, toggleSidebar } from 'modules/sidebar';
+import { Spinner } from 'modules/spinners';
 import {
     AfterConfirmationPopup,
     AfterEnable2FAPopup,
@@ -53,20 +52,21 @@ import {
 
 export default function Layout({ children }) {
     const dispatch = useDispatch();
+    const { locale } = useI18n();
+    const currentPage = useCurrentPage();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const { project, projectDbId, projectShortname, isLoading } =
+        useCurrentProject();
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
+    const isEditviewActive = useIsEditor();
+
     const bannerActive = useSelector(getBannerActive);
-    const projectsStatus = useSelector(getProjectsStatus);
-    const routeProjectId = useSelector(getProjectId);
     const currentViewMode = useSelector(getViewMode);
+    const ohdProject = useSelector(getOHDProject);
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
     const isLoggedIn = useSelector(getIsLoggedIn);
-    const isEditviewActive = useIsEditor();
 
-    const { project } = useProject();
-    const currentPage = useCurrentPage();
-    const { locale } = useI18n();
-    const [searchParams, setSearchParams] = useSearchParams();
     const isHomepage = currentPage.pageType === 'site_startpage';
     const isInterviewPage = currentPage.pageType === 'interview_detail';
     const isPeopleAdminPage =
@@ -77,73 +77,38 @@ export default function Layout({ children }) {
             currentViewMode === VIEWMODE_WORKFLOW) ||
         isPeopleAdminPage;
 
+    // Temporary workaround to ensure we have all necessary project data
+    // TODO: Refactor data fetching to use SWR here, too.
+    const projectIdsToHydrate = [projectDbId, ohdProject?.id].filter(Boolean);
+    const needsFullProjectHydration = (candidateProject) =>
+        !candidateProject ||
+        !Array.isArray(candidateProject.translations_attributes) ||
+        !Object.prototype.hasOwnProperty.call(
+            candidateProject,
+            'cooperation_partner'
+        );
+
     useCheckLocaleAgainstProject();
     useFetchAccount();
+    useSyncLegacyProjectId(projectShortname);
+    useHydrateProjectsByIds(projectIdsToHydrate, {
+        needsHydration: needsFullProjectHydration,
+    });
 
-    // Keep Redux projectId aligned with the route-resolved project.
-    // This ensures selectors like getCurrentProject/getMapSections use
-    // the same project that useProject() resolves from the URL/domain.
-    // TODO: eventually we should unify this logic inside useProject()
-    // and get rid of the separate projectId in Redux.
+    // Clean up any access_token from URL after initial load
     useEffect(() => {
-        const resolvedProjectId = project?.shortname;
-
-        if (!resolvedProjectId || resolvedProjectId === routeProjectId) {
-            return;
+        if (searchParams.has('access_token')) {
+            searchParams.delete('access_token');
+            setSearchParams(searchParams);
         }
-
-        dispatch(setProjectId(resolvedProjectId));
-    }, [dispatch, project?.shortname, routeProjectId]);
-
-    const ohdDomain = OHD_DOMAINS[railsMode];
-
-    // Load current project if not already loaded
-    useEffect(() => {
-        const ohd = { shortname: 'ohd', archive_domain: ohdDomain };
-
-        function removeAccessTokenParam() {
-            if (searchParams.has('access_token')) {
-                searchParams.delete('access_token');
-                setSearchParams(searchParams);
-            }
-        }
-
-        // Temporary compatibility bridge during SWR/Redux transition:
-        // prefer resolved Redux project id, fallback to route project shortname
-        // so we can hydrate Redux even before `useProject()` resolves.
-        const effectiveProjectId = project?.id || routeProjectId;
-
-        if (!effectiveProjectId) {
-            removeAccessTokenParam();
-            return;
-        }
-
-        if (!projectsStatus[effectiveProjectId]) {
-            dispatch(
-                fetchData(
-                    { locale: 'de', project: ohd },
-                    'projects',
-                    effectiveProjectId
-                )
-            );
-        }
-        removeAccessTokenParam();
-    }, [
-        dispatch,
-        project,
-        routeProjectId,
-        projectsStatus,
-        ohdDomain,
-        searchParams,
-        setSearchParams,
-    ]);
+    }, [searchParams, setSearchParams]);
 
     function handleBannerClose() {
         dispatch(hideBanner());
         doNotShowBannerAgainThisSession();
     }
 
-    let titleBase = 'Oral-History.Digital';
+    let titleBase = 'Oral-History.Digital'; // TODO: Make configurable in Frontend
     if (project) {
         titleBase = project?.display_name?.[locale] || project?.name?.[locale];
     }
@@ -151,6 +116,16 @@ export default function Layout({ children }) {
     const faviconUrl = project?.shortname
         ? `/favicons/favicon-${project?.shortname}.ico`
         : '/favicon.ico';
+
+    if (isLoading) {
+        return (
+            <div className="Layout Layout--loading">
+                <main className="Site-content Layout-loadingContent">
+                    <Spinner size={200} color="#f1f1f1" withPadding />
+                </main>
+            </div>
+        );
+    }
 
     if (!project) return null;
 

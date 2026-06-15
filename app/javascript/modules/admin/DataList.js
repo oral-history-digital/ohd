@@ -95,10 +95,17 @@ export default function DataList({
                     scope={scope}
                     helpTextCode={helpTextCode}
                     onSubmit={(params) => {
-                        submitData({ locale, project, projectId }, params);
-                        if (typeof onSubmit === 'function') {
-                            onSubmit();
-                        }
+                        submitData(
+                            { locale, project, projectId },
+                            params,
+                            undefined,
+                            // Force refetch of list data after submit, to reflect any changes
+                            () => {
+                                if (typeof onSubmit === 'function') {
+                                    onSubmit();
+                                }
+                            }
+                        );
                     }}
                     onCancel={onCancel}
                     submitText="submit"

@@ -1,5 +1,5 @@
 import { setArchiveId } from 'modules/archive';
-import { getProjects } from 'modules/data';
+import { getProjects, useHydrateProjectsByIds } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
 import { getIsLoggedIn } from 'modules/user';
@@ -13,6 +13,8 @@ export default function EntryReferences({ references, onSubmit }) {
     const dispatch = useDispatch();
     const projects = useSelector(getProjects);
     const isLoggedIn = useSelector(getIsLoggedIn);
+
+    useHydrateProjectsByIds(references.map(({ project_id }) => project_id));
 
     return (
         <ul className="UnorderedList">
