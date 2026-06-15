@@ -33,7 +33,7 @@ export default function WrappedDataList({
     interview,
     task,
     hideAdd,
-    registerDOI,
+    hideRegisterDoiAction,
     outerScope,
     outerScopeId,
     resultPagesCount,
@@ -179,7 +179,7 @@ export default function WrappedDataList({
                             form={createForm}
                             showComponent={showComponent}
                             hideEdit={hideEdit}
-                            registerDOI={registerDOI}
+                            hideRegisterDoiAction={hideRegisterDoiAction}
                             hideDelete={hideDelete}
                             key={`${scope}-${data.id}`}
                         />
@@ -242,6 +242,7 @@ WrappedDataList.propTypes = {
     resultPagesCount: PropTypes.number,
     hideAdd: PropTypes.bool,
     hideEdit: PropTypes.bool,
+    hideRegisterDoiAction: PropTypes.bool,
     hideDelete: PropTypes.bool,
     showComponent: PropTypes.elementType,
     submitData: PropTypes.func.isRequired,

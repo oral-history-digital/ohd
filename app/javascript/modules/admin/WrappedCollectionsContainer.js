@@ -68,7 +68,7 @@ const mapStateToProps = (state) => {
                 elementType: 'richTextEditor',
             },
         ],
-        registerDOI: true,
+        hideRegisterDoiAction: false,
         joinedData: {},
         helpTextCode: 'collection_form',
     };

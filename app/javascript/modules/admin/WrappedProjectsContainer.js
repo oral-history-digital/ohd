@@ -74,7 +74,7 @@ const mapStateToProps = (state) => {
                 optionsScope: 'workflow_states',
             },
         ],
-        registerDOI: true,
+        hideRegisterDoiAction: false,
         showComponent: ProjectTile,
         helpTextCode: 'archive_form',
     };

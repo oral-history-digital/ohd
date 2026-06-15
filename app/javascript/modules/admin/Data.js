@@ -76,13 +76,12 @@ export default function Data({
     showComponent,
     hideShow,
     hideEdit,
-    registerDOI,
+    hideRegisterDoiAction = false,
     hideDelete,
     optionsScope,
     disabled = false,
     detailsAttributes,
     deleteData,
-    submitData,
     registerDoi,
     handleDelete,
 }) {
@@ -184,7 +183,7 @@ export default function Data({
                             )}
                         </Item>
                     )}
-                    {registerDOI && (
+                    {!hideRegisterDoiAction && (
                         <Item
                             name="register_doi"
                             label={t('register_doi')}
@@ -235,10 +234,12 @@ Data.propTypes = {
     showComponent: PropTypes.element,
     hideShow: PropTypes.bool,
     hideEdit: PropTypes.bool,
+    hideRegisterDoiAction: PropTypes.bool,
     hideDelete: PropTypes.bool,
     optionsScope: PropTypes.string,
     disabled: PropTypes.bool,
     detailsAttributes: PropTypes.array,
+    registerDoi: PropTypes.func,
     deleteData: PropTypes.func.isRequired,
     handleDelete: PropTypes.func,
 };
