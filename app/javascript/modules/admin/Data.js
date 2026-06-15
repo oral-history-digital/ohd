@@ -106,7 +106,12 @@ export default function Data({
     const displayName = getDataDisplayName(data, locale);
 
     return (
-        <div className="data boxes">
+        <div
+            className={classNames('data boxes', {
+                'data-disabled': disabled,
+                [`dataBox--${scope}`]: scope,
+            })}
+        >
             <BaseData
                 name={displayName}
                 data={data}

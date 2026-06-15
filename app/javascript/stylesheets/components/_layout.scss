@@ -7,6 +7,17 @@
   --layout-sidebar-width-xl: clamp(384px, 30vw, 768px);
 }
 
+.Layout--loading {
+  min-height: 100vh;
+}
+
+.Layout-loadingContent {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .Layout-page {
   width: 100%;
   padding: 0 $base-unit;
