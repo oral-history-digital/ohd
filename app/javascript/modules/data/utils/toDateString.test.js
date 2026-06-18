@@ -41,3 +41,9 @@ test('returns en-US style date string for en locale', () => {
     const expected = '2/12/2019';
     actual.forEach((a) => expect(toDateString(a, 'en')).toEqual(expected));
 });
+
+test('formats dates for rtl locales using de-DE', () => {
+    // This is a special case for rtl UI languages, where we use the de-DE locale to format the date
+    // This is a temporary solution until we have properly handle rtl languages in the UI
+    expect(toDateString('2019-02-12', 'ar')).toBe('12.2.2019');
+});

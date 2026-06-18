@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
 import originalT from './t';
+import { isRtlLanguage } from './utils';
 
 export function useI18n() {
     const matchWithProject = useMatch('/:projectId/:locale/*');
@@ -23,6 +24,9 @@ export function useI18n() {
         locale = matchWOProject.params.locale;
     }
 
+    const rtl = isRtlLanguage(locale);
+    const textDirection = rtl ? 'rtl' : 'ltr';
+
     const translations = useSelector(getTranslations);
     const translationsView = useSelector(getTranslationsView);
 
@@ -40,5 +44,7 @@ export function useI18n() {
     return {
         locale,
         t: curriedT,
+        isRtlLanguage: rtl,
+        textDirection,
     };
 }

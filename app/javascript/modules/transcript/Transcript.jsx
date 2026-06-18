@@ -9,7 +9,7 @@ import {
     getTranscriptFetched,
 } from 'modules/data';
 import { HelpText } from 'modules/help-text';
-import { useI18n } from 'modules/i18n';
+import { isRtlLanguage, useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
 import { getCurrentTape, getIsIdle } from 'modules/media-player';
 import { useInterviewContributors } from 'modules/person';
@@ -27,11 +27,7 @@ import {
     useSegmentEditing,
     useTranscriptBookmarks,
 } from './hooks';
-import {
-    getContributorInformation,
-    getSegmentTimecodeBounds,
-    isRtlLanguage,
-} from './utils';
+import { getContributorInformation, getSegmentTimecodeBounds } from './utils';
 
 export default function Transcript({
     transcriptLocale,
