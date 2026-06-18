@@ -4,6 +4,7 @@
 <%
   logo = false
   interview ||= nil
+  doc_type ||= nil
   project ||= (interview && interview.project)
   logo_record = project.logos.where(locale: header_locale).first
 
@@ -26,8 +27,6 @@
 <%
   institution_text = (project.institutions.where(parent_id: nil).first || project.institutions.first)&.name(header_locale)
 %>
-
-<% project ||= (interview && interview.project) %>
 
 \fancyfoot[L]{
   \fontsize{9}{11}
