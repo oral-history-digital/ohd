@@ -6,7 +6,6 @@ export * from './getSegmentAnnotations';
 export * from './getSegmentWorkbookAnnotations';
 export * from './getSegmentTimecodeBounds';
 export * from './getTimecodeHelpText';
-export * from './isRtlLanguage';
 export * from './segmentsForTape';
 export * from './sortedSegmentsForTape';
 export * from './sortedSegmentsWithActiveIndex';

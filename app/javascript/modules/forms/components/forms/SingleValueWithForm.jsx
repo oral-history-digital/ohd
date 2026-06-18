@@ -34,6 +34,7 @@ export default function SingleValueWithForm({
     children,
     attribute,
     noStatusCheckbox,
+    extraStatusCheckboxes = [],
     hideEmpty = false,
 }) {
     const [editing, setEditing] = useState(false);
@@ -82,11 +83,20 @@ export default function SingleValueWithForm({
             'true',
         labelKey: 'activerecord.attributes.default.publish',
         type: 'checkbox',
+        group: 'status-options',
     };
 
     formElements.push(formElement);
     if (!noStatusCheckbox) {
         formElements.push(statusCheckbox);
+        extraStatusCheckboxes.forEach((checkbox) => {
+            formElements.push({
+                elementType: 'input',
+                type: 'checkbox',
+                group: 'status-options',
+                ...checkbox,
+            });
+        });
     }
 
     const form = () => (
@@ -199,5 +209,12 @@ SingleValueWithForm.propTypes = {
     children: PropTypes.node,
     attribute: PropTypes.string,
     noStatusCheckbox: PropTypes.bool,
+    extraStatusCheckboxes: PropTypes.arrayOf(
+        PropTypes.shape({
+            attribute: PropTypes.string.isRequired,
+            value: PropTypes.bool,
+            labelKey: PropTypes.string,
+        })
+    ),
     hideEmpty: PropTypes.bool,
 };
