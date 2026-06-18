@@ -28,7 +28,7 @@ module Interview::OaiDatacite
           relatedIdentifierType: "URL",
           relationType: "IsPartOf",
           resourceTypeGeneral: "Dataset"
-        if collection_id
+        if collection.present?
           xml.relatedIdentifier "#{OHD_DOMAIN}/de/catalog/collections/#{collection_id}",
             relatedIdentifierType: "URL",
             relationType: "IsPartOf",

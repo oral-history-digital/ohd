@@ -33,6 +33,10 @@ module Interview::Oai
     "https://doi.org/#{Rails.configuration.datacite['prefix']}/#{project.shortname}.#{archive_id}"
   end
 
+  def oai_catalog_identifier(locale)
+    oai_url_identifier(locale)
+  end
+
   def oai_url_identifier(locale)
     "#{project.domain_with_optional_identifier}/#{locale}/interviews/#{archive_id}"
     #"#{project.domain_with_optional_identifier}/#{project.default_locale}/interviews/#{archive_id}"
