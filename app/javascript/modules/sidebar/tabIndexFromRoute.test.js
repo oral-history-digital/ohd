@@ -24,6 +24,12 @@ test('returns administration tab index for admin instance route', () => {
     expect(actual).toEqual(expected);
 });
 
+test('returns administration tab index for admin statistics route', () => {
+    const actual = tabIndexFromRoute('/de', '/de/admin/statistics');
+    const expected = INDEX_ADMINISTRATION;
+    expect(actual).toEqual(expected);
+});
+
 test('returns catalog institutions tab index for catalog institutions route', () => {
     const actual = tabIndexFromRoute('/de', '/de/catalog/institutions/15');
     const expected = INDEX_CATALOG_INSTITUTIONS;
