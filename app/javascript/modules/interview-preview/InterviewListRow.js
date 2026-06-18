@@ -11,7 +11,6 @@ import { usePersonWithAssociations } from 'modules/person';
 import { LinkOrA, useProject } from 'modules/routes';
 import { useArchiveSearch } from 'modules/search';
 import { Checkbox } from 'modules/ui';
-import { localizedValue } from 'modules/utils';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
@@ -44,9 +43,6 @@ export default function InterviewListRow({
         (p) => p.interview_id === interview.id
     );
     const isRestricted = interview.workflow_state === 'restricted';
-    const projectName =
-        localizedValue(projectOfInterview?.display_name, locale) ||
-        localizedValue(projectOfInterview?.name, locale, { emptyValue: '' });
 
     function linkPath() {
         const params = { fulltext };
@@ -105,7 +101,12 @@ export default function InterviewListRow({
                     )}
                 </LinkOrA>
             </td>
-            {project.is_ohd && <td className="Table-cell">{projectName}</td>}
+            {project.is_ohd && (
+                <td className="Table-cell">
+                    {projectOfInterview.display_name[locale] ||
+                        projectOfInterview.name[locale]}
+                </td>
+            )}
             {project.list_columns?.map((column) => {
                 const allowedToSee =
                     !isRestricted ||
