@@ -423,6 +423,42 @@
     - :name: ExternalLink update
       :klass: ExternalLink
       :action_name: update
+    - :name: CooperationPartner create
+      :klass: CooperationPartner
+      :action_name: create
+    - :name: CooperationPartner destroy
+      :klass: CooperationPartner
+      :action_name: destroy
+    - :name: CooperationPartner update
+      :klass: CooperationPartner
+      :action_name: update
+    - :name: Manager create
+      :klass: Manager
+      :action_name: create
+    - :name: Manager destroy
+      :klass: Manager
+      :action_name: destroy
+    - :name: Manager update
+      :klass: Manager
+      :action_name: update
+    - :name: Funder create
+      :klass: Funder
+      :action_name: create
+    - :name: Funder destroy
+      :klass: Funder
+      :action_name: destroy
+    - :name: Funder update
+      :klass: Funder
+      :action_name: update
+    - :name: Leader create
+      :klass: Leader
+      :action_name: create
+    - :name: Leader destroy
+      :klass: Leader
+      :action_name: destroy
+    - :name: Leader update
+      :klass: Leader
+      :action_name: update
     - :name: General edit
       :klass: General
       :action_name: edit

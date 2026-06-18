@@ -307,6 +307,11 @@ h4.CollectionList-collectionsTitle {
   margin: $base-unit 0 $base-unit * 0.5;
 }
 
+.CollectionList-hiddenByFilterInfo {
+  font-weight: normal;
+  color: $gray-darkest;
+}
+
 .CollectionList-showMoreButton {
   display: inline-flex;
   align-items: center;

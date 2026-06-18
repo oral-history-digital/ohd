@@ -641,7 +641,7 @@ class Interview < ApplicationRecord
             text: row[:transcript] || '',
             locale: locale,
             speaker_id: speaker_id,
-            split: true
+            split: false
           })
         end
       end

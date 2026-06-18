@@ -165,7 +165,7 @@ export default function DataList({
 
 DataList.propTypes = {
     data: PropTypes.object,
-    form: PropTypes.function,
+    form: PropTypes.func,
     initialFormValues: PropTypes.object,
     scope: PropTypes.string,
     task: PropTypes.object,

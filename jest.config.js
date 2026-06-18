@@ -20,7 +20,16 @@ module.exports = {
     // collectCoverage: false,
 
     // An array of glob patterns indicating a set of files for which coverage information should be collected
-    // collectCoverageFrom: undefined,
+    collectCoverageFrom: [
+        'app/javascript/**/*.{js,jsx}',
+
+        '!app/javascript/**/index.js',
+        '!app/javascript/packs/**',
+        '!app/javascript/startup/**',
+        '!app/javascript/**/*.test.{js,jsx}',
+        '!app/javascript/**/__mocks__/**',
+        '!app/javascript/**/testHelpers/**',
+    ],
 
     // The directory where Jest should output its coverage files
     // coverageDirectory: undefined,

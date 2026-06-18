@@ -408,8 +408,6 @@ class ApplicationController < ActionController::Base
   end
 
   def doi_json(object)
-    locale = params[:locale]
-
     suffix = case object
              when Interview
                "#{current_project.shortname}.#{object.archive_id}"
@@ -422,14 +420,12 @@ class ApplicationController < ActionController::Base
              end
 
     doi = "#{Rails.configuration.datacite["prefix"]}/#{suffix}"
-    url = "#{current_project.domain_with_optional_identifier}/#{locale}/"
-    url += "interviews/#{object.archive_id}" if object.is_a?(Interview)
 
     xml = render_to_string(
       template: "shared/datacite",
       layout: false,
       formats: :xml,
-      locals: {object: object, locale: locale}
+      locals: {object: object}
     )
 
     {
@@ -439,7 +435,7 @@ class ApplicationController < ActionController::Base
         "attributes": {
           "doi": doi,
           "event": "publish",
-          "url": url,
+          "url": object.oai_catalog_identifier(:en),
           "xml": Base64.encode64(xml),
         },
       },

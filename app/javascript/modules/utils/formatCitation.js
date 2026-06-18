@@ -1,48 +1,71 @@
 import { OHD_LOCATION } from 'modules/constants';
 
-function localizedText(value, locale) {
+export function localizedText(value, locale) {
     if (!value) return null;
     if (typeof value === 'string') return value;
 
     return value?.[locale] || Object.values(value).find(Boolean) || null;
 }
 
-function institutionNames(institutions, locale) {
+export function institutionNames(institutions, locale) {
     if (!institutions) return null;
 
     const list = Array.isArray(institutions) ? institutions : [institutions];
     const names = list
-        .map((institution) => localizedText(institution?.name, locale))
+        .map((institution) => {
+            const name = localizedText(institution?.name, locale);
+            const parentName = localizedText(institution?.parent?.name, locale);
+            // If both parent and child names are present, format as "Parent, Child"
+            return parentName && name ? `${parentName}, ${name}` : name;
+        })
         .filter(Boolean);
 
     return names.length > 0 ? names.join(', ') : null;
 }
 
-function catalogLink(type, id, locale, origin = OHD_LOCATION) {
+export function createLink(url, label = url) {
+    if (!url) return null;
+
+    return (
+        <a key={url} href={url} target="_blank" rel="noopener noreferrer">
+            {label}
+        </a>
+    );
+}
+
+export function catalogLink(type, id, locale, origin = OHD_LOCATION) {
     if (!id || !locale) return null;
 
-    return `${origin}/${locale}/catalog/${type}/${id}`;
+    const url = `${origin}/${locale}/catalog/${type}/${id}`;
+    return createLink(url);
 }
 
-function joinParts(parts) {
+export function joinParts(parts) {
     // First institutions with a colon, then the rest with commas
-    const [institutions, ...rest] = parts.filter(Boolean);
-    if (!institutions) return rest.join(', ');
+    const filtered = parts.filter(Boolean);
+    if (filtered.length === 0) return null;
+
+    const [institutions, ...rest] = filtered;
+
     if (rest.length === 0) return institutions;
 
-    return `${institutions}: ${rest.join(', ')}`;
+    return (
+        <>
+            {institutions}
+            {': '}
+            {rest.map((part, index) => (
+                <span key={index}>
+                    {index > 0 && ', '}
+                    {part}
+                </span>
+            ))}
+        </>
+    );
 }
 
-function appendDoi(citation, doiUrl) {
-    if (!doiUrl) return citation;
-    if (!citation) return `DOI: ${doiUrl}`;
-
-    return `${citation}, DOI: ${doiUrl}`;
-}
-
-function normalizedDoiUrl(doiUrl, doi) {
-    if (doiUrl) return doiUrl;
-    if (doi) return `https://doi.org/${doi}`;
+export function normalizedDoiUrl(doiUrl, doi) {
+    if (doiUrl) return createLink(doiUrl);
+    if (doi) return createLink(`https://doi.org/${doi}`);
 
     return null;
 }
@@ -56,13 +79,15 @@ export function formatProjectCitation({
     doi,
     doiUrl,
 }) {
+    const normalizedDoi = normalizedDoiUrl(doiUrl, doi);
+
     const citation = joinParts([
         institutionNames(institutions, locale),
         localizedText(projectName, locale),
-        catalogLink('archives', projectId, locale, origin),
+        normalizedDoi || catalogLink('archives', projectId, locale, origin),
     ]);
 
-    return appendDoi(citation, normalizedDoiUrl(doiUrl, doi));
+    return citation;
 }
 
 export function formatCollectionCitation({
@@ -80,12 +105,15 @@ export function formatCollectionCitation({
         (typeof t === 'function' && t('activerecord.models.collection.one')) ||
         'Collection';
 
+    const normalizedDoi = normalizedDoiUrl(doiUrl, doi);
+
     const citation = joinParts([
         institutionNames(institutions, locale),
         localizedText(projectName, locale),
         `${collectionLabel}: ${localizedText(collectionName, locale)}`,
-        catalogLink('collections', collectionId, locale, origin),
+        normalizedDoi ||
+            catalogLink('collections', collectionId, locale, origin),
     ]);
 
-    return appendDoi(citation, normalizedDoiUrl(doiUrl, doi));
+    return citation;
 }

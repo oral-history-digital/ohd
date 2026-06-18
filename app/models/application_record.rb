@@ -78,7 +78,7 @@ class ApplicationRecord < ActiveRecord::Base
   def oai_findability_tags(xml, format=:dc)
     RegistryEntry.where(id: ohd_findability_registry_entry_ids).each do |registry_entry|
       xml.tag! "#{format == :dc ? 'dc:' : ''}subject",
-        registry_entry[:descriptor][:en],
+        registry_entry.to_s(:en),
         "xml:lang": :en
     end
   end
@@ -157,6 +157,32 @@ class ApplicationRecord < ActiveRecord::Base
       end
     else
       []
+    end
+  end
+
+  def has_media_files?
+    if respond_to?(:interviews)
+      loim_registry_entry = RegistryEntry.ohd_level_of_indexing_media
+      if loim_registry_entry
+        loim_registry_entry.registry_references.where(interview_id: interviews.pluck(:id)).exists?
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
+  def has_transcripts?
+    if respond_to?(:interviews)
+      loit_registry_entry = RegistryEntry.ohd_level_of_indexing_transcript
+      if loit_registry_entry
+        loit_registry_entry.registry_references.where(interview_id: interviews.pluck(:id)).exists?
+      else
+        false
+      end
+    else
+      false
     end
   end
 end

@@ -1,5 +1,5 @@
 import { AuthorizedContent } from 'modules/auth';
-import { useSensitiveData } from 'modules/data';
+import { useLoadCompleteProject, useSensitiveData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
@@ -14,6 +14,55 @@ import JoinedData from './JoinedData';
 import getDataDisplayName from './getDataDisplayName';
 
 const Item = AdminMenu.Item;
+
+// Special handling for project data to ensure we have all the data needed for the edit form
+// TODO: In the future, when project loading is more consistent across the app using SWR
+// this should be handled better.
+function EditItemContent({
+    open,
+    close,
+    data,
+    scope,
+    form,
+    hideShow,
+    detailsAttributes,
+    optionsScope,
+}) {
+    // Load project data if scope is project and we have a project id, otherwise
+    // use the data we already have (which may be incomplete or different scope)
+    const isProjectScope = scope === 'project';
+    const projectDbId = data?.id;
+    const loadedProject = useLoadCompleteProject(projectDbId, {
+        enabled: isProjectScope && open,
+        fallbackProject: data,
+    });
+    const dataForForm = isProjectScope ? loadedProject || data : data;
+
+    return (
+        <>
+            {hideShow && (
+                <DataDetails
+                    detailsAttributes={detailsAttributes}
+                    data={dataForForm}
+                    scope={scope}
+                    optionsScope={optionsScope}
+                />
+            )}
+            {form(dataForForm, close, close)}
+        </>
+    );
+}
+
+EditItemContent.propTypes = {
+    open: PropTypes.bool,
+    close: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
+    scope: PropTypes.string.isRequired,
+    form: PropTypes.func.isRequired,
+    hideShow: PropTypes.bool,
+    detailsAttributes: PropTypes.array,
+    optionsScope: PropTypes.string,
+};
 
 export default function Data({
     data,
@@ -121,20 +170,17 @@ export default function Data({
                             label={t('edit.default.edit')}
                             dialogTitle={`${displayName} ${t(`edit.${scope}.edit`)}`}
                         >
-                            {(close) => (
-                                <>
-                                    {hideShow && (
-                                        <DataDetails
-                                            detailsAttributes={
-                                                detailsAttributes
-                                            }
-                                            data={data}
-                                            scope={scope}
-                                            optionsScope={optionsScope}
-                                        />
-                                    )}
-                                    {form(data, close, close)}
-                                </>
+                            {(close, open) => (
+                                <EditItemContent
+                                    open={open}
+                                    close={close}
+                                    data={data}
+                                    scope={scope}
+                                    form={form}
+                                    hideShow={hideShow}
+                                    detailsAttributes={detailsAttributes}
+                                    optionsScope={optionsScope}
+                                />
                             )}
                         </Item>
                     )}

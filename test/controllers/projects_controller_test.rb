@@ -224,6 +224,30 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       contribution_type: contribution_type
     )
 
+    leader_with_blank_name = Leader.create!(
+      project: project,
+      name_type: 'Personal',
+      name: nil,
+      first_name: 'Lastname',
+      last_name: 'Firstname'
+    )
+
+    leader_with_mixed_values = Leader.create!(
+      project: project,
+      name_type: 'Personal',
+      name: 'Should Not Be Used',
+      first_name: 'Ada',
+      last_name: 'Lovelace'
+    )
+
+    cooperation_partner_with_mixed_values = CooperationPartner.create!(
+      project: project,
+      name_type: 'Organizational',
+      name: 'Museum Foundation',
+      first_name: 'Ignored',
+      last_name: 'Person'
+    )
+
     root_registry_entry = project.registry_entries.find_by!(code: 'root')
     reference_type = RegistryReferenceType.create!(
       project: project,
@@ -295,9 +319,34 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       item.is_a?(Hash) && item['descriptor'].is_a?(String)
     end
 
-    assert_equal project.cooperation_partners.map { |a| a.name }.join(', '), payload.dig('contact_people', 'cooperation_partner')
-    assert_equal project.leaders.map { |a| a.name }.join(', '), payload.dig('contact_people', 'leader')
-    assert_equal project.managers.map { |a| a.name }.join(', '), payload.dig('contact_people', 'manager')
+    assert payload['leaders'].is_a?(Array)
+    assert payload['leaders'].all? { |item| item['name'].is_a?(String) }
+    assert payload['leaders'].none? { |item| item['name'].is_a?(Hash) }
+    assert_includes payload['leaders'].map { |item| item['name'] }, 'Lastname Firstname'
+    assert_includes payload['leaders'].map { |item| item['name'] }, 'Ada Lovelace'
+    refute_includes payload['leaders'].map { |item| item['name'] }, 'Should Not Be Used'
+
+    assert payload['cooperation_partners'].is_a?(Array)
+    assert payload['cooperation_partners'].all? { |item| item['name'].is_a?(String) }
+    assert payload['cooperation_partners'].none? { |item| item['name'].is_a?(Hash) }
+    assert_includes payload['cooperation_partners'].map { |item| item['name'] }, 'Museum Foundation'
+    refute_includes payload['cooperation_partners'].map { |item| item['name'] }, 'Ignored Person'
+
+    expected_display_name = lambda do |affiliate|
+      if affiliate.name_type == 'Personal'
+        [affiliate.first_name, affiliate.last_name].compact.map(&:to_s).map(&:strip).reject(&:blank?).join(' ')
+      else
+        affiliate.name.to_s.strip
+      end
+    end
+
+    expected_cooperation_partners = project.cooperation_partners.map { |a| expected_display_name.call(a) }.reject(&:blank?).join(', ')
+    expected_leaders = project.leaders.map { |a| expected_display_name.call(a) }.reject(&:blank?).join(', ')
+    expected_managers = project.managers.map { |a| expected_display_name.call(a) }.reject(&:blank?).join(', ')
+
+    assert_equal expected_cooperation_partners, payload.dig('contact_people', 'cooperation_partners')
+    assert_equal expected_leaders, payload.dig('contact_people', 'leaders')
+    assert_equal expected_managers, payload.dig('contact_people', 'managers')
   end
 
   test 'should return project payload when show id is project shortname' do
