@@ -12,13 +12,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import * as indexes from '../constants';
 import tabIndexFromRoute from '../tabIndexFromRoute';
+import AdminTabPanel from './AdminTabPanel';
 import ArchiveSearchTabPanel from './ArchiveSearchTabPanel';
 import IndexingTabPanel from './IndexingTabPanel';
 import InterviewTabPanelContainer from './InterviewTabPanelContainer';
 import MapTabPanelContainer from './MapTabPanelContainer';
 import ProjectConfigTabPanel from './ProjectConfigTabPanel';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
-import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
 import WorkbookTabPanel from './WorkbookTabPanel';
 
 export default function SidebarTabs({
@@ -50,7 +50,7 @@ export default function SidebarTabs({
 
     useEffect(() => {
         setTabIndex(tabIndexFromRoute(pathBase, pathname, isCampscapesProject));
-    }, [pathBase, pathname, isCampscapesProject]);
+    }, [pathname, pathBase, isCampscapesProject]);
 
     function handleTabClick(index) {
         setTabIndex(index);
@@ -276,7 +276,7 @@ export default function SidebarTabs({
                 <TabPanel key="9">
                     {showAdministrationTab &&
                         tabIndex === indexes.INDEX_ADMINISTRATION && (
-                            <UsersAdminTabPanelContainer />
+                            <AdminTabPanel />
                         )}
                 </TabPanel>
 

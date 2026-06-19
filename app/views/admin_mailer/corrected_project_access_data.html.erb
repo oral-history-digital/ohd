@@ -7,12 +7,12 @@
   <p>Please review it as soon as possible.</p>
   <p><%= @url %></p>
   <p>Best regards</p>
-  <p>Oral-History.Digital</p>
+  <p><%= @project_name %></p>
 <% else -%>
   <p>Guten Tag,</p>
   <p>in der Anwendung <%= @project.name(@project.default_locale) %> liegt eine benutzerseitig (<%= @user_name %>) korrigierte Anfrage auf Freischaltung vor.</p>
   <p>Bitte überprüfen Sie diese so schnell wie möglich.</p>
   <p><%= @url %></p>
   <p>Viele Grüße</p>
-  <p>Oral-History.Digital</p>
+  <p><%= @project_name %></p>
 <% end -%>

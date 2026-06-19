@@ -38,6 +38,7 @@ const NAME_VALUES = {
         'tasks_user_ids',
         'tasks_supervisor_ids',
         'description',
+        'notes',
         'collection_id',
         'signature_original',
         'startpage_position',

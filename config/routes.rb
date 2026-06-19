@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     get "project/edit-access-config", to: "projects#edit_access_config"
     get "project/edit-display", to: "projects#edit_display"
     get "admin/instance", to: "projects#show"
+    get "admin/statistics", to: "projects#show"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
     get "project/archiving_batches", to: "projects#archiving_batches_index"
     get "project/archiving_batches/:number", to: "projects#archiving_batches_show"
@@ -191,6 +192,7 @@ Rails.application.routes.draw do
           get :usage_report
         end
       end
+      resources :interview_statistics, only: [:index]
       resources :imports do
         collection do
           get :for_interview

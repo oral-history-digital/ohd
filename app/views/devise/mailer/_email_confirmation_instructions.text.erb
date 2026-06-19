@@ -3,7 +3,7 @@
   when :en
 -%>
 
-Dear <%= @resource.display_name %>,
+Hello <%= @resource.display_name %>,
 
 You have changed the e-mail address for your account in the application "<%= @project_name %>".
 
@@ -11,11 +11,11 @@ Please confirm this modification by clicking the following link:
 
 <%= @url %>
 
-Yours sincerely,
+With best regards
 
-The project team "<%= @project_name %>"
+<%= @project_name %>
 <% when :ru -%>
-Уважаемый(-ая) <%= @resource.display_name %>,
+Добрый день <%= @resource.display_name %>,
 
 Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= @project_name %>".
 
@@ -25,9 +25,21 @@ The project team "<%= @project_name %>"
 
 С уважением,
 
-сотрудники проекта "<%= @project_name %>"
+<%= @project_name %>
+<% when :uk -%>
+  Доброго дня <%= @resource.display_name %>,
+
+  Ви змінили адресу електронної пошти для свого облікового запису в додатку «<%= @project_name %>».
+
+  Будь ласка, підтвердьте цю зміну, перейшовши за наступним посиланням:
+
+  <%= @url %>
+
+  З найкращими побажаннями
+
+  <%= @project_name %>
 <% when :el -%>
-Αγαπητή/-έ <%= @resource.display_name %>,
+Καλημέρα <%= @resource.display_name %>,
 
 έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή "<%= @project_name %>".
 
@@ -37,9 +49,9 @@ The project team "<%= @project_name %>"
 
 Με εκτίμηση,
 
-Η ομάδα του προγράμματος "<%= @project_name %>"
+<%= @project_name %>
 <% when :es -%>
-Estimada/o <%= @resource.display_name %>,
+Hola <%= @resource.display_name %>,
 
 Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= @project_name %>".
 
@@ -47,11 +59,23 @@ Por favor, confirme los cambios haciendo clic en el siguiente enlace:
 
 <%= @url %>
 
-Con saludos cordiales,
+Saludos cordiales,
 
-El equipo del proyecto "<%= @project_name %>"
+<%= @project_name %>
+<% when :ar -%>
+  مرحبًا <%= @resource.display_name %>,
+
+  لقد قمت بتغيير عنوان البريد الإلكتروني الخاص بحسابك في تطبيق ”<%= @project_name %>“.
+
+  يرجى تأكيد هذا التغيير عبر الرابط التالي:
+  
+  <%= @url %>
+
+  مع أطيب التحيات
+
+  <%= @project_name %>
 <% else -%>
-Sehr geehrte/r <%= @resource.display_name %>,
+Guten Tag <%= @resource.display_name %>,
 
 Sie haben die E-Mail-Adresse für Ihren Account in der Anwendung "<%= @project_name %>" geändert.
 
@@ -61,5 +85,5 @@ Bitte bestätigen Sie diese Änderung, indem Sie auf den folgenden Link klicken:
 
 Mit freundlichen Grüßen,
 
-Das Projekt-Team "<%= @project_name %>"
+<%= @project_name %>
 <% end -%>

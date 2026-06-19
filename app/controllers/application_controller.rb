@@ -434,8 +434,6 @@ class ApplicationController < ActionController::Base
   end
 
   def doi_json(object)
-    locale = (object.is_a?(Project) ? object : object.project)&.default_locale || I18n.default_locale
-
     suffix = case object
              when Interview
                "#{current_project.shortname}.#{object.archive_id}"
@@ -453,7 +451,7 @@ class ApplicationController < ActionController::Base
       template: "shared/datacite",
       layout: false,
       formats: :xml,
-      locals: {object: object, locale: locale}
+      locals: {object: object}
     )
 
     {
@@ -463,7 +461,7 @@ class ApplicationController < ActionController::Base
         "attributes": {
           "doi": doi,
           "event": "publish",
-          "url": object.oai_catalog_identifier(locale),
+          "url": object.oai_catalog_identifier(:en),
           "xml": Base64.encode64(xml),
         },
       },

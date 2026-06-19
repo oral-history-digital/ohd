@@ -1,0 +1,78 @@
+{
+  "response": {
+    "items": [
+      {
+        "Entry": {
+          "Type": [
+            {
+              "Key": "gnd",
+              "Value": "https://d-nb.info/standards/elementset/gnd#TerritorialCorporateBodyOrAdministrativeUnit"
+            },
+            {
+              "Key": "wikidata",
+              "Value": ["metropolitan municipality in Turkey", "former capital"]
+            },
+            {
+              "Key": "geonames",
+              "Value": "city, village,..."
+            }
+          ],
+          "AlternativeNames": {
+            "AlternativeName": [
+              {
+                "Lang": "en",
+                "Name": "Istanbul"
+              },
+              {
+                "Lang": "de",
+                "Name": "Istanbul"
+              }
+            ]
+          },
+          "Name": "Istanbul",
+          "Location": {
+            "Coord": "{\"coordinates\":[28.96027778,41.01],\"type\":\"Point\"}",
+            "Longitude": "28.96027778",
+            "Latitude": "41.01"
+          },
+          "Alias": [
+            {
+              "Lang": "en",
+              "Alias": ["Constantinople", "Scarlet Apple"]
+            },
+            {
+              "Lang": "de",
+              "Alias": "Konstantinopel"
+            }
+          ],
+          "Description": [
+            {
+              "Description": "city in Turkey located at the Bosporus Strait",
+              "Lang": "en"
+            },
+            {
+              "Description": "bevölkerungsreichste Stadt der Türkei",
+              "Lang": "de"
+            }
+          ],
+          "Country": "TR",
+          "Identifier": [
+            {
+              "URL": "https://d-nb.info/gnd/4027821-9",
+              "Provider": "gnd",
+              "Value": "4027821-9"
+            },
+            {
+              "Link": "/wikidata/Q406",
+              "URL": "http://www.wikidata.org/entity/Q406",
+              "Relationship": "sameAs",
+              "Provider": "wikidata",
+              "Value": "Q406"
+            }
+          ],
+          "Score": "142.3385"
+        }
+      }
+    ]
+  }
+}

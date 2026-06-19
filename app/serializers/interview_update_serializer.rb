@@ -2,9 +2,11 @@ class InterviewUpdateSerializer < ApplicationSerializer
   attributes [
     :properties,
     :description,
+    :notes,
     :observations,
     :duration,
     :tape_count,
+    :include_notes_in_transcript_pdf,
     :links,
     :pseudo_links,
   ]
@@ -15,7 +17,7 @@ class InterviewUpdateSerializer < ApplicationSerializer
       case attribute
       when /^public_/
         hash[:properties] = object.properties
-      when /duration|tape_count|description|observations/
+      when /duration|tape_count|description|observations|notes/
         # already handled by super via localized_hash or custom serializer method
       else
         hash[attribute] = object.send(attribute)
@@ -34,6 +36,10 @@ class InterviewUpdateSerializer < ApplicationSerializer
 
   def description
     object.localized_hash(:description)
+  end
+
+  def notes
+    object.localized_hash(:notes)
   end
 
   def tape_count

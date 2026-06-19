@@ -39,4 +39,16 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.valid?
   end
 
+  test 'display name only includes real academic titles' do
+    user = User.find_by!(email: 'john@example.com')
+    user.update!(first_name: 'Firstname', last_name: 'Lastname')
+
+    user.update!(appellation: 'not_specified')
+    assert_equal 'Firstname Lastname', user.display_name
+
+    user.update!(appellation: 'dr')
+    expected_title = TranslationValue.for('user.appellation.dr', I18n.locale)
+    assert_equal [expected_title, 'Firstname Lastname'].join(' '), user.display_name
+  end
+
 end

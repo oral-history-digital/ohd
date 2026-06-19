@@ -42,6 +42,7 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'name',
                 multiLocale: true,
+                baseLocales: ['de', 'en'],
             },
             {
                 attribute: 'shortname',
@@ -55,16 +56,19 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'homepage',
                 multiLocale: true,
+                baseLocales: ['de', 'en'],
             },
             {
                 attribute: 'responsibles',
                 multiLocale: true,
+                baseLocales: ['de', 'en'],
                 elementType: 'textarea',
                 htmlOptions: { maxLength: 255 },
             },
             {
                 attribute: 'notes',
                 multiLocale: true,
+                baseLocales: ['de', 'en'],
                 elementType: 'richTextEditor',
             },
         ],
