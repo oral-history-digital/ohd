@@ -1,6 +1,6 @@
-Sehr geehrte/r <%= @receiver.display_name %>,
+Guten Tag <%= @receiver.display_name %>,
 
-Sie haben im Interview-Portal "Oral-History.Digital" folgenden Arbeitsschritt vorgenommen:
+Sie haben im Portal "<%= @project_name %>" folgenden Arbeitsschritt vorgenommen:
 
   <%= TranslationValue.for('jobs.'+@type, :de) %>:
 
@@ -24,4 +24,4 @@ Sie haben im Interview-Portal "Oral-History.Digital" folgenden Arbeitsschritt vo
 <% end %>
 
 Mit freundlichen Grüßen,
-Das Projekt-Team "Oral-History.Digital"
+<%= @project_name %>
