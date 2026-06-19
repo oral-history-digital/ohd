@@ -171,7 +171,7 @@ class User < ApplicationRecord
   end
 
   def display_name
-    if !self.appellation.blank?
+    if %w(dr prof).include?(self.appellation)
       [TranslationValue.for("user.appellation.#{self.appellation}", I18n.locale), self.full_name].compact.join(' ')
     else
       self.full_name
