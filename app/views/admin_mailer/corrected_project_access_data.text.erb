@@ -8,7 +8,7 @@
   <%= @url %>
   Best regards
 
-  Oral-History.Digital
+  <%= @project_name %>
 <% else -%>
   Guten Tag,
   in der Anwendung <%= @project.name(@project.default_locale) %> liegt eine benutzerseitig (<%= @user_name %>) korrigierte Anfrage auf Freischaltung vor.
@@ -16,5 +16,5 @@
   <%= @url %>
   Viele Grüße
 
-  Oral-History.Digital
+  <%= @project_name %>
 <% end -%>
