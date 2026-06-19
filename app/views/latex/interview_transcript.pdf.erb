@@ -2,16 +2,18 @@
 \definecolor{primaryColor}{HTML}{<%= primary_color %>}
 
 <%
+  content_locale_public = "#{content_locale}-public"
   rtl = ["ara", "heb"].include?(content_locale.to_s)
   interviewee_name = interview.interviewee.display_name
+  content_locale_human_label = content_locale_human
 
   title = [
-    tv("#{doc_type}_title", header_locale, lang: content_locale_human),
+    tv("#{doc_type}_title", header_locale, lang: content_locale_human_label),
     interviewee_name
   ].join(" ")
 
   header_text = [
-    tv("#{doc_type}_header", header_locale, lang: content_locale_human),
+    tv("#{doc_type}_header", header_locale, lang: content_locale_human_label),
     interviewee_name,
     "(#{tv('archive_id', header_locale)} #{interview.archive_id})"
   ].join(" ")
@@ -63,7 +65,7 @@
 
 <%# set title of  tableofcontents: %>
 <% if headings_in_content_locale %>
-  \renewcommand{\contentsname}{<%= tv('table_of_contents', header_locale) %>}
+  \renewcommand{\contentsname}{<%= latex_multiscript(tv('table_of_contents', content_app_locale)) %>}
   \tableofcontents
 <% end %>
 
@@ -98,7 +100,7 @@
       <% if tape != segment.tape.number %>
         <%= render partial: "latex/title",
           locals: {
-            title: "#{tv('tape', header_locale)} #{segment.tape.number}",
+            title: latex_multiscript("#{tv('tape', header_locale)} #{segment.tape.number}"),
             space_above: 0.7,
             space_below: 0.05,
             font_size: 10
@@ -140,29 +142,33 @@
     <% end %>
 
     <%
+        previous_speaker_id = speaker_id
         speaker_id,
         rtl_speaker,
         ltr_speaker = latex_speaker(
           segment, speaker_id, rtl, header_locale
         )
 
-        text = latex_escape(CGI.unescapeHTML(
-          segment.text(content_locale_public)
-        ))
+        speaker_changed = previous_speaker_id.present? && previous_speaker_id != speaker_id
+
+        text = latex_multiscript(CGI.unescapeHTML(segment.text(content_locale_public)))
     %>
 
-    <% if text.match?(/\p{Hebrew}/) %>
-      \texthebrew{<%= text %>} \textit{<%= rtl_speaker %>}
-    <% elsif text.match?(/\p{Arabic}/) %>
-      \textarabic{<%= text %>} \textit{<%= rtl_speaker %>}
-    <% elsif text.match?(/\p{Tamil}/) %>
-      \textit{<%= ltr_speaker %>} \texttamil{<%= text %>} \textit{<%= rtl_speaker %>}
+    <% if ltr_speaker.present? %>
+      	\textit{<%= ltr_speaker %>} <%= text %>
     <% else %>
-      \textit{<%= ltr_speaker %>} <%= text %> \textit{<%= rtl_speaker %>}
+      <%= text %>
+    <% end %>
+    <% if rtl_speaker.present? %>
+      	\textit{<%= rtl_speaker %>}
     <% end %>
 
     <% if rtl %>
       \end{flushright}
+    <% end %>
+
+    <% if speaker_changed %>
+      \vspace*{0.2cm}
     <% end %>
 
   <% end %>

@@ -2,7 +2,7 @@
    when :en -%>
 Hello <%= @resource.display_name %>,
 
-You have requested a one-time code for the Oral-History.Digital platform.
+You have requested a one-time code for the <%= @project_name %> platform.
 
 <%= @code %>
 
@@ -10,11 +10,11 @@ The code is valid for <%= @valid_for %> minutes.
 
 With best regards
 
-Oral-History. Digital
+<%= @project_name %>
 <% when :ru -%>
 Добрый день <%= @resource.display_name %>,
 
-Вы запросили одноразовый код для платформы Oral-History.Digital.
+Вы запросили одноразовый код для платформы <%= @project_name %>.
 
 <%= @code %>
 
@@ -22,11 +22,11 @@ Oral-History. Digital
 
 С уважением,
 
-Oral-History.Digital
+<%= @project_name %>
 <% when :uk -%>
 Доброго дня<%= @resource.display_name %>,
 
-Ви подали запит на отримання одноразового коду для платформи Oral-History.Digital.
+Ви подали запит на отримання одноразового коду для платформи <%= @project_name %>.
 
 <%= @code %>
 
@@ -34,11 +34,11 @@ Oral-History.Digital
 
 З найкращими побажаннями
 
-Oral-History.Digital
+<%= @project_name %>
 <% when :el -%>
 Γεια σας <%= @resource.display_name %>,
 
-Ζητήσατε έναν κωδικό μίας χρήσης για την πλατφόρμα Oral-History.Digital.
+Ζητήσατε έναν κωδικό μίας χρήσης για την πλατφόρμα <%= @project_name %>.
 
 <%= @code %>
 
@@ -46,12 +46,12 @@ Oral-History.Digital
 
 Με εκτίμηση,
 
-Oral-History.Digital
+<%= @project_name %>
 
 <% when :es -%>
 Hola <%= @resource.display_name %>,
 
-Ha solicitado un código de un solo uso para la plataforma Oral-History.Digital.
+Ha solicitado un código de un solo uso para la plataforma <%= @project_name %>.
 
 <%= @code %>
 
@@ -59,12 +59,12 @@ El código es válido por <%= @valid_for %> minutos.
 
 Saludos cordiales,
 
-Oral-History.Digital
+<%= @project_name %>
 
 <% when :ar -%>
   مرحبًا <%= @resource.display_name %>,
 
-  لقد طلبت رمزًا لمرة واحدة لمنصة Oral-History.Digital.
+  لقد طلبت رمزًا لمرة واحدة لمنصة <%= @project_name %>.
   
   <%= @code %>
   
@@ -72,12 +72,12 @@ Oral-History.Digital
 
   مع أطيب التحيات
 
-  Oral-History.Digital
+  <%= @project_name %>
 
 <% else -%>
 Guten Tag <%= @resource.display_name %>,
 
-ie haben einen Einmal-Code für die Plattform Oral-History.Digital angefordert.
+ie haben einen Einmal-Code für die Plattform <%= @project_name %> angefordert.
 
 <%= @code %>
 
@@ -85,5 +85,5 @@ Der Code ist für <%= @valid_for %> Minuten gültig.
 
 Mit freundlichen Grüßen,
 
-Oral-History.Digital 
+<%= @project_name %> 
 <% end -%>

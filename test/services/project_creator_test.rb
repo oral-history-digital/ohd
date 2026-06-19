@@ -53,8 +53,8 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     end
   end
 
-  test 'creates 19 interview_metadata_fields' do
-    assert_equal 19, @project.metadata_fields.where(source: 'Interview').count
+  test 'creates 20 interview_metadata_fields' do
+    assert_equal 20, @project.metadata_fields.where(source: 'Interview').count
   end
 
   test 'creates an interview_metadata_field with the right attributes (sample)' do

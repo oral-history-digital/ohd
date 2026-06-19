@@ -33,6 +33,8 @@ class InterviewBaseSerializer < ApplicationSerializer
     :startpage_position,
     :properties,
     :description,
+    :notes,
+    :include_notes_in_transcript_pdf,
     :links,
     :pseudo_links,
     :material_count,
@@ -83,6 +85,10 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def description
     instance_options[:public_description] ? object.localized_hash(:description) : {}
+  end
+
+  def notes
+    object.localized_hash(:notes)
   end
 
   def contributions
