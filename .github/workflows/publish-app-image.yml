@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Docker image tag (e.g., v1.6.0 or ci-test)'
+        description: 'Manual test image tag, e.g. test-main or manual-2026-06-22'
         required: true
-        default: 'ci-test' # Default for testing; must be overridden for production use
+        default: 'test-main'
 
 env:
   REGISTRY: ghcr.io
@@ -17,6 +17,7 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
@@ -25,7 +26,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- SAFEGUARD: prevent misuse of "latest" ---
+      - name: Validate release tag
+        if: github.event_name == 'release'
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+
+          if ! echo "$VERSION" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Release tag must look like v1.6.0"
+            exit 1
+          fi
+
       - name: Validate manual input
         if: github.event_name == 'workflow_dispatch'
         run: |
@@ -36,8 +46,18 @@ jobs:
             exit 1
           fi
 
-          if [ "$TAG" = "latest" ] && [ "${GITHUB_REF##*/}" != "feat/dockerize-app" ]; then
-            echo "Refusing to push 'latest' outside dockerization branch"
+          if [ "$TAG" = "latest" ]; then
+            echo "Manual builds may not publish 'latest'. Use a published GitHub Release for production."
+            exit 1
+          fi
+
+          if echo "$TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Manual builds may not publish production version tags. Use a published GitHub Release."
+            exit 1
+          fi
+
+          if ! echo "$TAG" | grep -Eq '^[a-zA-Z0-9._-]+$'; then
+            echo "Tag contains invalid characters. Use only letters, numbers, dots, underscores, or hyphens."
             exit 1
           fi
 
@@ -57,18 +77,18 @@ jobs:
       - name: Extract version and tags
         id: meta
         run: |
-          IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
 
           if [ "${{ github.event_name }}" = "release" ]; then
-            VERSION=${GITHUB_REF#refs/tags/}
+            VERSION="${GITHUB_REF#refs/tags/}"
             TAGS="${IMAGE}:${VERSION},${IMAGE}:latest"
           else
-            VERSION=${{ github.event.inputs.tag }}
+            VERSION="${{ github.event.inputs.tag }}"
             TAGS="${IMAGE}:${VERSION}"
           fi
 
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -87,17 +107,17 @@ jobs:
 
       - name: Summary
         run: |
-          echo "### Docker Image Build Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Version:** ${{ steps.meta.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Tags:**" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n' >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Registry:** ${{ env.REGISTRY }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Pull command:**" >> $GITHUB_STEP_SUMMARY
-          echo '```bash' >> $GITHUB_STEP_SUMMARY
-          echo "docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "### Docker Image Build Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Version / Tag:** ${{ steps.meta.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Tags:**" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "${{ steps.meta.outputs.tags }}" | tr ',' '\n' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Registry:** ${{ env.REGISTRY }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Pull command:**" >> "$GITHUB_STEP_SUMMARY"
+          echo '```bash' >> "$GITHUB_STEP_SUMMARY"
+          echo "docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
