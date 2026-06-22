@@ -1,5 +1,6 @@
 Sentry.init do |config|
-  config.dsn = ENV['SENTRY_DSN'] || Rails.application.credentials.dig(:sentry, :dsn)
+  config.dsn = ENV['SENTRY_DSN'].presence ||
+    Rails.application.credentials.dig(:sentry, :dsn)
 
   config.breadcrumbs_logger = [:active_support_logger, :http_logger]
 
