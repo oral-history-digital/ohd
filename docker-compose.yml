@@ -42,6 +42,8 @@ services:
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       # Required by Rails in production for message verifiers/cookies
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      # Optional error tracking
+      SENTRY_DSN: ${SENTRY_DSN:-}
       # OpenID Connect settings (env-first)
       OIDC_SIGNING_KEY: ${OIDC_SIGNING_KEY}
       OIDC_ISSUER: ${OIDC_ISSUER}
@@ -128,6 +130,8 @@ services:
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       # Required by Rails in production for encrypted/signed payloads
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      # Optional error tracking
+      SENTRY_DSN: ${SENTRY_DSN:-}
       # OpenID Connect settings (env-first)
       OIDC_SIGNING_KEY: ${OIDC_SIGNING_KEY}
       OIDC_ISSUER: ${OIDC_ISSUER}
