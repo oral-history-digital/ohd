@@ -3,6 +3,7 @@ import lockSolid from 'assets/images/lock-solid.svg';
 import classNames from 'classnames';
 import { PROJECT_ACCESS_REQUESTED, useProjectAccessStatus } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { localizedValue } from 'modules/utils';
 import PropTypes from 'prop-types';
 
 export default function InterviewArchiveDisplay({ project, className }) {
@@ -20,7 +21,9 @@ export default function InterviewArchiveDisplay({ project, className }) {
             ? t('modules.interview_preview.access_requested')
             : t('modules.interview_preview.no_access');
 
-    const archiveName = project.display_name[locale] || project.name[locale];
+    const archiveName =
+        localizedValue(project?.display_name, locale) ||
+        localizedValue(project?.name, locale, { emptyValue: '' });
 
     return (
         <div className={classNames('InterviewCard-archive', className)}>

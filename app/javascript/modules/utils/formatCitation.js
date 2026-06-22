@@ -1,10 +1,9 @@
 import { OHD_LOCATION } from 'modules/constants';
 
-export function localizedText(value, locale) {
-    if (!value) return null;
-    if (typeof value === 'string') return value;
+import localizedValue from './localizedValue';
 
-    return value?.[locale] || Object.values(value).find(Boolean) || null;
+export function localizedText(value, locale) {
+    return localizedValue(value, locale, { emptyValue: null });
 }
 
 export function institutionNames(institutions, locale) {
