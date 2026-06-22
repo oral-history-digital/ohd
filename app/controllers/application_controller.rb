@@ -139,49 +139,16 @@ class ApplicationController < ActionController::Base
     ohd_project = Project.ohd
     on_ohd_portal = current_project&.is_ohd?
 
-    # Determine fetch status for projects based on context
-    # to allow frontend to decide what to load lazily
-    project_statuses = if on_ohd_portal
-      {
-        all: 'fetched'
-      }
-    elsif current_project && ohd_project
-      {
-        "#{current_project.id}": 'fetched',
-        "#{ohd_project.id}": 'fetched',
-      }
-    elsif current_project
-      {
-        "#{current_project.id}": 'fetched',
-      }
-    else
-      {}
-    end
-
-    projects_data = if on_ohd_portal
-      # Cache all projects for OHD portal since they are needed for the startpage and project switching
-      Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-        Project.all.includes(
-          :translations,
-          :registry_reference_types,
-          :collections,
-        ).inject({}) do |mem, s|
-          mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
-          mem
-        end
-      end
-    elsif current_project && ohd_project
-      {
-        "#{current_project.id}": cache_single(current_project),
-        "#{ohd_project.id}": cache_single(ohd_project),
-      }
-    elsif current_project
-      {
-        "#{current_project.id}": cache_single(current_project),
-      }
-    else
-      {}
-    end
+    # Keep initial projects payload intentionally small.
+    # We preload only the entries that are required for cross-domain routing
+    # and immediate page rendering; all other project records are loaded on demand.
+    initial_projects_payload = build_initial_projects_payload(
+      current_project: current_project,
+      ohd_project: ohd_project,
+      on_ohd_portal: on_ohd_portal
+    )
+    project_statuses = initial_projects_payload[:project_statuses]
+    projects_data = initial_projects_payload[:projects_data]
 
     @initial_redux_state ||= {
       archive: {
@@ -251,10 +218,6 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        # Only load current project in initial state
-        # Other projects will be lazy-loaded via API when needed
-        # This reduces initial page load significantly when many projects exist
-        # Exception: On OHD portal, load all projects for the startpage
         projects: projects_data,
         institutions: {},
         collections: {},
@@ -362,6 +325,40 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  # Builds the minimal bootstrap slice for data.projects and data.statuses.projects.
+  def build_initial_projects_payload(current_project:, ohd_project:, on_ohd_portal:)
+    project_statuses = {}
+    projects_data = {}
+
+    # OHD is always present when available because cross-project links and
+    # auth/session redirects rely on its domain context.
+    if ohd_project
+      ohd_project_id = ohd_project.id.to_s
+      project_statuses[ohd_project_id] = 'fetched'
+      projects_data[ohd_project_id] = cache_single(
+        ohd_project,
+        serializer_name: 'ProjectBase'
+      )
+    end
+
+    # Also include the current project when it differs from OHD.
+    # On OHD portal we can keep ProjectBase for parity with lightweight usage.
+    # On project portals we keep the richer serializer currently expected by
+    # legacy Redux consumers on initial render.
+    if current_project && (!ohd_project || current_project.id != ohd_project.id)
+      current_project_id = current_project.id.to_s
+      project_statuses[current_project_id] = 'fetched'
+      projects_data[current_project_id] = on_ohd_portal ?
+        cache_single(current_project, serializer_name: 'ProjectBase') :
+        cache_single(current_project)
+    end
+
+    {
+      project_statuses: project_statuses,
+      projects_data: projects_data,
+    }
+  end
 
   def country_keys
     Rails.cache.fetch('country-keys-20240624') do

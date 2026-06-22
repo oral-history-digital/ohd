@@ -27,6 +27,8 @@ export default function ActivationFlow({ className }) {
 
     if (!user) {
         return null;
+    } else if (!project) {
+        return null;
     } else if (project.grant_access_without_login) {
         return null;
     } else if (isLoggedIn && project?.grant_project_access_instantly) {

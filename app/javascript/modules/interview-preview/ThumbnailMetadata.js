@@ -30,14 +30,14 @@ export default function ThumbnailMetadata({ interview }) {
 
     return (
         <ul className="DetailList" lang={locale}>
-            {!project.grid_fields || isLoading
+            {!project?.grid_fields || isLoading
                 ? // Show skeleton loaders while data is loading
                   Array.from({ length: 3 }).map((_, index) => (
                       <li key={`skeleton-${index}`} className="DetailList-item">
                           <Skeleton />
                       </li>
                   ))
-                : project.grid_fields.map((field) => {
+                : project?.grid_fields?.map((field) => {
                       const allowedToSee =
                           !isRestricted ||
                           (isRestricted && field.display_on_landing_page) ||

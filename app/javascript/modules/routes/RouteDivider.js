@@ -1,14 +1,14 @@
 import { AnalyticsProvider } from 'modules/analytics';
+import { useCurrentProject } from 'modules/data';
 import { Layout } from 'modules/layout';
 
 import {
     MemoizedRoutesWithProjectId,
     MemoizedRoutesWithoutProjectId,
 } from './Routes';
-import useProject from './useProject';
 
 function RouteDivider() {
-    const { project } = useProject();
+    const { project } = useCurrentProject();
 
     const useRoutesWithoutProjectId =
         Boolean(project?.archive_domain) || Boolean(project?.is_ohd);

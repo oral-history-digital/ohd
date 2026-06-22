@@ -33,7 +33,7 @@ export default function WrappedDataList({
     interview,
     task,
     hideAdd,
-    registerDOI,
+    hideRegisterDoiAction,
     outerScope,
     outerScopeId,
     resultPagesCount,
@@ -139,10 +139,15 @@ export default function WrappedDataList({
         /^fetched/.test(dataStatus?.[`for_projects_${project?.id}`]) ||
         /^fetched/.test(dataStatus?.all)
     );
+
+    // If query is present, we rely on query-specific status for fetching state.
+    // If not, we fall back to general status flags.
+    const queryStatusKey = query ? statifiedQuery(query) : null;
     const fetching =
-        dataStatus?.[statifiedQuery(query)]?.split('-')[0] === 'fetching';
-    const hasMorePages =
-        !resultPagesCount || resultPagesCount > parseInt(query.page);
+        queryStatusKey &&
+        dataStatus?.[queryStatusKey]?.split('-')[0] === 'fetching';
+    const currentPage = query?.page ? parseInt(query.page, 10) : 1;
+    const hasMorePages = !resultPagesCount || resultPagesCount > currentPage;
 
     return (
         <EditViewOrRedirect>
@@ -179,7 +184,7 @@ export default function WrappedDataList({
                             form={createForm}
                             showComponent={showComponent}
                             hideEdit={hideEdit}
-                            registerDOI={registerDOI}
+                            hideRegisterDoiAction={hideRegisterDoiAction}
                             hideDelete={hideDelete}
                             key={`${scope}-${data.id}`}
                         />
@@ -218,7 +223,7 @@ export default function WrappedDataList({
 }
 
 WrappedDataList.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     joinedData: PropTypes.object,
     helpTextCode: PropTypes.string,
     sortAttribute: PropTypes.string,
@@ -242,8 +247,9 @@ WrappedDataList.propTypes = {
     resultPagesCount: PropTypes.number,
     hideAdd: PropTypes.bool,
     hideEdit: PropTypes.bool,
+    hideRegisterDoiAction: PropTypes.bool,
     hideDelete: PropTypes.bool,
-    showComponent: PropTypes.object,
+    showComponent: PropTypes.elementType,
     submitData: PropTypes.func.isRequired,
     setQueryParams: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,

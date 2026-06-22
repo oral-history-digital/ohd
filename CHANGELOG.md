@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-06-18
+
+### Added
+
+- feat: add notes field ([#119](https://github.com/oral-history-digital/ohd/pull/119))
+- feat: add export for interview statistics ([#120](https://github.com/oral-history-digital/ohd/pull/120))
+- Add error tracking for Rails backend ([7ae5e8c4e](https://github.com/oral-history-digital/ohd/commit/7ae5e8c4e6e6695fac0205765b45f9f5d0a9c822))
+- refactor: reduce initial redux state ([#127](https://github.com/oral-history-digital/ohd/pull/127))
+
+### Changed
+
+- chore: update exported translation strings ([b9342823e](https://github.com/oral-history-digital/ohd/commit/b9342823edff61c82754061158b3a1a887629fa0))
+
+### Fixed
+
+- fix doi url ([474499d39](https://github.com/oral-history-digital/ohd/commit/474499d39350f4ef1337bc26766fc9c7c23d685c))
+- project title also in :en in datacite xmls ([b7b587536](https://github.com/oral-history-digital/ohd/commit/b7b587536d212fa477596436626260d7821f0495))
+- fix: handle missing DOI prefix ([e36242dd2](https://github.com/oral-history-digital/ohd/commit/e36242dd2b94b3846e13ce563fcbfdd37f63c00f))
+- do not split transcripts if no speaker ([7d6a6b7ed](https://github.com/oral-history-digital/ohd/commit/7d6a6b7ed433934ce966ffd5aee5339b7086853f))
+- always use :en catalog url for doi ([6fc071567](https://github.com/oral-history-digital/ohd/commit/6fc071567ac34e92d9c7554997dca793a86c5599))
+- archive title always in de as well in oai ([4094f4723](https://github.com/oral-history-digital/ohd/commit/4094f472325d8e04c18597aa182fc108bb4f11a4))
+- collection form with base-locales :de, :en ([becdaf0a7](https://github.com/oral-history-digital/ohd/commit/becdaf0a733b131b4886affd1e14bdff8e893f0e))
+- fix: correct appellation display ([#125](https://github.com/oral-history-digital/ohd/pull/125))
+- fix: add missing locales to mail templates and update ([#124](https://github.com/oral-history-digital/ohd/pull/124))
+
 ## [2.4.2] - 2026-06-10
 
 ### Added
@@ -600,6 +625,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.5.0]: https://github.com/oral-history-digital/ohd/compare/v2.4.2...v2.5.0
 [2.4.2]: https://github.com/oral-history-digital/ohd/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/oral-history-digital/ohd/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/oral-history-digital/ohd/compare/v2.3.5...v2.4.0

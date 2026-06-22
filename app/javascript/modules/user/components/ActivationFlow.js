@@ -16,7 +16,9 @@ export default function ActivationFlow({ className }) {
 
     let showActivationFlow = true;
 
-    if (project.grant_access_without_login) {
+    if (!project) {
+        showActivationFlow = false;
+    } else if (project.grant_access_without_login) {
         showActivationFlow = false;
     } else if (isLoggedIn && project?.grant_project_access_instantly) {
         showActivationFlow = false;
