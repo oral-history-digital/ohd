@@ -1,0 +1,237 @@
+# Docker Compose configuration
+# Production/Staging deployment with optional database service
+
+services:
+  # Main Rails application
+  app:
+    # Pull from registry
+    image: ghcr.io/oral-history-digital/ohd:latest
+    # To build locally for testing, use the following build configuration:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      # Mount secrets from host
+      - ./config/hls:/app/config/hls:ro
+      # Persistent data
+      - app-cache:/app/tmp/cache
+      - app-files:/app/tmp/files
+      - app-logs:/app/log
+      # Optional: mount public directory for Nginx to serve static assets
+      # - ./public:/app/public:ro
+    env_file:
+      - .env.defaults # Defaults
+      - .env # Overrides & optional variables
+    depends_on:
+      redis:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+      # db dependency removed - optional via --profile db
+    networks:
+      - ohd-network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'ruby',
+          '-rsocket',
+          '-e',
+          "TCPSocket.new('127.0.0.1', 3000).close",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  # Background job worker (Delayed Job)
+  worker:
+    # Pull from registry (uncomment when image is available)
+    image: ghcr.io/oral-history-digital/ohd:latest
+    # To build locally for testing, use the following build configuration:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    restart: unless-stopped
+    command: ['bundle', 'exec', 'rake', 'jobs:work']
+    volumes:
+      # Same secret mounts as app
+      - ./config/hls:/app/config/hls:ro
+      # Shared volumes
+      - app-cache:/app/tmp/cache
+      - app-files:/app/tmp/files
+      - app-logs:/app/log
+    env_file:
+      - .env.defaults # Defaults
+      - .env # Overrides & optional variables
+    depends_on:
+      app:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+      # db dependency removed - optional via --profile db
+    networks:
+      - ohd-network
+
+  # Solr search engine
+  solr:
+    image: solr:5.5
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8985:8983'
+    volumes:
+      # Persistent Solr data (IMPORTANT: for production use)
+      - solr-data:/var/solr
+      # Mount configsets
+      - ./solr/configsets:/opt/solr/server/solr/configsets:ro
+    environment:
+      SOLR_HEAP: 512m
+      SOLR_JAVA_MEM: '-Xms512m -Xmx512m'
+    command:
+      - solr-precreate
+      - default
+      - /opt/solr/server/solr/configsets/sunspot/conf
+    networks:
+      - ohd-network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'curl',
+          '-f',
+          'http://localhost:8983/solr/default/admin/ping?wt=json',
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # MariaDB database (optional, use --profile db to enable)
+  # For production with external database, don't start this service
+  db:
+    image: mariadb:10.5
+    restart: unless-stopped
+    profiles:
+      - db
+    ports:
+      - '127.0.0.1:3307:3306'
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./docker/db/init:/docker-entrypoint-initdb.d:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD_PRODUCTION:-changeme}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_PRODUCTION:-ohd_production}
+      MYSQL_USER: ${MYSQL_USER_PRODUCTION:-ohd}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD_PRODUCTION:-changeme}
+    networks:
+      - ohd-network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-u',
+          'root',
+          '-p${MYSQL_PASSWORD_PRODUCTION:-changeme}',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for ActionCable
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - ohd-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Nginx reverse proxy
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/nginx/certs:/etc/nginx/certs:ro
+      - certbot-www:/var/www/certbot:ro
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - ohd-network
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -q -O /dev/null http://localhost || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  # TLS certificate management (Let's Encrypt default)
+  certbot:
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    environment:
+      LETSENCRYPT_DOMAIN: ${LETSENCRYPT_DOMAIN:-example.org}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-admin@example.org}
+    command:
+      - sh
+      - -c
+      - |
+        set -eu
+        if [ ! -f /etc/nginx/certs/fullchain.pem ] || [ ! -f /etc/nginx/certs/privkey.pem ]; then
+          certbot certonly --webroot -w /var/www/certbot --non-interactive --agree-tos --email "$${LETSENCRYPT_EMAIL}" -d "$${LETSENCRYPT_DOMAIN}" --cert-name ohd
+          cp /etc/letsencrypt/live/ohd/fullchain.pem /etc/nginx/certs/fullchain.pem
+          cp /etc/letsencrypt/live/ohd/privkey.pem /etc/nginx/certs/privkey.pem
+        fi
+        trap exit TERM
+        while :; do
+          certbot renew --webroot -w /var/www/certbot --quiet --deploy-hook "cp /etc/letsencrypt/live/ohd/fullchain.pem /etc/nginx/certs/fullchain.pem && cp /etc/letsencrypt/live/ohd/privkey.pem /etc/nginx/certs/privkey.pem"
+          sleep 12h
+        done
+    volumes:
+      - certbot-www:/var/www/certbot
+      - certbot-etc:/etc/letsencrypt
+      - ./docker/nginx/certs:/etc/nginx/certs
+    networks:
+      - ohd-network
+
+# Named volumes for data persistence
+volumes:
+  app-cache:
+    name: ohd_app_cache
+  app-files:
+    name: ohd_app_files
+  app-logs:
+    name: ohd_app_logs
+  solr-data:
+    name: ohd_solr_data
+  db-data:
+    name: ohd_db_data
+  redis-data:
+    name: ohd_redis_data
+  certbot-www:
+    name: ohd_certbot_www
+  certbot-etc:
+    name: ohd_certbot_etc
+
+# Internal network
+networks:
+  ohd-network:
+    name: ohd_network
+    driver: bridge

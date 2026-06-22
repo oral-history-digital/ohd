@@ -1,13 +1,12 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  config.secret_key = 'd88aeea13add49fd83f6cf189db8b8dc55b533cb09ef1bbe66127b44fcd17c8f9d0f96c4f3fbee4eec662765c2a7d9e1558e427a3ed1027d54606f14b7871af4'
+  # config.secret_key = 'your_secret_key'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -35,7 +34,7 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
-  #config.authentication_keys = [:login]
+  # config.authentication_keys = [:login]
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the
@@ -259,8 +258,8 @@ Devise.setup do |config|
   #
   config.warden do |manager|
     manager.failure_app = UnauthorizedController
-    #manager.intercept_401 = false
-    #manager.default_strategies(scope: :user).unshift :some_external_strategy
+    # manager.intercept_401 = false
+    # manager.default_strategies(scope: :user).unshift :some_external_strategy
   end
 
   # ==> Mountable engine configurations

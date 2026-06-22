@@ -115,7 +115,7 @@ namespace :translations do
                             tv.update(value: incoming, locale: locale)
                         end
 
-                        elsif overwrite && existing != incoming
+                        elsif (overwrite || existing.blank?) && existing != incoming
                             updated += 1
 
                             unless dry_run

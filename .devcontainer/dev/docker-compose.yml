@@ -1,5 +1,6 @@
 services:
   app:
+    image: ohd-devcontainer-app:local
     ports:
       - '127.0.0.1:3000:3000'
       - '127.0.0.1:3035:3035'

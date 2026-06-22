@@ -35,3 +35,42 @@ describe('PASSWORD_REGEX', () => {
         expect(PASSWORD_REGEX.test('ValidPassword1!')).toBe(true);
     });
 });
+
+describe('OHD domain constants', () => {
+    const originalRailsMode = globalThis.railsMode;
+    const originalOhdDomain = globalThis.ohdDomain;
+    const originalOhdDomains = globalThis.ohdDomains;
+
+    afterEach(() => {
+        jest.resetModules();
+        globalThis.railsMode = originalRailsMode;
+        globalThis.ohdDomain = originalOhdDomain;
+        globalThis.ohdDomains = originalOhdDomains;
+    });
+
+    test('returns undefined domain values when backend globals are missing', async () => {
+        globalThis.railsMode = 'development';
+        delete globalThis.ohdDomain;
+        delete globalThis.ohdDomains;
+
+        const { OHD_LOCATION, OHD_DOMAINS } = await import('./index');
+
+        expect(OHD_LOCATION).toBeUndefined();
+        expect(OHD_DOMAINS).toEqual({});
+    });
+
+    test('prefers backend-injected domain values when available', async () => {
+        globalThis.railsMode = 'staging';
+        globalThis.ohdDomain = 'https://portal.from-backend.example';
+        globalThis.ohdDomains = {
+            staging: 'https://staging.from-backend.example',
+        };
+
+        const { OHD_LOCATION, OHD_DOMAINS } = await import('./index');
+
+        expect(OHD_LOCATION).toBe('https://portal.from-backend.example');
+        expect(OHD_DOMAINS.staging).toBe(
+            'https://staging.from-backend.example'
+        );
+    });
+});

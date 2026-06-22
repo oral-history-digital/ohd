@@ -1,10 +1,13 @@
 OHD_DOMAINS = {
-  'development' => 'http://portal.oral-history.localhost:3000',
-  'production' => 'https://portal.oral-history.digital',
-  'staging' => 'https://staging.oral-history.digital',
-  'test' => 'http://test.portal.oral-history.localhost:47001'
+  'development' => ENV.fetch('OHD_DOMAIN_DEVELOPMENT', 'http://portal.oral-history.localhost:3000'),
+  'production' => ENV.fetch('OHD_DOMAIN_PRODUCTION', 'https://portal.oral-history.digital'),
+  'staging' => ENV.fetch('OHD_DOMAIN_STAGING', 'https://staging.oral-history.digital'),
+  'test' => ENV.fetch('OHD_DOMAIN_TEST', 'http://test.portal.oral-history.localhost:47001')
 }
-OHD_DOMAIN = OHD_DOMAINS[Rails.env]
+
+# Allow overriding the default domain for current environment via OHD_DOMAIN env var,
+# or configure environment-specific domains via OHD_DOMAIN_<ENV> vars.
+OHD_DOMAIN = ENV['OHD_DOMAIN'].presence || OHD_DOMAINS[Rails.env]
 DEFAULT_PRIMARY_COLOR = '#e01217'
 
 # using the "\x00" char as delimiter will move values between columns
