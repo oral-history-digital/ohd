@@ -2,23 +2,15 @@ import PropTypes from 'prop-types';
 
 export default function ArchiveManagementInCell({ row }) {
     const user = row.original;
-    const userProjectsByProjectId = Object.values(
-        user.user_projects || {}
-    ).reduce((memo, userProject) => {
-        memo[userProject.project_id] = userProject;
-        return memo;
-    }, {});
     const entries = Object.values(user.user_roles)
         .map((role) => {
-            if (role.name !== 'Archivmanagement') {
+            if (!role.archive_management) {
                 return null;
             }
 
-            const userProject = userProjectsByProjectId[role.project_id];
-
-            if (!userProject?.shortname) {
+            if (!role.project_shortname) {
                 console.warn(
-                    '[ArchiveManagementInCell] Missing user project for user role',
+                    '[ArchiveManagementInCell] Missing project for user role',
                     {
                         roleId: role.id,
                         projectId: role.project_id,
@@ -34,8 +26,8 @@ export default function ArchiveManagementInCell({ row }) {
 
             return {
                 id: role.id,
-                label: userProject.shortname,
-                title: `${userProject.name} (ID: ${userProject.project_id})`,
+                label: role.project_shortname,
+                title: `${role.project_name} (ID: ${role.project_id})`,
             };
         })
         .filter(Boolean);
