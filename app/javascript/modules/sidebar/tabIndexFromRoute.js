@@ -45,6 +45,8 @@ export default function tabIndexFromRoute(pathBase, pathname) {
         index = indexes.INDEX_PROJECT_ACCESS;
     } else if (matchPath(`${pathBase}/project/edit-config`, pathname)) {
         index = indexes.INDEX_PROJECT_ACCESS;
+    } else if (matchPath(`${pathBase}/project/edit-access-config`, pathname)) {
+        index = indexes.INDEX_PROJECT_ACCESS;
     } else if (matchPath(`${pathBase}/project/edit-display`, pathname)) {
         index = indexes.INDEX_PROJECT_ACCESS;
     } else if (matchPath(`${pathBase}/metadata_fields`, pathname)) {
