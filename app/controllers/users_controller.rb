@@ -146,7 +146,11 @@ class UsersController < ApplicationController
       total_pages = users.total_pages
     end
 
-    users = users.includes(roles: :permissions, user_projects: :project).map{|u| UserSerializer.new(u)}
+    users = users.includes(
+      roles: :permissions,
+      user_projects: :project,
+      user_roles: {role: [:translations, :project]}
+    ).map{|u| UserSerializer.new(u)}
 
     respond_to do |format|
       format.html { render 'react/app' }
