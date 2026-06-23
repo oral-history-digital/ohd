@@ -1,6 +1,8 @@
 class UserProjectSerializer < ApplicationSerializer
   attributes :id,
     :project_id,
+    :shortname,
+    :name,
     :user_id,
     :workflow_state,
     :workflow_states,
@@ -33,5 +35,13 @@ class UserProjectSerializer < ApplicationSerializer
 
   def default_locale
     object.user.default_locale
+  end
+
+  def shortname
+    object.project.shortname
+  end
+
+  def name
+    object.project.name
   end
 end
