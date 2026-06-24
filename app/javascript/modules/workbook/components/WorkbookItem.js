@@ -16,7 +16,7 @@ import WorkbookActions from './WorkbookActions';
 export default function WorkbookItem({
     data,
     className,
-    projects,
+    project,
     statuses,
     interviews,
     setArchiveId,
@@ -27,15 +27,13 @@ export default function WorkbookItem({
     const { t, locale } = useI18n();
     const { facets } = useFacets();
     const { isOhd } = useProject();
-
-    const project = projects[data.project_id];
     const projectId = project?.shortname;
     const interview = interviews[data.media_id];
 
     const fetchingInterview = !!statuses['interviews'][data.media_id];
 
     useEffect(() => {
-        if (project && !fetchingInterview) {
+        if (project && !interview && !fetchingInterview) {
             fetchData(
                 { projectId, locale, project },
                 'interviews',
@@ -43,7 +41,15 @@ export default function WorkbookItem({
                 'transcript_coupled'
             );
         }
-    }, [interview, project]);
+    }, [
+        data.media_id,
+        fetchData,
+        fetchingInterview,
+        interview,
+        locale,
+        project,
+        projectId,
+    ]);
 
     function hideSidebarIfMobile() {
         if (isMobile()) {
@@ -166,10 +172,10 @@ export default function WorkbookItem({
 
 WorkbookItem.propTypes = {
     data: PropTypes.object.isRequired,
+    project: PropTypes.object,
     statuses: PropTypes.object.isRequired,
     interviews: PropTypes.object.isRequired,
     className: PropTypes.string,
-    projects: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
