@@ -170,8 +170,8 @@ export default function UserTable() {
         [locale, project, dataPath]
     );
 
-    const actionColumns = useMemo(
-        () => [
+    const actionColumns = useMemo(() => {
+        const columns = [
             {
                 id: 'actions',
                 enableSorting: false,
@@ -179,16 +179,20 @@ export default function UserTable() {
                 accessorFn: getDataPath,
                 cell: UserRowActions,
             },
-            {
+        ];
+
+        if (!project.is_ohd) {
+            columns.push({
                 id: 'interviewPermissions',
                 enableSorting: false,
                 header: t('modules.tables.interviewPermissions'),
                 accessorFn: getDataPath,
                 cell: UserRowInterviewPermissions,
-            },
-        ],
-        [locale, project, dataPath]
-    );
+            });
+        }
+
+        return columns;
+    }, [locale, project, dataPath]);
 
     const columns = baseColumns
         .concat(!project.is_ohd ? projectColumns : ohdColumns)
