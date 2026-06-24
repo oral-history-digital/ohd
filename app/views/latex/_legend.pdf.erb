@@ -1,6 +1,6 @@
 <%= render partial: "latex/title",
            locals: {
-               title: latex_escape(TranslationValue.for('legend.title', header_locale)),
+               title: TranslationValue.for('legend.title', header_locale),
                space_above: 0,
                space_below: 0.01,
                font_size: 13
@@ -37,15 +37,15 @@
     \vspace*{0.2cm}
     \item[\normalfont{(???)}] <%= latex_escape(TranslationValue.for('legend.zwar.unclear', header_locale)) %>
     \vspace*{0.2cm}
-    \item[\normalfont{(<%= TranslationValue.for(:word, header_locale) %> ?)}] <%= latex_escape(TranslationValue.for('legend.zwar.unsure', header_locale)) %>
+    \item[\normalfont{(<%= latex_escape(TranslationValue.for(:word, header_locale)) %> ?)}] <%= latex_escape(TranslationValue.for('legend.zwar.unsure', header_locale)) %>
     \vspace*{0.2cm}
     \item[\normalfont{[x]}] <%= latex_escape(TranslationValue.for('legend.zwar.break', header_locale)) %>
     \vspace*{0.2cm}
-    \item[\textit{<%= TranslationValue.for(:italic, header_locale) %>}] <%= latex_escape(TranslationValue.for('legend.zwar.italic', header_locale)) %>
+    \item[\textit{<%= latex_escape(TranslationValue.for(:italic, header_locale)) %>}] <%= latex_escape(TranslationValue.for('legend.zwar.italic', header_locale)) %>
     \vspace*{0.2cm}
     \item[\normalfont{"xyz"}] <%= latex_escape(TranslationValue.for('legend.zwar.quote', header_locale)) %>
     \vspace*{0.2cm}
-    \item[\normalfont{{<%= TranslationValue.for(:text, header_locale) %>} <%= TranslationValue.for(:or, header_locale) %> {(<%= TranslationValue.for(:text, header_locale) %>)}}] <%= latex_escape(TranslationValue.for('legend.zwar.annotation', header_locale)) %>
+    \item[\normalfont{{<%= latex_escape(TranslationValue.for(:text, header_locale)) %>} <%= latex_escape(TranslationValue.for(:or, header_locale)) %> {(<%= latex_escape(TranslationValue.for(:text, header_locale)) %>)}}] <%= latex_escape(TranslationValue.for('legend.zwar.annotation', header_locale)) %>
     \vspace*{0.2cm}
     \item[\normalfont{<***>}] <%= latex_escape(TranslationValue.for('legend.zwar.tape_end', header_locale)) %>
     \vspace*{0.2cm}
@@ -66,21 +66,20 @@
     \vspace*{0.2cm}
     \item[\normalfont{<l(es) xyz>; <l(es-de)>; <l(de-es)>}] <%= latex_escape(TranslationValue.for('legend.default.lexical_phenomenon', header_locale)) %>
     \vspace*{0.2cm}
-    \item[\normalfont{<s(<%= TranslationValue.for('legend.default.vocal_shift', header_locale) %>) xyz>}] <%= latex_escape(TranslationValue.for('legend.default.changed_voice', header_locale)) %>
+    \item[\normalfont{<s(<%= latex_escape(TranslationValue.for('legend.default.vocal_shift', header_locale)) %>) xyz>}] <%= latex_escape(TranslationValue.for('legend.default.changed_voice', header_locale)) %>
     \vspace*{0.2cm}
     \item[\normalfont{<sim>}] <%= latex_escape(TranslationValue.for('legend.default.simultaneous', header_locale)) %>
     \vspace*{0.2cm}
-    \item[\normalfont{<nl(<%= TranslationValue.for('legend.default.sound', header_locale) %>) xyz>}] <%= latex_escape(TranslationValue.for('legend.default.non_linguistic', header_locale)) %>
+    \item[\normalfont{<nl(<%= latex_escape(TranslationValue.for('legend.default.sound', header_locale)) %>) xyz>}] <%= latex_escape(TranslationValue.for('legend.default.non_linguistic', header_locale)) %>
     \vspace*{0.2cm}
-    \item[\normalfont{<v(<%= TranslationValue.for('legend.default.fonetic_expression', header_locale) %>)>}] <%= latex_escape(TranslationValue.for('legend.default.non_verbal', header_locale)) %>
+    \item[\normalfont{<v(<%= latex_escape(TranslationValue.for('legend.default.fonetic_expression', header_locale)) %>)>}] <%= latex_escape(TranslationValue.for('legend.default.non_verbal', header_locale)) %>
     \vspace*{0.2cm}
-    \item[\normalfont{<g(<%= TranslationValue.for('legend.default.gesture_type', header_locale) %>) xyz>}] <%= latex_escape(TranslationValue.for('legend.default.gesture', header_locale)) %>
+    \item[\normalfont{<g(<%= latex_escape(TranslationValue.for('legend.default.gesture_type', header_locale)) %>) xyz>}] <%= latex_escape(TranslationValue.for('legend.default.gesture', header_locale)) %>
     \vspace*{0.2cm}
-    \item[\normalfont{<m(<%= TranslationValue.for('legend.default.expression_type', header_locale) %>) xyz>}] <%= latex_escape(TranslationValue.for('legend.default.facial_expression', header_locale)) %>
+    \item[\normalfont{<m(<%= latex_escape(TranslationValue.for('legend.default.expression_type', header_locale)) %>) xyz>}] <%= latex_escape(TranslationValue.for('legend.default.facial_expression', header_locale)) %>
     \vspace*{0.2cm}
     \item[\normalfont{<n>}] <%= latex_escape(TranslationValue.for('legend.default.notes', header_locale)) %>
     \vspace*{0.2cm}
   \end{description}
 }
 <% end %>
-
