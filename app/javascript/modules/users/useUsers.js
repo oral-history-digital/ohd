@@ -10,6 +10,7 @@ export default function useUsers(
     roleFilter,
     mfaFilter,
     projectManagerFilter,
+    superuserFilter,
     sorting
 ) {
     const pathBase = usePathBase();
@@ -35,6 +36,9 @@ export default function useUsers(
     }
     if (projectManagerFilter) {
         dataPath += `&project_manager=${projectManagerFilter}`;
+    }
+    if (superuserFilter) {
+        dataPath += `&superuser=${superuserFilter}`;
     }
     if (sorting?.[0]) {
         dataPath += `&order=${sorting[0].id}&direction=${sorting[0].desc ? 'desc' : 'asc'}`;
