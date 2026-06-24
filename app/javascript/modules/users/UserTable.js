@@ -3,9 +3,9 @@ import { useMemo, useState } from 'react';
 import {
     Fetch,
     getCurrentProject,
-    getProjects,
     getRolesForCurrentProject,
     getRolesForCurrentProjectFetched,
+    useGetProjects,
 } from 'modules/data';
 import { SelectField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -22,7 +22,7 @@ import useUsers from './useUsers';
 export default function UserTable() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
-    const projects = useSelector(getProjects);
+    const { projects } = useGetProjects({ all: true });
     const projectRoles = useSelector(getRolesForCurrentProject);
 
     const [page, setPage] = useState(1);
