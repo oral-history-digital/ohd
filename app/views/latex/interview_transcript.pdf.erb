@@ -7,29 +7,32 @@
   interviewee_name = interview.interviewee.display_name
   content_locale_human_label = content_locale_human
 
-  title = [
+  title_plain = [
     tv("#{doc_type}_title", header_locale, lang: content_locale_human_label),
     interviewee_name
   ].join(" ")
 
-  header_text = [
+  header_text_plain = [
     tv("#{doc_type}_header", header_locale, lang: content_locale_human_label),
     interviewee_name,
     "(#{tv('archive_id', header_locale)} #{interview.archive_id})"
   ].join(" ")
 
+  title_latex = latex_multiscript(title_plain)
+  header_text_latex = latex_multiscript(header_text_plain)
+
   tape = 0
   speaker_id = nil
 %>
 
-\title{<%= title %>}
+\title{<%= title_latex %>}
 
 \begin{document}
 
 <%=
   render partial: "latex/header_footer",
     locals: {
-      header_text: header_text,
+      header_text: header_text_plain,
       interview: interview,
       header_locale: header_locale,
       doc_type: doc_type
@@ -39,7 +42,7 @@
 <%=
   render partial: "latex/title",
     locals: {
-      title: title,
+      title: title_plain,
       space_above: 3,
       space_below: 3,
       font_size: 18
@@ -85,7 +88,7 @@
 
 <%= render partial: "latex/title",
   locals: {
-    title: title,
+    title: title_plain,
     space_above: 0,
     space_below: 0.01,
     font_size: 13
@@ -100,7 +103,7 @@
       <% if tape != segment.tape.number %>
         <%= render partial: "latex/title",
           locals: {
-            title: latex_multiscript("#{tv('tape', header_locale)} #{segment.tape.number}"),
+            title: "#{tv('tape', header_locale)} #{segment.tape.number}",
             space_above: 0.7,
             space_below: 0.05,
             font_size: 10
@@ -151,7 +154,7 @@
 
         speaker_changed = previous_speaker_id.present? && previous_speaker_id != speaker_id
 
-        text = latex_multiscript(CGI.unescapeHTML(segment.text(content_locale_public)))
+        text = latex_multiscript(segment.text(content_locale_public))
     %>
 
     <% if ltr_speaker.present? %>
