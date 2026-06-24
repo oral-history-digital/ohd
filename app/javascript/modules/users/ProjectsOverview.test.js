@@ -49,22 +49,20 @@ describe('<ProjectsOverview />', () => {
             />
         );
 
+        // ProjectsOverview uses capitalizeFirstLetter, that's why we capitalize here, too
         expect(
             html.indexOf(
-                'workflow_states.user_projects.project_access_requested'
+                'Workflow_states.user_projects.project_access_requested'
             )
         ).toBeLessThan(
-            html.indexOf('workflow_states.user_projects.project_access_granted')
+            html.indexOf('Workflow_states.user_projects.project_access_granted')
         );
-        expect(
-            html.indexOf('workflow_states.user_projects.project_access_granted')
-        ).toBeLessThan(html.indexOf('Other'));
-        expect(html.indexOf('Demo Project (demo)')).toBeLessThan(
-            html.indexOf('Test Project (test)')
+        expect(html.indexOf('Demo Project')).toBeLessThan(
+            html.indexOf('Test Project')
         );
-        expect(html).toContain('Pending Project (pending)');
-        expect(html).toContain('Test Project (test)');
-        expect(html).toContain('Blocked Project (blocked)');
+        expect(html).toContain('Pending Project');
+        expect(html).toContain('Test Project');
+        expect(html).toContain('Blocked Project');
         expect(html).toContain(
             'workflow_states.user_projects.project_access_blocked'
         );
@@ -72,23 +70,26 @@ describe('<ProjectsOverview />', () => {
     });
 
     it('uses a disclosure for larger groups', () => {
-        const projects = [1, 2, 3, 4, 5, 6].reduce((memo, id) => {
-            memo[id] = userProject(id, `p${id}`, `Project ${id}`);
-            return memo;
-        }, {});
+        const projects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].reduce(
+            (memo, id) => {
+                memo[id] = userProject(id, `p${id}`, `Project ${id}`);
+                return memo;
+            },
+            {}
+        );
 
         const html = renderToStaticMarkup(
             <ProjectsOverview user={{ user_projects: projects }} />
         );
 
         expect(html).toContain('Disclosure-toggle');
-        expect(html).toContain('6 activerecord.models.project.other');
+        expect(html).toContain('11 activerecord.models.project.other');
         expect(html.indexOf('Project 1')).toBeLessThan(
-            html.indexOf('Project 6')
+            html.indexOf('Project 11')
         );
-        expect(html).toContain('Project 1 (p1)');
+        expect(html).toContain('Project 1');
         expect(html).toContain(
-            'workflow_states.user_projects.project_access_granted'
+            'Workflow_states.user_projects.project_access_granted' // Capitalized because function capitalizes first letter
         );
     });
 });

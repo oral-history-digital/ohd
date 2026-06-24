@@ -13,6 +13,7 @@ import { DateCell, TableWithPagination } from 'modules/tables';
 import { useSelector } from 'react-redux';
 
 import ArchiveManagementInCell from './ArchiveManagementInCell';
+import MfaStatusCell from './MfaStatusCell';
 import ProjectAccessGrantedCell from './ProjectAccessGrantedCell';
 import RolesCell from './RolesCell';
 import UserRowActions from './UserRowActions';
@@ -36,6 +37,11 @@ export default function UserTable() {
     const [roleFilter, setRoleFilter] = useState('');
     const handleRoleFilterChange = (name, value) => {
         setRoleFilter(value);
+    };
+
+    const [mfaFilter, setMfaFilter] = useState('');
+    const handleMfaFilterChange = (name, value) => {
+        setMfaFilter(value);
     };
 
     const [localeFilter, setLocaleFilter] = useState('');
@@ -74,6 +80,7 @@ export default function UserTable() {
         localeFilter,
         projectFilter,
         roleFilter,
+        mfaFilter,
         sorting
     );
 
@@ -101,6 +108,12 @@ export default function UserTable() {
                 id: 'email',
                 accessorFn: (row) => row.email,
                 header: t('activerecord.attributes.user.email'),
+            },
+            {
+                id: 'mfa',
+                enableSorting: false,
+                header: 'MFA',
+                cell: MfaStatusCell,
             },
         ],
         [locale]
@@ -239,6 +252,18 @@ export default function UserTable() {
                         withEmpty={false}
                     />
                 )}
+                <SelectField
+                    className="u-mb-small"
+                    values={[
+                        { id: 'enabled', name: t('enabled') },
+                        { id: 'disabled', name: t('disabled') },
+                    ]}
+                    label="MFA"
+                    attribute="mfa"
+                    handleChange={handleMfaFilterChange}
+                    withEmpty={true}
+                    keepOrder={true}
+                />
                 {project.is_ohd && (
                     <SelectField
                         className="u-mb-small"
