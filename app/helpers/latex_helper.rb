@@ -199,6 +199,8 @@ module LatexHelper
       rtl_speaker = ''
       ltr_speaker = ''
     else
+      speaker = latex_escape(speaker.to_s)
+
       rtl_speaker = rtl ? " :#{speaker}" : ''
       ltr_speaker = rtl ? '' : "#{speaker}: "
     end

@@ -1,17 +1,21 @@
 <%= render partial: "latex/title",
            locals: {
-               title: "#{latex_escape(TranslationValue.for('citation', @locale))}:",
+               title: "#{TranslationValue.for('citation', @locale)}:",
                space_above: 6,
                space_below: 0,
                font_size: 13
            } %>
 
-\par{
-  <%= "#{interviewee_name},
+<%
+  citation = "#{interviewee_name},
   #{TranslationValue.for('interview', @locale)}
   #{@interview.archive_id},
   #{@interview.created_at.strftime("%d.%m.%Y")},
   #{TranslationValue.for('interview_archive', @locale)} #{current_project.name(@locale)}, #{current_project.archive_domain},
   #{TranslationValue.for('doi.name', @locale)}: #{Rails.configuration.datacite['prefix'] + @interview.archive_id},
-  (#{TranslationValue.for('called', @locale)}: #{Date.today.strftime("%d.%m.%Y")})" %>
+  (#{TranslationValue.for('called', @locale)}: #{Date.today.strftime("%d.%m.%Y")})"
+%>
+
+\par{
+  <%= latex_multiscript(citation) %>
 }

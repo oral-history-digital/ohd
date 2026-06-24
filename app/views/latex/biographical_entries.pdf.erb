@@ -6,7 +6,7 @@
   header_text = "#{TranslationValue.for('biographical_entries_header', header_locale, interviewee_name: interviewee_name, archive_id: interview.archive_id)}"
 %>
 
-\title{<%= title %>}
+\title{<%= latex_multiscript(title) %>}
 
 \begin{document}
 
@@ -37,7 +37,7 @@
   <%= render partial: "latex/title",
     locals:
     {
-      title: latex_escape(title),
+      title: title,
       space_above: 0.4,
       space_below: 0,
       font_size: 12,
