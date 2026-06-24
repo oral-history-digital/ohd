@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import {
     Fetch,
     getCurrentProject,
+    getCurrentUser,
     getRolesForCurrentProject,
     getRolesForCurrentProjectFetched,
     useGetProjects,
@@ -23,6 +24,7 @@ import useUsers from './useUsers';
 export default function UserTable() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
+    const currentUser = useSelector(getCurrentUser);
     const { projects } = useGetProjects({ all: true });
     const projectRoles = useSelector(getRolesForCurrentProject);
 
@@ -47,6 +49,11 @@ export default function UserTable() {
     const [projectManagerFilter, setProjectManagerFilter] = useState('');
     const handleProjectManagerFilterChange = (_, value) => {
         setProjectManagerFilter(value);
+    };
+
+    const [superuserFilter, setSuperuserFilter] = useState('');
+    const handleSuperuserFilterChange = (_, value) => {
+        setSuperuserFilter(value);
     };
 
     const [localeFilter, setLocaleFilter] = useState('');
@@ -87,6 +94,7 @@ export default function UserTable() {
         roleFilter,
         mfaFilter,
         projectManagerFilter,
+        superuserFilter,
         sorting
     );
 
@@ -326,6 +334,20 @@ export default function UserTable() {
                                 withEmpty={true}
                             />
                         </Fetch>
+                    )}
+                    {currentUser?.admin && (
+                        <SelectField
+                            className="UserTable-filter"
+                            values={[
+                                { id: 'yes', name: t('boolean_value.true') },
+                                { id: 'no', name: t('boolean_value.false') },
+                            ]}
+                            label={t('user.superuser')}
+                            attribute="superuser"
+                            handleChange={handleSuperuserFilterChange}
+                            withEmpty={true}
+                            keepOrder={true}
+                        />
                     )}
                 </div>
             </TableWithPagination>

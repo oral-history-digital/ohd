@@ -36,6 +36,15 @@ class AddUserTableTranslations < ActiveRecord::Migration[8.0]
       uk: 'Ключ доступу',
       ar: 'مفتاح مرور',
     },
+    'user.superuser': {
+      de: 'Superuser',
+      en: 'Superuser',
+      el: 'Υπερχρήστης',
+      es: 'Superusuario',
+      ru: 'Суперпользователь',
+      uk: 'Суперкористувач',
+      ar: 'مستخدم متميز',
+    },
   }.freeze
 
   def up

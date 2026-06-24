@@ -137,6 +137,11 @@ class UsersController < ApplicationController
     users = users.where("otp_required_for_login = ? OR passkey_required_for_login = ?", true, true) if params[:mfa] == 'enabled'
     users = users.where(otp_required_for_login: [false, nil], passkey_required_for_login: [false, nil]) if params[:mfa] == 'disabled'
 
+    # Filter users by admin status if the 'superuser' parameter is present and the current user is an admin
+    if current_user&.admin? && %w(yes no).include?(params[:superuser])
+      users = users.where(admin: params[:superuser] == 'yes')
+    end
+
     # Filter users by project manager role if the 'project_manager' parameter is present
     if %w(yes no).include?(params[:project_manager])
       manager_user_ids = UserRole.
