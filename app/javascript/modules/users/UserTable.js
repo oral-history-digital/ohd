@@ -30,22 +30,27 @@ export default function UserTable() {
     const [filter, setFilter] = useState('');
 
     const [projectFilter, setProjectFilter] = useState('');
-    const handleProjectFilterChange = (name, value) => {
+    const handleProjectFilterChange = (_, value) => {
         setProjectFilter(value);
     };
 
     const [roleFilter, setRoleFilter] = useState('');
-    const handleRoleFilterChange = (name, value) => {
+    const handleRoleFilterChange = (_, value) => {
         setRoleFilter(value);
     };
 
     const [mfaFilter, setMfaFilter] = useState('');
-    const handleMfaFilterChange = (name, value) => {
+    const handleMfaFilterChange = (_, value) => {
         setMfaFilter(value);
     };
 
+    const [projectManagerFilter, setProjectManagerFilter] = useState('');
+    const handleProjectManagerFilterChange = (_, value) => {
+        setProjectManagerFilter(value);
+    };
+
     const [localeFilter, setLocaleFilter] = useState('');
-    const handleLocaleFilterChange = (name, value) => {
+    const handleLocaleFilterChange = (_, value) => {
         setLocaleFilter(value);
     };
     const localeFilterValues = ['all'].concat(
@@ -57,7 +62,7 @@ export default function UserTable() {
     const [workflowStateFilter, setWorkflowStateFilter] = useState(
         project.is_ohd ? 'afirmed' : 'project_access_requested'
     );
-    const handleWorkflowStateFilterChange = (name, value) => {
+    const handleWorkflowStateFilterChange = (_, value) => {
         setWorkflowStateFilter(value);
     };
     const workflowStateFilterValues = project.is_ohd
@@ -81,6 +86,7 @@ export default function UserTable() {
         projectFilter,
         roleFilter,
         mfaFilter,
+        projectManagerFilter,
         sorting
     );
 
@@ -265,14 +271,31 @@ export default function UserTable() {
                     keepOrder={true}
                 />
                 {project.is_ohd && (
-                    <SelectField
-                        className="u-mb-small"
-                        values={projects}
-                        label={t('activerecord.models.project.one')}
-                        attribute="project"
-                        handleChange={handleProjectFilterChange}
-                        withEmpty={true}
-                    />
+                    <>
+                        <SelectField
+                            className="u-mb-small"
+                            values={[
+                                { id: 'yes', name: t('boolean_value.true') },
+                                { id: 'no', name: t('boolean_value.false') },
+                            ]}
+                            label={t(
+                                'modules.project_access.archive_management_in'
+                            )}
+                            attribute="project_manager"
+                            handleChange={handleProjectManagerFilterChange}
+                            withEmpty={true}
+                            keepOrder={true}
+                        />
+
+                        <SelectField
+                            className="u-mb-small"
+                            values={projects}
+                            label={t('activerecord.models.project.one')}
+                            attribute="project"
+                            handleChange={handleProjectFilterChange}
+                            withEmpty={true}
+                        />
+                    </>
                 )}
                 {!project.is_ohd && (
                     <Fetch

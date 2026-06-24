@@ -137,6 +137,17 @@ class UsersController < ApplicationController
     users = users.where("otp_required_for_login = ? OR passkey_required_for_login = ?", true, true) if params[:mfa] == 'enabled'
     users = users.where(otp_required_for_login: [false, nil], passkey_required_for_login: [false, nil]) if params[:mfa] == 'disabled'
 
+    # Filter users by project manager role if the 'project_manager' parameter is present
+    if %w(yes no).include?(params[:project_manager])
+      manager_user_ids = UserRole.
+        joins(role: :translations).
+        where(role_translations: { name: 'Archivmanagement' }).
+        select(:user_id)
+      users = params[:project_manager] == 'yes' ?
+        users.where(id: manager_user_ids) :
+        users.where.not(id: manager_user_ids)
+    end
+
     if !params[:workflow_users_for_project].blank?
       workflowRoleIds = current_project.roles.where(name: %w(Redaktion Qualitätsmanagement Archivmanagement)).map(&:id)
       users = users.joins(:user_roles).where("user_roles.role_id IN (?)", workflowRoleIds)
