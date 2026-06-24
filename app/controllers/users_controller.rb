@@ -133,6 +133,10 @@ class UsersController < ApplicationController
     users = users.where(default_locale: params[:default_locale]) if (!params[:default_locale].blank? || params[:default_locale] == 'all')
     users = users.joins(:user_roles).where("user_roles.role_id = ?", params[:role]) if !params[:role].blank?
 
+    # Filter users by MFA status if the 'mfa' parameter is present
+    users = users.where("otp_required_for_login = ? OR passkey_required_for_login = ?", true, true) if params[:mfa] == 'enabled'
+    users = users.where(otp_required_for_login: [false, nil], passkey_required_for_login: [false, nil]) if params[:mfa] == 'disabled'
+
     if !params[:workflow_users_for_project].blank?
       workflowRoleIds = current_project.roles.where(name: %w(Redaktion Qualitätsmanagement Archivmanagement)).map(&:id)
       users = users.joins(:user_roles).where("user_roles.role_id IN (?)", workflowRoleIds)

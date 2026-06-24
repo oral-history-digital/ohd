@@ -8,6 +8,7 @@ export default function useUsers(
     localeFilter,
     projectFilter,
     roleFilter,
+    mfaFilter,
     sorting
 ) {
     const pathBase = usePathBase();
@@ -27,6 +28,9 @@ export default function useUsers(
     }
     if (roleFilter) {
         dataPath += `&role=${roleFilter}`;
+    }
+    if (mfaFilter) {
+        dataPath += `&mfa=${mfaFilter}`;
     }
     if (sorting?.[0]) {
         dataPath += `&order=${sorting[0].id}&direction=${sorting[0].desc ? 'desc' : 'asc'}`;
