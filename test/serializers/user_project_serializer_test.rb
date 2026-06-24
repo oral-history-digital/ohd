@@ -10,4 +10,12 @@ class UserProjectSerializerTest < ActiveSupport::TestCase
     assert_equal 'test', serializer.shortname
     assert_equal 'Test Project', serializer.name
   end
+
+  test 'handles missing project' do
+    user_project = OpenStruct.new(project: nil)
+    serializer = UserProjectSerializer.new(user_project)
+
+    assert_nil serializer.shortname
+    assert_nil serializer.name
+  end
 end
