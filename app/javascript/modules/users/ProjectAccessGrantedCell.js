@@ -6,7 +6,8 @@ export default function ProjectAccessGrantedCell({ row }) {
     const count = Object.values(user.user_projects).reduce((n, up) => {
         return (
             n +
-            (up.shortname !== 'ohd' &&
+            (up.shortname &&
+                up.shortname !== 'ohd' &&
                 up.workflow_state === 'project_access_granted')
         );
     }, 0);

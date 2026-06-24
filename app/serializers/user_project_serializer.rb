@@ -38,10 +38,10 @@ class UserProjectSerializer < ApplicationSerializer
   end
 
   def shortname
-    object.project.shortname
+    object.project&.shortname
   end
 
   def name
-    object.project.name
+    object.project&.name
   end
 end

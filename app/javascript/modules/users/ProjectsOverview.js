@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 export default function ProjectsOverview({ user }) {
     const { t, locale } = useI18n();
     const userProjects = Object.values(user.user_projects)
+        .filter((userProject) => userProject.shortname)
         .filter((userProject) => userProject.shortname !== 'ohd')
         .sort((a, b) =>
             `${a.name} ${a.shortname}`.localeCompare(
