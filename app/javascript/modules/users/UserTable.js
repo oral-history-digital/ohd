@@ -223,6 +223,7 @@ export default function UserTable() {
                 {data?.total} {t('activerecord.models.user.other')}
             </h1>
             <TableWithPagination
+                className="UserTable"
                 data={data?.data || []}
                 pageCount={data?.result_pages_count}
                 columns={columns}
@@ -237,86 +238,96 @@ export default function UserTable() {
                 manualSort={sorting}
                 changePageSize={false}
             >
-                <SelectField
-                    className="u-mb-small"
-                    values={workflowStateFilterValues}
-                    label={t('activerecord.attributes.user.workflow_state')}
-                    attribute="workflow_state"
-                    optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
-                    handleChange={handleWorkflowStateFilterChange}
-                    withEmpty={false}
-                    keepOrder={true}
-                />
-                {project.available_locales.length > 1 && (
+                <div className="UserTable-filters">
                     <SelectField
-                        className="u-mb-small"
-                        values={localeFilterValues}
-                        label={t('activerecord.attributes.user.default_locale')}
-                        attribute="default_locale"
-                        optionsScope={'default_locales'}
-                        handleChange={handleLocaleFilterChange}
+                        className="UserTable-filter"
+                        values={workflowStateFilterValues}
+                        label={t('activerecord.attributes.user.workflow_state')}
+                        attribute="workflow_state"
+                        optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
+                        handleChange={handleWorkflowStateFilterChange}
                         withEmpty={false}
+                        keepOrder={true}
                     />
-                )}
-                <SelectField
-                    className="u-mb-small"
-                    values={[
-                        { id: 'enabled', name: t('enabled') },
-                        { id: 'disabled', name: t('disabled') },
-                    ]}
-                    label="MFA"
-                    attribute="mfa"
-                    handleChange={handleMfaFilterChange}
-                    withEmpty={true}
-                    keepOrder={true}
-                />
-                {project.is_ohd && (
-                    <>
+                    {project.available_locales.length > 1 && (
                         <SelectField
-                            className="u-mb-small"
-                            values={[
-                                { id: 'yes', name: t('boolean_value.true') },
-                                { id: 'no', name: t('boolean_value.false') },
-                            ]}
+                            className="UserTable-filter"
+                            values={localeFilterValues}
                             label={t(
-                                'modules.project_access.archive_management_in'
+                                'activerecord.attributes.user.default_locale'
                             )}
-                            attribute="project_manager"
-                            handleChange={handleProjectManagerFilterChange}
-                            withEmpty={true}
-                            keepOrder={true}
+                            attribute="default_locale"
+                            optionsScope={'default_locales'}
+                            handleChange={handleLocaleFilterChange}
+                            withEmpty={false}
                         />
-
-                        <SelectField
-                            className="u-mb-small"
-                            values={projects}
-                            label={t('activerecord.models.project.one')}
-                            attribute="project"
-                            handleChange={handleProjectFilterChange}
-                            withEmpty={true}
-                        />
-                    </>
-                )}
-                {!project.is_ohd && (
-                    <Fetch
-                        fetchParams={[
-                            'roles',
-                            null,
-                            null,
-                            `for_projects=${project?.id}`,
+                    )}
+                    <SelectField
+                        className="UserTable-filter"
+                        values={[
+                            { id: 'enabled', name: t('enabled') },
+                            { id: 'disabled', name: t('disabled') },
                         ]}
-                        testSelector={getRolesForCurrentProjectFetched}
-                    >
-                        <SelectField
-                            className="u-mb-small"
-                            values={projectRoles}
-                            label={t('activerecord.models.role.one')}
-                            attribute="role"
-                            handleChange={handleRoleFilterChange}
-                            withEmpty={true}
-                        />
-                    </Fetch>
-                )}
+                        label="MFA"
+                        attribute="mfa"
+                        handleChange={handleMfaFilterChange}
+                        withEmpty={true}
+                        keepOrder={true}
+                    />
+                    {project.is_ohd && (
+                        <>
+                            <SelectField
+                                className="UserTable-filter"
+                                values={[
+                                    {
+                                        id: 'yes',
+                                        name: t('boolean_value.true'),
+                                    },
+                                    {
+                                        id: 'no',
+                                        name: t('boolean_value.false'),
+                                    },
+                                ]}
+                                label={t(
+                                    'modules.project_access.archive_management_in'
+                                )}
+                                attribute="project_manager"
+                                handleChange={handleProjectManagerFilterChange}
+                                withEmpty={true}
+                                keepOrder={true}
+                            />
+
+                            <SelectField
+                                className="UserTable-filter UserTable-filter--wide"
+                                values={projects}
+                                label={t('activerecord.models.project.one')}
+                                attribute="project"
+                                handleChange={handleProjectFilterChange}
+                                withEmpty={true}
+                            />
+                        </>
+                    )}
+                    {!project.is_ohd && (
+                        <Fetch
+                            fetchParams={[
+                                'roles',
+                                null,
+                                null,
+                                `for_projects=${project?.id}`,
+                            ]}
+                            testSelector={getRolesForCurrentProjectFetched}
+                        >
+                            <SelectField
+                                className="UserTable-filter UserTable-filter--wide"
+                                values={projectRoles}
+                                label={t('activerecord.models.role.one')}
+                                attribute="role"
+                                handleChange={handleRoleFilterChange}
+                                withEmpty={true}
+                            />
+                        </Fetch>
+                    )}
+                </div>
             </TableWithPagination>
         </>
     );
