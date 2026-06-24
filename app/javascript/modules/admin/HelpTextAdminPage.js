@@ -24,7 +24,7 @@ export default function HelpTextAdminPage() {
                     <title>{t('activerecord.models.help_text.other')}</title>
                 </Helmet>
 
-                <AuthShowContainer ifLoggedIn>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {t('activerecord.models.help_text.other')}
                     </h1>

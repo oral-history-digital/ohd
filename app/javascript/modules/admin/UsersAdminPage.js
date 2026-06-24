@@ -12,7 +12,7 @@ export default function UsersAdminPage() {
                 <title>{t('activerecord.models.user.other')}</title>
             </Helmet>
 
-            <AuthShowContainer ifLoggedIn>
+            <AuthShowContainer hasProjectAccess>
                 <AuthorizedContent object={{ type: 'User' }} action="update">
                     <UserTable />
                 </AuthorizedContent>

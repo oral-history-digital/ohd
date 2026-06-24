@@ -45,7 +45,7 @@ export default function PeopleAdminPage() {
                     <title>{t('activerecord.models.person.other')}</title>
                 </Helmet>
 
-                <AuthShowContainer ifLoggedIn>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {peopleCount} {t('activerecord.models.person.other')}
                     </h1>

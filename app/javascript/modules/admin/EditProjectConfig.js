@@ -141,7 +141,7 @@ export default function EditProjectConfig() {
                 <Helmet>
                     <title>{t(`edit.project.config`)}</title>
                 </Helmet>
-                <AuthShowContainer ifLoggedIn={true}>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {t(`edit.project.config`)}
                     </h1>

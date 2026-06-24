@@ -16,6 +16,7 @@ function renderAuthShow(overrides = {}) {
     const props = {
         isLoggedIn: false,
         ifLoggedIn: false,
+        hasProjectAccess: false,
         ifLoggedOut: false,
         ifNoProject: false,
         ifCatalog: false,
@@ -61,7 +62,17 @@ describe('AuthShow', () => {
         jest.clearAllMocks();
     });
 
-    it('renders children for logged in users with explicit project_access_granted', () => {
+    it('renders children for logged in users when ifLoggedIn is set', () => {
+        const html = renderAuthShow({
+            isLoggedIn: true,
+            ifLoggedIn: true,
+            user: buildUser({ user_projects: {} }),
+        });
+
+        expect(html).toContain('VISIBLE');
+    });
+
+    it('renders children for project-access users with explicit project_access_granted', () => {
         useProject.mockReturnValue({
             project: buildProject({ id: 42 }),
         });
@@ -74,7 +85,7 @@ describe('AuthShow', () => {
 
         const html = renderAuthShow({
             isLoggedIn: true,
-            ifLoggedIn: true,
+            hasProjectAccess: true,
             user,
         });
 
@@ -127,7 +138,7 @@ describe('AuthShow', () => {
 
         const html = renderAuthShow({
             isLoggedIn: true,
-            ifLoggedIn: true,
+            hasProjectAccess: true,
             user: buildUser(),
         });
 
@@ -157,10 +168,10 @@ describe('AuthShow', () => {
         expect(html).toBe('');
     });
 
-    it('returns null for logged in users without access when only ifLoggedIn is set', () => {
+    it('returns null for logged in users without access when only hasProjectAccess is set', () => {
         const html = renderAuthShow({
             isLoggedIn: true,
-            ifLoggedIn: true,
+            hasProjectAccess: true,
             user: buildUser({ user_projects: {} }),
         });
 
@@ -179,10 +190,10 @@ describe('AuthShow', () => {
         expect(html).toBe('');
     });
 
-    it('returns null for restricted interviews in ifLoggedIn mode when user lacks permission', () => {
+    it('returns null for restricted interviews in project-access mode when user lacks permission', () => {
         const html = renderAuthShow({
             isLoggedIn: true,
-            ifLoggedIn: true,
+            hasProjectAccess: true,
             user: buildUser({ interview_permissions: [] }),
             interview: { id: 7, workflow_state: 'restricted' },
         });

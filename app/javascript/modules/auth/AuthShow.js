@@ -9,10 +9,11 @@ import { useAuthorization } from './authorization-hook';
  *
  * @param {Object} props
  * @param {boolean} props.isLoggedIn Real auth state from account/session store.
- * @param {boolean} props.ifLoggedIn Enables the "logged-in access" branch.
- * This branch still requires project-level access conditions (admin, project
- * grant flags, or granted user_project access) and restricted interview
- * permission when applicable.
+ * @param {boolean} props.ifLoggedIn Enables rendering for logged-in users.
+ * @param {boolean} props.hasProjectAccess Enables the project-access branch.
+ * This branch requires project-level access conditions (admin, project grant
+ * flags, or granted user_project access) and restricted interview permission
+ * when applicable.
  * @param {boolean} props.ifLoggedOut Enables the "logged-out" branch. In
  * current logic this also allows rendering for logged-in users on restricted
  * interviews when they do not have permission.
@@ -30,6 +31,7 @@ import { useAuthorization } from './authorization-hook';
 export default function AuthShow({
     isLoggedIn,
     ifLoggedIn,
+    hasProjectAccess,
     ifLoggedOut,
     ifNoProject,
     ifCatalog,
@@ -54,25 +56,27 @@ export default function AuthShow({
             userProject?.workflow_state === 'project_access_granted'
     );
 
-    if (
-        // logged in and registered for the current project
+    if (isLoggedIn && ifLoggedIn && user) {
+        return children;
+    } else if (
+        // Logged in and with access permissions for the current project
         (((isInterviewRestricted && canViewInterview) ||
             !isInterviewRestricted) &&
             isLoggedIn &&
-            ifLoggedIn &&
+            hasProjectAccess &&
             user &&
             (user.admin ||
                 project?.grant_access_without_login ||
                 project?.grant_project_access_instantly ||
                 hasGrantedProjectAccess)) ||
-        // catalog-project
+        // Catalog project
         (ifCatalog && isCatalogProject)
     ) {
         return children;
     } else if (
-        // logged out
+        // Logged out
         (!isLoggedIn && ifLoggedOut) ||
-        // logged in and NOT registered for the current project
+        // Logged in and NO access permissions for the current project
         (isLoggedIn &&
             ifNoProject &&
             user &&
@@ -85,7 +89,7 @@ export default function AuthShow({
             isInterviewRestricted &&
             !canViewInterview)
     ) {
-        // logged out or still not registered for a project
+        // Logged out or still not registered for a project
         return children;
     } else {
         return null;
@@ -95,6 +99,7 @@ export default function AuthShow({
 AuthShow.propTypes = {
     isLoggedIn: PropTypes.bool,
     ifLoggedIn: PropTypes.bool,
+    hasProjectAccess: PropTypes.bool,
     ifLoggedOut: PropTypes.bool,
     ifNoProject: PropTypes.bool,
     ifCatalog: PropTypes.bool,
