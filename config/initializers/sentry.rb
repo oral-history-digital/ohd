@@ -1,6 +1,7 @@
 Sentry.init do |config|
+  dsn_key = Rails.env.production? ? :dsn_production : :dsn_staging
   config.dsn = ENV['SENTRY_DSN'].presence ||
-    Rails.application.credentials.dig(:sentry, :dsn)
+    Rails.application.credentials.dig(:sentry, dsn_key)
 
   config.breadcrumbs_logger = [:active_support_logger, :http_logger]
 
