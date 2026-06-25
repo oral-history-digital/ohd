@@ -310,7 +310,14 @@ Rails.application.routes.draw do
   # In production this should be the ohd-domain
   constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
     # Main-level routes (no :project_id), e.g. homepage
-    scope "/:locale" do
+    # The portal itself is only served in German and English, so the locale is
+    # constrained to de|en. Other locales are only valid below as
+    # /:project_id/:locale (e.g. /cd/ru). This also keeps short URLs from being
+    # misinterpreted as a locale: junk like /sitemap.xml or /testscript.php and
+    # two-letter project shortnames like /cd now fall through to the
+    # project-level routes below (/cd redirects to /cd/<default_locale>) or 404
+    # instead of hitting projects#index with a bogus locale.
+    scope "/:locale", :constraints => { locale: /(?:de|en)/ } do
       get "", to: "projects#index"
       get "/", to: "projects#index"
       resource :homepage_settings, only: [:show, :update]
@@ -336,6 +343,9 @@ Rails.application.routes.draw do
     scope "/:project_id", :constraints => { project_id: /[\-a-z0-9]{1,11}[a-z]/ } do
       get "/", to: redirect{|params, request|
         project = Project.by_identifier(params[:project_id])
+        # Unknown shortname (e.g. a bot hitting /sitemap.xml or /testscript.php
+        # that slips past the locale scope): return 404 instead of 500 on nil.
+        raise ActionController::RoutingError, "No project: #{params[:project_id]}" if project.nil?
         "/#{project.identifier}/#{project.default_locale}"
       }
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
