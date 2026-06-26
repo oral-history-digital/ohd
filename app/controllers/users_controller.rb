@@ -130,7 +130,7 @@ class UsersController < ApplicationController
     users = users.joins(:user_projects).where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all' && params[:workflow_users_for_project].blank?
     users = users.joins(:user_projects).where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
 
-    users = users.where(default_locale: params[:default_locale]) if (!params[:default_locale].blank? || params[:default_locale] == 'all')
+    users = users.where(default_locale: params[:default_locale]) if I18n.available_locales.map(&:to_s).include?(params[:default_locale])
     users = users.joins(:user_roles).where("user_roles.role_id = ?", params[:role]) if !params[:role].blank?
 
     # Filter users by MFA status if the 'mfa' parameter is present
