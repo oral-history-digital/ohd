@@ -22,7 +22,7 @@ export default function useUsers(
     if (workflowStateFilter) {
         dataPath += `&workflow_state=${workflowStateFilter}`;
     }
-    if (localeFilter) {
+    if (localeFilter && localeFilter !== 'all') {
         dataPath += `&default_locale=${localeFilter}`;
     }
     if (projectFilter) {
