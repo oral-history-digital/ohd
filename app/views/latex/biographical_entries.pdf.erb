@@ -44,5 +44,5 @@
     }
   %>
 
-  <%= raw biographical_entry.for_latex(header_locale) %>
+  <%= latex_sanitized_multiline_text(biographical_entry.text(header_locale)) %>
 <% end %>
