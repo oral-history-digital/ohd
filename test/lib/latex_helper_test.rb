@@ -78,6 +78,24 @@ class LatexHelperTest < ActiveSupport::TestCase
     assert_equal('A \\& B', latex_escape('A & B'))
   end
 
+  test 'latex_multiline_text escapes raw text once and preserves latex newline command' do
+    escaped = latex_multiline_text("A & B\nC % D")
+
+    assert_equal('A \\& B~\newline~C \\% D', escaped)
+  end
+
+  test 'latex_multiline_text converts quotes before escaping observations text' do
+    escaped = latex_multiline_text('"quoted" & raw', convert_quotes: true)
+
+    assert_equal('``quoted`` \\& raw', escaped)
+  end
+
+  test 'latex_sanitized_multiline_text strips html and escapes raw text once' do
+    escaped = latex_sanitized_multiline_text('<p>A &amp; B</p>')
+
+    assert_equal('A \\& B', escaped)
+  end
+
   test 'interview_date_for_pdf keeps multiple valid dates unchanged' do
     value = '03.07.2019,12.07.2019'
 

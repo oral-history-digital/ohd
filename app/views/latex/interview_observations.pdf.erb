@@ -30,4 +30,4 @@
   }
 %>
 
-<%= raw interview.observations_for_latex(content_locale) %>
+<%= latex_multiline_text(interview.observations(content_locale), convert_quotes: true) %>
