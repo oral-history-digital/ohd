@@ -17,7 +17,7 @@ export default function EditInterview() {
                 <Helmet>
                     <title>{t('edit.interview.new')}</title>
                 </Helmet>
-                <AuthShowContainer ifLoggedIn>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {t('edit.interview.new')}
                     </h1>

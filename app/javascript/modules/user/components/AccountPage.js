@@ -29,7 +29,7 @@ export default function AccountPage() {
                 <title>{t('account_page')}</title>
             </Helmet>
             <ErrorBoundary>
-                <AuthShowContainer ifLoggedIn ifNoProject>
+                <AuthShowContainer hasProjectAccess ifNoProject>
                     {isEditor && <HelpText code="account_page" />}
 
                     <div className="account-page-header">

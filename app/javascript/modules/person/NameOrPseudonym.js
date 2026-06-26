@@ -33,7 +33,7 @@ export default function NameOrPseudonym({
         }
 
         return (
-            <AuthShowContainer ifLoggedIn>
+            <AuthShowContainer hasProjectAccess>
                 <ContentField label={label} value={value} fetching={fetching} />
             </AuthShowContainer>
         );
@@ -46,7 +46,7 @@ export default function NameOrPseudonym({
 
     return (
         <>
-            <AuthShowContainer ifLoggedIn>
+            <AuthShowContainer hasProjectAccess>
                 <ContentField label={label} value={value} fetching={fetching}>
                     <AuthorizedContent object={person} action="update">
                         <Modal

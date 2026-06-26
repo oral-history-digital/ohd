@@ -65,7 +65,7 @@ export default function Interview({
                 <Helmet>
                     <title>{documentTitle}</title>
                 </Helmet>
-                <AuthShowContainer ifLoggedIn>
+                <AuthShowContainer hasProjectAccess>
                     <AuthorizedContent
                         object={interview}
                         action="show"

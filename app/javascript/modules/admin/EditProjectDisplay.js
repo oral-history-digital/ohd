@@ -54,7 +54,7 @@ export default function EditProjectDisplay() {
                 <Helmet>
                     <title>{t(`edit.project.display`)}</title>
                 </Helmet>
-                <AuthShowContainer ifLoggedIn={true}>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {t(`edit.project.display`)}
                     </h1>

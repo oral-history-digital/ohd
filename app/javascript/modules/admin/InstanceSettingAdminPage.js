@@ -305,7 +305,7 @@ export default function InstanceSettingAdminPage() {
                     <title>{t('edit.instance.title')}</title>
                 </Helmet>
 
-                <AuthShowContainer ifLoggedIn>
+                <AuthShowContainer hasProjectAccess>
                     <AuthorizedContent
                         object={{ type: 'InstanceSetting' }}
                         action="update"

@@ -47,7 +47,7 @@ export default function StatisticsAdminPage() {
                 <title>{t('edit.statistics.title')}</title>
             </Helmet>
 
-            <AuthShowContainer ifLoggedIn>
+            <AuthShowContainer hasProjectAccess>
                 <AuthorizedContent object={{ type: 'User' }} action="update">
                     <h1 className="Page-main-title">
                         {t('edit.statistics.title')}

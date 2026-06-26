@@ -71,7 +71,7 @@ export default function EditProjectInfo() {
                 <Helmet>
                     <title>{t('edit.project.info')}</title>
                 </Helmet>
-                <AuthShowContainer ifLoggedIn={true}>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {t(`edit.project.info`)}
                     </h1>

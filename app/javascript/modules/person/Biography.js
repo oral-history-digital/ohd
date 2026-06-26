@@ -38,7 +38,7 @@ export default function Biography() {
     return (
         <div className={classNames('ContentField', 'LoadingOverlay')}>
             {firstPublicEntry && (
-                <AuthShowContainer ifLoggedIn={true}>
+                <AuthShowContainer hasProjectAccess>
                     <p>
                         <span className="flyout-content-label">
                             {t('history')}:
