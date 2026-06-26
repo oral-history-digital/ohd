@@ -2,25 +2,10 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import ArchiveManagementInCell from './ArchiveManagementInCell';
 
-jest.mock('modules/i18n', () => ({
-    useI18n: () => ({ t: (key) => key }),
-}));
-
-const mockUseSelector = jest.fn();
-
-jest.mock('react-redux', () => {
-    const actual = jest.requireActual('react-redux');
-    return {
-        ...actual,
-        useSelector: (selector) => mockUseSelector(selector),
-    };
-});
-
 describe('<ArchiveManagementInCell />', () => {
     let warnSpy;
 
     beforeEach(() => {
-        mockUseSelector.mockReset();
         warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     });
 
@@ -28,22 +13,23 @@ describe('<ArchiveManagementInCell />', () => {
         warnSpy.mockRestore();
     });
 
-    it('shows fallback text for missing project roles and logs a warning', () => {
-        mockUseSelector.mockReturnValue({
-            1: { id: 1, shortname: 'ohd' },
-        });
-
+    it('uses user role project payload for shortname tooltip and missing project fallback', () => {
         const row = {
             original: {
+                id: 17,
                 user_roles: {
                     1: {
                         id: 1,
-                        name: 'Archivmanagement',
+                        name: 'Archive Manager',
+                        archive_management: true,
                         project_id: 1,
+                        project_shortname: 'ohd',
+                        project_name: 'Oral-History.Digital',
                     },
                     2: {
                         id: 2,
-                        name: 'Archivmanagement',
+                        name: 'Archive Manager',
+                        archive_management: true,
                         project_id: 999,
                     },
                 },
@@ -55,6 +41,8 @@ describe('<ArchiveManagementInCell />', () => {
         );
 
         expect(html).toContain('ohd');
+        expect(html).toContain('title="Oral-History.Digital (ID: 1)"');
+        expect(html).toContain('>, Unknown project (ID: 999)<');
         expect(html).toContain('Unknown project (ID: 999)');
         expect(warnSpy).toHaveBeenCalledWith(
             '[ArchiveManagementInCell] Missing project for user role',
@@ -65,15 +53,14 @@ describe('<ArchiveManagementInCell />', () => {
         );
     });
 
-    it('does not throw when no matching projects are available', () => {
-        mockUseSelector.mockReturnValue({});
-
+    it('does not throw when no matching role project payload is available', () => {
         const row = {
             original: {
                 user_roles: {
                     3: {
                         id: 3,
-                        name: 'Archivmanagement',
+                        name: 'Archive Manager',
+                        archive_management: true,
                         project_id: 321,
                     },
                 },

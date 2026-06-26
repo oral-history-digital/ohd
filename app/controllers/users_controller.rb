@@ -130,8 +130,28 @@ class UsersController < ApplicationController
     users = users.joins(:user_projects).where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all' && params[:workflow_users_for_project].blank?
     users = users.joins(:user_projects).where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
 
-    users = users.where(default_locale: params[:default_locale]) if (!params[:default_locale].blank? || params[:default_locale] == 'all')
+    users = users.where(default_locale: params[:default_locale]) if I18n.available_locales.map(&:to_s).include?(params[:default_locale])
     users = users.joins(:user_roles).where("user_roles.role_id = ?", params[:role]) if !params[:role].blank?
+
+    # Filter users by MFA status if the 'mfa' parameter is present
+    users = users.where("otp_required_for_login = ? OR passkey_required_for_login = ?", true, true) if params[:mfa] == 'enabled'
+    users = users.where(otp_required_for_login: [false, nil], passkey_required_for_login: [false, nil]) if params[:mfa] == 'disabled'
+
+    # Filter users by admin status if the 'superuser' parameter is present and the current user is an admin
+    if current_user&.admin? && %w(yes no).include?(params[:superuser])
+      users = users.where(admin: params[:superuser] == 'yes')
+    end
+
+    # Filter users by project manager role if the 'project_manager' parameter is present
+    if %w(yes no).include?(params[:project_manager])
+      manager_user_ids = UserRole.
+        joins(role: :translations).
+        where(role_translations: { name: 'Archivmanagement' }).
+        select(:user_id)
+      users = params[:project_manager] == 'yes' ?
+        users.where(id: manager_user_ids) :
+        users.where.not(id: manager_user_ids)
+    end
 
     if !params[:workflow_users_for_project].blank?
       workflowRoleIds = current_project.roles.where(name: %w(Redaktion Qualitätsmanagement Archivmanagement)).map(&:id)
@@ -146,7 +166,11 @@ class UsersController < ApplicationController
       total_pages = users.total_pages
     end
 
-    users = users.includes(roles: :permissions).map{|u| UserSerializer.new(u)}
+    users = users.includes(
+      roles: :permissions,
+      user_projects: :project,
+      user_roles: {role: [:translations, :project]}
+    ).map{|u| UserSerializer.new(u)}
 
     respond_to do |format|
       format.html { render 'react/app' }

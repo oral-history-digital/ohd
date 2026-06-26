@@ -2,6 +2,7 @@ export {
     formatCollectionCitation,
     formatProjectCitation,
 } from './formatCitation';
+export { default as formatDate } from './formatDate';
 export { default as formatDuration } from './formatDuration';
 export { default as formatNumber } from './formatNumber';
 export {

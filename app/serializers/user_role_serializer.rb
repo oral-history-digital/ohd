@@ -1,8 +1,11 @@
 class UserRoleSerializer < ApplicationSerializer
   attributes :id,
     :name,
+    :archive_management,
     :desc,
     :project_id,
+    :project_shortname,
+    :project_name,
     :role_permissions#,
     #:permissions,
     #:created_at
@@ -15,12 +18,26 @@ class UserRoleSerializer < ApplicationSerializer
     object.role.name
   end
 
+  def archive_management
+    object.role.translations.any? do |translation|
+      translation.name == 'Archivmanagement'
+    end
+  end
+
   def desc 
     object.role.desc
   end
 
   def project_id
     object.role.project_id
+  end
+
+  def project_shortname
+    object.role.project.shortname
+  end
+
+  def project_name
+    object.role.project.name
   end
 
   def role_permissions

@@ -3,9 +3,10 @@ import { useMemo, useState } from 'react';
 import {
     Fetch,
     getCurrentProject,
-    getProjects,
+    getCurrentUser,
     getRolesForCurrentProject,
     getRolesForCurrentProjectFetched,
+    useGetProjects,
 } from 'modules/data';
 import { SelectField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -13,6 +14,7 @@ import { DateCell, TableWithPagination } from 'modules/tables';
 import { useSelector } from 'react-redux';
 
 import ArchiveManagementInCell from './ArchiveManagementInCell';
+import MfaStatusCell from './MfaStatusCell';
 import ProjectAccessGrantedCell from './ProjectAccessGrantedCell';
 import RolesCell from './RolesCell';
 import UserRowActions from './UserRowActions';
@@ -22,24 +24,40 @@ import useUsers from './useUsers';
 export default function UserTable() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
-    const projects = useSelector(getProjects);
+    const currentUser = useSelector(getCurrentUser);
+    const { projects } = useGetProjects({ all: true });
     const projectRoles = useSelector(getRolesForCurrentProject);
 
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
 
     const [projectFilter, setProjectFilter] = useState('');
-    const handleProjectFilterChange = (name, value) => {
+    const handleProjectFilterChange = (_, value) => {
         setProjectFilter(value);
     };
 
     const [roleFilter, setRoleFilter] = useState('');
-    const handleRoleFilterChange = (name, value) => {
+    const handleRoleFilterChange = (_, value) => {
         setRoleFilter(value);
     };
 
+    const [mfaFilter, setMfaFilter] = useState('');
+    const handleMfaFilterChange = (_, value) => {
+        setMfaFilter(value);
+    };
+
+    const [projectManagerFilter, setProjectManagerFilter] = useState('');
+    const handleProjectManagerFilterChange = (_, value) => {
+        setProjectManagerFilter(value);
+    };
+
+    const [superuserFilter, setSuperuserFilter] = useState('');
+    const handleSuperuserFilterChange = (_, value) => {
+        setSuperuserFilter(value);
+    };
+
     const [localeFilter, setLocaleFilter] = useState('');
-    const handleLocaleFilterChange = (name, value) => {
+    const handleLocaleFilterChange = (_, value) => {
         setLocaleFilter(value);
     };
     const localeFilterValues = ['all'].concat(
@@ -51,7 +69,7 @@ export default function UserTable() {
     const [workflowStateFilter, setWorkflowStateFilter] = useState(
         project.is_ohd ? 'afirmed' : 'project_access_requested'
     );
-    const handleWorkflowStateFilterChange = (name, value) => {
+    const handleWorkflowStateFilterChange = (_, value) => {
         setWorkflowStateFilter(value);
     };
     const workflowStateFilterValues = project.is_ohd
@@ -74,6 +92,9 @@ export default function UserTable() {
         localeFilter,
         projectFilter,
         roleFilter,
+        mfaFilter,
+        projectManagerFilter,
+        superuserFilter,
         sorting
     );
 
@@ -101,6 +122,12 @@ export default function UserTable() {
                 id: 'email',
                 accessorFn: (row) => row.email,
                 header: t('activerecord.attributes.user.email'),
+            },
+            {
+                id: 'mfa',
+                enableSorting: false,
+                header: 'MFA',
+                cell: MfaStatusCell,
             },
         ],
         [locale]
@@ -170,8 +197,8 @@ export default function UserTable() {
         [locale, project, dataPath]
     );
 
-    const actionColumns = useMemo(
-        () => [
+    const actionColumns = useMemo(() => {
+        const columns = [
             {
                 id: 'actions',
                 enableSorting: false,
@@ -179,16 +206,20 @@ export default function UserTable() {
                 accessorFn: getDataPath,
                 cell: UserRowActions,
             },
-            {
+        ];
+
+        if (!project.is_ohd) {
+            columns.push({
                 id: 'interviewPermissions',
                 enableSorting: false,
                 header: t('modules.tables.interviewPermissions'),
                 accessorFn: getDataPath,
                 cell: UserRowInterviewPermissions,
-            },
-        ],
-        [locale, project, dataPath]
-    );
+            });
+        }
+
+        return columns;
+    }, [locale, project, dataPath]);
 
     const columns = baseColumns
         .concat(!project.is_ohd ? projectColumns : ohdColumns)
@@ -200,6 +231,7 @@ export default function UserTable() {
                 {data?.total} {t('activerecord.models.user.other')}
             </h1>
             <TableWithPagination
+                className="UserTable"
                 data={data?.data || []}
                 pageCount={data?.result_pages_count}
                 columns={columns}
@@ -214,57 +246,110 @@ export default function UserTable() {
                 manualSort={sorting}
                 changePageSize={false}
             >
-                <SelectField
-                    className="u-mb-small"
-                    values={workflowStateFilterValues}
-                    label={t('activerecord.attributes.user.workflow_state')}
-                    attribute="workflow_state"
-                    optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
-                    handleChange={handleWorkflowStateFilterChange}
-                    withEmpty={false}
-                    keepOrder={true}
-                />
-                {project.available_locales.length > 1 && (
+                <div className="UserTable-filters">
                     <SelectField
-                        className="u-mb-small"
-                        values={localeFilterValues}
-                        label={t('activerecord.attributes.user.default_locale')}
-                        attribute="default_locale"
-                        optionsScope={'default_locales'}
-                        handleChange={handleLocaleFilterChange}
+                        className="UserTable-filter"
+                        values={workflowStateFilterValues}
+                        label={t('activerecord.attributes.user.workflow_state')}
+                        attribute="workflow_state"
+                        optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
+                        handleChange={handleWorkflowStateFilterChange}
                         withEmpty={false}
+                        keepOrder={true}
                     />
-                )}
-                {project.is_ohd && (
-                    <SelectField
-                        className="u-mb-small"
-                        values={projects}
-                        label={t('activerecord.models.project.one')}
-                        attribute="project"
-                        handleChange={handleProjectFilterChange}
-                        withEmpty={true}
-                    />
-                )}
-                {!project.is_ohd && (
-                    <Fetch
-                        fetchParams={[
-                            'roles',
-                            null,
-                            null,
-                            `for_projects=${project?.id}`,
-                        ]}
-                        testSelector={getRolesForCurrentProjectFetched}
-                    >
+                    {project.available_locales.length > 1 && (
                         <SelectField
-                            className="u-mb-small"
-                            values={projectRoles}
-                            label={t('activerecord.models.role.one')}
-                            attribute="role"
-                            handleChange={handleRoleFilterChange}
-                            withEmpty={true}
+                            className="UserTable-filter"
+                            values={localeFilterValues}
+                            label={t(
+                                'activerecord.attributes.user.default_locale'
+                            )}
+                            attribute="default_locale"
+                            optionsScope={'default_locales'}
+                            handleChange={handleLocaleFilterChange}
+                            withEmpty={false}
                         />
-                    </Fetch>
-                )}
+                    )}
+                    <SelectField
+                        className="UserTable-filter"
+                        values={[
+                            { id: 'enabled', name: t('enabled') },
+                            { id: 'disabled', name: t('disabled') },
+                        ]}
+                        label="MFA"
+                        attribute="mfa"
+                        handleChange={handleMfaFilterChange}
+                        withEmpty={true}
+                        keepOrder={true}
+                    />
+                    {project.is_ohd && (
+                        <>
+                            <SelectField
+                                className="UserTable-filter"
+                                values={[
+                                    {
+                                        id: 'yes',
+                                        name: t('boolean_value.true'),
+                                    },
+                                    {
+                                        id: 'no',
+                                        name: t('boolean_value.false'),
+                                    },
+                                ]}
+                                label={t(
+                                    'modules.project_access.archive_management_in'
+                                )}
+                                attribute="project_manager"
+                                handleChange={handleProjectManagerFilterChange}
+                                withEmpty={true}
+                                keepOrder={true}
+                            />
+
+                            <SelectField
+                                className="UserTable-filter UserTable-filter--wide"
+                                values={projects}
+                                label={t('activerecord.models.project.one')}
+                                attribute="project"
+                                handleChange={handleProjectFilterChange}
+                                withEmpty={true}
+                            />
+                        </>
+                    )}
+                    {!project.is_ohd && (
+                        <Fetch
+                            fetchParams={[
+                                'roles',
+                                null,
+                                null,
+                                `for_projects=${project?.id}`,
+                            ]}
+                            testSelector={getRolesForCurrentProjectFetched}
+                        >
+                            <SelectField
+                                className="UserTable-filter UserTable-filter--wide"
+                                values={projectRoles}
+                                label={t('activerecord.models.role.one')}
+                                attribute="role"
+                                handleChange={handleRoleFilterChange}
+                                withEmpty={true}
+                            />
+                        </Fetch>
+                    )}
+                    {currentUser?.admin && (
+                        <SelectField
+                            className="UserTable-filter"
+                            values={[
+                                { id: 'yes', name: t('boolean_value.true') },
+                                { id: 'no', name: t('boolean_value.false') },
+                            ]}
+                            label={t('user.superuser')}
+                            attribute="superuser"
+                            handleChange={handleSuperuserFilterChange}
+                            withEmpty={true}
+                            keepOrder={true}
+                        />
+                    )}
+                </div>
             </TableWithPagination>
         </>
     );

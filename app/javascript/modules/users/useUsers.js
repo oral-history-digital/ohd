@@ -8,6 +8,9 @@ export default function useUsers(
     localeFilter,
     projectFilter,
     roleFilter,
+    mfaFilter,
+    projectManagerFilter,
+    superuserFilter,
     sorting
 ) {
     const pathBase = usePathBase();
@@ -19,7 +22,7 @@ export default function useUsers(
     if (workflowStateFilter) {
         dataPath += `&workflow_state=${workflowStateFilter}`;
     }
-    if (localeFilter) {
+    if (localeFilter && localeFilter !== 'all') {
         dataPath += `&default_locale=${localeFilter}`;
     }
     if (projectFilter) {
@@ -27,6 +30,15 @@ export default function useUsers(
     }
     if (roleFilter) {
         dataPath += `&role=${roleFilter}`;
+    }
+    if (mfaFilter) {
+        dataPath += `&mfa=${mfaFilter}`;
+    }
+    if (projectManagerFilter) {
+        dataPath += `&project_manager=${projectManagerFilter}`;
+    }
+    if (superuserFilter) {
+        dataPath += `&superuser=${superuserFilter}`;
     }
     if (sorting?.[0]) {
         dataPath += `&order=${sorting[0].id}&direction=${sorting[0].desc ? 'desc' : 'asc'}`;

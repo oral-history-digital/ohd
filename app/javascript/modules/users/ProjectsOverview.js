@@ -1,71 +1,117 @@
-import { useState } from 'react';
-
-import { getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { Disclosure } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 export default function ProjectsOverview({ user }) {
     const { t, locale } = useI18n();
-    const projects = useSelector(getProjects);
-    const userProjects = Object.values(user.user_projects);
+    const userProjects = Object.values(user.user_projects)
+        .filter((userProject) => userProject.shortname)
+        .filter((userProject) => userProject.shortname !== 'ohd')
+        .sort((a, b) =>
+            `${a.name} ${a.shortname}`.localeCompare(
+                `${b.name} ${b.shortname}`,
+                locale
+            )
+        );
+    const disclosureThreshold = 10;
 
-    const [showProject, setShowProject] = useState('');
+    const capitalizeFirstLetter = (str) =>
+        str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
 
-    const projectDisplay = (userProject) => {
+    const projectGroups = [
+        {
+            title: capitalizeFirstLetter(
+                t('workflow_states.user_projects.project_access_requested')
+            ),
+            projects: userProjects.filter(
+                (userProject) =>
+                    userProject.workflow_state === 'project_access_requested'
+            ),
+        },
+        {
+            title: capitalizeFirstLetter(
+                t('workflow_states.user_projects.project_access_granted')
+            ),
+            projects: userProjects.filter(
+                (userProject) =>
+                    userProject.workflow_state === 'project_access_granted'
+            ),
+        },
+        {
+            title: capitalizeFirstLetter(
+                [
+                    'project_access_rejected',
+                    'project_access_blocked',
+                    'project_access_terminated',
+                ]
+                    .map((key) => t(`workflow_states.user_projects.${key}`))
+                    .join('/')
+            ),
+            projects: userProjects.filter(
+                (userProject) =>
+                    ![
+                        'project_access_requested',
+                        'project_access_granted',
+                    ].includes(userProject.workflow_state)
+            ),
+            showStatus: true,
+        },
+    ].filter((group) => group.projects.length > 0);
+
+    const projectDetails = (userProject, showStatus = false) => {
         const workflowState = t(
             `workflow_states.user_projects.${userProject.workflow_state}`
         );
-        const project = projects[userProject.project_id];
-
-        if (!project || project.is_ohd) {
-            return null;
-        }
-
-        const date = new Date(
+        const dateValue =
             userProject.processed_at ||
-                userProject.activated_at ||
-                userProject.updated_at
-        ).toLocaleDateString(locale, { dateStyle: 'medium' });
+            userProject.activated_at ||
+            userProject.updated_at;
+        const date = dateValue
+            ? new Date(dateValue).toLocaleDateString(locale, {
+                  dateStyle: 'medium',
+              })
+            : null;
+        const details = [showStatus && workflowState, date].filter(Boolean);
+
         return (
             <li key={userProject.id} className="DetailList-item">
-                <h4>
-                    <button
-                        type="button"
-                        className="Button Button--asLink"
-                        onClick={() =>
-                            setShowProject(
-                                showProject === project.shortname
-                                    ? ''
-                                    : project.shortname
-                            )
-                        }
-                    >
-                        {project.shortname}
-                    </button>
-                </h4>
-                <div
-                    className={
-                        showProject === project.shortname ? '' : 'hidden'
-                    }
-                >
-                    <p>
-                        {t('modules.project_access.actual_workflow_state') +
-                            ': ' +
-                            workflowState}
-                    </p>
-                    <p>{t('modules.project_access.at') + ': ' + date}</p>
-                </div>
+                <strong>{userProject.name}</strong> ({userProject.shortname})
+                {details.length > 0 && ` - ${details.join(' - ')}`}
             </li>
+        );
+    };
+
+    const projectList = (projects, showStatus) => (
+        <ul className="DetailList">
+            {projects.map((userProject) =>
+                projectDetails(userProject, showStatus)
+            )}
+        </ul>
+    );
+
+    const projectGroup = (group) => {
+        const list = projectList(group.projects, group.showStatus);
+
+        return (
+            <section key={group.title}>
+                <h4>{group.title}</h4>
+                {group.projects.length > disclosureThreshold ? (
+                    <Disclosure
+                        title={`${group.projects.length} ${t('activerecord.models.project.other')}`}
+                    >
+                        {list}
+                    </Disclosure>
+                ) : (
+                    list
+                )}
+            </section>
         );
     };
 
     return (
         <>
             <h3>{t('modules.project_access.many')}</h3>
-            <ul className="DetailList">
-                {userProjects.map((urp) => projectDisplay(urp))}
-            </ul>
+            {projectGroups.map((group) => projectGroup(group))}
         </>
     );
 }

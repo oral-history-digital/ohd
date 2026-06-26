@@ -31,3 +31,132 @@ div.account-page {
     }
   }
 }
+
+.UserTable {
+  > .u-mb-small {
+    .Input {
+      border: 1px solid $gray-light;
+      border-radius: 4px;
+      min-height: 38px;
+      padding: 0.25rem 0.75rem;
+    }
+  }
+
+  .UserTable-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: $base-unit;
+  }
+
+  .UserTable-filter {
+    margin: 0;
+    max-width: 100%;
+
+    .Input {
+      appearance: none;
+      background-color: #fff;
+      border: 1px solid $gray-light;
+      border-radius: 4px;
+      color: $gray-darkest;
+      min-height: 38px;
+      padding: 0.25rem 2rem 0.25rem 0.75rem;
+      width: 100%;
+    }
+
+    select.Input {
+      background-image:
+        linear-gradient(45deg, transparent 50%, $gray-medium 50%),
+        linear-gradient(135deg, $gray-medium 50%, transparent 50%);
+      background-position:
+        calc(100% - 16px) 50%,
+        calc(100% - 11px) 50%;
+      background-repeat: no-repeat;
+      background-size: 5px 5px;
+    }
+
+    select.Input:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 1px var(--secondary-color);
+    }
+  }
+
+  @include screen-m {
+    .UserTable-filters {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .UserTable-filter {
+      flex: 1;
+      max-width: 28rem;
+    }
+  }
+}
+
+.UserEdit {
+  color: $gray-darkest;
+}
+
+.UserEdit-section {
+  border-top: 1px solid $gray-lighter;
+  padding-top: $base-unit * 0.75;
+  margin-top: $base-unit;
+
+  &:first-child {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  h3 {
+    font-size: $font-size-heading-h3;
+    line-height: $line-height-heading-h3;
+    margin: 0 0 ($base-unit * 0.35);
+  }
+
+  h4 {
+    color: $gray-darkest;
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+    margin: ($base-unit * 0.5) 0 ($base-unit * 0.25);
+  }
+
+  .DetailList {
+    color: $gray-darkest;
+  }
+
+  .DetailList-item {
+    padding: 0.125rem 0;
+  }
+}
+
+.UserEdit-details {
+  display: grid;
+  gap: 0.125rem 1rem;
+}
+
+.UserEdit-detail {
+  font-size: $font-size-medium;
+  line-height: $line-height-medium;
+  margin: 0;
+}
+
+.UserEdit-detailName {
+  font-weight: bold;
+}
+
+#interview_permission {
+  margin-top: $base-unit;
+  .form-group,
+  .form-row {
+    margin: 0;
+  }
+}
+
+@media only screen and (min-width: 990px) {
+  #interview_permission.default .form-label {
+    width: 50%;
+  }
+}
