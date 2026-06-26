@@ -24,13 +24,6 @@ class BiographicalEntry < ApplicationRecord
     person.interviews.first && person.interviews.first.id
   end
 
-  def for_latex(locale)
-    sanitized_text = ActionView::Base.full_sanitizer.sanitize(text(locale))
-      .gsub("&amp;", "&")
-    escaped_text = LatexToPdf.escape_latex(sanitized_text)
-    escaped_text.gsub(/\r?\n/, '~\newline~')
-  end
-
   def public?
     workflow_state == 'public'
   end
