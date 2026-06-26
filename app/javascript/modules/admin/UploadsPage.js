@@ -14,7 +14,7 @@ export default function UploadsPage() {
                 <Helmet>
                     <title>{t(`edit.upload.upload`)}</title>
                 </Helmet>
-                <AuthShowContainer ifLoggedIn>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {t(`edit.upload.upload`)}
                     </h1>

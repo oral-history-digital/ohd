@@ -134,7 +134,7 @@ export default function InterviewTabPanel({
                                 </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>
-                        <AuthShowContainer ifLoggedIn>
+                        <AuthShowContainer hasProjectAccess>
                             <AuthorizedContent
                                 object={interview}
                                 action="show"
@@ -210,8 +210,8 @@ export default function InterviewTabPanel({
                 </AuthorizedContent>
 
                 {projectId !== PROJECT_CAMPSCAPES && (
-                    <AuthShowContainer ifLoggedIn>
-                        <AuthShowContainer ifLoggedIn={hasMap}>
+                    <AuthShowContainer hasProjectAccess>
+                        <AuthShowContainer hasProjectAccess={hasMap}>
                             <AuthorizedContent
                                 object={interview}
                                 action="show"

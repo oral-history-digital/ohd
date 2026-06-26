@@ -80,7 +80,7 @@ export default function EventTypesAdminPage() {
                     <title>{t(`activerecord.models.${scope}.other`)}</title>
                 </Helmet>
 
-                <AuthShowContainer ifLoggedIn>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {t(`activerecord.models.${scope}.other`)}
                     </h1>

@@ -156,7 +156,7 @@ export default function WrappedDataList({
                     <title>{t(`activerecord.models.${scope}.other`)}</title>
                 </Helmet>
 
-                <AuthShowContainer ifLoggedIn={true}>
+                <AuthShowContainer hasProjectAccess>
                     <h1 className="Page-main-title">
                         {t(`activerecord.models.${scope}.other`)}
                     </h1>
