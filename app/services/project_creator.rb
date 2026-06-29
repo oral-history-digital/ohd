@@ -6,6 +6,9 @@ class ProjectCreator < ApplicationService
     @project_params = project_params.merge(
       archive_id_number_length: 4,
       has_map: true,
+      primary_color: '83848e',
+      secondary_color: '5fc361',
+      editorial_color: '5f8ac3',
     )
     @user = user
     @is_ohd = is_ohd
@@ -280,8 +283,8 @@ class ProjectCreator < ApplicationService
       ar: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.'
     }
     restricted_landing_page_texts = {
-      de: 'Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.',
-      en: 'For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.',
+      de: '<p>Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.</p><p>Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.</p>',
+      en: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
       ru: 'По юридическим или этическим причинам это интервью доступно только по запросу. Пожалуйста, подайте заявку на расширенный доступ via e-mail.',
       es: 'Por razones legales o éticas, esta entrevista sólo es accesible previa solicitud. Por favor, solicite acceso ampliado via e-mail.',
       el: 'Για νομικούς ή δεοντολογικούς λόγους, η συνέντευξη αυτή είναι προσβάσιμη μόνο κατόπιν αιτήματος. Παρακαλείστε να υποβάλετε αίτηση για εκτεταμένη πρόσβαση via e-mail.',
@@ -289,7 +292,7 @@ class ProjectCreator < ApplicationService
       ar: "بسبب أسباب قانونية أو أخلاقية، هذه المقابلة متاحة فقط مع قيود. يرجى طلب الوصول الموسع عبر البريد الإلكتروني'"
     }
 
-    project.available_locales.each do |locale|
+    (project.available_locales | ['en']).each do |locale|
       project.update(
         landing_page_text: landing_page_texts[locale.to_sym],
         restricted_landing_page_text: restricted_landing_page_texts[locale.to_sym],
