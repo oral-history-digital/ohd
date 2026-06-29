@@ -10,6 +10,7 @@ import {
     InstanceSettingAdminPage,
     MetadataFieldsContainer,
     PeopleAdminPage,
+    StatisticsAdminPage,
     UploadsPage,
     UsersAdminPage,
     WrappedCollectionsContainer,
@@ -91,10 +92,14 @@ export default function ProjectRoutes() {
                     element={<ActivateAccount />}
                 />
                 <Route path="register" element={<RegisterPage />} />
-                <Route path="users" element={<UsersAdminPage />} />
                 <Route
                     path="admin/instance"
                     element={<InstanceSettingAdminPage />}
+                />
+                <Route path="users" element={<UsersAdminPage />} />
+                <Route
+                    path="admin/statistics"
+                    element={<StatisticsAdminPage />}
                 />
                 <Route path="uploads/new" element={<UploadsPage />} />
                 <Route path="project/edit-info" element={<EditProjectInfo />} />

@@ -71,6 +71,8 @@
   use_in_details_view: true
 :description:
   use_in_details_view: true
+:notes:
+  use_in_details_view: true
 :collection_id:
   use_as_facet: true
   facet_order: 1.0

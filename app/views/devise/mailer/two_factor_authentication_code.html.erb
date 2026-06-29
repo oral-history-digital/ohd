@@ -1,51 +1,51 @@
 <% case @resource.default_locale.to_sym || I18n.locale
      when :en -%>
   <p>Hello <%= @resource.display_name %>,</p>
-  <p>You have requested a one-time code for the Oral-History.Digital platform.</p>
+  <p>You have requested a one-time code for the <%= @project_name %> platform.</p>
   <p><%= @code %></p>
   <p>The code is valid for <%= @valid_for %> minutes.</p>
   <p>With best regards</p>
-  <p>Oral-History.Digital</p>
+  <p><%= @project_name %></p>
 <% when :ru -%>
   <p>Добрый день <%= @resource.display_name %>,</p>
-  <p>Вы запросили одноразовый код для платформы Oral-History.Digital.</p>
+  <p>Вы запросили одноразовый код для платформы <%= @project_name %>.</p>
   <p><%= @code %></p>
   <p>Код действителен в течение <%= @valid_for %> минут.</p>
   <p>С уважением,</p>
-  <p>Oral-History.Digital</p>
+  <p><%= @project_name %></p>
 <% when :uk -%>
   <p>Доброго дня <%= @resource.display_name %>,</p>
-  <p>Ви подали запит на отримання одноразового коду для платформи Oral-History.Digital.</p>
+  <p>Ви подали запит на отримання одноразового коду для платформи <%= @project_name %>.</p>
   <p><%= @code %></p>
   <p>Код дійсний протягом <%= @valid_for %> хвилин.</p>
   <p>З найкращими побажаннями</p>
-  <p>Oral-History.Digital</p>
+  <p><%= @project_name %></p>
 <% when :el -%>
   <p>Γεια σας <%= @resource.display_name %>,</p>
-  <p>Ζητήσατε έναν κωδικό μίας χρήσης για την πλατφόρμα Oral-History.Digital.</p>
+  <p>Ζητήσατε έναν κωδικό μίας χρήσης για την πλατφόρμα <%= @project_name %>.</p>
   <p><%= @code %></p>
   <p>Ο κωδικός ισχύει για <%= @valid_for %> λεπτά.</p>
   <p>Με εκτίμηση,</p>
-  <p>Oral-History.Digital</p>
+  <p><%= @project_name %></p>
 <% when :es -%>
   <p>Hola <%= @resource.display_name %>,</p>
-  <p>Ha solicitado un código de un solo uso para la plataforma Oral-History.Digital.</p>
+  <p>Ha solicitado un código de un solo uso para la plataforma <%= @project_name %>.</p>
   <p><%= @code %></p>
   <p>El código es válido por <%= @valid_for %> minutos.</p>
   <p>Saludos cordiales,</p>
-  <p>Oral-History.Digital</p>
+  <p><%= @project_name %></p>
 <% when :ar -%>
   <p>مرحبًا <%= @resource.display_name %>,</p>
-  <p>لقد طلبت رمزًا لمرة واحدة لمنصة Oral-History.Digital.</p>
+  <p>لقد طلبت رمزًا لمرة واحدة لمنصة <%= @project_name %>.</p>
   <p><%= @code %></p>
   <p>الرمز صالح لمدة <%= @valid_for %> دقائق.</p>
   <p>مع أطيب التحيات</p>
-  <p>Oral-History.Digital</p>
+  <p><%= @project_name %></p>
 <% else -%>
   <p>Guten Tag <%= @resource.display_name %>,</p>
-  <p>Sie haben einen Einmal-Code für die Plattform Oral-History.Digital angefordert.</p>
+  <p>Sie haben einen Einmal-Code für die Plattform <%= @project_name %> angefordert.</p>
   <p><%= @code %></p>
   <p>Der Code ist für <%= @valid_for %> Minuten gültig.</p>
   <p>Mit freundlichen Grüßen,</p>
-  <p>Oral-History.Digital </p>
+  <p><%= @project_name %> </p>
 <% end -%>

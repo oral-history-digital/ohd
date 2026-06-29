@@ -544,13 +544,14 @@ class InterviewsController < ApplicationController
       "workflow_state",
       "media_type",
       "media_missing",
+      "include_notes_in_transcript_pdf",
       "biographies_workflow_state",
       "pseudo_links",
       :startpage_position,
       properties: {},
       public_attributes: {},
       contributions_attributes: [:person_id, :contribution_type_id, :speaker_designation],
-      translations_attributes: [:locale, :id, :observations, :description]
+      translations_attributes: [:locale, :id, :observations, :description, :notes]
       ] + Interview::ATTRIBUTES_WITH_STATUS.map{|att| "public_#{att}" } 
     )
   end

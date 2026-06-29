@@ -1,29 +1,44 @@
-.ProjectTile {
-  border: 1px solid $gray-medium;
-  display: block;
-  padding: $base-unit;
-  margin-top: $base-unit;
-  outline: none;
-}
+/* Scope to admin list because homepage has ProjectTile too */
+.dataBox--project {
+  display: flex;
+  flex-direction: row;
+  gap: $base-unit * 0.5;
+  border: 1px solid $gray-pale;
+  padding: $base-unit * 0.5;
+  margin-bottom: $base-unit * 0.5;
 
-.ProjectTile:focus {
-  border: 1px solid $gray-medium;
-  box-shadow: 0 0 0 $focus-radius $focus-color;
-}
+  &:hover {
+    border-color: $gray-light;
+  }
 
-.ProjectTile-body {
-  color: $body-text-color;
-  font-size: 1rem;
-  font-weight: bold;
-}
+  .ProjectTile {
+    display: flex;
+    flex-direction: column;
+    gap: $base-unit * 0.5;
+    flex: 1;
 
-.ProjectTile-text {
-  line-height: $base-unit !important;
-  font-size: 1rem !important;
-  margin-bottom: 0 !important;
-}
+    &:hover {
+      color: $body-text-color;
+    }
+  }
 
-.ProjectTile-text--small {
-  color: $gray-dark !important;
-  font-weight: normal;
+  .Button--editorial {
+    flex-shrink: 0;
+    margin-bottom: auto;
+  }
+
+  .ProjectTile-body {
+    color: $body-text-color;
+    font-weight: bold;
+  }
+
+  .ProjectTile-text {
+    line-height: $base-unit !important;
+    margin-bottom: 0 !important;
+  }
+
+  .ProjectTile-text--small {
+    color: $gray-dark !important;
+    font-weight: normal;
+  }
 }

@@ -7,6 +7,9 @@ export default function CurrentArchive({ className }) {
     const { project } = useProject();
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
+
+    if (!project) return null;
+
     const name = project.display_name[locale] || project.name[locale];
 
     return (

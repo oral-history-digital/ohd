@@ -1,9 +1,14 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import { submitData } from 'modules/data';
+import {
+    getIsLoading,
+    submitData,
+    useHydrateProjectsByIds,
+} from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import EditData from './EditData';
 import EditViewOrRedirect from './EditViewOrRedirect';
@@ -12,8 +17,16 @@ import { transformBracketNotationToNested } from './utils/transformBracketNotati
 
 export default function EditProjectAccessConfig() {
     const { t } = useI18n();
-    const { project } = useProject();
+    const { project, projectDbId } = useProject();
     const dispatch = useDispatch();
+    const isLoading = useSelector((state) =>
+        getIsLoading(state, project ? 'projects' : null, project?.id)
+    );
+
+    // Hydrate the project if it doesn't have an access_config yet
+    useHydrateProjectsByIds([projectDbId], {
+        needsHydration: (candidateProject) => !candidateProject?.access_config,
+    });
 
     function submitHandler(props, params, opts, callback) {
         // Transform bracket notation attributes into nested objects
@@ -56,8 +69,9 @@ export default function EditProjectAccessConfig() {
         tos_agreement: {},
     };
 
-    if (project) {
+    if (project?.access_config) {
         Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([attribute]) => {
+            const accessConfig = project.access_config[attribute] || {};
             formElements.push({
                 elementType: 'extra',
                 tag: 'h3',
@@ -67,20 +81,14 @@ export default function EditProjectAccessConfig() {
                 elementType: 'input',
                 attribute: `[${attribute}_setter]display`,
                 labelKey: 'edit.default.display',
-                value:
-                    String(
-                        project.access_config[attribute].display
-                    ).toLowerCase() === 'true',
+                value: String(accessConfig.display).toLowerCase() === 'true',
                 type: 'checkbox',
             });
             formElements.push({
                 elementType: 'input',
                 attribute: `[${attribute}_setter]obligatory`,
                 labelKey: 'edit.default.obligatory',
-                value:
-                    String(
-                        project.access_config[attribute].obligatory
-                    ).toLowerCase() === 'true',
+                value: String(accessConfig.obligatory).toLowerCase() === 'true',
                 type: 'checkbox',
             });
             if (DEFAULT_FORM_ELEMENTS[attribute].values) {
@@ -92,7 +100,7 @@ export default function EditProjectAccessConfig() {
                         className: 'is-option',
                         value:
                             String(
-                                project.access_config[attribute].values[value]
+                                accessConfig.values?.[value]
                             ).toLowerCase() === 'true',
                         type: 'checkbox',
                     });
@@ -111,16 +119,21 @@ export default function EditProjectAccessConfig() {
                     <h1 className="Page-main-title">
                         {t(`edit.project.access_config`)}
                     </h1>
-                    <EditData
-                        data={project.access_config}
-                        scope="access_config"
-                        initialFormValues={getInitialFormValuesFromElements(
-                            formElements
-                        )}
-                        helpTextCode="access_config_form"
-                        formElements={formElements}
-                        submitData={submitHandler}
-                    />
+                    {project?.access_config ? (
+                        <EditData
+                            data={project.access_config}
+                            scope="access_config"
+                            initialFormValues={getInitialFormValuesFromElements(
+                                formElements
+                            )}
+                            helpTextCode="access_config_form"
+                            formElements={formElements}
+                            submitData={submitHandler}
+                            isLoading={isLoading}
+                        />
+                    ) : (
+                        <Spinner />
+                    )}
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                     {t('devise.failure.unauthenticated')}

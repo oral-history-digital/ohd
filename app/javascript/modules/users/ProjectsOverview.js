@@ -18,7 +18,7 @@ export default function ProjectsOverview({ user }) {
         );
         const project = projects[userProject.project_id];
 
-        if (project.is_ohd) {
+        if (!project || project.is_ohd) {
             return null;
         }
 
@@ -29,16 +29,20 @@ export default function ProjectsOverview({ user }) {
         ).toLocaleDateString(locale, { dateStyle: 'medium' });
         return (
             <li key={userProject.id} className="DetailList-item">
-                <h4
-                    onClick={() =>
-                        setShowProject(
-                            showProject === project.shortname
-                                ? ''
-                                : project.shortname
-                        )
-                    }
-                >
-                    {project.shortname}
+                <h4>
+                    <button
+                        type="button"
+                        className="Button Button--asLink"
+                        onClick={() =>
+                            setShowProject(
+                                showProject === project.shortname
+                                    ? ''
+                                    : project.shortname
+                            )
+                        }
+                    >
+                        {project.shortname}
+                    </button>
                 </h4>
                 <div
                     className={
@@ -67,5 +71,7 @@ export default function ProjectsOverview({ user }) {
 }
 
 ProjectsOverview.propTypes = {
-    row: PropTypes.object.isRequired,
+    user: PropTypes.shape({
+        user_projects: PropTypes.object.isRequired,
+    }).isRequired,
 };

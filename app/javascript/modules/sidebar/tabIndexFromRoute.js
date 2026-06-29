@@ -11,6 +11,8 @@ export default function tabIndexFromRoute(pathBase, pathname) {
         index = indexes.INDEX_ADMINISTRATION;
     } else if (matchPath(`${pathBase}/users`, pathname)) {
         index = indexes.INDEX_ADMINISTRATION;
+    } else if (matchPath(`${pathBase}/admin/statistics`, pathname)) {
+        index = indexes.INDEX_ADMINISTRATION;
     } else if (matchPath(`${pathBase}/searches/archive`, pathname)) {
         index = indexes.INDEX_SEARCH;
     } else if (matchPath(`${pathBase}/catalog/institutions/*`, pathname)) {
@@ -42,6 +44,8 @@ export default function tabIndexFromRoute(pathBase, pathname) {
     } else if (matchPath(`${pathBase}/project/edit-info`, pathname)) {
         index = indexes.INDEX_PROJECT_ACCESS;
     } else if (matchPath(`${pathBase}/project/edit-config`, pathname)) {
+        index = indexes.INDEX_PROJECT_ACCESS;
+    } else if (matchPath(`${pathBase}/project/edit-access-config`, pathname)) {
         index = indexes.INDEX_PROJECT_ACCESS;
     } else if (matchPath(`${pathBase}/project/edit-display`, pathname)) {
         index = indexes.INDEX_PROJECT_ACCESS;

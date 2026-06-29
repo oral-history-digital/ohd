@@ -19,6 +19,17 @@ wait_for_port() {
   done
 }
 
+# Print useful startup diagnostics before failing hard.
+report_rails_start_failure() {
+  log "ERROR: Rails server did not open port 3000 in time"
+  if [[ -f "$LOG_DIR/rails.log" ]]; then
+    log "Last 80 lines from rails.log:"
+    tail -n 80 "$LOG_DIR/rails.log" || true
+  else
+    log "No rails.log found at $LOG_DIR/rails.log"
+  fi
+}
+
 # Like wait_for_port but returns non-zero instead of exiting on timeout
 wait_for_port_soft() {
   local host=$1 port=$2 max=${3:-15} i=0
@@ -48,30 +59,41 @@ fi
 log ""
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log "🚀 Starting Rails server..."
-rm -f tmp/pids/server.pid
-bin/rails server -b 0.0.0.0 -d
-wait_for_port localhost 3000
-log "✅ Rails server running on port 3000"
+if nc -z localhost 3000; then
+  log "✅ Rails server already running on port 3000"
+else
+  rm -f tmp/pids/server.pid
+  # Use nohup + explicit log file so startup failures are visible in devcontainer logs.
+  setsid nohup bin/rails server -b 0.0.0.0 > "$LOG_DIR/rails.log" 2>&1 < /dev/null &
+  disown
+  if ! wait_for_port_soft localhost 3000 60; then
+    report_rails_start_failure
+    exit 1
+  fi
+  log "✅ Rails server running on port 3000"
+fi
 
 log ""
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log "📦 Starting Webpack dev server..."
-# Kill any stale webpack dev server left over from a previous container start.
-# Without this guard every VS Code reconnect spawns a new process, accumulating
-# memory until the host OOMs.
-if pgrep -f "shakapacker-dev-server" > /dev/null; then
-  log "Stopping stale Webpack dev server..."
-  pkill -f "shakapacker-dev-server" || true
-  sleep 2
-fi
-# setsid creates a new process session, fully detaching webpack from the
-# postStartCommand process group so VS Code can't kill it when the script exits.
-setsid nohup bin/shakapacker-dev-server > "$LOG_DIR/webpack.log" 2>&1 < /dev/null &
-disown
-if wait_for_port_soft localhost 3035; then
-  log "✅ Webpack dev server running on port 3035"
+if nc -z localhost 3035; then
+  log "✅ Webpack dev server already running on port 3035"
 else
-  log "⚠️  Webpack dev server port not open yet (continuing anyway)"
+  # Kill stale webpack process only if process exists but port is not serving.
+  if pgrep -f "shakapacker-dev-server" > /dev/null; then
+    log "Stopping stale Webpack dev server process..."
+    pkill -f "shakapacker-dev-server" || true
+    sleep 2
+  fi
+  # setsid creates a new process session, fully detaching webpack from the
+  # postStartCommand process group so VS Code can't kill it when the script exits.
+  setsid nohup bin/shakapacker-dev-server > "$LOG_DIR/webpack.log" 2>&1 < /dev/null &
+  disown
+  if wait_for_port_soft localhost 3035; then
+    log "✅ Webpack dev server running on port 3035"
+  else
+    log "⚠️  Webpack dev server port not open yet (continuing anyway)"
+  fi
 fi
 
 log ""

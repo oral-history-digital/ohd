@@ -29,11 +29,14 @@ class ApplicationController < ActionController::Base
         !request.path.end_with?('/register', '/register/') &&
         storable_location?
       )
+        project = Project.by_domain(request.base_url)
+        return if project.blank?
+
         path = url_for(
           only_path: true,
           controller: 'sessions',
           action: 'is_logged_in',
-          project: Project.by_domain(request.base_url).identifier,
+          project: project.identifier,
           path: request.fullpath,
         )
         redirect_to "#{OHD_DOMAIN}#{path}"
@@ -76,10 +79,19 @@ class ApplicationController < ActionController::Base
       [:archive_domain, request.base_url]
     end
     
+    if lookup_key[0] == :archive_domain
+      normalized_domain = lookup_key[1].to_s.sub(%r{/+\z}, '')
+      lookup_values = [normalized_domain, "#{normalized_domain}/"].uniq
+      cache_lookup_value = normalized_domain
+    else
+      lookup_values = lookup_key[1]
+      cache_lookup_value = lookup_key[1]
+    end
+
     # Cache project lookups across requests since projects change infrequently
-    cache_key = "project-#{lookup_key[0]}-#{lookup_key[1]}-#{Project.maximum(:updated_at)}"
+    cache_key = "project-v2-#{lookup_key[0]}-#{cache_lookup_value}-#{Project.maximum(:updated_at)}"
     
-    @current_project = Rails.cache.fetch(cache_key) do
+    @current_project = Rails.cache.fetch(cache_key, skip_nil: true) do
       Project.includes(
         :translations,
         :registry_name_types,
@@ -91,11 +103,32 @@ class ApplicationController < ActionController::Base
         external_links: :translations,
         # Collections removed - load selectively when needed via CollectionsController
         institution_projects: {institution: :translations},
-      ).find_by(lookup_key[0] => lookup_key[1])
+      ).where(lookup_key[0] => lookup_values).first
     end
   end
 
   helper_method :current_project
+
+  # Check if there are issues with the current project setup that would prevent the app from functioning properly
+  # This is used to display a warning banner on the frontend with instructions on how to fix the issue
+  def project_bootstrap_issue
+    return @project_bootstrap_issue if defined?(@project_bootstrap_issue)
+
+    if current_project.nil?
+      @project_bootstrap_issue = {
+        type: :missing_current_project,
+        host: request.base_url,
+      }
+    elsif Project.ohd.nil?
+      @project_bootstrap_issue = {
+        type: :missing_ohd_project,
+        host: request.base_url,
+      }
+    else
+      @project_bootstrap_issue = nil
+    end
+  end
+  helper_method :project_bootstrap_issue
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')
@@ -103,6 +136,20 @@ class ApplicationController < ActionController::Base
 
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   def initial_redux_state
+    ohd_project = Project.ohd
+    on_ohd_portal = current_project&.is_ohd?
+
+    # Keep initial projects payload intentionally small.
+    # We preload only the entries that are required for cross-domain routing
+    # and immediate page rendering; all other project records are loaded on demand.
+    initial_projects_payload = build_initial_projects_payload(
+      current_project: current_project,
+      ohd_project: ohd_project,
+      on_ohd_portal: on_ohd_portal
+    )
+    project_statuses = initial_projects_payload[:project_statuses]
+    projects_data = initial_projects_payload[:projects_data]
+
     @initial_redux_state ||= {
       archive: {
         locale: I18n.locale,
@@ -160,12 +207,7 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: current_project&.is_ohd? ? {
-            all: 'fetched'
-          } : {
-            "#{current_project.id}": 'fetched',
-            "#{Project.ohd.id}": 'fetched',
-          },
+          projects: project_statuses,
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -176,24 +218,7 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        # Only load current project in initial state
-        # Other projects will be lazy-loaded via API when needed
-        # This reduces initial page load significantly when many projects exist
-        # Exception: On OHD portal, load all projects for the startpage
-        projects: current_project.is_ohd? ?
-          Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}") do
-            Project.all.includes(
-              :translations,
-              :registry_reference_types,
-              :collections,
-            ).inject({}) do |mem, s|
-              mem[s.id] = cache_single(s, serializer_name: 'ProjectBase')
-              mem
-            end
-          end : {
-          "#{current_project.id}": cache_single(current_project),
-          "#{Project.ohd.id}": cache_single(Project.ohd),
-        },
+        projects: projects_data,
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do
@@ -300,6 +325,40 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  # Builds the minimal bootstrap slice for data.projects and data.statuses.projects.
+  def build_initial_projects_payload(current_project:, ohd_project:, on_ohd_portal:)
+    project_statuses = {}
+    projects_data = {}
+
+    # OHD is always present when available because cross-project links and
+    # auth/session redirects rely on its domain context.
+    if ohd_project
+      ohd_project_id = ohd_project.id.to_s
+      project_statuses[ohd_project_id] = 'fetched'
+      projects_data[ohd_project_id] = cache_single(
+        ohd_project,
+        serializer_name: 'ProjectBase'
+      )
+    end
+
+    # Also include the current project when it differs from OHD.
+    # On OHD portal we can keep ProjectBase for parity with lightweight usage.
+    # On project portals we keep the richer serializer currently expected by
+    # legacy Redux consumers on initial render.
+    if current_project && (!ohd_project || current_project.id != ohd_project.id)
+      current_project_id = current_project.id.to_s
+      project_statuses[current_project_id] = 'fetched'
+      projects_data[current_project_id] = on_ohd_portal ?
+        cache_single(current_project, serializer_name: 'ProjectBase') :
+        cache_single(current_project)
+    end
+
+    {
+      project_statuses: project_statuses,
+      projects_data: projects_data,
+    }
+  end
 
   def country_keys
     Rails.cache.fetch('country-keys-20240624') do

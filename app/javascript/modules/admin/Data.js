@@ -1,9 +1,11 @@
+import classNames from 'classnames';
 import { AuthorizedContent } from 'modules/auth';
-import { useLoadCompleteProject, useSensitiveData } from 'modules/data';
+import { useGetProject, useSensitiveData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
 import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { pluralize } from 'modules/strings';
 import { AdminMenu } from 'modules/ui';
 import PropTypes from 'prop-types';
@@ -15,54 +17,26 @@ import getDataDisplayName from './getDataDisplayName';
 
 const Item = AdminMenu.Item;
 
-// Special handling for project data to ensure we have all the data needed for the edit form
-// TODO: In the future, when project loading is more consistent across the app using SWR
-// this should be handled better.
-function EditItemContent({
-    open,
-    close,
-    data,
-    scope,
-    form,
-    hideShow,
-    detailsAttributes,
-    optionsScope,
-}) {
-    // Load project data if scope is project and we have a project id, otherwise
-    // use the data we already have (which may be incomplete or different scope)
-    const isProjectScope = scope === 'project';
-    const projectDbId = data?.id;
-    const loadedProject = useLoadCompleteProject(projectDbId, {
-        enabled: isProjectScope && open,
-        fallbackProject: data,
-    });
-    const dataForForm = isProjectScope ? loadedProject || data : data;
+// Project rows in archive admin come from lightweight list payload.
+// When editing a project, fetch the full payload for that single project only.
+function ProjectEditContent({ data, form }) {
+    const {
+        project: fullProject,
+        loading,
+        mutate: mutateProject,
+    } = useGetProject({ id: data?.id });
 
-    return (
-        <>
-            {hideShow && (
-                <DataDetails
-                    detailsAttributes={detailsAttributes}
-                    data={dataForForm}
-                    scope={scope}
-                    optionsScope={optionsScope}
-                />
-            )}
-            {form(dataForForm, close, close)}
-        </>
-    );
+    if (loading && !fullProject) {
+        return <Spinner withPadding />;
+    }
+
+    // Callback to refresh project data after successful form submission
+    const onSubmit = () => {
+        mutateProject();
+    };
+
+    return form(fullProject || data, onSubmit);
 }
-
-EditItemContent.propTypes = {
-    open: PropTypes.bool,
-    close: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired,
-    scope: PropTypes.string.isRequired,
-    form: PropTypes.func.isRequired,
-    hideShow: PropTypes.bool,
-    detailsAttributes: PropTypes.array,
-    optionsScope: PropTypes.string,
-};
 
 export default function Data({
     data,
@@ -76,13 +50,12 @@ export default function Data({
     showComponent,
     hideShow,
     hideEdit,
-    registerDOI,
+    hideRegisterDoiAction = false,
     hideDelete,
     optionsScope,
     disabled = false,
     detailsAttributes,
     deleteData,
-    submitData,
     registerDoi,
     handleDelete,
 }) {
@@ -133,7 +106,12 @@ export default function Data({
     const displayName = getDataDisplayName(data, locale);
 
     return (
-        <div className="data boxes">
+        <div
+            className={classNames('data boxes', {
+                'data-disabled': disabled,
+                [`dataBox--${scope}`]: scope,
+            })}
+        >
             <BaseData
                 name={displayName}
                 data={data}
@@ -170,21 +148,45 @@ export default function Data({
                             label={t('edit.default.edit')}
                             dialogTitle={`${displayName} ${t(`edit.${scope}.edit`)}`}
                         >
-                            {(close, open) => (
-                                <EditItemContent
-                                    open={open}
-                                    close={close}
-                                    data={data}
-                                    scope={scope}
-                                    form={form}
-                                    hideShow={hideShow}
-                                    detailsAttributes={detailsAttributes}
-                                    optionsScope={optionsScope}
-                                />
+                            {(close) => (
+                                <>
+                                    {hideShow && (
+                                        <DataDetails
+                                            detailsAttributes={
+                                                detailsAttributes
+                                            }
+                                            data={data}
+                                            scope={scope}
+                                            optionsScope={optionsScope}
+                                        />
+                                    )}
+                                    {scope === 'project' ? (
+                                        <ProjectEditContent
+                                            data={data}
+                                            form={(resolvedProject, onSubmit) =>
+                                                form(
+                                                    resolvedProject,
+                                                    () => {
+                                                        if (
+                                                            typeof onSubmit ===
+                                                            'function'
+                                                        ) {
+                                                            onSubmit();
+                                                        }
+                                                        close();
+                                                    },
+                                                    close
+                                                )
+                                            }
+                                        />
+                                    ) : (
+                                        form(data, close, close)
+                                    )}
+                                </>
                             )}
                         </Item>
                     )}
-                    {registerDOI && (
+                    {!hideRegisterDoiAction && (
                         <Item
                             name="register_doi"
                             label={t('register_doi')}
@@ -232,13 +234,20 @@ Data.propTypes = {
     sensitiveAttributes: PropTypes.array,
     outerScope: PropTypes.string,
     outerScopeId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    showComponent: PropTypes.element,
+    showComponent: PropTypes.elementType,
     hideShow: PropTypes.bool,
     hideEdit: PropTypes.bool,
+    hideRegisterDoiAction: PropTypes.bool,
     hideDelete: PropTypes.bool,
     optionsScope: PropTypes.string,
     disabled: PropTypes.bool,
     detailsAttributes: PropTypes.array,
+    registerDoi: PropTypes.func,
     deleteData: PropTypes.func.isRequired,
     handleDelete: PropTypes.func,
+};
+
+ProjectEditContent.propTypes = {
+    data: PropTypes.object,
+    form: PropTypes.func.isRequired,
 };

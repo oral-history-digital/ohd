@@ -87,12 +87,14 @@ This project provides two separate devcontainer environments:
 3. **Deploy:**
 
     ```bash
-    # Deploy to staging
-    bundle exec cap ohd_archive_staging deploy
+    # Deploy to staging with Docker Compose routine
+    bundle exec cap ohd_archive_staging docker:deploy
 
-    # Deploy to production
-    bundle exec cap ohd_archive deploy
+    # Deploy to production with Docker Compose routine
+    bundle exec cap ohd_archive docker:deploy
     ```
+
+    Note: this uses the Docker-specific Capistrano flow (`docker:deploy`), not the legacy source-based `deploy` task.
 
 4. **Switch back to development** when done:
     - Press `Ctrl+Shift+P`

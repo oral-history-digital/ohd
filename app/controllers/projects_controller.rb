@@ -126,7 +126,13 @@ class ProjectsController < ApplicationController
         if params[:lite].present?
           render json: lite_project_json(@project)
         else
-          render json: data_json(@project)
+          # Show more project details if the user has update permissions,
+          # which implies they have access to all project data.
+          if policy(@project).update?
+            render json: data_json(@project, serializer_name: 'ProjectFull')
+          else
+            render json: data_json(@project)
+          end
         end
       end
     end
@@ -346,6 +352,7 @@ class ProjectsController < ApplicationController
           "publication_date",
           "archive_id_number_length",
           "domain",
+          "archive_domain",
           "doi",
           "hosting_institution",
           "contact_email",

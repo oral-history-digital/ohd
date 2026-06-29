@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rdoc'
 gem 'rails', '~> 8.0.2'
+gem 'puma'
 gem 'mysql2', '~> 0.5.6'
 gem "redis", "~> 4.0"
 gem 'pundit'
@@ -39,6 +40,8 @@ gem 'sprockets-rails'
 gem 'rexml', '~> 3.2.8'
 gem 'base64', '~> 0.2.0'
 gem 'clamby', '~> 1.6.11'
+gem 'sentry-ruby', '~> 6.6.0'
+gem 'sentry-rails', '~> 6.6.0'
 
 # Gems specific to public archive app:
 gem 'unicode'
@@ -74,7 +77,6 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem 'puma'
   gem 'rb-readline'
 end
 

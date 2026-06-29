@@ -8,6 +8,7 @@ const STATIC_TEXT_PAGE_CODES = [
 
 const PROJECT_ADMIN_PATTERNS = [
     '/admin/instance',
+    '/admin/statistics',
     '/project/edit-info',
     '/project/edit-config',
     '/project/edit-access-config',

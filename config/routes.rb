@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     get "project/edit-access-config", to: "projects#edit_access_config"
     get "project/edit-display", to: "projects#edit_display"
     get "admin/instance", to: "projects#show"
+    get "admin/statistics", to: "projects#show"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
     get "project/archiving_batches", to: "projects#archiving_batches_index"
     get "project/archiving_batches/:number", to: "projects#archiving_batches_show"
@@ -191,6 +192,7 @@ Rails.application.routes.draw do
           get :usage_report
         end
       end
+      resources :interview_statistics, only: [:index]
       resources :imports do
         collection do
           get :for_interview
@@ -309,6 +311,7 @@ Rails.application.routes.draw do
   constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
     # Main-level routes (no :project_id), e.g. homepage
     scope "/:locale" do
+      get "", to: "projects#index"
       get "/", to: "projects#index"
       resource :homepage_settings, only: [:show, :update]
       namespace :admin do
@@ -358,6 +361,7 @@ Rails.application.routes.draw do
   constraints(lambda { |request| Project.archive_domains.include?(request.base_url) }) do
     get "/", to: redirect {|params, request| "/#{Project.by_domain(request.base_url).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+      get "", to: "projects#show"
       get "/", to: "projects#show"
       concerns :basic_project_routes
       resources :institutions do

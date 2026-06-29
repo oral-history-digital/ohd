@@ -1,39 +1,57 @@
-import { getLocale } from 'modules/archive';
-import { getInstitutions } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
+import { SmartImage } from 'modules/ui';
+import { localizedValue } from 'modules/utils';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 export function ProjectTile({ data }) {
-    const locale = useSelector(getLocale);
-    const institutions = useSelector(getInstitutions);
+    const { locale } = useI18n();
+
+    const localizedText = (value) => {
+        return localizedValue(value, locale, { emptyValue: '' });
+    };
+
+    const asArray = (value) => {
+        if (!value) {
+            return [];
+        }
+
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        if (typeof value === 'object') {
+            return Object.values(value);
+        }
+
+        return [];
+    };
 
     const logo =
-        data.logos &&
-        Object.values(data.logos).find((l) => l.locale === locale);
+        data.logo ||
+        asArray(data.logos).find((item) => item?.src || item?.url) ||
+        null;
+
+    const projectName =
+        localizedText(data.display_name) ||
+        localizedText(data.name) ||
+        localizedText(data.shortname);
+    const institutionText = asArray(data.institutions)
+        .map((institution) => localizedText(institution?.name))
+        .filter(Boolean)
+        .join(' / ');
 
     return (
         <LinkOrA className="ProjectTile" project={data} to="">
-            <img
+            <SmartImage
                 className="ProjectTile-image logo-img"
-                src={logo?.src}
+                src={logo?.src || logo?.url}
                 alt="Logo"
             />
             <div className="ProjectTile-body">
-                <p className="ProjectTile-text">{data.name[locale]}</p>
+                <p className="ProjectTile-text">{projectName}</p>
                 <p className="ProjectTile-text ProjectTile-text--small">
-                    {data.institution_projects &&
-                        Object.values(data.institution_projects).map((ip) => {
-                            return (
-                                <p key={ip.institution_id}>
-                                    {
-                                        institutions[ip.institution_id]?.name[
-                                            locale
-                                        ]
-                                    }
-                                </p>
-                            );
-                        })}
+                    {institutionText}
                 </p>
             </div>
         </LinkOrA>

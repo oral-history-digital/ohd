@@ -2,6 +2,7 @@ import {
     INDEX_ADMINISTRATION,
     INDEX_CATALOG_INSTITUTIONS,
     INDEX_NONE,
+    INDEX_PROJECT_ACCESS,
     INDEX_SEARCH,
 } from './constants';
 import tabIndexFromRoute from './tabIndexFromRoute';
@@ -24,8 +25,20 @@ test('returns administration tab index for admin instance route', () => {
     expect(actual).toEqual(expected);
 });
 
+test('returns administration tab index for admin statistics route', () => {
+    const actual = tabIndexFromRoute('/de', '/de/admin/statistics');
+    const expected = INDEX_ADMINISTRATION;
+    expect(actual).toEqual(expected);
+});
+
 test('returns catalog institutions tab index for catalog institutions route', () => {
     const actual = tabIndexFromRoute('/de', '/de/catalog/institutions/15');
     const expected = INDEX_CATALOG_INSTITUTIONS;
+    expect(actual).toEqual(expected);
+});
+
+test('returns project access tab index for project access config route', () => {
+    const actual = tabIndexFromRoute('/de', '/de/project/edit-access-config');
+    const expected = INDEX_PROJECT_ACCESS;
     expect(actual).toEqual(expected);
 });

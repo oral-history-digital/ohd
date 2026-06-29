@@ -101,6 +101,7 @@ class Interview < ApplicationRecord
     collection_id
     signature_original
     description
+    notes
     observations
     transcript
     pseudo_links
@@ -151,7 +152,7 @@ class Interview < ApplicationRecord
     end
   end
 
-  translates :observations, :description, fallbacks_for_empty_translations: true, touch: true
+  translates :observations, :description, :notes, fallbacks_for_empty_translations: true, touch: true
 
   accepts_nested_attributes_for :translations, :contributions, :interview_languages
 

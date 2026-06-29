@@ -48,10 +48,18 @@ module Interview::Export
   end
 
   def to_pdf(header_locale, content_locale)
-    header_locale = project.available_locales.include?(content_locale) ? content_locale : header_locale
+    header_locale = header_locale.to_s
+    content_locale = content_locale.to_s
+    # Locale for looking up content labels in the app
+    content_app_locale = content_app_locale_for(content_locale)
+
     first_segment_with_heading = segments.with_heading.first
-    content_locale_alpha2 = content_locale == "ukr-rus" ? "uk-ru" : ISO_639.find_by_code(content_locale).alpha2
-    content_locale_human = TranslationValue.for(content_locale_alpha2.blank? ? content_locale : content_locale_alpha2, header_locale)
+    content_label_locale = content_locale == 'ukr-rus' ? 'uk-ru' : content_app_locale
+    content_locale_human = content_locale_human_label_for_pdf(
+      content_label_locale: content_label_locale,
+      header_locale: header_locale,
+      content_locale: content_locale,
+    )
 
     I18n.with_locale header_locale.to_sym do
       ApplicationController.new.render_to_string(
@@ -63,13 +71,33 @@ module Interview::Export
           doc_type: self.alpha3 == content_locale ? 'transcript' : 'translation',
           header_locale: header_locale,
           content_locale: content_locale,
-          content_locale_public: "#{content_locale}-public",
+          content_app_locale: content_app_locale,
           content_locale_human: content_locale_human,
           headings_in_content_locale: !!first_segment_with_heading &&
             (first_segment_with_heading.mainheading(content_locale) || first_segment_with_heading.subheading(content_locale))
         }
       )
     end
+  end
+
+  def content_app_locale_for(content_locale)
+    # Surzhyk exports use transcript code "ukr-rus", but app TranslationValue
+    # locales are based on "uk" for lookups such as table-of-contents labels.
+    return 'uk' if content_locale == 'ukr-rus'
+
+    ISO_639.find_by_code(content_locale)&.alpha2 || content_locale
+  end
+
+  def content_locale_human_label_for_pdf(content_label_locale:, header_locale:, content_locale:)
+    # Prefer project-managed translation values for the UI language label.
+    label = TranslationValue.for(content_label_locale, header_locale, {}, true)
+
+    # fallback_to_key=true returns the key itself when missing; treat that as untranslated.
+    return label unless label == content_label_locale
+
+    # Use ISO names as a readable fallback to avoid "missing translation-value" in PDFs.
+    iso_language = ISO_639.find_by_code(content_locale) || ISO_639.find_by_code(content_label_locale)
+    iso_language&.english_name || content_label_locale
   end
 
   def biography_pdf(header_locale, content_locale)

@@ -19,9 +19,11 @@ set :branch, ENV.fetch('BRANCH', 'main')
 # Default value for :pty is false
 # set :pty, true
 
+# Legacy source-based Capistrano release symlinks (not used by docker:deploy).
 # Default value for :linked_files is []
 set :linked_files, %w(config/database.yml config/secrets.yml config/sunspot.yml config/datacite.yml config/storage.yml config/master.key)
 
+# Legacy source-based Capistrano release symlinks (not used by docker:deploy).
 # Default value for linked_dirs is []
 # set :linked_dirs, (log tmp/pids tmp/cache tmp/sockets public/system)
 set :linked_dirs, %w(solr node_modules tmp/pids tmp/files tmp/cache log config/hls public/favicons)
@@ -35,11 +37,12 @@ set :linked_dirs, %w(solr node_modules tmp/pids tmp/files tmp/cache log config/h
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
-# Which project file from the projects directory to copy to config/project.yml.
+# Legacy source-based setting for project.yml copy during release updates.
 # Overwrite this in stage configuration, please.
 set :project_yml, 'empty.yml'
 
 namespace :deploy do
+  # Legacy source-based step: copies project.yml into the release path.
   desc 'Copy correct project file into config directory'
   task :copy_project_file do
     on roles(:app) do
@@ -47,11 +50,13 @@ namespace :deploy do
     end
   end
 
+  # Legacy source-based hooks (not used by docker:deploy).
   before :updated, 'copy_project_file'
   before :updated, 'yarn:install'
 end
 
 namespace :yarn do
+  # Legacy source-based dependency install in release_path.
   desc 'Install yarn dependencies'
   task :install do
     on roles(:app) do
