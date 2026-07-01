@@ -22,7 +22,7 @@ class ReferenceTree
       type: 'leafe',
       time: Timecode.new(segment.timecode).time,
       timecode: segment.timecode,
-      tape_nbr: segment.tape.number,
+      tape_nbr: segment.tape&.number,
       text: segment.transcripts
     }
   end
