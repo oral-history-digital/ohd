@@ -306,6 +306,7 @@ class ProjectsController < ApplicationController
     # if a project is updated or destroyed from ohd.de
     def set_project
       @project = params[:id] ? find_project_by_identifier!(params[:id]) : current_project
+      raise ActiveRecord::RecordNotFound if @project.nil?
       authorize @project
     end
 
