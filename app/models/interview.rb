@@ -163,6 +163,15 @@ class Interview < ApplicationRecord
     end
   end
 
+  # Whitelist of fields accepted by archive_search's `sort` param. Anything else
+  # is coerced to 'title' to avoid Sunspot building an invalid constant name
+  # (e.g. an all-digits value like "350746347" → NameError) from bogus requests.
+  VALID_ARCHIVE_SORT_FIELDS = %w[
+    title random score archive_id media_type duration language
+    alias_names workflow_state project_access project_id
+    interviewee_id collection_id
+  ].freeze
+
   validates_associated :collection
   validates :archive_id, presence: true, uniqueness: true, project_config: true
   validates :media_type, inclusion: {in: %w(video audio)}
@@ -926,7 +935,10 @@ class Interview < ApplicationRecord
           end
         end
 
-        sort_by =    params.fetch(:sort, 'title').to_sym
+        sort_by = params.fetch(:sort, 'title').to_s
+        sort_by = 'title' unless VALID_ARCHIVE_SORT_FIELDS.include?(sort_by)
+        sort_by = sort_by.to_sym
+
         sort_order = params.fetch(:order, 'asc').to_sym
 
         case sort_by
