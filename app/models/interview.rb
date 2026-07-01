@@ -934,7 +934,9 @@ class Interview < ApplicationRecord
         sort_by = 'title' unless VALID_ARCHIVE_SORT_FIELDS.include?(sort_by)
         sort_by = sort_by.to_sym
 
-        sort_order = params.fetch(:order, 'asc').to_sym
+        sort_order = params.fetch(:order, 'asc').to_s
+        sort_order = 'asc' unless %w[asc desc].include?(sort_order)
+        sort_order = sort_order.to_sym
 
         case sort_by
         when :random
