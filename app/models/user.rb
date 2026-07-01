@@ -145,7 +145,7 @@ class User < ApplicationRecord
       all_tasks.select{|t| t.interview.project_id == project.id}.
         map(&:permissions).flatten.uniq.
         find{|p| p.klass == record.class_name && p.action_name == action_name}
-    else
+    elsif record.is_a?(Interview) || record.respond_to?(:interview_id)
       record_tasks = record.is_a?(Interview) ?
         all_tasks.select{|t| t.interview_id == record.id} :
         all_tasks.select{|t| t.interview_id == record.interview_id}
