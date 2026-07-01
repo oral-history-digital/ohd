@@ -363,6 +363,13 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_equal project.shortname, body.dig('data', 'shortname')
   end
 
+  test 'should return 404 when show is requested for an unknown project shortname' do
+    assert_nil Project.by_identifier('nosuchproj')
+
+    get '/nosuchproj/de'
+    assert_response :not_found
+  end
+
   test 'should only count interviews from public projects in lite payload' do
     public_project = DataHelper.test_project(
       shortname: "pup#{SecureRandom.hex(3)}a",
