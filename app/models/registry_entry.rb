@@ -170,11 +170,12 @@ class RegistryEntry < ApplicationRecord
   # Get all registry entries with names so that a tree can be built by the frontend.
   # TODO: Decide wether workflow_state should be 'public'.
   scope :for_tree, -> (locale, project_id) {
-    joins('LEFT OUTER JOIN registry_hierarchies ON registry_entries.id = registry_hierarchies.descendant_id INNER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id INNER JOIN registry_name_translations ON registry_names.id = registry_name_translations.registry_name_id INNER JOIN registry_name_types ON registry_names.registry_name_type_id = registry_name_types.id')
-    .where("registry_name_translations.locale = ? OR registry_entries.code = 'root'", locale)
+    join_sql = sanitize_sql_array(['LEFT OUTER JOIN registry_hierarchies ON registry_entries.id = registry_hierarchies.descendant_id INNER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id INNER JOIN registry_name_translations ON registry_names.id = registry_name_translations.registry_name_id AND registry_name_translations.locale = ? LEFT JOIN registry_name_translations AS fallback_translations ON registry_names.id = fallback_translations.registry_name_id AND fallback_translations.locale = \'de\' INNER JOIN registry_name_types ON registry_names.registry_name_type_id = registry_name_types.id', locale])
+    joins(join_sql)
+    .where("registry_name_translations.locale = ? OR registry_entries.code = 'root' OR (registry_name_translations.id IS NULL AND fallback_translations.id IS NOT NULL)", locale)
     .where(project_id: project_id)
     .group('registry_entries.id, registry_hierarchies.ancestor_id')
-    .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
+    .select('registry_entries.id, GROUP_CONCAT(COALESCE(registry_name_translations.descriptor, fallback_translations.descriptor) ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
   }
 
   def parent_id=(pid)
