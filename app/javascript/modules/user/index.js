@@ -12,6 +12,7 @@ export { default as AfterEnable2FAPopup } from './components/AfterEnable2FAPopup
 export { default as AfterEnablePasskeyPopup } from './components/AfterEnablePasskeyPopup';
 export { default as AfterRegisterPopup } from './components/AfterRegisterPopup';
 export { default as AfterRequestProjectAccessPopup } from './components/AfterRequestProjectAccessPopup';
+export { default as AfterUpdateEmailPopup } from './components/AfterUpdateEmailPopup';
 export { default as ConfirmNewZwarTosPopup } from './components/ConfirmNewZwarTosPopup';
 export { default as CorrectUserDataPopup } from './components/CorrectUserDataPopup';
 export { default as OrderNewPasswordContainer } from './components/OrderNewPasswordContainer';

@@ -26,6 +26,7 @@ import {
     AfterEnablePasskeyPopup,
     AfterRegisterPopup,
     AfterRequestProjectAccessPopup,
+    AfterUpdateEmailPopup,
     ConfirmNewZwarTosPopup,
     CorrectUserDataPopup,
     getIsLoggedIn,
@@ -147,6 +148,7 @@ export default function Layout({ children }) {
                 <AfterRegisterPopup />
                 <AfterConfirmationPopup />
                 <AfterRequestProjectAccessPopup />
+                <AfterUpdateEmailPopup />
                 <CorrectUserDataPopup />
                 <AfterEnable2FAPopup />
                 <AfterEnablePasskeyPopup />

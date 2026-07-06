@@ -3,6 +3,7 @@ class UserSerializer < ApplicationSerializer
     :first_name,
     :last_name,
     :email,
+    :unconfirmed_email,
     :otp_qrcode,
     :otp_required_for_login,
     :changed_to_otp_at, 
