@@ -137,6 +137,7 @@ class User < ApplicationRecord
   end
 
   def task_permissions?(project, record, action_name)
+    return false if record.is_a?(Project)
     if record.respond_to?(:class_name)
       # on create record is just a class not an object
       # and we can not really check for interview_id
