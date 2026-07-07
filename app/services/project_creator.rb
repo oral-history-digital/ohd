@@ -6,9 +6,9 @@ class ProjectCreator < ApplicationService
     @project_params = project_params.merge(
       archive_id_number_length: 4,
       has_map: true,
-      primary_color: '83848e',
-      secondary_color: '5fc361',
-      editorial_color: '5f8ac3',
+      primary_color: '#83848e',
+      secondary_color: '#5fc361',
+      editorial_color: '#5f8ac3',
     )
     @user = user
     @is_ohd = is_ohd
