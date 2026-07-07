@@ -10,9 +10,9 @@ class ProjectCreatorTest < ActiveSupport::TestCase
       contact_email: 'manager@archive.com',
       archive_id_number_length: 4,
       has_map: true,
-      primary_color: '83848e',
-      secondary_color: '5fc361',
-      editorial_color: '5f8ac3',
+      primary_color: '#83848e',
+      secondary_color: '#5fc361',
+      editorial_color: '#5f8ac3',
     }
     @user = User.find_by(email: 'alice@example.com')
     @project = ProjectCreator.perform(@project_params, @user)
