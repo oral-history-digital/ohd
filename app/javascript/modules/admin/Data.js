@@ -50,7 +50,7 @@ export default function Data({
     showComponent,
     hideShow,
     hideEdit,
-    hideRegisterDoiAction = false,
+    hideRegisterDoiAction = true,
     hideDelete,
     optionsScope,
     disabled = false,
