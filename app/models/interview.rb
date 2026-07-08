@@ -585,11 +585,6 @@ class Interview < ApplicationRecord
     !!t && !t.observations.blank?
   end
 
-  def observations_for_latex(locale)
-    escaped_text = LatexToPdf.escape_latex(observations(locale).gsub(/\"/, '``'))
-    escaped_text.gsub(/\r?\n/, '~\newline~')
-  end
-
   def observations_public?
     public_attributes = properties.fetch(:public_attributes, {})
     public_attributes.fetch('observations', false)

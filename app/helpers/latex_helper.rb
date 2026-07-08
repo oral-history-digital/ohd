@@ -67,6 +67,25 @@ module LatexHelper
     "\\textenglish{#{latex_escape(text)}}"
   end
 
+  # Convert multiline text to LaTeX, escaping special characters and joining lines with LaTeX line breaks.
+  def latex_multiline_text(text, convert_quotes: false)
+    value = text.to_s
+    value = value.gsub(/\"/, '``') if convert_quotes
+
+    value
+      .split(/\r?\n/, -1)
+      .map { |line| latex_escape(line) }
+      .join('~\newline~')
+      .html_safe
+  end
+
+  # Sanitize multiline text for LaTeX by removing HTML tags and escaping special characters.
+  def latex_sanitized_multiline_text(text)
+    latex_multiline_text(
+      ActionView::Base.full_sanitizer.sanitize(text).gsub("&amp;", "&"),
+    )
+  end
+
   # Wrap text in script-aware LaTeX commands so RTL/Indic glyph shaping works.
   def latex_multiscript(text)
     return '' if text.nil?
@@ -199,6 +218,8 @@ module LatexHelper
       rtl_speaker = ''
       ltr_speaker = ''
     else
+      speaker = latex_escape(speaker.to_s)
+
       rtl_speaker = rtl ? " :#{speaker}" : ''
       ltr_speaker = rtl ? '' : "#{speaker}: "
     end

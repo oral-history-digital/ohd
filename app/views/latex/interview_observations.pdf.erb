@@ -6,7 +6,7 @@
   header_text = "#{TranslationValue.for('observations_header', header_locale, interviewee_name: interviewee_name, archive_id: interview.archive_id)}"
 %>
 
-\title{<%= title %>}
+\title{<%= latex_multiscript(title) %>}
 
 \begin{document}
 
@@ -30,4 +30,4 @@
   }
 %>
 
-<%= raw interview.observations_for_latex(content_locale) %>
+<%= latex_multiline_text(interview.observations(content_locale), convert_quotes: true) %>
