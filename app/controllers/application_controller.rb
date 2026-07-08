@@ -467,6 +467,7 @@ class ApplicationController < ActionController::Base
   end
 
   def doi_json(object)
+    locale = object.is_a?(Interview) ? object.project.default_locale : :en
     suffix = case object
              when Interview
                "#{current_project.shortname}.#{object.archive_id}"
@@ -494,7 +495,7 @@ class ApplicationController < ActionController::Base
         "attributes": {
           "doi": doi,
           "event": "publish",
-          "url": object.oai_catalog_identifier(:en),
+          "url": object.oai_catalog_identifier(locale),
           "xml": Base64.encode64(xml),
         },
       },
