@@ -13,4 +13,13 @@ class UnauthorizedController < Devise::FailureApp
     self.content_type  = 'application/json'
     self.response_body = { errors: [{ message: i18n_message }] }.to_json
   end
+
+  private
+
+  # Devise::FailureApp only inherits class-level default_url_options, so the
+  # locale that ApplicationController appends per request never reaches the
+  # redirect to the sign-in page, which lives under scope "/:locale".
+  def default_url_options(options = {})
+    options.merge(locale: I18n.locale)
+  end
 end
