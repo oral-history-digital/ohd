@@ -43,10 +43,7 @@ class InterviewsController < ApplicationController
         render json: data_json(
           @interview,
           serializer_name: 'InterviewUpdate',
-          changes: (
-            params[:interview].keys -
-            ["translations_attributes", "public_attributes"]
-          ),
+          changes: params[:interview].keys,
           msg: "processed"
         )
       end
