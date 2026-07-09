@@ -19,8 +19,10 @@ class InterviewUpdateSerializer < ApplicationSerializer
         hash[:properties] = object.properties
       when /duration|tape_count|description|observations|notes/
         # already handled by super via localized_hash or custom serializer method
+      when /_attributes$/
+        # nested attributes keys are no readers on Interview
       else
-        hash[attribute] = object.send(attribute)
+        hash[attribute] = object.public_send(attribute) if object.respond_to?(attribute)
       end
     end
     hash
