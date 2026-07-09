@@ -29,7 +29,10 @@ class Photo < ApplicationRecord
   end
 
   def write_iptc_metadata
-    file = MiniExiftool.new ActiveStorage::Blob.service.path_for(photo.key)
+    return unless photo.attached?
+
+    blob = photo.blob
+    file = MiniExiftool.new blob.service.path_for(blob.key)
     file[:title] = public_id
     file[:caption] = translations.map(&:caption).join(' ')
     file[:creator] = translations.map(&:photographer).join(' ')
@@ -40,6 +43,8 @@ class Photo < ApplicationRecord
     file[:date] = translations.map(&:date).join(' ')
     file[:city] = translations.map(&:place).join(' ')
     file.save
+
+    recalculate_checksum
   end
 
   def variant_path(resolution)
@@ -52,9 +57,20 @@ class Photo < ApplicationRecord
     end
   end
 
+  # Writing IPTC metadata rewrites the original file in place, so the checksum and
+  # byte size recorded at upload time no longer describe it. Variant generation
+  # verifies the checksum and raises ActiveStorage::IntegrityError on a mismatch.
   def recalculate_checksum
+    return unless photo.attached?
+
     blob = photo.blob
-    blob.update_column(:checksum, Digest::MD5.base64digest(File.read(blob.service.path_for(blob.key)))) if blob
+    path = blob.service.path_for(blob.key)
+    return unless File.exist?(path)
+
+    blob.update_columns(
+      checksum: Digest::MD5.base64digest(File.binread(path)),
+      byte_size: File.size(path)
+    )
   end
 
   def name
