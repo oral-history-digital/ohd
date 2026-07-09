@@ -215,4 +215,48 @@ namespace :storage do
       ActiveRecord::Base.logger = original_logger
     end
   end
+
+  desc 'reports blobs whose stored checksum does not match the file on disk (FIX=1 rewrites checksum and byte_size)'
+  task verify_checksums: :environment do
+    fix = ENV['FIX'] == '1'
+    checked = mismatched = missing = 0
+
+    original_logger = ActiveRecord::Base.logger
+    ActiveRecord::Base.logger = nil
+
+    begin
+      ActiveStorage::Blob.find_each do |blob|
+        path = blob.service.path_for(blob.key)
+
+        unless File.exist?(path)
+          missing += 1
+          puts "MISSING  blob #{blob.id} #{blob.filename} (#{blob.key})"
+          next
+        end
+
+        checked += 1
+        actual = Digest::MD5.base64digest(File.binread(path))
+        next if actual == blob.checksum
+
+        mismatched += 1
+        puts "MISMATCH blob #{blob.id} #{blob.filename} (#{blob.key})"
+
+        if fix
+          blob.update_columns(checksum: actual, byte_size: File.size(path))
+          puts "         checksum and byte_size updated"
+        end
+      end
+    ensure
+      ActiveRecord::Base.logger = original_logger
+    end
+
+    puts
+    puts "#{checked} blobs checked, #{mismatched} mismatched, #{missing} missing."
+
+    if mismatched > 0 && !fix
+      puts "A mismatch means the bytes on disk changed after upload. Confirm the files are"
+      puts "intact before re-running with FIX=1 -- a corrupted file would have its checksum"
+      puts "rewritten to match the corruption. Missing files must be re-uploaded."
+    end
+  end
 end
