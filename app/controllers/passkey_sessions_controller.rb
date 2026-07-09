@@ -45,6 +45,12 @@ class PasskeySessionsController < ApplicationController
 
     db_credential = user.webauthn_credentials.find_by(external_id: webauthn_credential.id)
 
+    unless db_credential
+      session.delete(:authentication_challenge)
+      session.delete(:passkey_user_id)
+      return render json: { error: tv("invalid_passkey") }, status: :unprocessable_entity
+    end
+
     begin
       webauthn_credential.verify(
         session[:authentication_challenge],
@@ -57,7 +63,7 @@ class PasskeySessionsController < ApplicationController
       #after_sign_in(resource)
 
       render json: { success: true, redirect_url: sign_in_redirect_url(user) }
-    rescue WebAuthn::SignCountVerificationError => e
+    rescue WebAuthn::Error => e
       render json: { error: tv("invalid_passkey") }, status: :unprocessable_entity
     ensure
       session.delete(:authentication_challenge)
