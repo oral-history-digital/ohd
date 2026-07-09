@@ -19,6 +19,7 @@ coverage
 .byebug_history
 .vscode
 .rake_tasks~
+.claude
 
 # Ignore uploaded files in development.
 /storage/*
