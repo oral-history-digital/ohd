@@ -446,6 +446,7 @@ class ApplicationController < ActionController::Base
   end
 
   def register_doi(object)
+    return 'unshared' if object.workflow_state != 'public'
     status = nil
     unless object.doi_status == "created"
       # curl -X POST -H "Content-Type: application/vnd.api+json" --user YOUR_CLIENT_ID:YOUR_PASSWORD -d @my_draft_doi.json https://api.test.datacite.org/dois
