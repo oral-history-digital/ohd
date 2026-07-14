@@ -304,7 +304,7 @@ class Project < ApplicationRecord
   end
 
   def min_to_max_birth_year_range
-    cache_key_date = [people.maximum(:updated_at), DateTime.now].compact.max.strftime("%d.%m-%H:%M")
+    cache_key_date = people.maximum(:updated_at)
     Rails.cache.fetch("#{shortname}-#{cache_key_date}-#{people.count}") do
       first = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).min || 1900
       last = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).max || DateTime.now.year
@@ -313,7 +313,7 @@ class Project < ApplicationRecord
   end
 
   def min_to_max_interview_year_range
-    cache_key_date = [interviews.maximum(:updated_at), DateTime.now].compact.max.strftime("%d.%m-%H:%M")
+    cache_key_date = interviews.maximum(:updated_at)
     Rails.cache.fetch("#{shortname}-#{cache_key_date}-#{interviews.count}") do
       first = (interviews.map { |i| i.interview_year.first } - [nil]).min || 1900
       last = (interviews.map { |i| i.interview_year.last } - [nil]).max || DateTime.now.year
