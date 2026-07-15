@@ -97,7 +97,7 @@ export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
                         onChange={setFulltextInput}
                     />
                 ) : (
-                    <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
+                    <AuthShowContainer hasProjectAccess ifCatalog ifNoProject>
                         <ArchiveSearchFormInput
                             value={fulltextInput}
                             projectId={projectId}

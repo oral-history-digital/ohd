@@ -73,7 +73,7 @@ export default function InterviewTextMaterials({
             {!isCatalog &&
                 showTranscriptPDF &&
                 interview.alpha3s_with_transcript?.length > 0 && (
-                    <AuthShowContainer ifLoggedIn>
+                    <AuthShowContainer hasProjectAccess>
                         <p key="transcript-downloads" id="transcript-downloads">
                             <span className="flyout-content-label">
                                 {t('transcript')}:
