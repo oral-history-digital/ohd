@@ -17,7 +17,11 @@ import {
 } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { useCurrentPage, useSyncLegacyProjectId } from 'modules/routes';
+import {
+    useCurrentPage,
+    useProject,
+    useSyncLegacyProjectId,
+} from 'modules/routes';
 import { Sidebar, getSidebarVisible, toggleSidebar } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
 import {
@@ -58,6 +62,12 @@ export default function Layout({ children }) {
     const [searchParams, setSearchParams] = useSearchParams();
     const { project, projectDbId, projectShortname, isLoading } =
         useCurrentProject();
+    // `useCurrentProject` resolves via SWR, but most children read the project
+    // from the Redux store via `useProject`. The store is seeded server-side
+    // with only OHD and the current project, so a client-side navigation into
+    // any other project leaves Redux one `useHydrateProjectsByIds` round-trip
+    // behind SWR. Children that render in that window see `project: undefined`.
+    const { project: hydratedProject } = useProject();
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
     const isEditviewActive = useIsEditor();
 
@@ -118,7 +128,11 @@ export default function Layout({ children }) {
         ? `/favicons/favicon-${project?.shortname}.ico`
         : '/favicon.ico';
 
-    if (isLoading) {
+    // Hold the children until Redux has caught up with SWR, so that `useProject`
+    // returns a project for every child that renders below this point.
+    const awaitingHydration = Boolean(project) && !hydratedProject;
+
+    if (isLoading || awaitingHydration) {
         return (
             <div className="Layout Layout--loading">
                 <main className="Site-content Layout-loadingContent">
