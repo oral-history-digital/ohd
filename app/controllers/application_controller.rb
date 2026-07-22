@@ -446,6 +446,7 @@ class ApplicationController < ActionController::Base
   end
 
   def register_doi(object)
+    return 'unshared' if object.workflow_state != 'public'
     status = nil
     unless object.doi_status == "created"
       # curl -X POST -H "Content-Type: application/vnd.api+json" --user YOUR_CLIENT_ID:YOUR_PASSWORD -d @my_draft_doi.json https://api.test.datacite.org/dois
@@ -467,6 +468,7 @@ class ApplicationController < ActionController::Base
   end
 
   def doi_json(object)
+    locale = object.is_a?(Interview) ? object.project.default_locale : :en
     suffix = case object
              when Interview
                "#{current_project.shortname}.#{object.archive_id}"
@@ -494,7 +496,7 @@ class ApplicationController < ActionController::Base
         "attributes": {
           "doi": doi,
           "event": "publish",
-          "url": object.oai_catalog_identifier(:en),
+          "url": object.oai_catalog_identifier(locale),
           "xml": Base64.encode64(xml),
         },
       },

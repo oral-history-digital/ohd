@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.2] - 2026-07-15
+
+### Added
+
+- add message when email changed
+
+### Changed
+
+- hide DOI register link per default
+- project creation defaults changed
+- changing some project cache keys
+- updated schema
+
+### Fixed
+
+- fix: return 404 instead of 500 for unknown short URLs
+- prevent DOI registration of unshared objects
+- oai url for interviews with project.default_locale
+- default restricted interview texts in :en for all except :de locales
+- fix color setting in project creator
+- better SQL with registry_name fallback in de in scope for_tree
+- fallback to :de on registry_entry_tree
+- do not check for task permissions on project records
+- fix: use separate Sentry DSN for staging and production
+
 ## [2.6.1] - 2026-06-23
 
 ### Fixed

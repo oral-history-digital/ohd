@@ -10,6 +10,9 @@ class ProjectCreatorTest < ActiveSupport::TestCase
       contact_email: 'manager@archive.com',
       archive_id_number_length: 4,
       has_map: true,
+      primary_color: '#83848e',
+      secondary_color: '#5fc361',
+      editorial_color: '#5f8ac3',
     }
     @user = User.find_by(email: 'alice@example.com')
     @project = ProjectCreator.perform(@project_params, @user)
@@ -118,8 +121,8 @@ class ProjectCreatorTest < ActiveSupport::TestCase
   test 'creats default landing_page_texts' do
     assert_equal @project.landing_page_text('de'), 'Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.'
     assert_equal @project.landing_page_text('en'), 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.'
-    assert_equal @project.restricted_landing_page_text(:de), 'Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.'
-    assert_equal @project.restricted_landing_page_text(:en), 'For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.'
+    assert_equal @project.restricted_landing_page_text(:de), '<p>Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.</p><p>Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.</p>'
+    assert_equal @project.restricted_landing_page_text(:en), '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>'
   end
 
 end
