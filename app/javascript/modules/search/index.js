@@ -36,3 +36,4 @@ export { default as convertLegacyQuery } from './convertLegacyQuery';
 export { default as useArchiveSearch } from './useArchiveSearch';
 export { default as useFacets } from './useFacets';
 export { default as useSearchSuggestions } from './useSearchSuggestions';
+export { default as useTrackArchiveSearch } from './useTrackArchiveSearch';

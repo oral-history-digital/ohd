@@ -1,6 +1,7 @@
 export { default as useTrackPageView } from './useTrackPageView';
 export { default as useTrackPageViewFunction } from './useTrackPageViewFunction';
 export { default as useTrackSiteSearch } from './useTrackSiteSearch';
+export { default as useShouldTrack } from './useShouldTrack';
 export { default as useTrackEventFunction } from './useTrackEventFunction';
 export { default as AnalyticsProvider } from './AnalyticsProvider';
 

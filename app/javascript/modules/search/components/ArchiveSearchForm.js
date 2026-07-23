@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { useTrackSiteSearch } from 'modules/analytics';
 import { AuthShowContainer } from 'modules/auth';
 import { useSearchParams } from 'modules/query-string';
 import { ResetFiltersButton } from 'modules/ui';
@@ -13,7 +12,6 @@ import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
 export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
     const formEl = useRef(null);
-    const trackSiteSearch = useTrackSiteSearch();
 
     const {
         fulltext,
@@ -62,8 +60,6 @@ export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
 
         if (searchTerm?.length > 0) {
             setFulltextAndSort(searchTerm, 'score', 'desc');
-
-            trackSiteSearch(searchTerm);
         } else {
             setFulltextInput('');
 
