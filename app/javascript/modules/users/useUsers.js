@@ -32,7 +32,11 @@ export default function useUsers(
         dataPath += `&order=${sorting[0].id}&direction=${sorting[0].desc ? 'desc' : 'asc'}`;
     }
 
-    const { isLoading, isValidating, data, error } = useSWR(dataPath);
+    // A failing request is usually a server-side error that will not resolve on
+    // its own, so retries are capped instead of repeating indefinitely.
+    const { isLoading, isValidating, data, error } = useSWR(dataPath, {
+        errorRetryCount: 3,
+    });
 
     return { isLoading, isValidating, data: data, error, dataPath };
 }
