@@ -10,6 +10,7 @@ import {
 import { SelectField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { DateCell, TableWithPagination } from 'modules/tables';
+import { ErrorMessage } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
 import ArchiveManagementInCell from './ArchiveManagementInCell';
@@ -67,7 +68,7 @@ export default function UserTable() {
 
     const [sorting, setSorting] = useState([]);
 
-    const { data, isLoading, dataPath } = useUsers(
+    const { data, isLoading, error, dataPath } = useUsers(
         page,
         filter,
         workflowStateFilter,
@@ -199,6 +200,11 @@ export default function UserTable() {
             <h1 className="Page-main-title">
                 {data?.total} {t('activerecord.models.user.other')}
             </h1>
+            {error && (
+                <ErrorMessage className="u-mb">
+                    {error.message} ({error.status})
+                </ErrorMessage>
+            )}
             <TableWithPagination
                 data={data?.data || []}
                 pageCount={data?.result_pages_count}

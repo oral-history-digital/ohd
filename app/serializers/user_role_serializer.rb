@@ -12,18 +12,20 @@ class UserRoleSerializer < ApplicationSerializer
   #end
 
   def name
-    object.role.name
+    object.role&.name
   end
 
-  def desc 
-    object.role.desc
+  def desc
+    object.role&.desc
   end
 
   def project_id
-    object.role.project_id
+    object.role&.project_id
   end
 
   def role_permissions
+    return {} unless object.role
+
     object.role.role_permissions.inject({}){|mem, c| mem[c.id] = RolePermissionSerializer.new(c); mem}
   end
 
