@@ -195,17 +195,29 @@ class BasicsTest < ApplicationSystemTestCase
     Interview.reindex
     DataHelper.test_media
 
+    interview = Interview.first
+
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
     sleep 1
     click_on 'R., Mario'
+    assert_current_path %r{/interviews/#{interview.archive_id}}
     click_on 'About the interview'
-    click_on 'eng'
 
-    # TODO: Add assertions
+    within '#transcript-downloads' do
+      assert_link 'eng'
+      href = URI.parse(find_link('eng')[:href]).request_uri
+      assert_match %r{/interviews/#{interview.archive_id}/transcript\.pdf\?lang=eng\z}, href
 
-    # -> no error, we are happy
+      click_on 'eng'
+    end
+
+    # The download does not navigate away, so the page cannot be asserted on.
+    # Visiting again makes Capybara check for server errors, which surfaces a
+    # failed PDF rendering here instead of in the teardown.
+    visit page.current_url
+    assert_text 'About the interview'
   end
 
   test 'change password' do
