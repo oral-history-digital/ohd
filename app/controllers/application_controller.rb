@@ -60,7 +60,18 @@ class ApplicationController < ActionController::Base
 
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
-    I18n.locale = locale || params[:locale] || I18n.default_locale
+    I18n.locale = available_locale(locale || params[:locale]) || I18n.default_locale
+  end
+
+  # I18n.locale= raises I18n::InvalidLocale for anything outside
+  # I18n.available_locales. The locale can come from a query string or from a
+  # path that never passed the router's locale constraint, so it is never safe
+  # to hand it through unchecked.
+  def available_locale(locale)
+    return nil if locale.blank?
+
+    locale = locale.to_s
+    locale if I18n.available_locales.map(&:to_s).include?(locale)
   end
 
   # Append the locale to all requests.

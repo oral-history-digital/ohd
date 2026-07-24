@@ -10,6 +10,14 @@ OHD_DOMAINS = {
 OHD_DOMAIN = ENV['OHD_DOMAIN'].presence || OHD_DOMAINS[Rails.env]
 DEFAULT_PRIMARY_COLOR = '#e01217'
 
+# Locales that may appear as the /:locale segment of a url. Setting I18n.locale
+# to anything outside of I18n.available_locales raises I18n::InvalidLocale, so
+# urls like /lv.php (bots probing for php files) have to be rejected by the
+# router instead of reaching ApplicationController#set_locale.
+LOCALE_ROUTE_CONSTRAINT = Regexp.union(
+  Rails.application.config.i18n.available_locales.map(&:to_s)
+)
+
 # using the "\x00" char as delimiter will move values between columns
 # when the document is created with default options ( " as quote_char)
 #CSV_OPTIONS = { encoding: 'utf-8', col_sep: "\t", quote_char: "\x00"}

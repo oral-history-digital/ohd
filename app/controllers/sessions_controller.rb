@@ -128,7 +128,7 @@ class SessionsController < Devise::SessionsController
   private
 
   def set_locale
-    @locale = params[:locale]
+    @locale = available_locale(params[:locale])
     I18n.locale = @locale if @locale
   end
 
