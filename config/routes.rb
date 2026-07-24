@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     controllers applications: 'oauth/applications'
   end
 
-  scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+  scope "/:locale", :constraints => { locale: LOCALE_ROUTE_CONSTRAINT } do
     devise_for :users,
       controllers: {
         sessions: "sessions",
@@ -348,7 +348,7 @@ Rails.application.routes.draw do
         raise ActionController::RoutingError, "No project: #{params[:project_id]}" if project.nil?
         "/#{project.identifier}/#{project.default_locale}"
       }
-      scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+      scope "/:locale", :constraints => { locale: LOCALE_ROUTE_CONSTRAINT } do
         get "/", to: "projects#show"
         concerns :basic_project_routes
         resources :institutions do
@@ -370,7 +370,9 @@ Rails.application.routes.draw do
   #
   constraints(lambda { |request| Project.archive_domains.include?(request.base_url) }) do
     get "/", to: redirect {|params, request| "/#{Project.by_domain(request.base_url).default_locale}"}
-    scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+    # Same reasoning as for the portal domain above: only real locales may be
+    # taken for the locale segment, junk like /lv.php has to 404 in the router.
+    scope "/:locale", :constraints => { locale: LOCALE_ROUTE_CONSTRAINT } do
       get "", to: "projects#show"
       get "/", to: "projects#show"
       concerns :basic_project_routes
