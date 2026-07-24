@@ -206,18 +206,22 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'About the interview'
 
     within '#transcript-downloads' do
-      assert_link 'eng'
-      href = URI.parse(find_link('eng')[:href]).request_uri
+      # The link is labelled with the translated language name ('English'),
+      # so it is located by its href to keep the test independent of locale.
+      link = find_link(href: %r{/transcript\.pdf})
+      href = URI.parse(link[:href]).request_uri
       assert_match %r{/interviews/#{interview.archive_id}/transcript\.pdf\?lang=eng\z}, href
 
-      click_on 'eng'
+      link.click
     end
 
     # The download does not navigate away, so the page cannot be asserted on.
     # Visiting again makes Capybara check for server errors, which surfaces a
     # failed PDF rendering here instead of in the teardown.
     visit page.current_url
-    assert_text 'About the interview'
+    # The tab label is uppercased via CSS, which Capybara sees in the rendered
+    # text, so it is matched case-insensitively.
+    assert_text(/about the interview/i)
   end
 
   test 'change password' do
