@@ -8,6 +8,7 @@ export * from './useGetInstitutionsList';
 export * from './useGetProject';
 export * from './useGetProjectCollections';
 export * from './useGetProjects';
+export * from './useHydrateAllProjects';
 export * from './useHydrateProjectsByIds';
 export * from './useHumanReadable';
 export * from './useInstanceSettings';

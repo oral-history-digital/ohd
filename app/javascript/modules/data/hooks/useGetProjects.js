@@ -8,6 +8,7 @@ export function useGetProjects(options = {}) {
         all = false,
         workflowState,
         includeUmbrella = false,
+        enabled = true,
     } = options;
     const pathBase = usePathBase();
 
@@ -19,7 +20,7 @@ export function useGetProjects(options = {}) {
     const path = `${pathBase}/projects/list?${queryParams.toString()}`;
 
     const { isLoading, isValidating, data, error, mutate } = useSWRImmutable(
-        path,
+        enabled ? path : null,
         fetcher
     );
 

@@ -6,6 +6,7 @@ import {
     getProjects,
     getRolesForCurrentProject,
     getRolesForCurrentProjectFetched,
+    useHydrateAllProjects,
 } from 'modules/data';
 import { SelectField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -24,6 +25,10 @@ export default function UserTable() {
     const project = useSelector(getCurrentProject);
     const projects = useSelector(getProjects);
     const projectRoles = useSelector(getRolesForCurrentProject);
+
+    // On the OHD instance the table spans all projects, so the store must hold
+    // them all, no matter which pages were visited before.
+    useHydrateAllProjects({ enabled: project.is_ohd });
 
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState('');
