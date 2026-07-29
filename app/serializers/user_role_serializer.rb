@@ -15,32 +15,34 @@ class UserRoleSerializer < ApplicationSerializer
   #end
 
   def name
-    object.role.name
+    object.role&.name
   end
 
   def archive_management
-    object.role.translations.any? do |translation|
+    object.role&.translations.any? do |translation|
       translation.name == 'Archivmanagement'
     end
   end
 
-  def desc 
-    object.role.desc
+  def desc
+    object.role&.desc
   end
 
   def project_id
-    object.role.project_id
+    object.role&.project_id
   end
 
   def project_shortname
-    object.role.project.shortname
+    object.role&.project.shortname
   end
 
   def project_name
-    object.role.project.name
+    object.role&.project.name
   end
 
   def role_permissions
+    return {} unless object.role
+
     object.role.role_permissions.inject({}){|mem, c| mem[c.id] = RolePermissionSerializer.new(c); mem}
   end
 

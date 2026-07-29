@@ -93,7 +93,7 @@ class UsersController < ApplicationController
       end
     end
   end
-  
+
   def confirm_new_email
     user = User.find(params[:id])
     if user.confirmation_token == params[:confirmation_token]

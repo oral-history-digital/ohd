@@ -1,5 +1,8 @@
 # Oral History.Digital
 
+[![Ruby on Rails CI](https://github.com/oral-history-digital/ohd/actions/workflows/rubyonrails.yml/badge.svg?branch=main)](https://github.com/oral-history-digital/ohd/actions/workflows/rubyonrails.yml?query=branch%3Amain)
+[![Frontend CI](https://github.com/oral-history-digital/ohd/actions/workflows/jest.yml/badge.svg?branch=main)](https://github.com/oral-history-digital/ohd/actions/workflows/jest.yml?query=branch%3Amain)
+
 A curation and research platform for scholarly collections of audio-visual narrative interviews.
 
 https://www.oral-history.digital/

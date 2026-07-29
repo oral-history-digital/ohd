@@ -6,7 +6,7 @@ class UserSerializer < ApplicationSerializer
     :unconfirmed_email,
     :otp_qrcode,
     :otp_required_for_login,
-    :changed_to_otp_at, 
+    :changed_to_otp_at,
     :passkey_required_for_login,
     :changed_to_passkey_at,
     :admin,
@@ -54,8 +54,10 @@ class UserSerializer < ApplicationSerializer
         } if I18n.available_locales.include?( alpha2_locale )}
   end
 
+  # user_roles whose role has been deleted carry no information for the client
+  # and would break UserRoleSerializer, so they are skipped
   def user_roles
-    object.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem}
+    object.user_roles.includes(:role).select(&:role).inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem}
   end
 
   def tasks
