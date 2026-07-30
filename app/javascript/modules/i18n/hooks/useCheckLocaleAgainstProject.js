@@ -84,7 +84,7 @@ export function useCheckLocaleAgainstProject() {
         )
             .then(() => {
                 // Only navigate and set locale after translations are loaded
-                navigate(newPath, { replace: true });
+                navigate(newPath + location.search, { replace: true });
             })
             .catch((error) => {
                 console.error(
