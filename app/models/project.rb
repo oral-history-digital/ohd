@@ -78,6 +78,9 @@ class Project < ApplicationRecord
   after_commit :refresh_related_institutions_on_workflow_state_change,
     if: :saved_change_to_workflow_state?
 
+  after_commit :reindex_interviews_on_workflow_state_change,
+    if: :saved_change_to_workflow_state?
+
   #
   # define pseudo-methods for serialized attributes
   #
@@ -356,6 +359,14 @@ class Project < ApplicationRecord
       institution.parent&.update_interviews_count
       institution.parent&.touch
     end
+  end
+
+  # The workflow_state an interview is indexed under is derived from its
+  # project's (see Interview's searchable block), so unsharing a project leaves
+  # stale 'public' documents in Solr until its interviews are indexed again.
+  # Interview#solr_index! is handle_asynchronously, so this only enqueues.
+  def reindex_interviews_on_workflow_state_change
+    interviews.find_each(&:solr_index!)
   end
 
   def search_facets_hash
