@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.4] - 2026-07-30
+
+### Fixed
+
+- fix: avoid NoMethodError when checking task permissions for non-interview records
+- fix: avoid NoMethodError in ref_tree.json when segment has no tape
+- fix: skip unknown keys in interview update serializer
+- fix: reject unknown locales outside the portal domain
+
 ## [2.6.3] - 2026-07-23
 
 ### Fixed
@@ -680,6 +689,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.6.4]: https://github.com/oral-history-digital/ohd/compare/v2.6.3...v2.6.4
 [2.6.3]: https://github.com/oral-history-digital/ohd/compare/v2.6.2...v2.6.3
 [2.6.2]: https://github.com/oral-history-digital/ohd/compare/v2.6.1...v2.6.2
 [2.6.1]: https://github.com/oral-history-digital/ohd/compare/v2.6.0...v2.6.1
