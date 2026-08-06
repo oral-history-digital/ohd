@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2026-08-06
+
+### Added
+
+- feat: add column and filter for mfa
+- feat: add filter for archive manager role
+- feat: add superuser filter
+
+### Changed
+
+- refactor(latex): escape raw text at render boundary
+- feat: improve styles of UserTable
+
+### Fixed
+
+- fix: keep query string when redirecting to project default locale
+- fix(workbook): hydrate missing projects for workbook item display
+- fix(latex): make sure all strings are escaped once
+- fix: correctly display user_projects
+- fix: correctly display project access data for user
+- fix: load projects via SWR instead of redux
+- fix: hide permission column for ohd
+- fix: handle missing project
+- fix: correctly reset language filter
+
 ## [2.6.4] - 2026-07-30
 
 ### Fixed
