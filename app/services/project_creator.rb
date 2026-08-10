@@ -133,25 +133,28 @@ class ProjectCreator < ApplicationService
 
   def create_default_registry_reference_type_metadata_fields
     YAML.load_file(File.join(Rails.root, 'config/defaults/registry_reference_type_metadata_fields.yml')).each do |(name, settings)|
-      metadata_field = MetadataField.create(
-        registry_reference_type_id: (settings['ohd'] ? Project.ohd : project).registry_reference_types.where(code: name).first.id,
-        project_id: project.id,
-        name: name,
-        source: 'RegistryReferenceType',
-        ref_object_type: settings['ref_object_type'],
-        use_as_facet: settings['use_as_facet'] || false,
-        use_in_results_table: settings['use_in_results_table'] || false,
-        use_in_results_list: settings['use_in_results_list'] || false,
-        use_in_details_view: settings['use_in_details_view'] || false,
-        use_in_metadata_import: settings['use_in_metadata_import'] || false,
-        display_on_landing_page: settings['display_on_landing_page'] || false,
-        use_in_map_search: settings['use_in_map_search'] || false,
-        map_color: settings['map_color'] || '#1c2d8f',
-        list_columns_order: settings['list_columns_order'] || 1.0,
-        facet_order: settings['facet_order'] || 1.0
-      )
+      registry_reference_type_id = (settings['ohd'] ? Project.ohd : project).registry_reference_types.where(code: name).first&.id
+      unless registry_reference_type_id.nil?
+        metadata_field = MetadataField.create(
+          registry_reference_type_id: registry_reference_type_id,
+          project_id: project.id,
+          name: name,
+          source: 'RegistryReferenceType',
+          ref_object_type: settings['ref_object_type'],
+          use_as_facet: settings['use_as_facet'] || false,
+          use_in_results_table: settings['use_in_results_table'] || false,
+          use_in_results_list: settings['use_in_results_list'] || false,
+          use_in_details_view: settings['use_in_details_view'] || false,
+          use_in_metadata_import: settings['use_in_metadata_import'] || false,
+          display_on_landing_page: settings['display_on_landing_page'] || false,
+          use_in_map_search: settings['use_in_map_search'] || false,
+          map_color: settings['map_color'] || '#1c2d8f',
+          list_columns_order: settings['list_columns_order'] || 1.0,
+          facet_order: settings['facet_order'] || 1.0
+        )
 
-      add_translations(metadata_field, 'label', "metadata_labels.#{name}")
+        add_translations(metadata_field, 'label', "metadata_labels.#{name}")
+      end
     end
   end
 
