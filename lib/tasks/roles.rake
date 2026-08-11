@@ -16,7 +16,7 @@ namespace :roles do
   task :create_default_roles_and_permissions => :environment do
     Project.where.not(shortname: 'ohd').each do |project|
       YAML.load_file(File.join(Rails.root, 'config/defaults/roles.yml')).each do |role_permission|
-        role = Role.find_or_create_by(translations_attributes: role_permission[:translations_attributes], project_id: project.id)
+        role = Role.find_or_create_by(role_permission[:attributes][0].merge(project_id: project.id)[0])
         role_permission[:permissions].each do |permission|
           perm = Permission.find_or_create_by(klass: permission[:klass], action_name: permission[:action_name])
           perm.update_attribute(:name, "#{permission[:klass]} #{permission[:action_name]}")
