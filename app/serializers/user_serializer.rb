@@ -45,6 +45,10 @@ class UserSerializer < ApplicationSerializer
     object.id
   end
 
+  def interview_permissions
+    object.interview_permissions.select(&:interview)
+  end
+
   def names
       object.translations.each_with_object({}) {|i, hsh |
         alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
