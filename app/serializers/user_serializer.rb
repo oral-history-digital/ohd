@@ -55,7 +55,7 @@ class UserSerializer < ApplicationSerializer
   end
 
   def user_roles
-    object.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem}
+    object.user_roles.select(&:role).inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem}
   end
 
   def tasks
