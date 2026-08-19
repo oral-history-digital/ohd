@@ -98,8 +98,8 @@
 <% interview.tapes.each do |tape| %>
   <% tape.segments.includes(:translations).each do |segment| %>
 
-    <% if !segment.mainheading(content_locale_public).blank? %>
-      \section{<%= latex_escape(segment.mainheading(content_locale_public)) %>}
+    <% if !segment.mainheading(content_locale).blank? %>
+      \section{<%= latex_escape(segment.mainheading(content_locale)) %>}
       <% if tape != segment.tape.number %>
         <%= render partial: "latex/title",
           locals: {
@@ -121,8 +121,8 @@
       %>
     <% end %>
 
-    <% if !segment.subheading(content_locale_public).blank? %>
-      \subsection{<%= latex_escape(segment.subheading(content_locale_public)) %>}
+    <% if !segment.subheading(content_locale).blank? %>
+      \subsection{<%= latex_escape(segment.subheading(content_locale)) %>}
       <%= render partial: "latex/title",
         locals: {
           title: Timecode.new(segment.timecode).timecode[0..7],
