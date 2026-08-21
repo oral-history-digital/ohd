@@ -13,7 +13,10 @@ class ProjectLiteSerializer < ProjectArchiveSerializer
     :media_types,
     :interview_year_range,
     :birth_year_range,
-    :primary_institution
+    :primary_institution,
+    :primary_color,
+    :secondary_color,
+    :editorial_color
 
   %w(
     cooperation_partners

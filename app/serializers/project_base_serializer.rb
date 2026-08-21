@@ -30,7 +30,10 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :has_map,
     :subjects,
     :levels_of_indexing,
-    :default_search_order
+    :default_search_order,
+    :primary_color,
+    :secondary_color,
+    :editorial_color
 
   %w(
     cooperation_partners
