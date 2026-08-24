@@ -23,7 +23,7 @@ class ProjectMetadataExporter
     # Components
     @md.documentation_url = @project.domain
     @md.documentation_languages = @project.available_locales
-    @md.creator_name = @project.manager
+    @md.creator_name = @project.oai_managers.first
     @md.creator_email = @project.contact_email
     @md.creator_organisation = @project.institutions.first.name
     @md.creator_website = @project.domain
