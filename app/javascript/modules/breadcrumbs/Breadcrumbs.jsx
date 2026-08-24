@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 
@@ -7,6 +8,7 @@ import { useBreadcrumbs } from './hooks/useBreadcrumbs';
 
 export default function Breadcrumbs({ logoSrc }) {
     const { project } = useProject();
+    const { locale } = useI18n();
     const crumbs = useBreadcrumbs();
 
     const shouldHideBreadcrumbs =
@@ -21,7 +23,11 @@ export default function Breadcrumbs({ logoSrc }) {
         <nav aria-label="breadcrumb" className={classNames('Breadcrumbs')}>
             <ol className="Breadcrumbs-list">
                 <li className="Breadcrumbs-item">
-                    <Logo logoSrc={logoSrc} variant={logoVariant} />
+                    <Logo
+                        logoSrc={logoSrc}
+                        title={project.name[locale]}
+                        variant={logoVariant}
+                    />
                 </li>
 
                 {crumbs.map((crumb, index) => {

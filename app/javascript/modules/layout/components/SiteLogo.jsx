@@ -41,7 +41,7 @@ function SiteLogo({ className }) {
             <div className="SiteHeader-homeLink">
                 <Link
                     to={targetUrl}
-                    title="Oral-History.Digital (oh.d)"
+                    title={project.name[locale]}
                     onClick={unsetProjectId}
                     className={classNames(className, 'u-mr')}
                     data-testid="SiteLogo-link"
@@ -49,7 +49,7 @@ function SiteLogo({ className }) {
                     <img
                         className="SiteHeader-logo"
                         src="/logo-ohd.svg"
-                        alt="Logo Oral-History.Digital (oh.d)"
+                        alt={project.name[locale]}
                     />
                 </Link>
             </div>
