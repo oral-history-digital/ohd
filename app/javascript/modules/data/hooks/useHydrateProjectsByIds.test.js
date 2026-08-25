@@ -1,13 +1,9 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
+import { renderHook } from '@testing-library/react';
 import { fetchData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useHydrateProjectsByIds } from './useHydrateProjectsByIds';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('react-redux', () => ({
     useDispatch: jest.fn(),
@@ -25,21 +21,10 @@ jest.mock('modules/data', () => ({
     getProjectsStatus: (state) => state.data.projectsStatus,
 }));
 
-function TestComponent({ projectIds, options }) {
-    useHydrateProjectsByIds(projectIds, options);
-    return null;
-}
-
-TestComponent.propTypes = {
-    projectIds: PropTypes.array,
-    options: PropTypes.object,
-};
-
 describe('useHydrateProjectsByIds', () => {
-    let wrapper;
     let mockDispatch;
 
-    function renderHook({
+    function renderUseHydrateProjectsByIds({
         currentProject = null,
         projects = {},
         projectsStatus = {},
@@ -56,9 +41,7 @@ describe('useHydrateProjectsByIds', () => {
             })
         );
 
-        wrapper = mount(
-            <TestComponent projectIds={projectIds} options={options} />
-        );
+        renderHook(() => useHydrateProjectsByIds(projectIds, options));
     }
 
     beforeEach(() => {
@@ -72,15 +55,8 @@ describe('useHydrateProjectsByIds', () => {
         }));
     });
 
-    afterEach(() => {
-        if (wrapper) {
-            wrapper.unmount();
-            wrapper = null;
-        }
-    });
-
     it('does nothing when currentProject is missing', () => {
-        renderHook({ projectIds: [1, 2] });
+        renderUseHydrateProjectsByIds({ projectIds: [1, 2] });
 
         expect(fetchData).not.toHaveBeenCalled();
         expect(mockDispatch).not.toHaveBeenCalled();
@@ -89,7 +65,7 @@ describe('useHydrateProjectsByIds', () => {
     it('hydrates unique truthy project IDs by default', () => {
         const currentProject = { id: 99, shortname: 'ohd' };
 
-        renderHook({
+        renderUseHydrateProjectsByIds({
             currentProject,
             projectIds: [1, 1, '2', null, undefined, 0, ''],
             projects: {},
@@ -115,7 +91,7 @@ describe('useHydrateProjectsByIds', () => {
     it('skips IDs that are already fetching', () => {
         const currentProject = { id: 99, shortname: 'ohd' };
 
-        renderHook({
+        renderUseHydrateProjectsByIds({
             currentProject,
             projectIds: [1, 2],
             projects: {},
@@ -137,7 +113,7 @@ describe('useHydrateProjectsByIds', () => {
             (project) => project && project.isLite === true
         );
 
-        renderHook({
+        renderUseHydrateProjectsByIds({
             currentProject,
             projectIds: [5],
             projects: { 5: { id: 5, isLite: true } },

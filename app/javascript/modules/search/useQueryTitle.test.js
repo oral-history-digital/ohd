@@ -1,34 +1,16 @@
-// Configure Enzyme adapter
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import { shallow } from 'enzyme';
-import Enzyme from 'enzyme';
+import { renderHook } from '@testing-library/react';
 import { useI18n } from 'modules/i18n';
-import PropTypes from 'prop-types';
 
 import useQueryTitle from './useQueryTitle';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 // Mock the i18n module
 jest.mock('modules/i18n', () => ({
     useI18n: jest.fn(),
 }));
 
-// Test component that uses the hook
-function TestComponent({ query, facets }) {
-    const title = useQueryTitle(query, facets);
-    return <div>{title}</div>;
-}
-
-TestComponent.propTypes = {
-    query: PropTypes.object.isRequired,
-    facets: PropTypes.object,
-};
-
 // Helper function to get the hook result
 function getHookResult(query, facets) {
-    const wrapper = shallow(<TestComponent query={query} facets={facets} />);
-    return wrapper.text();
+    return renderHook(() => useQueryTitle(query, facets)).result.current;
 }
 
 const query = {

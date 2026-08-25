@@ -1,12 +1,6 @@
-import React from 'react';
-
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
-import PropTypes from 'prop-types';
+import { renderHook } from '@testing-library/react';
 
 import { useSegmentTabs } from './useSegmentTabs';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('modules/i18n', () => ({
     useI18n: jest.fn(() => ({
@@ -15,52 +9,21 @@ jest.mock('modules/i18n', () => ({
     })),
 }));
 
-function TestComponent({
-    showEditTab,
-    showHeadingsTab,
-    showAnnotationsTab,
-    showReferencesTab,
-    onRender,
-}) {
-    const tabs = useSegmentTabs(
-        showEditTab,
-        showHeadingsTab,
-        showAnnotationsTab,
-        showReferencesTab
-    );
-
-    React.useEffect(() => {
-        onRender(tabs);
-    }, [tabs, onRender]);
-
-    return null;
-}
-
-TestComponent.propTypes = {
-    showEditTab: PropTypes.bool,
-    showHeadingsTab: PropTypes.bool,
-    showAnnotationsTab: PropTypes.bool,
-    showReferencesTab: PropTypes.bool,
-    onRender: PropTypes.func.isRequired,
-};
-
 describe('useSegmentTabs', () => {
-    let wrapper;
     let result;
 
     const render = (props) => {
-        wrapper = mount(
-            <TestComponent
-                {...props}
-                onRender={(r) => {
-                    result = r;
-                }}
-            />
-        );
+        result = renderHook(() =>
+            useSegmentTabs(
+                props.showEditTab,
+                props.showHeadingsTab,
+                props.showAnnotationsTab,
+                props.showReferencesTab
+            )
+        ).result;
     };
 
     afterEach(() => {
-        if (wrapper) wrapper.unmount();
         result = null;
     });
 
@@ -72,7 +35,7 @@ describe('useSegmentTabs', () => {
             showReferencesTab: false,
         });
 
-        expect(result).toEqual([
+        expect(result.current).toEqual([
             { id: 'edit', label: 'edit.segment.tab_edit' },
         ]);
     });
@@ -85,7 +48,7 @@ describe('useSegmentTabs', () => {
             showReferencesTab: false,
         });
 
-        expect(result).toEqual([
+        expect(result.current).toEqual([
             { id: 'headings', label: 'edit.segment.tab_headings' },
         ]);
     });
@@ -98,7 +61,7 @@ describe('useSegmentTabs', () => {
             showReferencesTab: false,
         });
 
-        expect(result).toEqual([
+        expect(result.current).toEqual([
             { id: 'annotations', label: 'edit.segment.tab_annotations' },
         ]);
     });
@@ -111,7 +74,7 @@ describe('useSegmentTabs', () => {
             showReferencesTab: true,
         });
 
-        expect(result).toEqual([
+        expect(result.current).toEqual([
             { id: 'references', label: 'edit.segment.tab_registry_references' },
         ]);
     });
@@ -124,7 +87,7 @@ describe('useSegmentTabs', () => {
             showReferencesTab: true,
         });
 
-        expect(result).toEqual([
+        expect(result.current).toEqual([
             { id: 'edit', label: 'edit.segment.tab_edit' },
             { id: 'headings', label: 'edit.segment.tab_headings' },
             { id: 'annotations', label: 'edit.segment.tab_annotations' },
@@ -140,7 +103,7 @@ describe('useSegmentTabs', () => {
             showReferencesTab: false,
         });
 
-        expect(result).toEqual([]);
+        expect(result.current).toEqual([]);
     });
 
     it('maintains tab order: edit, headings, annotations, references', () => {
@@ -151,10 +114,10 @@ describe('useSegmentTabs', () => {
             showReferencesTab: true,
         });
 
-        expect(result[0].id).toBe('edit');
-        expect(result[1].id).toBe('headings');
-        expect(result[2].id).toBe('annotations');
-        expect(result[3].id).toBe('references');
+        expect(result.current[0].id).toBe('edit');
+        expect(result.current[1].id).toBe('headings');
+        expect(result.current[2].id).toBe('annotations');
+        expect(result.current[3].id).toBe('references');
     });
 
     it('handles partial true flags', () => {
@@ -165,7 +128,7 @@ describe('useSegmentTabs', () => {
             showReferencesTab: true,
         });
 
-        expect(result).toEqual([
+        expect(result.current).toEqual([
             { id: 'edit', label: 'edit.segment.tab_edit' },
             { id: 'references', label: 'edit.segment.tab_registry_references' },
         ]);

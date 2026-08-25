@@ -1,5 +1,4 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { shallow } from 'enzyme';
+import { renderHook } from '@testing-library/react';
 import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
 import {
     getCurrentInterview,
@@ -15,8 +14,6 @@ import { useSelector } from 'react-redux';
 import { useCurrentPage } from '../../routes/hooks/useCurrentPage';
 import useProject from '../../routes/useProject';
 import { useBreadcrumbModel } from './useBreadcrumbModel';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('../../routes/hooks/useCurrentPage', () => ({
     useCurrentPage: jest.fn(),
@@ -49,14 +46,6 @@ jest.mock('modules/data', () => ({
     useGetInstitution: jest.fn(),
     useGetProject: jest.fn(),
 }));
-
-/**
- * Renders the breadcrumb model hook and returns parsed JSON output.
- */
-function HookReader() {
-    const model = useBreadcrumbModel();
-    return <pre>{JSON.stringify(model)}</pre>;
-}
 
 /**
  * Returns hook output for the given mocked routing and data context.
@@ -110,8 +99,7 @@ function getHookResult({
     });
     useSelector.mockImplementation((selector) => selector({}));
 
-    const wrapper = shallow(<HookReader />);
-    return JSON.parse(wrapper.text());
+    return renderHook(() => useBreadcrumbModel()).result.current;
 }
 
 describe('useBreadcrumbModel', () => {

@@ -1,69 +1,27 @@
-import React from 'react';
-
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
-import PropTypes from 'prop-types';
-import { act } from 'react-dom/test-utils';
+import { act, renderHook } from '@testing-library/react';
 
 import { useFormState } from './useFormState';
 
 jest.mock('modules/i18n');
 
-Enzyme.configure({ adapter: new Adapter() });
-
-function HookHarness(props) {
-    return <InnerHarness {...props} />;
-}
-
-function InnerHarness({
-    initialValues,
-    data,
-    elements,
-    submitStateOptions,
-    onRender,
-}) {
-    const hook = useFormState(
-        initialValues,
-        data,
-        elements,
-        submitStateOptions
-    );
-
-    React.useEffect(() => {
-        onRender(hook);
-    }, [hook, onRender]);
-
-    return null;
-}
-
-InnerHarness.propTypes = {
-    initialValues: PropTypes.object,
-    data: PropTypes.object,
-    elements: PropTypes.array,
-    submitStateOptions: PropTypes.object,
-    onRender: PropTypes.func.isRequired,
-};
-
 describe('useFormState', () => {
-    let wrapper;
-    let hook;
+    let renderedHook;
 
     // Helper function to render the hook with given props and capture the hook instance
     const render = (props) => {
-        wrapper = mount(
-            <HookHarness
-                {...props}
-                onRender={(h) => {
-                    hook = h;
-                }}
-            />
+        renderedHook = renderHook(() =>
+            useFormState(
+                props.initialValues,
+                props.data,
+                props.elements,
+                props.submitStateOptions
+            )
         );
     };
 
     // Clean up after each test
     afterEach(() => {
-        if (wrapper) wrapper.unmount();
-        hook = null;
+        renderedHook = null;
     });
 
     describe('initialization', () => {
@@ -74,7 +32,9 @@ describe('useFormState', () => {
                 elements: [],
             });
 
-            expect(hook.values).toEqual({ name: 'Test' });
+            expect(renderedHook.result.current.values).toEqual({
+                name: 'Test',
+            });
         });
 
         it('derives id from data', () => {
@@ -84,7 +44,7 @@ describe('useFormState', () => {
                 elements: [],
             });
 
-            expect(hook.values.id).toBe(42);
+            expect(renderedHook.result.current.values.id).toBe(42);
         });
 
         it('uses archive_id for Interview', () => {
@@ -94,7 +54,7 @@ describe('useFormState', () => {
                 elements: [],
             });
 
-            expect(hook.values.id).toBe('A1');
+            expect(renderedHook.result.current.values.id).toBe('A1');
         });
     });
 
@@ -107,21 +67,19 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('email', 'a@test.com');
+                renderedHook.result.current.updateField('email', 'a@test.com');
             });
-            wrapper.update();
 
-            expect(hook.values).toEqual({
+            expect(renderedHook.result.current.values).toEqual({
                 name: 'Test',
                 email: 'a@test.com',
             });
 
             await act(async () => {
-                hook.updateField('email', 'b@test.com');
+                renderedHook.result.current.updateField('email', 'b@test.com');
             });
-            wrapper.update();
 
-            expect(hook.values.email).toBe('b@test.com');
+            expect(renderedHook.result.current.values.email).toBe('b@test.com');
         });
     });
 
@@ -154,12 +112,14 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('email', 'valid@example.org');
-                hook.touchField('email');
+                renderedHook.result.current.updateField(
+                    'email',
+                    'valid@example.org'
+                );
+                renderedHook.result.current.touchField('email');
             });
-            wrapper.update();
 
-            expect(hook.submitButtonState).toEqual({
+            expect(renderedHook.result.current.submitButtonState).toEqual({
                 disabled: false,
                 helpText: null,
             });
@@ -185,12 +145,11 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('title', '');
-                hook.touchField('title');
+                renderedHook.result.current.updateField('title', '');
+                renderedHook.result.current.touchField('title');
             });
-            wrapper.update();
 
-            expect(hook.submitButtonState).toEqual({
+            expect(renderedHook.result.current.submitButtonState).toEqual({
                 disabled: true,
                 helpText: 'edit.form.fix_validation_errors',
             });
@@ -203,8 +162,8 @@ describe('useFormState', () => {
                 elements,
             });
 
-            expect(hook.errors.email).toBe(false);
-            expect(hook.valid()).toBe(true);
+            expect(renderedHook.result.current.errors.email).toBe(false);
+            expect(renderedHook.result.current.valid()).toBe(true);
         });
 
         it('fails validation when invalid', async () => {
@@ -214,7 +173,7 @@ describe('useFormState', () => {
                 elements,
             });
 
-            expect(hook.valid()).toBe(false);
+            expect(renderedHook.result.current.valid()).toBe(false);
         });
 
         it('ignores hidden fields', async () => {
@@ -230,7 +189,7 @@ describe('useFormState', () => {
                 ],
             });
 
-            expect(hook.valid()).toBe(true);
+            expect(renderedHook.result.current.valid()).toBe(true);
         });
 
         it('ignores optional fields', async () => {
@@ -246,7 +205,7 @@ describe('useFormState', () => {
                 ],
             });
 
-            expect(hook.valid()).toBe(true);
+            expect(renderedHook.result.current.valid()).toBe(true);
         });
     });
 
@@ -258,7 +217,7 @@ describe('useFormState', () => {
                 elements: [{ attribute: 'email' }],
             });
 
-            expect(hook.touched).toEqual({});
+            expect(renderedHook.result.current.touched).toEqual({});
         });
 
         it('marks a single field as touched', async () => {
@@ -269,11 +228,12 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.touchField('email');
+                renderedHook.result.current.touchField('email');
             });
-            wrapper.update();
 
-            expect(hook.touched).toEqual({ email: true });
+            expect(renderedHook.result.current.touched).toEqual({
+                email: true,
+            });
         });
 
         it('marks multiple fields as touched individually', async () => {
@@ -288,12 +248,11 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.touchField('email');
-                hook.touchField('phone');
+                renderedHook.result.current.touchField('email');
+                renderedHook.result.current.touchField('phone');
             });
-            wrapper.update();
 
-            expect(hook.touched).toEqual({
+            expect(renderedHook.result.current.touched).toEqual({
                 email: true,
                 phone: true,
             });
@@ -311,11 +270,10 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.touchAllFields();
+                renderedHook.result.current.touchAllFields();
             });
-            wrapper.update();
 
-            expect(hook.touched).toEqual({
+            expect(renderedHook.result.current.touched).toEqual({
                 email: true,
                 name: true,
                 phone: true,
@@ -330,11 +288,10 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.touchField('undefined');
+                renderedHook.result.current.touchField('undefined');
             });
-            wrapper.update();
 
-            expect(hook.touched).toEqual({});
+            expect(renderedHook.result.current.touched).toEqual({});
         });
 
         it('touchAllFields only includes elements with attributes', async () => {
@@ -349,11 +306,10 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.touchAllFields();
+                renderedHook.result.current.touchAllFields();
             });
-            wrapper.update();
 
-            expect(hook.touched).toEqual({
+            expect(renderedHook.result.current.touched).toEqual({
                 email: true,
                 note: true,
             });
@@ -369,15 +325,14 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.writeNestedObject({
+                renderedHook.result.current.writeNestedObject({
                     event: { id: 1, name: 'Event' },
                 });
             });
-            wrapper.update();
 
-            expect(hook.values.events_attributes).toEqual([
-                { id: 1, name: 'Event' },
-            ]);
+            expect(
+                renderedHook.result.current.values.events_attributes
+            ).toEqual([{ id: 1, name: 'Event' }]);
         });
 
         it('updates nested object by identifier', async () => {
@@ -390,15 +345,14 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.writeNestedObject({
+                renderedHook.result.current.writeNestedObject({
                     event: { id: 1, name: 'New' },
                 });
             });
-            wrapper.update();
 
-            expect(hook.values.events_attributes).toEqual([
-                { id: 1, name: 'New' },
-            ]);
+            expect(
+                renderedHook.result.current.values.events_attributes
+            ).toEqual([{ id: 1, name: 'New' }]);
         });
 
         it('deletes nested object by index', async () => {
@@ -411,11 +365,12 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.deleteNestedObject(0, 'event');
+                renderedHook.result.current.deleteNestedObject(0, 'event');
             });
-            wrapper.update();
 
-            expect(hook.values.events_attributes).toEqual([{ id: 2 }]);
+            expect(
+                renderedHook.result.current.values.events_attributes
+            ).toEqual([{ id: 2 }]);
         });
 
         it('returns empty array when scope missing', () => {
@@ -425,7 +380,9 @@ describe('useFormState', () => {
                 elements: [],
             });
 
-            expect(hook.getNestedObjects('event')).toEqual([]);
+            expect(
+                renderedHook.result.current.getNestedObjects('event')
+            ).toEqual([]);
         });
     });
 
@@ -443,14 +400,13 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('email', 'a@test.com');
-                hook.handleErrors('email', false);
+                renderedHook.result.current.updateField('email', 'a@test.com');
+                renderedHook.result.current.handleErrors('email', false);
             });
-            wrapper.update();
 
-            expect(hook.values.email).toBe('a@test.com');
-            expect(hook.errors.email).toBe(false);
-            expect(hook.valid()).toBe(true);
+            expect(renderedHook.result.current.values.email).toBe('a@test.com');
+            expect(renderedHook.result.current.errors.email).toBe(false);
+            expect(renderedHook.result.current.valid()).toBe(true);
         });
     });
 
@@ -462,8 +418,8 @@ describe('useFormState', () => {
                 elements: [],
             });
 
-            expect(hook.isDirty).toBe(false);
-            expect(hook.dirtyFields).toEqual([]);
+            expect(renderedHook.result.current.isDirty).toBe(false);
+            expect(renderedHook.result.current.dirtyFields).toEqual([]);
         });
 
         it('returns true and lists changed field when value changes', async () => {
@@ -474,12 +430,11 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('name', 'New Name');
+                renderedHook.result.current.updateField('name', 'New Name');
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(true);
-            expect(hook.dirtyFields).toEqual(['name']);
+            expect(renderedHook.result.current.isDirty).toBe(true);
+            expect(renderedHook.result.current.dirtyFields).toEqual(['name']);
         });
 
         it('tracks multiple dirty fields', async () => {
@@ -494,15 +449,14 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('name', 'New Name');
-                hook.updateField('age', 30);
+                renderedHook.result.current.updateField('name', 'New Name');
+                renderedHook.result.current.updateField('age', 30);
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(true);
-            expect(hook.dirtyFields).toContain('name');
-            expect(hook.dirtyFields).toContain('age');
-            expect(hook.dirtyFields.length).toBe(2);
+            expect(renderedHook.result.current.isDirty).toBe(true);
+            expect(renderedHook.result.current.dirtyFields).toContain('name');
+            expect(renderedHook.result.current.dirtyFields).toContain('age');
+            expect(renderedHook.result.current.dirtyFields.length).toBe(2);
         });
 
         it('returns false when value is changed back to initial', async () => {
@@ -513,18 +467,16 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('name', 'New Name');
+                renderedHook.result.current.updateField('name', 'New Name');
             });
-            wrapper.update();
-            expect(hook.isDirty).toBe(true);
+            expect(renderedHook.result.current.isDirty).toBe(true);
 
             await act(async () => {
-                hook.updateField('name', 'Test');
+                renderedHook.result.current.updateField('name', 'Test');
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(false);
-            expect(hook.dirtyFields).toEqual([]);
+            expect(renderedHook.result.current.isDirty).toBe(false);
+            expect(renderedHook.result.current.dirtyFields).toEqual([]);
         });
 
         it('tracks added fields as dirty', async () => {
@@ -535,12 +487,14 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('email', 'new@example.com');
+                renderedHook.result.current.updateField(
+                    'email',
+                    'new@example.com'
+                );
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(true);
-            expect(hook.dirtyFields).toContain('email');
+            expect(renderedHook.result.current.isDirty).toBe(true);
+            expect(renderedHook.result.current.dirtyFields).toContain('email');
         });
 
         it('ignores id field in dirty check', async () => {
@@ -551,12 +505,11 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('id', 99);
+                renderedHook.result.current.updateField('id', 99);
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(false);
-            expect(hook.dirtyFields).toEqual([]);
+            expect(renderedHook.result.current.isDirty).toBe(false);
+            expect(renderedHook.result.current.dirtyFields).toEqual([]);
         });
 
         it('tracks nested _attributes in dirty check', async () => {
@@ -570,12 +523,15 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.writeNestedObject({ event: { id: 1, title: 'Updated' } });
+                renderedHook.result.current.writeNestedObject({
+                    event: { id: 1, title: 'Updated' },
+                });
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(true);
-            expect(hook.dirtyFields).toContain('events_attributes');
+            expect(renderedHook.result.current.isDirty).toBe(true);
+            expect(renderedHook.result.current.dirtyFields).toContain(
+                'events_attributes'
+            );
         });
 
         it('handles empty initial values', async () => {
@@ -586,12 +542,11 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('name', 'Test');
+                renderedHook.result.current.updateField('name', 'Test');
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(true);
-            expect(hook.dirtyFields).toEqual(['name']);
+            expect(renderedHook.result.current.isDirty).toBe(true);
+            expect(renderedHook.result.current.dirtyFields).toEqual(['name']);
         });
 
         it('handles undefined values correctly', async () => {
@@ -602,12 +557,11 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('name', 'Test');
+                renderedHook.result.current.updateField('name', 'Test');
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(true);
-            expect(hook.dirtyFields).toEqual(['name']);
+            expect(renderedHook.result.current.isDirty).toBe(true);
+            expect(renderedHook.result.current.dirtyFields).toEqual(['name']);
         });
 
         it('handles null values correctly', async () => {
@@ -618,12 +572,11 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('name', 'Test');
+                renderedHook.result.current.updateField('name', 'Test');
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(true);
-            expect(hook.dirtyFields).toEqual(['name']);
+            expect(renderedHook.result.current.isDirty).toBe(true);
+            expect(renderedHook.result.current.dirtyFields).toEqual(['name']);
         });
 
         it('can mark current values as clean after save', async () => {
@@ -634,20 +587,18 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.updateField('name', 'Saved Name');
+                renderedHook.result.current.updateField('name', 'Saved Name');
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(true);
-            expect(hook.dirtyFields).toEqual(['name']);
+            expect(renderedHook.result.current.isDirty).toBe(true);
+            expect(renderedHook.result.current.dirtyFields).toEqual(['name']);
 
             await act(async () => {
-                hook.markCurrentValuesAsClean();
+                renderedHook.result.current.markCurrentValuesAsClean();
             });
-            wrapper.update();
 
-            expect(hook.isDirty).toBe(false);
-            expect(hook.dirtyFields).toEqual([]);
+            expect(renderedHook.result.current.isDirty).toBe(false);
+            expect(renderedHook.result.current.dirtyFields).toEqual([]);
         });
 
         it('computes dirty state for next values immediately', () => {
@@ -657,10 +608,11 @@ describe('useFormState', () => {
                 elements: [],
             });
 
-            const dirtyState = hook.getDirtyStateForValues({
-                ...hook.values,
-                name: 'T',
-            });
+            const dirtyState =
+                renderedHook.result.current.getDirtyStateForValues({
+                    ...renderedHook.result.current.values,
+                    name: 'T',
+                });
 
             expect(dirtyState.isDirty).toBe(true);
             expect(dirtyState.dirtyFields).toEqual(['name']);
@@ -680,14 +632,13 @@ describe('useFormState', () => {
             });
 
             await act(async () => {
-                hook.replaceNestedFormValues('events_attributes', [
-                    { id: 3 },
-                    { id: 4 },
-                ]);
+                renderedHook.result.current.replaceNestedFormValues(
+                    'events_attributes',
+                    [{ id: 3 }, { id: 4 }]
+                );
             });
-            wrapper.update();
 
-            expect(hook.values).toEqual({
+            expect(renderedHook.result.current.values).toEqual({
                 name: 'Test',
                 events_attributes: [{ id: 3 }, { id: 4 }],
                 contributions_attributes: [{ id: 10 }],
@@ -716,8 +667,8 @@ describe('useFormState', () => {
                 },
             });
 
-            expect(hook.hasMissingRequired).toBe(true);
-            expect(hook.submitButtonState).toEqual({
+            expect(renderedHook.result.current.hasMissingRequired).toBe(true);
+            expect(renderedHook.result.current.submitButtonState).toEqual({
                 disabled: false,
                 helpText: null,
             });
@@ -744,12 +695,11 @@ describe('useFormState', () => {
             });
 
             act(() => {
-                hook.touchField('title');
+                renderedHook.result.current.touchField('title');
             });
-            wrapper.update();
 
-            expect(hook.hasMissingRequired).toBe(true);
-            expect(hook.submitButtonState).toEqual({
+            expect(renderedHook.result.current.hasMissingRequired).toBe(true);
+            expect(renderedHook.result.current.submitButtonState).toEqual({
                 disabled: true,
                 helpText: 'edit.form.fix_validation_errors',
             });
@@ -787,19 +737,20 @@ describe('useFormState', () => {
             });
 
             act(() => {
-                hook.touchField('password_confirmation');
-                hook.handleErrors('password_confirmation', true);
+                renderedHook.result.current.touchField('password_confirmation');
+                renderedHook.result.current.handleErrors(
+                    'password_confirmation',
+                    true
+                );
             });
-            wrapper.update();
 
             password = 'mismatch';
             act(() => {
-                hook.touchField('password');
+                renderedHook.result.current.touchField('password');
             });
-            wrapper.update();
 
-            expect(hook.hasMissingRequired).toBe(false);
-            expect(hook.submitButtonState).toEqual({
+            expect(renderedHook.result.current.hasMissingRequired).toBe(false);
+            expect(renderedHook.result.current.submitButtonState).toEqual({
                 disabled: false,
                 helpText: null,
             });
@@ -837,12 +788,11 @@ describe('useFormState', () => {
             });
 
             act(() => {
-                hook.touchField('password_confirmation');
+                renderedHook.result.current.touchField('password_confirmation');
             });
-            wrapper.update();
 
-            expect(hook.hasMissingRequired).toBe(false);
-            expect(hook.submitButtonState).toEqual({
+            expect(renderedHook.result.current.hasMissingRequired).toBe(false);
+            expect(renderedHook.result.current.submitButtonState).toEqual({
                 disabled: true,
                 helpText: 'edit.form.fix_validation_errors',
             });
@@ -875,11 +825,10 @@ describe('useFormState', () => {
             });
 
             act(() => {
-                hook.touchField('descriptor');
+                renderedHook.result.current.touchField('descriptor');
             });
-            wrapper.update();
 
-            expect(hook.submitButtonState).toEqual({
+            expect(renderedHook.result.current.submitButtonState).toEqual({
                 disabled: false,
                 helpText: null,
             });

@@ -1,15 +1,11 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { shallow } from 'enzyme';
+import { renderHook } from '@testing-library/react';
 import isLocaleValid from 'modules/routes/isLocaleValid';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
 import { normalizeProjectDbId, resolveCurrentProject } from '../utils';
 import { useCurrentProject } from './useCurrentProject';
 import { useGetProject } from './useGetProject';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('react-redux', () => ({
     useSelector: jest.fn(),
@@ -34,15 +30,6 @@ jest.mock('./useGetProject', () => ({
     useGetProject: jest.fn(),
 }));
 
-function HookReader({ options }) {
-    const result = useCurrentProject(options);
-    return <pre>{JSON.stringify(result)}</pre>;
-}
-
-HookReader.propTypes = {
-    options: PropTypes.object,
-};
-
 function renderHookResult({
     projects = {},
     match = null,
@@ -60,8 +47,7 @@ function renderHookResult({
     useGetProject.mockReturnValue(swrResult);
     normalizeProjectDbId.mockImplementation((id) => Number(id));
 
-    const wrapper = shallow(<HookReader options={options} />);
-    return JSON.parse(wrapper.text());
+    return renderHook(() => useCurrentProject(options)).result.current;
 }
 
 describe('useCurrentProject', () => {
