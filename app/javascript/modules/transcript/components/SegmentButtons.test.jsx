@@ -1,9 +1,7 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import SegmentButtons from './SegmentButtons';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({
@@ -20,7 +18,7 @@ describe('SegmentButtons', () => {
     };
 
     function renderComponent(props = {}) {
-        return mount(
+        return render(
             <SegmentButtons
                 segment={baseSegment}
                 contentLocale="en"
@@ -35,68 +33,57 @@ describe('SegmentButtons', () => {
         );
     }
 
-    it('opens bookmarks viewer when bookmark exists', () => {
+    it('opens bookmarks viewer when bookmark exists', async () => {
+        const user = userEvent.setup();
         const onViewContentType = jest.fn();
         const onBookmarkCreate = jest.fn();
-        const wrapper = renderComponent({
+        renderComponent({
             hasBookmarks: true,
             onViewContentType,
             onBookmarkCreate,
         });
 
-        wrapper
-            .find('[data-testid="segment-button-bookmarks"]')
-            .simulate('click');
+        await user.click(screen.getByTestId('segment-button-bookmarks'));
 
         expect(onViewContentType).toHaveBeenCalledWith('bookmarks');
         expect(onBookmarkCreate).not.toHaveBeenCalled();
-        wrapper.unmount();
     });
 
-    it('opens create-bookmark flow when no bookmark exists', () => {
+    it('opens create-bookmark flow when no bookmark exists', async () => {
+        const user = userEvent.setup();
         const onViewContentType = jest.fn();
         const onBookmarkCreate = jest.fn();
-        const wrapper = renderComponent({
+        renderComponent({
             hasBookmarks: false,
             onViewContentType,
             onBookmarkCreate,
         });
 
-        wrapper
-            .find('[data-testid="segment-button-bookmarks"]')
-            .simulate('click');
+        await user.click(screen.getByTestId('segment-button-bookmarks'));
 
         expect(onBookmarkCreate).toHaveBeenCalledWith(baseSegment);
         expect(onViewContentType).not.toHaveBeenCalled();
-        wrapper.unmount();
     });
 
     it('does not render bookmark modal component in row buttons', () => {
-        const wrapper = renderComponent({ hasBookmarks: false });
+        renderComponent({ hasBookmarks: false });
 
-        expect(wrapper.find('BookmarkSegmentModal')).toHaveLength(0);
-        wrapper.unmount();
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
 
     it('hides unbookmarked star by default', () => {
-        const wrapper = renderComponent({ hasBookmarks: false });
+        renderComponent({ hasBookmarks: false });
 
-        expect(
-            wrapper
-                .find('[data-testid="segment-button-bookmarks"]')
-                .hasClass('Segment-hiddenButton')
-        ).toBe(true);
-        wrapper.unmount();
+        expect(screen.getByTestId('segment-button-bookmarks')).toHaveClass(
+            'Segment-hiddenButton'
+        );
     });
 
     it('keeps bookmarked star visible', () => {
-        const wrapper = renderComponent({ hasBookmarks: true });
+        renderComponent({ hasBookmarks: true });
 
-        expect(
-            wrapper
-                .find('[data-testid="segment-button-bookmarks"]')
-                .hasClass('Segment-hiddenButton')
-        ).toBe(false);
-        wrapper.unmount();
+        expect(screen.getByTestId('segment-button-bookmarks')).not.toHaveClass(
+            'Segment-hiddenButton'
+        );
     });
 });
