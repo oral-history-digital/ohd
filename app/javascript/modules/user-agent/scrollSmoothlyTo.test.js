@@ -6,6 +6,7 @@ describe('scrollSmoothlyTo', () => {
     let originalScrollTo;
     let originalScrollBehaviorDescriptor;
     let rafQueue;
+    let consoleWarnSpy;
     beforeEach(() => {
         originalScrollTo = window.scrollTo;
         window.scrollTo = jest.fn();
@@ -33,6 +34,8 @@ describe('scrollSmoothlyTo', () => {
             delete document.documentElement.style.scrollBehavior;
         }
         window.requestAnimationFrame.mockRestore();
+        consoleWarnSpy?.mockRestore();
+        consoleWarnSpy = null;
     });
 
     function flushAnimationFrames() {
@@ -68,6 +71,9 @@ describe('scrollSmoothlyTo', () => {
     });
 
     it('should fall back to instant scroll if error is thrown', async () => {
+        consoleWarnSpy = jest
+            .spyOn(console, 'warn')
+            .mockImplementation(() => {});
         Object.defineProperty(
             document.documentElement.style,
             'scrollBehavior',
@@ -93,6 +99,10 @@ describe('scrollSmoothlyTo', () => {
             behavior: 'smooth',
         });
         expect(window.scrollTo).toHaveBeenCalledWith(50, 60);
+        expect(consoleWarnSpy).toHaveBeenCalledWith(
+            'scrollSmoothlyTo: Smooth scroll failed, falling back to instant scroll',
+            expect.objectContaining({ message: 'fail' })
+        );
         Object.prototype.hasOwnProperty = originalIn;
     });
 
