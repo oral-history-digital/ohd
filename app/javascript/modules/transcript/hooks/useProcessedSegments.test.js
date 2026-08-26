@@ -1,13 +1,7 @@
-import React from 'react';
-
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
-import PropTypes from 'prop-types';
+import { renderHook } from '@testing-library/react';
 
 import { sortedSegmentsWithActiveIndex } from '../utils';
 import { useProcessedSegments } from './useProcessedSegments';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('../utils', () => ({
     sortedSegmentsWithActiveIndex: jest.fn((activeIndex) => [
@@ -23,45 +17,23 @@ jest.mock('../utils', () => ({
     ]),
 }));
 
-function HookHarness(props) {
-    return <InnerHarness {...props} />;
-}
-
-function InnerHarness({ interview, tape, intervieweeId, onRender }) {
-    const result = useProcessedSegments(interview, tape, intervieweeId);
-
-    React.useEffect(() => {
-        onRender(result);
-    }, [result, onRender]);
-
-    return null;
-}
-
-InnerHarness.propTypes = {
-    interview: PropTypes.object,
-    tape: PropTypes.number,
-    intervieweeId: PropTypes.number,
-    onRender: PropTypes.func.isRequired,
-};
-
 describe('useProcessedSegments', () => {
-    let wrapper;
     let result;
+    let rerender;
 
     const render = (props) => {
-        wrapper = mount(
-            <HookHarness
-                {...props}
-                onRender={(r) => {
-                    result = r;
-                }}
-            />
+        const renderedHook = renderHook(
+            ({ interview, tape, intervieweeId }) =>
+                useProcessedSegments(interview, tape, intervieweeId),
+            { initialProps: props }
         );
+        result = renderedHook.result;
+        rerender = renderedHook.rerender;
     };
 
     afterEach(() => {
-        if (wrapper) wrapper.unmount();
         result = null;
+        rerender = null;
     });
 
     it('returns empty array when interview is null', () => {
@@ -70,7 +42,7 @@ describe('useProcessedSegments', () => {
             tape: null,
             intervieweeId: null,
         });
-        expect(result).toEqual([]);
+        expect(result.current).toEqual([]);
     });
 
     it('returns empty array when interview.segments is undefined', () => {
@@ -79,7 +51,7 @@ describe('useProcessedSegments', () => {
             tape: null,
             intervieweeId: null,
         });
-        expect(result).toEqual([]);
+        expect(result.current).toEqual([]);
     });
 
     it('annotates segments with speaker_is_interviewee flag', () => {
@@ -89,9 +61,9 @@ describe('useProcessedSegments', () => {
             intervieweeId: 1,
         });
 
-        expect(result[0].speaker_is_interviewee).toBe(true);
-        expect(result[1].speaker_is_interviewee).toBe(true);
-        expect(result[2].speaker_is_interviewee).toBe(false);
+        expect(result.current[0].speaker_is_interviewee).toBe(true);
+        expect(result.current[1].speaker_is_interviewee).toBe(true);
+        expect(result.current[2].speaker_is_interviewee).toBe(false);
     });
 
     it('marks speakerIdChanged when speaker ID changes', () => {
@@ -101,12 +73,12 @@ describe('useProcessedSegments', () => {
             intervieweeId: null,
         });
 
-        expect(result[0].speakerIdChanged).toBe(true); // First segment
-        expect(result[1].speakerIdChanged).toBe(false); // Same speaker
-        expect(result[2].speakerIdChanged).toBe(true); // Different speaker
-        expect(result[3].speakerIdChanged).toBe(true); // null speaker with Unknown
-        expect(result[4].speakerIdChanged).toBe(false); // Same unknown speaker
-        expect(result[5].speakerIdChanged).toBe(true); // Back to speaker 2
+        expect(result.current[0].speakerIdChanged).toBe(true); // First segment
+        expect(result.current[1].speakerIdChanged).toBe(false); // Same speaker
+        expect(result.current[2].speakerIdChanged).toBe(true); // Different speaker
+        expect(result.current[3].speakerIdChanged).toBe(true); // null speaker with Unknown
+        expect(result.current[4].speakerIdChanged).toBe(false); // Same unknown speaker
+        expect(result.current[5].speakerIdChanged).toBe(true); // Back to speaker 2
     });
 
     it('marks speakerIdChanged when speaker name changes (with null speaker_id)', () => {
@@ -116,8 +88,8 @@ describe('useProcessedSegments', () => {
             intervieweeId: null,
         });
 
-        expect(result[3].speakerIdChanged).toBe(true); // Bob (id: 2) to Unknown (id: null)
-        expect(result[4].speakerIdChanged).toBe(false); // Unknown to Unknown
+        expect(result.current[3].speakerIdChanged).toBe(true); // Bob (id: 2) to Unknown (id: null)
+        expect(result.current[4].speakerIdChanged).toBe(false); // Unknown to Unknown
     });
 
     it('recomputes result when interview changes', () => {
@@ -127,15 +99,15 @@ describe('useProcessedSegments', () => {
             intervieweeId: 1,
         });
 
-        const firstResult = result;
+        const firstResult = result.current;
 
-        wrapper.setProps({
+        rerender({
             interview: { id: 2, segments: [{ id: 2 }] },
             tape: 1,
             intervieweeId: 1,
         });
 
-        expect(result).not.toBe(firstResult);
+        expect(result.current).not.toBe(firstResult);
     });
 
     it('recomputes result when tape changes', () => {
@@ -145,15 +117,15 @@ describe('useProcessedSegments', () => {
             intervieweeId: 1,
         });
 
-        const firstResult = result;
+        const firstResult = result.current;
 
-        wrapper.setProps({
+        rerender({
             interview: { id: 1, segments: [{ id: 1 }] },
             tape: 2,
             intervieweeId: 1,
         });
 
-        expect(result).not.toBe(firstResult);
+        expect(result.current).not.toBe(firstResult);
     });
 
     it('recomputes result when intervieweeId changes', () => {
@@ -163,15 +135,15 @@ describe('useProcessedSegments', () => {
             intervieweeId: 1,
         });
 
-        const firstResult = result;
+        const firstResult = result.current;
 
-        wrapper.setProps({
+        rerender({
             interview: { id: 1, segments: [{ id: 1 }] },
             tape: 1,
             intervieweeId: 2,
         });
 
-        expect(result).not.toBe(firstResult);
+        expect(result.current).not.toBe(firstResult);
     });
 
     it('marks first segment as changed when speaker is missing', () => {
@@ -199,8 +171,8 @@ describe('useProcessedSegments', () => {
             intervieweeId: null,
         });
 
-        expect(result[0].speakerIdChanged).toBe(true);
-        expect(result[1].speakerIdChanged).toBe(false);
+        expect(result.current[0].speakerIdChanged).toBe(true);
+        expect(result.current[1].speakerIdChanged).toBe(false);
     });
 
     it('resets speaker block after a no-speaker segment', () => {
@@ -219,9 +191,9 @@ describe('useProcessedSegments', () => {
             intervieweeId: null,
         });
 
-        expect(result[0].speakerIdChanged).toBe(true);
-        expect(result[1].speakerIdChanged).toBe(true);
-        expect(result[2].speakerIdChanged).toBe(true);
+        expect(result.current[0].speakerIdChanged).toBe(true);
+        expect(result.current[1].speakerIdChanged).toBe(true);
+        expect(result.current[2].speakerIdChanged).toBe(true);
     });
 
     it('marks only the first no-speaker segment in a run as changed', () => {
@@ -240,8 +212,8 @@ describe('useProcessedSegments', () => {
             intervieweeId: null,
         });
 
-        expect(result[0].speakerIdChanged).toBe(true);
-        expect(result[1].speakerIdChanged).toBe(true);
-        expect(result[2].speakerIdChanged).toBe(false);
+        expect(result.current[0].speakerIdChanged).toBe(true);
+        expect(result.current[1].speakerIdChanged).toBe(true);
+        expect(result.current[2].speakerIdChanged).toBe(false);
     });
 });

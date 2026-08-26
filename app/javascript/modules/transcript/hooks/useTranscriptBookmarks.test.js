@@ -1,13 +1,6 @@
-import React from 'react';
-
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
-import PropTypes from 'prop-types';
-import { act } from 'react-dom/test-utils';
+import { act, renderHook } from '@testing-library/react';
 
 import { useTranscriptBookmarks } from './useTranscriptBookmarks';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('modules/workbook', () => ({
     useWorkbook: jest.fn(),
@@ -15,36 +8,11 @@ jest.mock('modules/workbook', () => ({
 
 const { useWorkbook } = jest.requireMock('modules/workbook');
 
-function HookHarness(props) {
-    return <InnerHarness {...props} />;
-}
-
-function InnerHarness({ onRender }) {
-    const hook = useTranscriptBookmarks();
-
-    React.useEffect(() => {
-        onRender(hook);
-    }, [hook, onRender]);
-
-    return null;
-}
-
-InnerHarness.propTypes = {
-    onRender: PropTypes.func.isRequired,
-};
-
 describe('useTranscriptBookmarks', () => {
-    let wrapper;
-    let hook;
+    let result;
 
     const render = () => {
-        wrapper = mount(
-            <HookHarness
-                onRender={(h) => {
-                    hook = h;
-                }}
-            />
-        );
+        result = renderHook(() => useTranscriptBookmarks()).result;
     };
 
     beforeEach(() => {
@@ -52,8 +20,7 @@ describe('useTranscriptBookmarks', () => {
     });
 
     afterEach(() => {
-        if (wrapper) wrapper.unmount();
-        hook = null;
+        result = null;
         useWorkbook.mockReset();
     });
 
@@ -80,9 +47,9 @@ describe('useTranscriptBookmarks', () => {
 
         render();
 
-        expect(hook.bookmarkedSegmentIds.has(10)).toBe(true);
-        expect(hook.bookmarkedSegmentIds.has(20)).toBe(true);
-        expect(hook.bookmarkedSegmentIds.has(999)).toBe(false);
+        expect(result.current.bookmarkedSegmentIds.has(10)).toBe(true);
+        expect(result.current.bookmarkedSegmentIds.has(20)).toBe(true);
+        expect(result.current.bookmarkedSegmentIds.has(999)).toBe(false);
     });
 
     it('opens and closes selected bookmark segment', () => {
@@ -91,17 +58,15 @@ describe('useTranscriptBookmarks', () => {
         const segment = { id: 77 };
 
         act(() => {
-            hook.handleBookmarkCreate(segment);
+            result.current.handleBookmarkCreate(segment);
         });
-        wrapper.update();
 
-        expect(hook.selectedBookmarkSegment).toEqual(segment);
+        expect(result.current.selectedBookmarkSegment).toEqual(segment);
 
         act(() => {
-            hook.handleBookmarkModalClose();
+            result.current.handleBookmarkModalClose();
         });
-        wrapper.update();
 
-        expect(hook.selectedBookmarkSegment).toBeNull();
+        expect(result.current.selectedBookmarkSegment).toBeNull();
     });
 });

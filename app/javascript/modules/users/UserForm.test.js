@@ -1,7 +1,4 @@
-// Configure Enzyme adapter
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import { render } from 'enzyme';
-import Enzyme from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
@@ -10,8 +7,6 @@ import thunk from 'redux-thunk';
 import UserForm from './UserForm';
 
 const middlewares = [thunk];
-
-Enzyme.configure({ adapter: new Adapter() });
 
 // Mock the translation fetching to avoid network errors in tests
 jest.mock('modules/archive/actions', () => {
@@ -135,25 +130,33 @@ describe('<UserForm />', () => {
 
     const onSubmit = jest.fn();
 
-    const wrapper = render(
-        <Provider store={mockStore(initialState)}>
-            <BrowserRouter>
-                <UserForm
-                    data={data}
-                    dataPath={dataPath}
-                    userId={userId}
-                    scope={scope}
-                    locale={locale}
-                    project={project}
-                    onSubmit={onSubmit}
-                />
-            </BrowserRouter>
-        </Provider>
-    );
+    const renderUserForm = () =>
+        render(
+            <Provider store={mockStore(initialState)}>
+                <BrowserRouter>
+                    <UserForm
+                        data={data}
+                        dataPath={dataPath}
+                        userId={userId}
+                        scope={scope}
+                        locale={locale}
+                        project={project}
+                        onSubmit={onSubmit}
+                    />
+                </BrowserRouter>
+            </Provider>
+        );
 
     it('renders a form with the correct elements', () => {
-        // Assert that the form renders correctly
-        expect(wrapper.find('Form')).toHaveLength(1);
-        expect(wrapper).toMatchSnapshot();
+        renderUserForm();
+
+        expect(screen.getByTestId('scope-form')).toBeInTheDocument();
+        expect(
+            screen.getByTestId('scope-workflow_state-select')
+        ).toBeInTheDocument();
+        expect(
+            screen.getByTestId('scope-mail_text-textarea')
+        ).toBeInTheDocument();
+        expect(screen.getByTestId('submit-button')).toBeInTheDocument();
     });
 });

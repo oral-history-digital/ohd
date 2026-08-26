@@ -1,12 +1,9 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { shallow } from 'enzyme';
+import { renderHook } from '@testing-library/react';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 
 import { useBreadcrumbModel } from './useBreadcrumbModel';
 import { useBreadcrumbs } from './useBreadcrumbs';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('modules/i18n', () => ({
     useI18n: jest.fn(),
@@ -20,11 +17,6 @@ jest.mock('./useBreadcrumbModel', () => ({
     useBreadcrumbModel: jest.fn(),
 }));
 
-function HookReader() {
-    const crumbs = useBreadcrumbs();
-    return <pre>{JSON.stringify(crumbs)}</pre>;
-}
-
 function renderHookResult({ project, modelItems, currentPage = {} }) {
     useI18n.mockReturnValue({ locale: 'de' });
     useProject.mockReturnValue({ project });
@@ -33,8 +25,7 @@ function renderHookResult({ project, modelItems, currentPage = {} }) {
         items: modelItems,
     });
 
-    const wrapper = shallow(<HookReader />);
-    return JSON.parse(wrapper.text());
+    return renderHook(() => useBreadcrumbs()).result.current;
 }
 
 describe('useBreadcrumbs', () => {

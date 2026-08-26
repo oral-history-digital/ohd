@@ -1,13 +1,7 @@
-import React from 'react';
-
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
-import PropTypes from 'prop-types';
+import { renderHook } from '@testing-library/react';
 import { useDispatch } from 'react-redux';
 
 import { useSegmentInteraction } from './useSegmentInteraction';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('react-redux', () => ({
     useDispatch: jest.fn(),
@@ -32,30 +26,10 @@ jest.mock('modules/data', () => ({
     })),
 }));
 
-function TestComponent({ onRender, ...props }) {
-    const result = useSegmentInteraction(props);
-
-    React.useEffect(() => {
-        onRender(result);
-    }, [result, onRender]);
-
-    return null;
-}
-
-TestComponent.propTypes = {
-    segment: PropTypes.object.isRequired,
-    interview: PropTypes.object,
-    tabs: PropTypes.array.isRequired,
-    onUnsavedChangesChange: PropTypes.func,
-    onEditStart: PropTypes.func,
-    onEditEnd: PropTypes.func,
-    setTabIndex: PropTypes.func.isRequired,
-    onRender: PropTypes.func.isRequired,
-};
-
 describe('useSegmentInteraction', () => {
-    let wrapper;
-    let lastResult;
+    let result;
+    let rerender;
+    let currentProps;
     let mockDispatch;
     let defaultProps;
 
@@ -79,37 +53,36 @@ describe('useSegmentInteraction', () => {
     });
 
     const render = (props = {}) => {
-        const mergedProps = { ...defaultProps, ...props };
-        wrapper = mount(
-            <TestComponent
-                {...mergedProps}
-                onRender={(r) => {
-                    lastResult = r;
-                }}
-            />
+        currentProps = { ...defaultProps, ...props };
+        const renderedHook = renderHook(
+            (hookProps) => useSegmentInteraction(hookProps),
+            { initialProps: currentProps }
         );
+        result = renderedHook.result;
+        rerender = renderedHook.rerender;
     };
 
     afterEach(() => {
-        if (wrapper) wrapper.unmount();
-        lastResult = null;
+        result = null;
+        rerender = null;
+        currentProps = null;
     });
 
     it('returns object with all handler functions', () => {
         render();
 
-        expect(lastResult).toHaveProperty('handleFormChange');
-        expect(lastResult).toHaveProperty('handleSubmitData');
-        expect(lastResult).toHaveProperty('handleSegmentClick');
-        expect(lastResult).toHaveProperty('handleEditStart');
-        expect(lastResult).toHaveProperty('handleEditCancel');
-        expect(lastResult).toHaveProperty('handleEditSubmit');
+        expect(result.current).toHaveProperty('handleFormChange');
+        expect(result.current).toHaveProperty('handleSubmitData');
+        expect(result.current).toHaveProperty('handleSegmentClick');
+        expect(result.current).toHaveProperty('handleEditStart');
+        expect(result.current).toHaveProperty('handleEditCancel');
+        expect(result.current).toHaveProperty('handleEditSubmit');
     });
 
     it('handleFormChange calls onUnsavedChangesChange when isDirty is true', () => {
         render();
 
-        lastResult.handleFormChange({
+        result.current.handleFormChange({
             isDirty: true,
             hasValidationErrors: false,
         });
@@ -119,7 +92,7 @@ describe('useSegmentInteraction', () => {
     it('handleFormChange calls onUnsavedChangesChange when hasValidationErrors is true', () => {
         render();
 
-        lastResult.handleFormChange({
+        result.current.handleFormChange({
             isDirty: false,
             hasValidationErrors: true,
         });
@@ -129,7 +102,7 @@ describe('useSegmentInteraction', () => {
     it('handleFormChange calls onUnsavedChangesChange with false when neither isDirty nor hasValidationErrors', () => {
         render();
 
-        lastResult.handleFormChange({
+        result.current.handleFormChange({
             isDirty: false,
             hasValidationErrors: false,
         });
@@ -142,14 +115,14 @@ describe('useSegmentInteraction', () => {
         const props = { field: 'value' };
         const params = { param: 'param_value' };
 
-        lastResult.handleSubmitData(props, params);
+        result.current.handleSubmitData(props, params);
         expect(mockDispatch).toHaveBeenCalled();
     });
 
     it('handleSegmentClick dispatches sendTimeChangeRequest when transcript_coupled', () => {
         render();
 
-        lastResult.handleSegmentClick();
+        result.current.handleSegmentClick();
         expect(mockDispatch).toHaveBeenCalled();
 
         const dispatchedAction = mockDispatch.mock.calls[0][0];
@@ -161,7 +134,7 @@ describe('useSegmentInteraction', () => {
         render({ interview: { transcript_coupled: false } });
         mockDispatch.mockClear();
 
-        lastResult.handleSegmentClick();
+        result.current.handleSegmentClick();
         expect(mockDispatch).not.toHaveBeenCalled();
     });
 
@@ -169,7 +142,7 @@ describe('useSegmentInteraction', () => {
         render({ interview: null });
         mockDispatch.mockClear();
 
-        lastResult.handleSegmentClick();
+        result.current.handleSegmentClick();
         expect(mockDispatch).not.toHaveBeenCalled();
     });
 
@@ -177,7 +150,7 @@ describe('useSegmentInteraction', () => {
         render();
         mockDispatch.mockClear();
 
-        lastResult.handleEditStart();
+        result.current.handleEditStart();
 
         const dispatchedActions = mockDispatch.mock.calls.map(
             (call) => call[0].type
@@ -189,7 +162,7 @@ describe('useSegmentInteraction', () => {
         render();
         mockDispatch.mockClear();
 
-        lastResult.handleEditStart();
+        result.current.handleEditStart();
 
         const dispatchedActions = mockDispatch.mock.calls.map(
             (call) => call[0].type
@@ -200,42 +173,42 @@ describe('useSegmentInteraction', () => {
     it('handleEditStart calls onEditStart with segment id', () => {
         render();
 
-        lastResult.handleEditStart();
+        result.current.handleEditStart();
         expect(defaultProps.onEditStart).toHaveBeenCalledWith(1);
     });
 
     it('handleEditStart sets tab index to 0 by default (edit tab)', () => {
         render();
 
-        lastResult.handleEditStart();
+        result.current.handleEditStart();
         expect(defaultProps.setTabIndex).toHaveBeenCalledWith(0);
     });
 
     it('handleEditStart sets tab index based on buttonType', () => {
         render();
 
-        lastResult.handleEditStart('annotations');
+        result.current.handleEditStart('annotations');
         expect(defaultProps.setTabIndex).toHaveBeenCalledWith(1);
     });
 
     it('handleEditStart does not set tab index if buttonType not found', () => {
         render();
 
-        lastResult.handleEditStart('nonexistent');
+        result.current.handleEditStart('nonexistent');
         expect(defaultProps.setTabIndex).not.toHaveBeenCalled();
     });
 
     it('handleEditCancel calls onEditEnd', () => {
         render();
 
-        lastResult.handleEditCancel();
+        result.current.handleEditCancel();
         expect(defaultProps.onEditEnd).toHaveBeenCalled();
     });
 
     it('handleEditSubmit keeps edit mode active', () => {
         render();
 
-        lastResult.handleEditSubmit();
+        result.current.handleEditSubmit();
         expect(defaultProps.onEditEnd).not.toHaveBeenCalled();
         expect(defaultProps.onUnsavedChangesChange).toHaveBeenCalledWith(false);
     });
@@ -248,26 +221,22 @@ describe('useSegmentInteraction', () => {
         });
 
         expect(() => {
-            lastResult.handleFormChange({
+            result.current.handleFormChange({
                 isDirty: true,
                 hasValidationErrors: false,
             });
-            lastResult.handleEditStart();
-            lastResult.handleEditCancel();
-            lastResult.handleEditSubmit();
+            result.current.handleEditStart();
+            result.current.handleEditCancel();
+            result.current.handleEditSubmit();
         }).not.toThrow();
     });
 
     it('maintains stable function references', () => {
         render();
-        const firstHandleFormChange = lastResult.handleFormChange;
+        const firstHandleFormChange = result.current.handleFormChange;
 
-        wrapper.setProps({
-            onRender: (r) => {
-                lastResult = r;
-            },
-        });
+        rerender(currentProps);
 
-        expect(lastResult.handleFormChange).toBe(firstHandleFormChange);
+        expect(result.current.handleFormChange).toBe(firstHandleFormChange);
     });
 });

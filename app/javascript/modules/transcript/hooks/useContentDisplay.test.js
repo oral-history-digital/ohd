@@ -1,109 +1,99 @@
-import React from 'react';
-
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
-import PropTypes from 'prop-types';
+import { act, renderHook } from '@testing-library/react';
 
 import { useContentDisplay } from './useContentDisplay';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-function TestComponent({ onRender }) {
-    const result = useContentDisplay();
-
-    React.useEffect(() => {
-        onRender(result);
-    }, [result, onRender]);
-
-    return null;
-}
-
-TestComponent.propTypes = {
-    onRender: PropTypes.func.isRequired,
-};
-
 describe('useContentDisplay', () => {
-    let wrapper;
-    let lastResult;
+    let result;
+    let rerender;
 
     const render = () => {
-        wrapper = mount(
-            <TestComponent
-                onRender={(r) => {
-                    lastResult = r;
-                }}
-            />
-        );
+        const renderedHook = renderHook(() => useContentDisplay());
+        result = renderedHook.result;
+        rerender = renderedHook.rerender;
     };
 
     afterEach(() => {
-        if (wrapper) wrapper.unmount();
-        lastResult = null;
+        result = null;
+        rerender = null;
     });
 
     it('initializes displayedContentType as null', () => {
         render();
-        expect(lastResult.displayedContentType).toBeNull();
+        expect(result.current.displayedContentType).toBeNull();
     });
 
     it('provides handleToggleContentDisplay function', () => {
         render();
-        expect(typeof lastResult.handleToggleContentDisplay).toBe('function');
+        expect(typeof result.current.handleToggleContentDisplay).toBe(
+            'function'
+        );
     });
 
     it('provides handleCloseContentDisplay function', () => {
         render();
-        expect(typeof lastResult.handleCloseContentDisplay).toBe('function');
+        expect(typeof result.current.handleCloseContentDisplay).toBe(
+            'function'
+        );
     });
 
     it('returns object with all required properties', () => {
         render();
 
-        expect(lastResult).toHaveProperty('displayedContentType');
-        expect(lastResult).toHaveProperty('handleToggleContentDisplay');
-        expect(lastResult).toHaveProperty('handleCloseContentDisplay');
-        expect(Object.keys(lastResult).length).toBe(3);
+        expect(result.current).toHaveProperty('displayedContentType');
+        expect(result.current).toHaveProperty('handleToggleContentDisplay');
+        expect(result.current).toHaveProperty('handleCloseContentDisplay');
+        expect(Object.keys(result.current).length).toBe(3);
     });
 
     it('maintains stable function references across renders', () => {
         render();
         const { handleToggleContentDisplay, handleCloseContentDisplay } =
-            lastResult;
+            result.current;
+
+        rerender();
 
         // The callbacks are created with useCallback so they should be stable
-        expect(typeof handleToggleContentDisplay).toBe('function');
-        expect(typeof handleCloseContentDisplay).toBe('function');
+        expect(result.current.handleToggleContentDisplay).toBe(
+            handleToggleContentDisplay
+        );
+        expect(result.current.handleCloseContentDisplay).toBe(
+            handleCloseContentDisplay
+        );
     });
 
     it('handleToggleContentDisplay is a function that accepts a contentType', () => {
         render();
-        const { handleToggleContentDisplay } = lastResult;
+        const { handleToggleContentDisplay } = result.current;
 
-        expect(() => {
+        act(() => {
             handleToggleContentDisplay('annotations');
-        }).not.toThrow();
+        });
+
+        expect(result.current.displayedContentType).toBe('annotations');
     });
 
     it('handleCloseContentDisplay is a function that can be called', () => {
         render();
-        const { handleCloseContentDisplay } = lastResult;
+        const { handleToggleContentDisplay, handleCloseContentDisplay } =
+            result.current;
 
-        expect(() => {
+        act(() => {
+            handleToggleContentDisplay('annotations');
+        });
+        act(() => {
             handleCloseContentDisplay();
-        }).not.toThrow();
+        });
+
+        expect(result.current.displayedContentType).toBeNull();
     });
 
     it('returns consistent structure on multiple renders', () => {
         render();
-        const firstResult = lastResult;
+        const firstResult = result.current;
 
-        wrapper.setProps({
-            onRender: (r) => {
-                lastResult = r;
-            },
-        });
+        rerender();
 
-        expect(Object.keys(lastResult).sort()).toEqual(
+        expect(Object.keys(result.current).sort()).toEqual(
             Object.keys(firstResult).sort()
         );
     });

@@ -1,12 +1,6 @@
-import React from 'react';
-
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { mount } from 'enzyme';
-import PropTypes from 'prop-types';
+import { renderHook } from '@testing-library/react';
 
 import { useProcessedSegmentText } from './useProcessedSegmentText';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 // Mock utilities
 jest.mock('../utils', () => ({
@@ -18,26 +12,9 @@ jest.mock('../utils', () => ({
     enforceRtlOnTranscriptTokens: jest.fn((text) => `[RTL]${text}[/RTL]`),
 }));
 
-function TestComponent({ onRender, ...props }) {
-    const result = useProcessedSegmentText(props);
-
-    React.useEffect(() => {
-        onRender(result);
-    }, [result, onRender]);
-
-    return null;
-}
-
-TestComponent.propTypes = {
-    segment: PropTypes.object.isRequired,
-    contentLocale: PropTypes.string.isRequired,
-    canEditSegment: PropTypes.bool,
-    onRender: PropTypes.func.isRequired,
-};
-
 describe('useProcessedSegmentText', () => {
-    let wrapper;
     let result;
+    let rerender;
     let enforceRtlMock;
 
     beforeAll(() => {
@@ -46,19 +23,17 @@ describe('useProcessedSegmentText', () => {
     });
 
     const render = (props) => {
-        wrapper = mount(
-            <TestComponent
-                {...props}
-                onRender={(r) => {
-                    result = r;
-                }}
-            />
+        const renderedHook = renderHook(
+            (hookProps) => useProcessedSegmentText(hookProps),
+            { initialProps: props }
         );
+        result = renderedHook.result;
+        rerender = renderedHook.rerender;
     };
 
     afterEach(() => {
-        if (wrapper) wrapper.unmount();
         result = null;
+        rerender = null;
         jest.clearAllMocks();
     });
 
@@ -76,7 +51,7 @@ describe('useProcessedSegmentText', () => {
             canEditSegment: true,
         });
 
-        expect(result.text).toBe('Full text');
+        expect(result.current.text).toBe('Full text');
     });
 
     it('returns public text when canEditSegment is false', () => {
@@ -93,7 +68,7 @@ describe('useProcessedSegmentText', () => {
             canEditSegment: false,
         });
 
-        expect(result.text).toBe('Public text');
+        expect(result.current.text).toBe('Public text');
     });
 
     it('falls back to public variant when full text not available', () => {
@@ -109,7 +84,7 @@ describe('useProcessedSegmentText', () => {
             canEditSegment: true,
         });
 
-        expect(result.text).toBe('Public text only');
+        expect(result.current.text).toBe('Public text only');
     });
 
     it('returns ltr text direction for LTR text', () => {
@@ -125,7 +100,7 @@ describe('useProcessedSegmentText', () => {
             canEditSegment: true,
         });
 
-        expect(result.textDir).toBe('ltr');
+        expect(result.current.textDir).toBe('ltr');
     });
 
     it('returns rtl text direction for RTL text', () => {
@@ -141,7 +116,7 @@ describe('useProcessedSegmentText', () => {
             canEditSegment: true,
         });
 
-        expect(result.textDir).toBe('rtl');
+        expect(result.current.textDir).toBe('rtl');
     });
 
     it('applies RTL wrapping when textDir is rtl', () => {
@@ -158,7 +133,7 @@ describe('useProcessedSegmentText', () => {
         });
 
         expect(enforceRtlMock).toHaveBeenCalledWith('RTL_MARKER النص');
-        expect(result.text).toBe('[RTL]RTL_MARKER النص[/RTL]');
+        expect(result.current.text).toBe('[RTL]RTL_MARKER النص[/RTL]');
     });
 
     it('does not apply RTL wrapping for LTR text', () => {
@@ -177,7 +152,7 @@ describe('useProcessedSegmentText', () => {
         });
 
         expect(enforceRtlMock).not.toHaveBeenCalled();
-        expect(result.text).toBe('Hello world');
+        expect(result.current.text).toBe('Hello world');
     });
 
     it('handles undefined text gracefully', () => {
@@ -191,8 +166,8 @@ describe('useProcessedSegmentText', () => {
             canEditSegment: true,
         });
 
-        expect(result.text).toBeUndefined();
-        expect(result.textDir).toBe('ltr');
+        expect(result.current.text).toBeUndefined();
+        expect(result.current.textDir).toBe('ltr');
     });
 
     it('memoizes result based on segment, contentLocale, and canEditSegment', () => {
@@ -202,19 +177,18 @@ describe('useProcessedSegmentText', () => {
             },
         };
 
-        const { onRender: onRender1, ...props } = {
+        const props = {
             segment,
             contentLocale: 'en',
             canEditSegment: true,
-            onRender: jest.fn(),
         };
 
-        render({ ...props, onRender: onRender1 });
-        const result1 = result;
+        render(props);
+        const result1 = result.current;
 
         // Re-render with same props
-        wrapper.setProps({ ...props, onRender: onRender1 });
-        const result2 = result;
+        rerender(props);
+        const result2 = result.current;
 
         expect(result1).toBe(result2);
     });
@@ -227,15 +201,16 @@ describe('useProcessedSegmentText', () => {
             },
         };
 
-        render({
+        const props = {
             segment,
             contentLocale: 'en',
             canEditSegment: true,
-        });
+        };
+        render(props);
 
-        expect(result.text).toBe('English');
+        expect(result.current.text).toBe('English');
 
-        wrapper.setProps({ contentLocale: 'es' });
-        expect(result.text).toBe('Español');
+        rerender({ ...props, contentLocale: 'es' });
+        expect(result.current.text).toBe('Español');
     });
 });

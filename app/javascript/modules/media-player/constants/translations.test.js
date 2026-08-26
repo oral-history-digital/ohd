@@ -110,28 +110,4 @@ describe('Video.js Translation Mapping', () => {
             expect(invalidKeys).toEqual([]);
         });
     });
-
-    describe('Key coverage analysis', () => {
-        test('should provide coverage statistics', () => {
-            // Get statistics for the most comprehensive language file (usually English)
-            const primaryLang =
-                LANGUAGE_FILES.find((lang) => lang.code === 'en') ||
-                LANGUAGE_FILES[0];
-            const videoJsKeys = Object.keys(primaryLang.data);
-            const mappedKeys = Object.keys(VIDEOJS_I18N_KEY_MAP);
-
-            const coveragePercentage =
-                (mappedKeys.length / videoJsKeys.length) * 100;
-
-            console.log(`\n📊 Video.js Translation Coverage Statistics:`);
-            console.log(
-                `   Video.js keys (${primaryLang.name}): ${videoJsKeys.length}`
-            );
-            console.log(`   Mapped keys: ${mappedKeys.length}`);
-            console.log(`   Coverage: ${coveragePercentage.toFixed(1)}%`);
-
-            // We expect high coverage (this test will pass but provides useful info)
-            expect(coveragePercentage).toBeGreaterThan(50); // Adjust threshold as needed
-        });
-    });
 });

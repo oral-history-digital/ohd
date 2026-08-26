@@ -1,11 +1,8 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { shallow } from 'enzyme';
+import { renderHook } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 
 import useProject from '../useProject';
 import { useCurrentPage } from './useCurrentPage';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -18,14 +15,6 @@ jest.mock('../useProject', () => ({
 }));
 
 /**
- * Renders current page context as JSON to simplify assertions.
- */
-function HookReader() {
-    const currentPage = useCurrentPage();
-    return <pre>{JSON.stringify(currentPage)}</pre>;
-}
-
-/**
  * Returns hook output using the mocked location object.
  */
 function readHookResult(location, project = null) {
@@ -35,8 +24,7 @@ function readHookResult(location, project = null) {
         projectDbId: project?.id,
         isOhd: project?.is_ohd,
     });
-    const wrapper = shallow(<HookReader />);
-    return JSON.parse(wrapper.text());
+    return renderHook(() => useCurrentPage()).result.current;
 }
 
 describe('useCurrentPage', () => {

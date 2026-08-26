@@ -1,17 +1,21 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { OHD_DOMAINS } from 'modules/constants';
-import { Link } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 
 import { Logo } from './Logo';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: 'de' }),
 }));
 
 describe('<Logo />', () => {
+    const renderLogo = (props = {}) =>
+        render(
+            <MemoryRouter>
+                <Logo {...props} />
+            </MemoryRouter>
+        );
+
     it('uses anchor with absolute OHD URL when on a different domain', () => {
         Object.defineProperty(window, 'location', {
             value: {
@@ -20,10 +24,12 @@ describe('<Logo />', () => {
             writable: true,
         });
 
-        const wrapper = shallow(<Logo />);
+        renderLogo();
 
-        expect(wrapper.find('a').prop('href')).toBe(`${OHD_DOMAINS.test}/de`);
-        expect(wrapper.find(Link)).toHaveLength(0);
+        expect(screen.getByRole('link')).toHaveAttribute(
+            'href',
+            `${OHD_DOMAINS.test}/de`
+        );
     });
 
     it('uses Link without reload when already on OHD domain', () => {
@@ -34,19 +40,16 @@ describe('<Logo />', () => {
             writable: true,
         });
 
-        const wrapper = shallow(<Logo />);
+        renderLogo();
 
-        expect(wrapper.find(Link).prop('to')).toBe('/de');
-        expect(wrapper.find('a')).toHaveLength(0);
+        expect(screen.getByRole('link')).toHaveAttribute('href', '/de');
     });
 
     it('renders configured title and alt text', () => {
-        const wrapper = shallow(<Logo title="Custom OHD" logoSrc="/x.svg" />);
+        renderLogo({ title: 'Custom OHD', logoSrc: '/x.svg' });
 
-        expect(wrapper.find('.Breadcrumbs-logoLink').prop('title')).toBe(
-            'Custom OHD'
-        );
-        expect(wrapper.find('img').prop('src')).toBe('/x.svg');
-        expect(wrapper.find('img').prop('alt')).toBe('Custom OHD logo');
+        expect(screen.getByRole('link')).toHaveAttribute('title', 'Custom OHD');
+        expect(screen.getByRole('img')).toHaveAttribute('src', '/x.svg');
+        expect(screen.getByRole('img')).toHaveAccessibleName('Custom OHD logo');
     });
 });

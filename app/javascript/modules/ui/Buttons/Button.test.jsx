@@ -1,9 +1,7 @@
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Enzyme, { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import Button from './Button';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({
@@ -17,17 +15,17 @@ describe('<Button />', () => {
     });
 
     it('renders an anchor when href is provided', () => {
-        const wrapper = shallow(
-            <Button buttonText="Open archive" href="https://example.org" />
-        );
+        render(<Button buttonText="Open archive" href="https://example.org" />);
 
-        expect(wrapper.find('a')).toHaveLength(1);
-        expect(wrapper.find('a').prop('href')).toBe('https://example.org');
-        expect(wrapper.find('button')).toHaveLength(0);
+        expect(screen.getByRole('link')).toHaveAttribute(
+            'href',
+            'https://example.org'
+        );
+        expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
 
     it('sets secure rel for target=_blank by default', () => {
-        const wrapper = shallow(
+        render(
             <Button
                 buttonText="Open archive"
                 href="https://example.org"
@@ -35,13 +33,16 @@ describe('<Button />', () => {
             />
         );
 
-        expect(wrapper.find('a').prop('rel')).toBe('noopener noreferrer');
+        expect(screen.getByRole('link')).toHaveAttribute(
+            'rel',
+            'noopener noreferrer'
+        );
     });
 
-    it('prevents click behavior when link is disabled', () => {
+    it('prevents click behavior when link is disabled', async () => {
+        const user = userEvent.setup();
         const onClick = jest.fn();
-        const preventDefault = jest.fn();
-        const wrapper = shallow(
+        render(
             <Button
                 buttonText="Open archive"
                 href="https://example.org"
@@ -50,9 +51,11 @@ describe('<Button />', () => {
             />
         );
 
-        wrapper.find('a').simulate('click', { preventDefault });
+        const link = screen.getByText('Open archive');
+        await user.click(link);
 
-        expect(preventDefault).toHaveBeenCalled();
+        expect(link).not.toHaveAttribute('href');
+        expect(link).toHaveAttribute('aria-disabled', 'true');
         expect(onClick).not.toHaveBeenCalled();
     });
 });

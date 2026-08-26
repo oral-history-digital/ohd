@@ -95,7 +95,7 @@ export default function UserForm({
             elementType: 'textarea',
             attribute: 'mail_text',
             value: mailText,
-            validate: (v) => v && v.length > 100,
+            validate: (v) => Boolean(v && v.length > 100),
         },
     ];
 
