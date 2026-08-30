@@ -23,8 +23,8 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'file',
-                elementType: 'input',
-                type: 'file',
+                elementType: 'fileInput',
+                preview: 'image',
             },
         ],
         helpTextCode: 'logo_form',

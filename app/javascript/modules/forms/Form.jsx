@@ -12,6 +12,7 @@ import {
     ColorPicker,
     ErrorMessages,
     Extra,
+    FileInputFormElement,
     FormRow,
     InputField,
     MultiLocaleWrapper,
@@ -34,6 +35,7 @@ const elementTypeToComponent = {
     speakerDesignationInputs: SpeakerDesignationInputs,
     textarea: Textarea,
     extra: Extra,
+    fileInput: FileInputFormElement,
 };
 
 export default function Form({

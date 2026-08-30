@@ -1,6 +1,7 @@
 export { default as ColorPicker } from './ColorPicker';
 export { default as Extra } from './Extra';
 export { default as FileInputField } from './FileInputField';
+export { FileInputFormElement } from './FileInputField';
 export { default as InputField } from './InputField';
 export { default as RegistryEntrySelect } from './RegistryEntrySelect';
 export { default as RichTextarea } from './RichTextarea';
