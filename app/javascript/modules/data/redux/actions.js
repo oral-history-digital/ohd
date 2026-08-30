@@ -45,7 +45,7 @@ const requestData = (dataType, id, nestedDataType, extraParams) => ({
     extraParams: extraParams,
 });
 
-const receiveData = (json) => ({
+export const receiveData = (json) => ({
     type: RECEIVE_DATA,
     id: json.archive_id || json.id,
     data: json.data,

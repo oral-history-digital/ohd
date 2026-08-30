@@ -67,6 +67,7 @@ class ProjectSerializer < ApplicationSerializer
     :grant_access_without_login,
     :is_ohd,
     :analytics_site_id,
+    :favicon_url,
     :publication_date
 
   has_one :access_config
@@ -74,6 +75,12 @@ class ProjectSerializer < ApplicationSerializer
 
   def title
     object.shortname
+  end
+
+  def favicon_url
+    return unless object.favicon.attached?
+
+    Rails.application.routes.url_helpers.rails_blob_path(object.favicon, only_path: true)
   end
 
   def archive_domain

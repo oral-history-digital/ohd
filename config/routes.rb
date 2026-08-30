@@ -283,6 +283,8 @@ Rails.application.routes.draw do
       member do
         get :collections, to: 'collections#for_project'
         get :contact_email
+        put :favicon, action: :update_favicon
+        delete :favicon, action: :remove_favicon
       end
     end
   end
@@ -296,6 +298,8 @@ Rails.application.routes.draw do
         get :collections, to: 'collections#for_project'
         get :contact_email
         post :doi
+        put :favicon, action: :update_favicon
+        delete :favicon, action: :remove_favicon
       end
     end
   end

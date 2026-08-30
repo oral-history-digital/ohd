@@ -21,6 +21,7 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     :has_map,
     :is_catalog,
     :has_newsletter,
+    :favicon_url,
     :publication_date
 
   def name
@@ -33,6 +34,12 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
 
   def archive_domain
     object.archive_domain.presence
+  end
+
+  def favicon_url
+    return unless object.favicon.attached?
+
+    Rails.application.routes.url_helpers.rails_blob_path(object.favicon, only_path: true)
   end
 
   def oai_doi_identifier
