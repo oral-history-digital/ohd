@@ -60,3 +60,23 @@ test('shows the empty picker when creating a logo', () => {
 
     expect(screen.getByText('file_input.instruction')).toBeInTheDocument();
 });
+
+test('supports persisted files supplied by a form element definition', () => {
+    render(
+        <FileInputFormElement
+            {...defaultProps}
+            currentFiles={{
+                id: 1,
+                name: 'hero-de.png',
+                url: '/hero-de.png',
+                contentType: 'image/*',
+            }}
+            preview="image"
+        />
+    );
+
+    expect(screen.getByText('hero-de.png')).toBeInTheDocument();
+    expect(
+        document.querySelector('.FileInputField-preview img')
+    ).toHaveAttribute('src', '/hero-de.png');
+});

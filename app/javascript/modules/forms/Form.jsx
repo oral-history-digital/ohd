@@ -134,16 +134,32 @@ export default function Form({
         }
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
         touchAllFields();
 
         if (valid()) {
-            onSubmit({ [scope || submitScope]: values }, index);
-            markCurrentValuesAsClean(values);
-            setSubmitted(false);
-            if (typeof onSubmitCallback === 'function') {
-                onSubmitCallback();
+            try {
+                await onSubmit({ [scope || submitScope]: values }, index);
+
+                // Clear local files after upload so the field shows the
+                // persisted files returned by the parent.
+                const savedValues = { ...values };
+
+                elements
+                    .filter((element) => element.elementType === 'fileInput')
+                    .forEach((element) => {
+                        savedValues[element.attribute] = null;
+                        updateField(element.attribute, null);
+                    });
+
+                markCurrentValuesAsClean(savedValues);
+                setSubmitted(false);
+                if (typeof onSubmitCallback === 'function') {
+                    onSubmitCallback();
+                }
+            } catch (_error) {
+                // The parent handles submission errors and notifications.
             }
         } else {
             setSubmitted(true);

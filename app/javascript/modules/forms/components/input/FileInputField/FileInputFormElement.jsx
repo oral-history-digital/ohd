@@ -12,6 +12,7 @@ export default function FileInputFormElement({
     attribute,
     value,
     data,
+    currentFiles,
     label,
     labelKey,
     help,
@@ -35,13 +36,15 @@ export default function FileInputFormElement({
     const id = `${scope}_${attribute}`;
     const labelText =
         label || t(labelKey || `activerecord.attributes.${scope}.${attribute}`);
-    const currentFiles = data?.src
-        ? {
-              name: data.filename || labelText,
-              url: data.thumb_src || data.src,
-              contentType: 'image/*',
-          }
-        : [];
+    const persistedFiles =
+        currentFiles ??
+        (data?.src
+            ? {
+                  name: data.filename || labelText,
+                  url: data.thumb_src || data.src,
+                  contentType: 'image/*',
+              }
+            : []);
     const valid = typeof validate === 'function' ? validate(value) : true;
     const error =
         !valid && showErrors
@@ -66,7 +69,7 @@ export default function FileInputFormElement({
             name={attribute}
             label={labelText}
             value={value}
-            currentFiles={currentFiles}
+            currentFiles={persistedFiles}
             accept={accept}
             maxSize={maxSize}
             maxFiles={maxFiles}
@@ -90,6 +93,24 @@ FileInputFormElement.propTypes = {
         PropTypes.arrayOf(PropTypes.instanceOf(File)),
     ]),
     data: PropTypes.object,
+    currentFiles: PropTypes.oneOfType([
+        PropTypes.shape({
+            id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            name: PropTypes.string.isRequired,
+            url: PropTypes.string,
+            contentType: PropTypes.string,
+            size: PropTypes.number,
+        }),
+        PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+                name: PropTypes.string.isRequired,
+                url: PropTypes.string,
+                contentType: PropTypes.string,
+                size: PropTypes.number,
+            })
+        ),
+    ]),
     label: PropTypes.string,
     labelKey: PropTypes.string,
     help: PropTypes.node,

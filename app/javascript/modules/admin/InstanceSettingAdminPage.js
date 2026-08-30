@@ -54,19 +54,19 @@ export default function InstanceSettingAdminPage() {
             },
             {
                 attribute: 'image_file_de',
-                elementType: 'input',
-                type: 'file',
+                elementType: 'fileInput',
                 accept: 'image/*',
+                preview: 'image',
                 label: `${t('edit.instance.block.image_file')} (DE)`,
-                help: blockCurrentImageLink(code, 'de'),
+                currentFiles: blockCurrentImage(code, 'de'),
             },
             {
                 attribute: 'image_file_en',
-                elementType: 'input',
-                type: 'file',
+                elementType: 'fileInput',
                 accept: 'image/*',
+                preview: 'image',
                 label: `${t('edit.instance.block.image_file')} (EN)`,
-                help: blockCurrentImageLink(code, 'en'),
+                currentFiles: blockCurrentImage(code, 'en'),
             },
             {
                 attribute: 'image_alt',
@@ -123,17 +123,20 @@ export default function InstanceSettingAdminPage() {
         return block.images.find((item) => item.locale === imageLocale) || null;
     }
 
-    function blockCurrentImageLink(code, imageLocale) {
+    function blockCurrentImage(code, imageLocale) {
         const image = blockImageForLocale(code, imageLocale);
         if (!image?.src) {
-            return null;
+            return [];
         }
 
-        return (
-            <a href={image.src} target="_blank" rel="noopener noreferrer">
-                {t('edit.instance.block.current_image')}
-            </a>
-        );
+        return {
+            id: image.id,
+            name:
+                image.filename ||
+                `${t('edit.instance.block.image_file')} (${imageLocale.toUpperCase()})`,
+            url: image.src,
+            contentType: 'image/*',
+        };
     }
 
     function instanceInitialValues() {
