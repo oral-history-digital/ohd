@@ -21,6 +21,8 @@ class Admin::HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should return full locale payload for admin' do
+    FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+
     hero_block = InstanceSetting.current.homepage_blocks.find_by!(code: 'hero')
     image = HomepageImage.new(ref: hero_block, locale: 'de')
     image.file.attach(

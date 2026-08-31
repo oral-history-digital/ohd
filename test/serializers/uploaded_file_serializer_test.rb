@@ -2,6 +2,8 @@ require "test_helper"
 
 class UploadedFileSerializerTest < ActiveSupport::TestCase
   test "includes the attachment filename" do
+    FileUtils.mkdir_p(Rails.root.join("tmp", "files"))
+
     logo = Logo.new(ref: Project.find_by!(shortname: "ohd"), locale: "de")
     logo.file.attach(
       io: StringIO.new("logo"),
