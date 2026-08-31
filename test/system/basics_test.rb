@@ -232,7 +232,10 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Recover password'
     fill_in 'Email', with: 'john@example.com'
     click_on 'Submit'
-    assert_text 'You have been sent an email with instructions on how to change your password.'
+    assert_text(
+      'You have been sent an email with instructions on how to change your password.',
+      wait: 10
+    )
 
     mail = ActionMailer::Base.deliveries.last
     assert_match /Oral-History.Digital. Steps to recover your password./, mail.subject
