@@ -11,7 +11,7 @@ on:
       - main
   pull_request:
 concurrency:
-  group: rails-ci-${{ github.event.pull_request.number || github.ref }}
+  group: backend-ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
   test:
