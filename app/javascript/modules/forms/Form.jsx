@@ -134,35 +134,46 @@ export default function Form({
         }
     }
 
-    async function handleSubmit(event) {
+    function finishSuccessfulSubmit() {
+        // Clear selected local files after a successful submission so file inputs
+        // display the persisted files returned by the parent.
+        const savedValues = { ...values };
+
+        elements
+            .filter((element) => element.elementType === 'fileInput')
+            .forEach((element) => {
+                savedValues[element.attribute] = null;
+                updateField(element.attribute, null);
+            });
+
+        markCurrentValuesAsClean(savedValues);
+        setSubmitted(false);
+        if (typeof onSubmitCallback === 'function') {
+            onSubmitCallback();
+        }
+    }
+
+    function handleSubmit(event) {
         event.preventDefault();
         touchAllFields();
 
-        if (valid()) {
-            try {
-                await onSubmit({ [scope || submitScope]: values }, index);
-
-                // Clear local files after upload so the field shows the
-                // persisted files returned by the parent.
-                const savedValues = { ...values };
-
-                elements
-                    .filter((element) => element.elementType === 'fileInput')
-                    .forEach((element) => {
-                        savedValues[element.attribute] = null;
-                        updateField(element.attribute, null);
-                    });
-
-                markCurrentValuesAsClean(savedValues);
-                setSubmitted(false);
-                if (typeof onSubmitCallback === 'function') {
-                    onSubmitCallback();
-                }
-            } catch (_error) {
-                // The parent handles submission errors and notifications.
-            }
-        } else {
+        if (!valid()) {
             setSubmitted(true);
+            return;
+        }
+
+        const result = onSubmit({ [scope || submitScope]: values }, index);
+
+        // Promise-based submissions complete after the request resolves. Synchronous
+        // nested forms must complete immediately to preserve their callback timing.
+        if (result && typeof result.then === 'function') {
+            // Asynchronous submission returns a Promise with a .then method
+            result.then(finishSuccessfulSubmit).catch(() => {
+                // The parent handles submission errors and notifications.
+            });
+        } else {
+            // Preserve synchronous completion for nested forms.
+            finishSuccessfulSubmit();
         }
     }
 

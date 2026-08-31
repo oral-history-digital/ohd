@@ -61,3 +61,19 @@ test('keeps the selected file when submission fails', async () => {
     expect(screen.getByText('replacement.png')).toBeInTheDocument();
     expect(screen.queryByText('persisted.png')).not.toBeInTheDocument();
 });
+
+test('runs the completion callback synchronously for synchronous submissions', () => {
+    const onSubmitCallback = jest.fn();
+    render(
+        <Form
+            scope="logo"
+            elements={[]}
+            onSubmit={jest.fn()}
+            onSubmitCallback={onSubmitCallback}
+        />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'submit' }));
+
+    expect(onSubmitCallback).toHaveBeenCalledTimes(1);
+});
