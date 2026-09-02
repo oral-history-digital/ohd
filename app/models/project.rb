@@ -5,10 +5,19 @@ class Project < ApplicationRecord
   include OaiDc
   include OaiDatacite
 
+  FAVICON_FILENAMES_BY_CONTENT_TYPE = {
+    'image/png' => 'favicon.png',
+    'image/x-icon' => 'favicon.ico',
+    'image/vnd.microsoft.icon' => 'favicon.ico',
+  }.freeze
+  FAVICON_CONTENT_TYPES = FAVICON_FILENAMES_BY_CONTENT_TYPE.keys.freeze
+  FAVICON_MAX_FILE_SIZE = 1.megabyte
+
   enum :default_search_order, title: 0, random: 1, archive_id: 2
 
   has_many :logos, as: :ref, dependent: :destroy
   has_many :sponsor_logos, as: :ref, dependent: :destroy
+  has_one_attached :favicon
 
   has_many :institution_projects, dependent: :destroy
   has_many :institutions,
@@ -108,6 +117,7 @@ class Project < ApplicationRecord
     message: "%{value} is not a valid workflow state" }
   validates :upload_types, inclusion: { in: %w(bulk_metadata bulk_photos bulk_registry_entries bulk_texts),
     message: "%{value} is not a valid upload type" }
+  validate :favicon_is_supported_image
 
   scope :shared, -> { where(workflow_state: 'public' )}
   scope :unshared, -> {where(workflow_state: 'unshared')}
@@ -118,6 +128,16 @@ class Project < ApplicationRecord
   def normalize_domains
     self.archive_domain = archive_domain.to_s.strip.sub(%r{/+\z}, '') if archive_domain.present?
     self.domain = domain.to_s.strip.sub(%r{/+\z}, '') if respond_to?(:domain) && domain.present?
+  end
+
+  def favicon_is_supported_image
+    return unless favicon.attached?
+
+    unless favicon.blob.content_type.in?(FAVICON_CONTENT_TYPES)
+      errors.add(:favicon, :invalid_content_type)
+    end
+
+    errors.add(:favicon, :file_too_large) if favicon.blob.byte_size > FAVICON_MAX_FILE_SIZE
   end
 
   def touch_interviews

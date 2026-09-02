@@ -33,7 +33,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :default_search_order,
     :primary_color,
     :secondary_color,
-    :editorial_color
+    :editorial_color,
+    :favicon_url
 
   %w(
     cooperation_partners
@@ -56,6 +57,12 @@ class ProjectBaseSerializer < ActiveModel::Serializer
 
   def archive_domain
     object.archive_domain.blank? ? nil : object.archive_domain
+  end
+
+  def favicon_url
+    return unless object.favicon.attached?
+
+    Rails.application.routes.url_helpers.rails_blob_path(object.favicon, only_path: true)
   end
 
   def is_ohd

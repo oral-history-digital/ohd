@@ -12,6 +12,7 @@ import {
     ColorPicker,
     ErrorMessages,
     Extra,
+    FileInputFormElement,
     FormRow,
     InputField,
     MultiLocaleWrapper,
@@ -34,6 +35,7 @@ const elementTypeToComponent = {
     speakerDesignationInputs: SpeakerDesignationInputs,
     textarea: Textarea,
     extra: Extra,
+    fileInput: FileInputFormElement,
 };
 
 export default function Form({
@@ -132,19 +134,46 @@ export default function Form({
         }
     }
 
+    function finishSuccessfulSubmit() {
+        // Clear selected local files after a successful submission so file inputs
+        // display the persisted files returned by the parent.
+        const savedValues = { ...values };
+
+        elements
+            .filter((element) => element.elementType === 'fileInput')
+            .forEach((element) => {
+                savedValues[element.attribute] = null;
+                updateField(element.attribute, null);
+            });
+
+        markCurrentValuesAsClean(savedValues);
+        setSubmitted(false);
+        if (typeof onSubmitCallback === 'function') {
+            onSubmitCallback();
+        }
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
         touchAllFields();
 
-        if (valid()) {
-            onSubmit({ [scope || submitScope]: values }, index);
-            markCurrentValuesAsClean(values);
-            setSubmitted(false);
-            if (typeof onSubmitCallback === 'function') {
-                onSubmitCallback();
-            }
-        } else {
+        if (!valid()) {
             setSubmitted(true);
+            return;
+        }
+
+        const result = onSubmit({ [scope || submitScope]: values }, index);
+
+        // Promise-based submissions complete after the request resolves. Synchronous
+        // nested forms must complete immediately to preserve their callback timing.
+        if (result && typeof result.then === 'function') {
+            // Asynchronous submission returns a Promise with a .then method
+            result.then(finishSuccessfulSubmit).catch(() => {
+                // The parent handles submission errors and notifications.
+            });
+        } else {
+            // Preserve synchronous completion for nested forms.
+            finishSuccessfulSubmit();
         }
     }
 

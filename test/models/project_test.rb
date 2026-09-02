@@ -51,4 +51,36 @@ class ProjectTest < ActiveSupport::TestCase
     assert_operator @child_institution.updated_at, :>, 1.day.ago
     assert_operator @parent_institution.updated_at, :>, 1.day.ago
   end
+
+  test "accepts PNG and icon favicons up to one megabyte" do
+    @project.favicon.attach(
+      io: StringIO.new("favicon"),
+      filename: "favicon.png",
+      content_type: "image/png"
+    )
+
+    assert @project.valid?
+  end
+
+  test "rejects unsupported favicon types" do
+    @project.favicon.attach(
+      io: StringIO.new("not an image"),
+      filename: "favicon.txt",
+      content_type: "text/plain"
+    )
+
+    assert_not @project.valid?
+    assert @project.errors.added?(:favicon, :invalid_content_type)
+  end
+
+  test "rejects favicons larger than one megabyte" do
+    @project.favicon.attach(
+      io: StringIO.new("x" * (1.megabyte + 1)),
+      filename: "favicon.png",
+      content_type: "image/png"
+    )
+
+    assert_not @project.valid?
+    assert @project.errors.added?(:favicon, :file_too_large)
+  end
 end

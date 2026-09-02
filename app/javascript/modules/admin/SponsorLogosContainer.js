@@ -33,8 +33,8 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'file',
-                elementType: 'input',
-                type: 'file',
+                elementType: 'fileInput',
+                preview: 'image',
             },
             {
                 attribute: 'href',

@@ -54,6 +54,7 @@ import {
     SiteFooter,
     SiteHeader,
 } from './components';
+import getFaviconUrl from './getFaviconUrl';
 
 export default function Layout({ children }) {
     const dispatch = useDispatch();
@@ -124,9 +125,7 @@ export default function Layout({ children }) {
         titleBase = project?.display_name?.[locale] || project?.name?.[locale];
     }
 
-    const faviconUrl = project?.shortname
-        ? `/favicons/favicon-${project?.shortname}.ico`
-        : '/favicon.ico';
+    const faviconUrl = getFaviconUrl(project);
 
     // Hold the children until Redux has caught up with SWR, so that `useProject`
     // returns a project for every child that renders below this point.

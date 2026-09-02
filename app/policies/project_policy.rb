@@ -68,6 +68,14 @@ class ProjectPolicy < ApplicationPolicy
     update?
   end
 
+  def remove_favicon?
+    update?
+  end
+
+  def update_favicon?
+    update?
+  end
+
   Project.non_public_method_names.each do |m|
     define_method "#{m}?" do
       update?

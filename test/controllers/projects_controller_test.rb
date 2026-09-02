@@ -122,6 +122,58 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_includes project_ids, unshared_project.id.to_s
   end
 
+  test 'should allow an authorized user to upload a project favicon' do
+    project = Project.find_by!(shortname: 'ohd')
+    upload = Rack::Test::UploadedFile.new(
+      StringIO.new('favicon'),
+      'image/png',
+      original_filename: 'favicon.png'
+    )
+
+    login_as User.find_by!(email: 'alice@example.com')
+    put favicon_project_path(project, locale: 'en', format: :json), params: {
+      project: { favicon: upload }
+    }
+
+    assert_response :success
+    assert project.reload.favicon.attached?
+    assert_equal 'favicon.png', project.favicon.filename.to_s
+    assert_match %r{/rails/active_storage/blobs/}, JSON.parse(response.body).dig('data', 'favicon_url')
+  end
+
+  test 'should reject an unsupported project favicon with structured errors' do
+    project = Project.find_by!(shortname: 'ohd')
+    upload = Rack::Test::UploadedFile.new(
+      StringIO.new('not an image'),
+      'text/plain',
+      original_filename: 'favicon.txt'
+    )
+
+    login_as User.find_by!(email: 'alice@example.com')
+    put favicon_project_path(project, locale: 'en', format: :json), params: {
+      project: { favicon: upload }
+    }
+
+    assert_response :unprocessable_entity
+    assert_equal ['invalid_content_type'], JSON.parse(response.body)['errors']
+  end
+
+  test 'should allow an authorized user to remove a project favicon' do
+    project = Project.find_by!(shortname: 'ohd')
+    project.favicon.attach(
+      io: StringIO.new('favicon'),
+      filename: 'favicon.png',
+      content_type: 'image/png'
+    )
+
+    login_as User.find_by!(email: 'alice@example.com')
+    delete favicon_project_path(project, locale: 'en', format: :json)
+
+    assert_response :success
+    assert_not project.reload.favicon.attached?
+    assert_nil JSON.parse(response.body).dig('data', 'favicon_url')
+  end
+
   test 'should hide unshared projects for anonymous users when filtering by workflow_state' do
     reset!
     host! 'test.portal.oral-history.localhost:47001'

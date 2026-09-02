@@ -35,6 +35,9 @@ class UnauthorizedLocaleTest < ActionDispatch::IntegrationTest
   # Warden invokes the failure app as a bare rack endpoint, so there is no
   # routing pass and path_parameters stays empty.
   def call_failure_app(path)
+    # Load the Devise user mapping, normally initialized by routing.
+    Rails.application.routes.routes
+
     env = Rack::MockRequest.env_for(
       path,
       'HTTP_HOST' => 'test.host',

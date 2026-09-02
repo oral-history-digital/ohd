@@ -31,6 +31,7 @@ class Admin::HomepageBlockSerializer < ActiveModel::Serializer
         locale: image.locale,
         title: image.title,
         href: image.href,
+        filename: image.file.attached? ? image.file.filename.to_s : nil,
         src: image.file&.attachment ? Rails.application.routes.url_helpers.rails_blob_path(image.file, only_path: true) : nil
       }
     end

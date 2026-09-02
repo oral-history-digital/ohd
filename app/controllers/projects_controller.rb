@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
       #:edit_info, :edit_display, :edit_config]
   before_action :set_project,
     only: [:show, :cmdi_metadata, :archiving_batches_show, :archiving_batches_index, :edit_info,
-           :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy, :doi] +
+           :edit_display, :edit_config, :edit_access_config, :edit, :update, :destroy, :doi, :update_favicon, :remove_favicon] +
            Project.non_public_method_names
 
   # GET /projects
@@ -210,15 +210,25 @@ class ProjectsController < ApplicationController
   def update
     @project.update(project_params)
 
-    respond_to do |format|
-      format.json do
-        render json: {
-          data: cache_single(@project, serializer_name: 'ProjectFull'),
-          data_type: 'projects',
-          id: @project.id,
-        }
-      end
+    respond_with_updated_project
+  end
+
+  def update_favicon
+    ProjectUpdateFavicon.perform(project: @project, upload: favicon_params[:favicon])
+
+    if @project.errors.empty?
+      respond_with_updated_project(cached: false)
+    else
+      render json: {
+        errors: @project.errors.details.fetch(:favicon, []).map { |error| error[:error] }
+      }, status: :unprocessable_entity
     end
+  end
+
+  def remove_favicon
+    ProjectRemoveFavicon.perform(project: @project)
+
+    respond_with_updated_project(cached: false)
   end
 
   def doi
@@ -240,6 +250,24 @@ class ProjectsController < ApplicationController
   end
 
   private
+    def respond_with_updated_project(cached: true)
+      respond_to do |format|
+        format.json do
+          data = if cached
+            cache_single(@project, serializer_name: 'ProjectFull')
+          else
+            ProjectFullSerializer.new(@project).as_json
+          end
+
+          render json: {
+            data: data,
+            data_type: 'projects',
+            id: @project.id,
+          }
+        end
+      end
+    end
+
     def lite_project_json(project)
       payload = ProjectLitePayloadBuilder.perform(project)
 
@@ -377,6 +405,10 @@ class ProjectsController < ApplicationController
             :media_missing_text
           ]
       )
+    end
+
+    def favicon_params
+      params.require(:project).permit(:favicon)
     end
 
     def search_params

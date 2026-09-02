@@ -9,6 +9,7 @@ import EditData from './EditData';
 import EditViewOrRedirect from './EditViewOrRedirect';
 import LogosContainer from './LogosContainer';
 import MediaStreamsContainer from './MediaStreamsContainer';
+import ProjectFaviconForm from './ProjectFaviconForm';
 import SponsorLogosContainer from './SponsorLogosContainer';
 
 export default function EditProjectDisplay() {
@@ -65,6 +66,7 @@ export default function EditProjectDisplay() {
                         formElements={formElements}
                         submitData={submitHandler}
                     />
+                    <ProjectFaviconForm project={project} />
                     <h2>{t(`edit.logo.admin`)}</h2>
                     <LogosContainer
                         data={project.logos}
