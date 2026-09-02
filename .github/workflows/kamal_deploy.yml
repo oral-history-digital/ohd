@@ -1,0 +1,62 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Deployment target"
+        type: choice
+        required: true
+        options:
+          - avd-staging
+          - avd-production
+      ref:
+        description: "Git ref to deploy (branch, tag, or SHA)"
+        required: false
+        default: "main"
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: deploy-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.target }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install Kamal
+        run: gem install kamal
+
+      - name: Resolve Kamal config
+        id: cfg
+        run: |
+          case "${{ inputs.target }}" in
+            avd-staging)   echo "file=config/deploy.avd-staging.yml" >> "$GITHUB_OUTPUT" ;;
+            avd-production) echo "file=config/deploy.avd-production.yml" >> "$GITHUB_OUTPUT" ;;
+            *) echo "Unknown target: ${{ inputs.target }}"; exit 1 ;;
+          esac
+
+      - name: Deploy
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        run: |
+          kamal deploy -c "${{ steps.cfg.outputs.file }}"
