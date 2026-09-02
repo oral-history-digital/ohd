@@ -285,7 +285,7 @@ Notes about branches and staging in this project:
 
 ### Favicons
 
-By default, the project uses `/public/favicon.ico` for the main ohd project. Each archive project will get a favicon from `/public/favicons/favicon-[project-shortname].ico`. The deploy script will link the directory `shared/public/favicons` to `/public/favicons`, so place project favicon files in that directory before deploy.
+Favicons can be uploaded, replaced, or removed under the project’s display settings in the frontend administration. The umbrella project's favicon is used for the frontpage and related pages. PNG and ICO files up to 1 MB are supported. If no favicon is configured, the existing files in /public/favicon.ico or /public/favicons/favicon-[project-shortname].ico are used as fallbacks.
 
 ### HTML Sanitization Best Practices (React Frontend)
 
