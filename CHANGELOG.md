@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.0] - 2026-09-02
+
+### Added
+
+- feat: make favicons configurable for projects ([#137](https://github.com/oral-history-digital/ohd/pull/137))
+- dynamic title and alt on logos ([a5e194f63](https://github.com/oral-history-digital/ohd/commit/a5e194f63040ede7d40e03ca7c9638aded580dc7))
+
+### Changed
+
+- chore: upgrade dompurify to 3.4.14 and remove unused types ([#134](https://github.com/oral-history-digital/ohd/pull/134))
+- refactor: use testing library to replace enzyme for tests ([#135](https://github.com/oral-history-digital/ohd/pull/135))
+- chore: update jest ([#136](https://github.com/oral-history-digital/ohd/pull/136))
+
+### Fixed
+
+- fix: MFA in docker environments ([#138](https://github.com/oral-history-digital/ohd/pull/138))
+- headings do not exist in public and subtitle versions - using orig to display toc ([faee9c975](https://github.com/oral-history-digital/ohd/commit/faee9c975d74db6cfb821ce830148f396129743f))
+- fixing #630 - archive colors changing unintentional ([dc5e242c9](https://github.com/oral-history-digital/ohd/commit/dc5e242c957b6d5123c53f0a7a855780b21f2335))
+- fix cmdi export after manager column was replaced by managers ([851399311](https://github.com/oral-history-digital/ohd/commit/8513993110df8fbe44575b9069a37baeb0a9514d))
+
 ## [2.7.2] - 2026-08-13
 
 ### Fixed
@@ -13,6 +33,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: skip user roles whose role or whose role's project has been deleted
 - fix role creation task
 - fix: use current project when adding translations in maintenance task
+
+## [2.7.1] - 2026-08-10
+
+### Fixed
+
+- adding some maintenance tasks for projects (just copied from project_creator)
 
 ## [2.7.0] - 2026-08-06
 
@@ -723,7 +749,10 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.8.0]: https://github.com/oral-history-digital/ohd/compare/v2.7.2...v2.8.0
 [2.7.2]: https://github.com/oral-history-digital/ohd/compare/v2.7.1...v2.7.2
+[2.7.1]: https://github.com/oral-history-digital/ohd/compare/v2.7.0...v2.7.1
+[2.7.0]: https://github.com/oral-history-digital/ohd/compare/v2.6.4...v2.7.0
 [2.6.4]: https://github.com/oral-history-digital/ohd/compare/v2.6.3...v2.6.4
 [2.6.3]: https://github.com/oral-history-digital/ohd/compare/v2.6.2...v2.6.3
 [2.6.2]: https://github.com/oral-history-digital/ohd/compare/v2.6.1...v2.6.2
