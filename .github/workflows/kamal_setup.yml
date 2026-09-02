@@ -1,0 +1,63 @@
+name: Setup
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Setup target"
+        type: choice
+        required: true
+        options:
+          - avd-staging
+          - avd-production
+      confirm:
+        description: "Type 'SETUP' to confirm host bootstrap"
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: setup-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  setup:
+    name: Setup ${{ inputs.target }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target }}
+
+    steps:
+      - name: Guardrail confirmation
+        run: |
+          [ "${{ inputs.confirm }}" = "SETUP" ] || { echo "Confirmation failed"; exit 1; }
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install Kamal
+        run: gem install kamal
+
+      - name: Resolve Kamal config
+        id: cfg
+        run: |
+          case "${{ inputs.target }}" in
+            avd-staging)   echo "file=config/deploy.avd-staging.yml" >> "$GITHUB_OUTPUT" ;;
+            avd-production) echo "file=config/deploy.avd-production.yml" >> "$GITHUB_OUTPUT" ;;
+            *) echo "Unknown target: ${{ inputs.target }}"; exit 1 ;;
+          esac
+
+      - name: Setup
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        run: |
+          kamal setup -c "${{ steps.cfg.outputs.file }}"
