@@ -69,7 +69,7 @@ module Archive
     # Add Content-Security-Policy instead
     config.action_dispatch.default_headers['Content-Security-Policy'] = ([
       'frame-ancestors', 
-      'self'
+      "'self'"
     ] + allowed_domains).join(' ')
 
     # Allow WebAuthn in iframes from these domains
