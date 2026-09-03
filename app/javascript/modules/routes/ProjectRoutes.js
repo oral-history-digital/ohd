@@ -12,14 +12,14 @@ import {
     MetadataFieldsAdminPage,
     PeopleAdminPage,
     PermissionsAdminPage,
+    RegistryNameTypesAdminPage,
+    RegistryReferenceTypesAdminPage,
     StatisticsAdminPage,
     TranslationValuesAdminPage,
     UploadsPage,
     UsersAdminPage,
     WrappedCollectionsContainer,
     WrappedContributionTypesContainer,
-    WrappedRegistryNameTypesContainer,
-    WrappedRegistryReferenceTypesContainer,
     WrappedRolesContainer,
     WrappedTaskTypesContainer,
 } from 'modules/admin';
@@ -126,11 +126,11 @@ export default function ProjectRoutes() {
                 <Route path="event_types" element={<EventTypesAdminPage />} />
                 <Route
                     path="registry_reference_types"
-                    element={<WrappedRegistryReferenceTypesContainer />}
+                    element={<RegistryReferenceTypesAdminPage />}
                 />
                 <Route
                     path="registry_name_types"
-                    element={<WrappedRegistryNameTypesContainer />}
+                    element={<RegistryNameTypesAdminPage />}
                 />
                 <Route
                     path="contribution_types"
