@@ -11,12 +11,12 @@ import {
     LanguagesAdminPage,
     MetadataFieldsAdminPage,
     PeopleAdminPage,
+    PermissionsAdminPage,
     StatisticsAdminPage,
     UploadsPage,
     UsersAdminPage,
     WrappedCollectionsContainer,
     WrappedContributionTypesContainer,
-    WrappedPermissionsContainer,
     WrappedRegistryNameTypesContainer,
     WrappedRegistryReferenceTypesContainer,
     WrappedRolesContainer,
@@ -163,10 +163,7 @@ export default function ProjectRoutes() {
                     element={<WrappedCollectionsContainer />}
                 />
                 <Route path="roles" element={<WrappedRolesContainer />} />
-                <Route
-                    path="permissions"
-                    element={<WrappedPermissionsContainer />}
-                />
+                <Route path="permissions" element={<PermissionsAdminPage />} />
                 <Route
                     path="task_types"
                     element={<WrappedTaskTypesContainer />}
