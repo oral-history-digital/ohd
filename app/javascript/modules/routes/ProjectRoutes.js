@@ -8,6 +8,7 @@ import {
     EditProjectInfoPage,
     EventTypesAdminPage,
     InstanceSettingAdminPage,
+    LanguagesAdminPage,
     MetadataFieldsAdminPage,
     PeopleAdminPage,
     StatisticsAdminPage,
@@ -15,7 +16,6 @@ import {
     UsersAdminPage,
     WrappedCollectionsContainer,
     WrappedContributionTypesContainer,
-    WrappedLanguagesContainer,
     WrappedPermissionsContainer,
     WrappedRegistryNameTypesContainer,
     WrappedRegistryReferenceTypesContainer,
@@ -136,10 +136,7 @@ export default function ProjectRoutes() {
                     path="contribution_types"
                     element={<WrappedContributionTypesContainer />}
                 />
-                <Route
-                    path="languages"
-                    element={<WrappedLanguagesContainer />}
-                />
+                <Route path="languages" element={<LanguagesAdminPage />} />
                 <Route
                     path="translation_values"
                     element={<WrappedTranslationValuesContainer />}
