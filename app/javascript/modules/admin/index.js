@@ -29,6 +29,7 @@ export { default as RegistryReferenceTypesSearchForm } from './RegistryReference
 export { default as RoleSearchForm } from './RoleSearchForm';
 export { default as SponsorLogosContainer } from './SponsorLogosContainer';
 export { default as TaskTypeSearchForm } from './TaskTypeSearchForm';
+export { default as TranslationValuesAdminPage } from './TranslationValuesAdminPage';
 export { default as TranslationValuesSearchForm } from './TranslationValuesSearchForm';
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
 export { default as WrappedContributionTypesContainer } from './WrappedContributionTypesContainer';
@@ -37,4 +38,3 @@ export { default as WrappedRegistryNameTypesContainer } from './WrappedRegistryN
 export { default as WrappedRegistryReferenceTypesContainer } from './WrappedRegistryReferenceTypesContainer';
 export { default as WrappedRolesContainer } from './WrappedRolesContainer';
 export { default as WrappedTaskTypesContainer } from './WrappedTaskTypesContainer';
-export { default as WrappedTranslationValuesContainer } from './WrappedTranslationValuesContainer';
