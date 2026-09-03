@@ -37,27 +37,9 @@ jest.mock('modules/routes', () => ({
         projectId: 'test',
     }),
 }));
-jest.mock('modules/spinners', () => ({
-    Spinner: () => <div>loading</div>,
-}));
 jest.mock('react-helmet', () => ({
     Helmet: ({ children }) => children,
 }));
-jest.mock('react-intersection-observer', () => {
-    const MockPropTypes = jest.requireActual('prop-types');
-
-    function Observer({ onChange }) {
-        return (
-            <button type="button" onClick={() => onChange(true)}>
-                load-more
-            </button>
-        );
-    }
-
-    Observer.propTypes = { onChange: MockPropTypes.func.isRequired };
-
-    return Observer;
-});
 jest.mock('./AddButton', () => {
     const React = jest.requireActual('react');
     const MockPropTypes = jest.requireActual('prop-types');
@@ -104,6 +86,14 @@ jest.mock('./EditViewOrRedirect', () => {
 
     return EditViewOrRedirect;
 });
+jest.mock('./hooks', () => ({
+    usePaginatedAdminRecords: () => ({
+        hasMorePages: false,
+        isFetching: false,
+        loadNextPage: jest.fn(),
+        shouldShowPagination: false,
+    }),
+}));
 
 const defaultProps = {
     data: {
@@ -127,39 +117,6 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-test('fetches missing query results and supporting data on mount', () => {
-    renderWrappedDataList({
-        dataStatus: {},
-        otherDataToLoad: ['language'],
-        statuses: {},
-    });
-
-    expect(defaultProps.fetchData.mock.calls).toEqual([
-        [
-            {
-                locale: 'en',
-                project: { id: 1, shortname: 'test' },
-                projectId: 'test',
-            },
-            'roles',
-            null,
-            null,
-            'name=history&page=1',
-        ],
-        [
-            {
-                locale: 'en',
-                project: { id: 1, shortname: 'test' },
-                projectId: 'test',
-            },
-            'languages',
-            null,
-            null,
-            'all',
-        ],
-    ]);
-});
-
 test('renders records in the configured order', () => {
     renderWrappedDataList({ sortAttribute: 'position' });
 
@@ -168,39 +125,6 @@ test('renders records in the configured order', () => {
             .getAllByTestId('admin-record')
             .map((element) => element.textContent)
     ).toEqual(['Second', 'First']);
-});
-
-test('shows loading state for a query being fetched', () => {
-    renderWrappedDataList({
-        dataStatus: { name_history_page_1: 'fetching' },
-    });
-
-    expect(screen.getByText('loading')).toBeInTheDocument();
-    expect(screen.queryByText('load-more')).not.toBeInTheDocument();
-});
-
-test('requests the next page when the pagination observer enters view', () => {
-    renderWrappedDataList({
-        dataStatus: { name_history_page_1: 'fetched' },
-        resultPagesCount: 2,
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'load-more' }));
-
-    expect(defaultProps.setQueryParams).toHaveBeenCalledWith('roles', {
-        page: 2,
-    });
-    expect(defaultProps.fetchData).toHaveBeenCalledWith(
-        {
-            locale: 'en',
-            project: { id: 1, shortname: 'test' },
-            projectId: 'test',
-        },
-        'roles',
-        null,
-        null,
-        'name=history&page=1'
-    );
 });
 
 test('submits the default add form and closes it', () => {
