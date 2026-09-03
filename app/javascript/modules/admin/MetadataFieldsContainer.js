@@ -8,7 +8,7 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import MetadataFieldFormContainer from './MetadataFieldFormContainer';
+import MetadataFieldForm from './MetadataFieldForm';
 import MetadataFieldShow from './MetadataFieldShow';
 import { PaginatedAdminRecordList } from './components';
 
@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
             'source',
             'label',
         ],
-        form: MetadataFieldFormContainer,
+        form: MetadataFieldForm,
         showComponent: MetadataFieldShow,
     };
 };

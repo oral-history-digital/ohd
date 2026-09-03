@@ -9,6 +9,7 @@ import {
 import {
     Fetch,
     getRegistryReferenceTypesForCurrentProjectFetched,
+    submitData,
 } from 'modules/data';
 import { useEventTypes } from 'modules/event-types';
 import { Form } from 'modules/forms';
@@ -16,6 +17,7 @@ import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import useCombinedRegistryReferenceTypes from './useCombinedRegistryReferenceTypes';
 
@@ -60,12 +62,8 @@ const NAME_VALUES = {
     ],
 };
 
-export default function MetadataFieldForm({
-    data,
-    submitData,
-    onSubmit,
-    onCancel,
-}) {
+export default function MetadataFieldForm({ data, onSubmit, onCancel }) {
+    const dispatch = useDispatch();
     const { locale } = useI18n();
     const { project, projectId } = useProject();
 
@@ -158,7 +156,9 @@ export default function MetadataFieldForm({
             <Form
                 scope="metadata_field"
                 onSubmit={(params) => {
-                    submitData({ locale, projectId, project }, params);
+                    dispatch(
+                        submitData({ locale, projectId, project }, params)
+                    );
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -299,7 +299,6 @@ export default function MetadataFieldForm({
 
 MetadataFieldForm.propTypes = {
     data: PropTypes.object,
-    submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
 };
