@@ -19,6 +19,7 @@ export { default as parametrizedQuery } from './parametrizedQuery';
 export { default as PeopleAdminPage } from './PeopleAdminPage';
 export { default as PermissionSearchForm } from './PermissionSearchForm';
 // TODO: Consider removing ProjectSearchForm; it has no in-repository consumer.
+export { default as ProjectsAdminList } from './ProjectsAdminList';
 export { default as ProjectSearchForm } from './ProjectSearchForm';
 export { default as RegistryNameTypesSearchForm } from './RegistryNameTypesSearchForm';
 export { default as RegistryReferenceTypesSearchForm } from './RegistryReferenceTypesSearchForm';
@@ -34,7 +35,6 @@ export { default as WrappedContributionTypesContainer } from './WrappedContribut
 export { default as WrappedInstitutionsContainer } from './WrappedInstitutionsContainer';
 export { default as WrappedLanguagesContainer } from './WrappedLanguagesContainer';
 export { default as WrappedPermissionsContainer } from './WrappedPermissionsContainer';
-export { default as WrappedProjectsContainer } from './WrappedProjectsContainer';
 export { default as WrappedRegistryNameTypesContainer } from './WrappedRegistryNameTypesContainer';
 export { default as WrappedRegistryReferenceTypesContainer } from './WrappedRegistryReferenceTypesContainer';
 export { default as WrappedRolesContainer } from './WrappedRolesContainer';
