@@ -1,7 +1,6 @@
 export { default as CollectionsSearchForm } from './CollectionsSearchForm';
 export { default as ContributionTypesSearchForm } from './ContributionTypesSearchForm';
 export { default as DataList } from './DataList';
-export { default as EditInterview } from './EditInterview';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
 export { default as LanguagesSearchForm } from './LanguagesSearchForm';
@@ -10,6 +9,7 @@ export { default as MetadataFieldsContainer } from './MetadataFieldsContainer';
 export { default as EventTypesAdminPage } from './pages/EventTypesAdminPage';
 export { default as HelpTextAdminPage } from './pages/HelpTextAdminPage';
 export { default as InstanceSettingAdminPage } from './pages/InstanceSettingAdminPage';
+export { default as EditInterviewPage } from './pages/interviews/EditInterviewPage';
 export { default as PeopleAdminPage } from './pages/PeopleAdminPage';
 export { default as EditProjectAccessPage } from './pages/projects/EditProjectAccessPage';
 export { default as EditProjectConfigPage } from './pages/projects/EditProjectConfigPage';
