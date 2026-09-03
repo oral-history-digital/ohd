@@ -1,6 +1,7 @@
 import classNames from 'classnames';
+import { registerDoi } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
-import { useGetProject, useSensitiveData } from 'modules/data';
+import { deleteData, useGetProject, useSensitiveData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
@@ -9,6 +10,7 @@ import { Spinner } from 'modules/spinners';
 import { pluralize } from 'modules/strings';
 import { AdminMenu } from 'modules/ui';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import BaseData from './BaseData';
 import DataDetails from './DataDetails';
@@ -38,7 +40,7 @@ function ProjectEditContent({ data, form }) {
     return form(fullProject || data, onSubmit);
 }
 
-export default function Data({
+export default function AdminRecord({
     data,
     joinedData,
     task,
@@ -55,10 +57,9 @@ export default function Data({
     optionsScope,
     disabled = false,
     detailsAttributes,
-    deleteData,
-    registerDoi,
     handleDelete,
 }) {
+    const dispatch = useDispatch();
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
     const pathBase = usePathBase();
@@ -74,29 +75,33 @@ export default function Data({
 
         // TODO: Replace deleteData's positional flags with explicit server and state deletion actions.
         // skip remove from state, only remove server-side
-        deleteData(
-            { locale, projectId, project },
-            pluralize(scope),
-            data.id,
-            null,
-            null,
-            true
+        dispatch(
+            deleteData(
+                { locale, projectId, project },
+                pluralize(scope),
+                data.id,
+                null,
+                null,
+                true
+            )
         );
         // only remove from state
-        deleteData(
-            { locale, projectId, project },
-            outerScope ? pluralize(outerScope) : pluralize(scope),
-            outerScopeId || data.id,
-            outerScope ? pluralize(scope) : null,
-            outerScope ? data.id : null,
-            null,
-            true
+        dispatch(
+            deleteData(
+                { locale, projectId, project },
+                outerScope ? pluralize(outerScope) : pluralize(scope),
+                outerScopeId || data.id,
+                outerScope ? pluralize(scope) : null,
+                outerScope ? data.id : null,
+                null,
+                true
+            )
         );
         close();
     }
 
     function postDOI(close) {
-        registerDoi(pathBase, pluralize(scope), data.id);
+        dispatch(registerDoi(pathBase, pluralize(scope), data.id));
         close();
     }
 
@@ -226,7 +231,7 @@ export default function Data({
     );
 }
 
-Data.propTypes = {
+AdminRecord.propTypes = {
     data: PropTypes.object.isRequired,
     joinedData: PropTypes.object,
     task: PropTypes.object,
@@ -243,8 +248,6 @@ Data.propTypes = {
     optionsScope: PropTypes.string,
     disabled: PropTypes.bool,
     detailsAttributes: PropTypes.array,
-    registerDoi: PropTypes.func,
-    deleteData: PropTypes.func.isRequired,
     handleDelete: PropTypes.func,
 };
 
