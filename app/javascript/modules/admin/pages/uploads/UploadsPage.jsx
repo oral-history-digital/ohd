@@ -2,7 +2,7 @@ import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
 
-import EditViewOrRedirect from './EditViewOrRedirect';
+import EditViewOrRedirect from '../../EditViewOrRedirect';
 import UploadsForm from './UploadsForm';
 
 export default function UploadsPage() {

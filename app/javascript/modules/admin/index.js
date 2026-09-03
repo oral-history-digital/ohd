@@ -17,10 +17,10 @@ export { default as EditProjectDisplayPage } from './pages/project/EditProjectDi
 export { default as EditProjectInfoPage } from './pages/project/EditProjectInfoPage';
 export { default as ProjectsAdminPage } from './pages/project/ProjectsAdminPage';
 export { default as StatisticsAdminPage } from './pages/StatisticsAdminPage';
+export { default as UploadsPage } from './pages/uploads/UploadsPage';
 export { default as UsersAdminPage } from './pages/UsersAdminPage';
 export { default as parametrizedQuery } from './parametrizedQuery';
 export { default as PermissionSearchForm } from './PermissionSearchForm';
-// TODO: Consider removing ProjectSearchForm; it has no in-repository consumer.
 export { default as ProjectSearchForm } from './ProjectSearchForm';
 export { default as RegistryNameTypesSearchForm } from './RegistryNameTypesSearchForm';
 export { default as RegistryReferenceTypesSearchForm } from './RegistryReferenceTypesSearchForm';
@@ -28,7 +28,6 @@ export { default as RoleSearchForm } from './RoleSearchForm';
 export { default as SponsorLogosContainer } from './SponsorLogosContainer';
 export { default as TaskTypeSearchForm } from './TaskTypeSearchForm';
 export { default as TranslationValuesSearchForm } from './TranslationValuesSearchForm';
-export { default as UploadsPage } from './UploadsPage';
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
 export { default as WrappedContributionTypesContainer } from './WrappedContributionTypesContainer';
 export { default as WrappedInstitutionsContainer } from './WrappedInstitutionsContainer';
