@@ -22,6 +22,7 @@ export { default as UploadsPage } from './pages/uploads/UploadsPage';
 export { default as UsersAdminPage } from './pages/UsersAdminPage';
 export { default as parametrizedQuery } from './parametrizedQuery';
 export { default as PermissionSearchForm } from './PermissionSearchForm';
+export { default as PermissionsAdminPage } from './PermissionsAdminPage';
 export { default as ProjectSearchForm } from './ProjectSearchForm';
 export { default as RegistryNameTypesSearchForm } from './RegistryNameTypesSearchForm';
 export { default as RegistryReferenceTypesSearchForm } from './RegistryReferenceTypesSearchForm';
@@ -32,7 +33,6 @@ export { default as TranslationValuesSearchForm } from './TranslationValuesSearc
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
 export { default as WrappedContributionTypesContainer } from './WrappedContributionTypesContainer';
 export { default as WrappedInstitutionsContainer } from './WrappedInstitutionsContainer';
-export { default as WrappedPermissionsContainer } from './WrappedPermissionsContainer';
 export { default as WrappedRegistryNameTypesContainer } from './WrappedRegistryNameTypesContainer';
 export { default as WrappedRegistryReferenceTypesContainer } from './WrappedRegistryReferenceTypesContainer';
 export { default as WrappedRolesContainer } from './WrappedRolesContainer';
