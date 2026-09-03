@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { RECEIVE_DATA, getProjects, useGetProjects } from 'modules/data';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ProjectsAdminList from '../ProjectsAdminList';
+import { ProjectsAdminList } from '../features/projects';
 
-// Bridge for legacy admin containers:
+// Bridge for the legacy Redux-based admin list:
 // load lightweight project list once via SWR and backfill missing Redux entries.
 // Full project payload is fetched on-demand when editing a single project.
-// TODO: Remove this bridge and switch to fully SWR-based data fetching in legacy admin containers.
+// TODO: Remove this bridge and switch the project admin list to fully SWR-based data fetching.
 function HydrateProjectsForLegacyContainers() {
     const dispatch = useDispatch();
     const existingProjects = useSelector(getProjects);
@@ -55,7 +55,7 @@ function HydrateProjectsForLegacyContainers() {
 export default function ProjectsAdminPage() {
     return (
         <div className="wrapper-content project-index">
-            {/* Keep legacy container flow while hydrating list data into Redux. */}
+            {/* Keep the legacy Redux flow while hydrating list data. */}
             <HydrateProjectsForLegacyContainers />
             <ProjectsAdminList />
         </div>
