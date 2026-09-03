@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 import Observer from 'react-intersection-observer';
 
 import AddButton from './AddButton';
-import DataContainer from './DataContainer';
+import AdminRecord from './AdminRecord';
 import EditViewOrRedirect from './EditViewOrRedirect';
 import parametrizedQuery from './parametrizedQuery';
 import sortData from './sortData';
@@ -173,7 +173,7 @@ export default function WrappedDataList({
                     )}
 
                     {sortedData.map((data) => (
-                        <DataContainer
+                        <AdminRecord
                             data={data}
                             scope={scope}
                             sensitiveAttributes={sensitiveAttributes}

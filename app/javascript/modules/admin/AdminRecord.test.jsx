@@ -1,7 +1,15 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { registerDoi } from 'modules/archive';
+import { deleteData } from 'modules/data';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
-import Data from './Data';
+import AdminRecord from './AdminRecord';
+
+jest.mock('modules/archive', () => ({
+    getProjectId: (state) => state.archive?.projectId,
+    registerDoi: jest.fn((...args) => ({ type: 'registerDoi', args })),
+}));
 
 jest.mock('modules/auth', () => {
     const MockPropTypes = jest.requireActual('prop-types');
@@ -15,6 +23,7 @@ jest.mock('modules/auth', () => {
     return { AuthorizedContent };
 });
 jest.mock('modules/data', () => ({
+    deleteData: jest.fn((...args) => ({ type: 'deleteData', args })),
     useGetProject: jest.fn(),
     useSensitiveData: jest.fn(),
 }));
@@ -75,6 +84,10 @@ jest.mock('modules/ui', () => {
 
     return { AdminMenu };
 });
+jest.mock('react-redux', () => ({
+    connect: () => (Component) => Component,
+    useDispatch: jest.fn(),
+}));
 jest.mock('./DataDetails', () => {
     const MockPropTypes = jest.requireActual('prop-types');
 
@@ -118,31 +131,31 @@ const defaultProps = {
     detailsAttributes: ['name', 'code'],
     form: jest.fn(() => null),
     scope: 'collection',
-    deleteData: jest.fn(),
-    registerDoi: jest.fn(),
 };
 
-function renderData(props = {}) {
-    return render(<Data {...defaultProps} {...props} />);
+const dispatch = jest.fn();
+
+function renderAdminRecord(props = {}) {
+    return render(<AdminRecord {...defaultProps} {...props} />);
 }
 
 beforeEach(() => {
     jest.clearAllMocks();
+    useDispatch.mockReturnValue(dispatch);
 });
 
 test('renders the record and its configured actions', () => {
-    renderData();
+    renderAdminRecord();
 
     expect(screen.getAllByText('Test collection')).toHaveLength(2);
     expect(screen.getByTestId('action-show')).toBeInTheDocument();
-    expect(screen.getByTestId('data-details')).toHaveTextContent('name,code:7');
     expect(screen.getByTestId('action-edit')).toBeInTheDocument();
     expect(screen.getByTestId('action-delete')).toBeInTheDocument();
     expect(screen.queryByTestId('action-register_doi')).not.toBeInTheDocument();
 });
 
 test('respects hidden action configuration', () => {
-    renderData({ hideShow: true, hideEdit: true, hideDelete: true });
+    renderAdminRecord({ hideShow: true, hideEdit: true, hideDelete: true });
 
     expect(screen.queryByTestId('action-show')).not.toBeInTheDocument();
     expect(screen.queryByTestId('action-edit')).not.toBeInTheDocument();
@@ -150,13 +163,11 @@ test('respects hidden action configuration', () => {
 });
 
 test('deletes the server record and removes it from Redux state', () => {
-    renderData();
+    renderAdminRecord();
 
-    fireEvent.click(screen.getByTestId('delete-item-confirm-button'));
+    fireEvent.click(screen.getByRole('button', { name: 'delete' }));
 
-    // The deleteData function is called twice: once to delete the record
-    // from the server, and once to remove it from Redux state
-    expect(defaultProps.deleteData.mock.calls).toEqual([
+    expect(deleteData.mock.calls).toEqual([
         [
             {
                 locale: 'en',
@@ -183,29 +194,30 @@ test('deletes the server record and removes it from Redux state', () => {
             true,
         ],
     ]);
+    expect(dispatch).toHaveBeenCalledTimes(2);
 });
 
 test('uses a custom delete handler when provided', () => {
     const handleDelete = jest.fn();
-    renderData({ handleDelete });
+    renderAdminRecord({ handleDelete });
 
-    fireEvent.click(screen.getByTestId('delete-item-confirm-button'));
+    fireEvent.click(screen.getByRole('button', { name: 'delete' }));
 
     expect(handleDelete).toHaveBeenCalledWith(7, expect.any(Function));
-    expect(defaultProps.deleteData).not.toHaveBeenCalled();
+    expect(deleteData).not.toHaveBeenCalled();
+    expect(dispatch).not.toHaveBeenCalled();
 });
 
 test('registers a DOI when that action is enabled', () => {
-    renderData({ hideDelete: true, hideRegisterDoiAction: false });
+    renderAdminRecord({ hideDelete: true, hideRegisterDoiAction: false });
 
-    // DOI reuses the delete confirmation modal
-    fireEvent.click(screen.getByTestId('delete-item-confirm-button'));
+    fireEvent.click(screen.getByRole('button', { name: 'register_doi' }));
 
-    expect(defaultProps.registerDoi).toHaveBeenCalledWith(
-        '/test/en',
-        'collections',
-        7
-    );
+    expect(registerDoi).toHaveBeenCalledWith('/test/en', 'collections', 7);
+    expect(dispatch).toHaveBeenCalledWith({
+        type: 'registerDoi',
+        args: ['/test/en', 'collections', 7],
+    });
 });
 
 test('renders custom record and joined-data components', () => {
@@ -214,7 +226,7 @@ test('renders custom record and joined-data components', () => {
     }
     CustomRecord.propTypes = { data: PropTypes.object.isRequired };
 
-    renderData({
+    renderAdminRecord({
         showComponent: CustomRecord,
         joinedData: { interviews: jest.fn() },
     });

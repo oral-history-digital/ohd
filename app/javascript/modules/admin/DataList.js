@@ -10,7 +10,7 @@ import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
-import DataContainer from './DataContainer';
+import AdminRecord from './AdminRecord';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function DataList({
@@ -121,7 +121,7 @@ export default function DataList({
                 <ErrorBoundary>
                     {data &&
                         Object.keys(data).map((c) => (
-                            <DataContainer
+                            <AdminRecord
                                 key={c}
                                 data={data[c]}
                                 scope={scope}
