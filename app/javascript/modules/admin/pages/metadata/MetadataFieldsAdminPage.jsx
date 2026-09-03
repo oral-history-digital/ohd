@@ -9,9 +9,9 @@ import {
 } from 'modules/data';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { PaginatedAdminRecordList } from '../../components';
 import MetadataFieldForm from './MetadataFieldForm';
 import MetadataFieldShow from './MetadataFieldShow';
-import { PaginatedAdminRecordList } from './components';
 
 export default function MetadataFieldsAdminPage() {
     const dispatch = useDispatch();

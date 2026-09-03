@@ -19,7 +19,7 @@ import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-import useCombinedRegistryReferenceTypes from './useCombinedRegistryReferenceTypes';
+import useCombinedRegistryReferenceTypes from '../../useCombinedRegistryReferenceTypes';
 
 const NAME_VALUES = {
     Interview: [
