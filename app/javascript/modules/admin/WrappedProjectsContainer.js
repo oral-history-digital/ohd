@@ -5,7 +5,7 @@ import { setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import WrappedDataList from './WrappedDataList';
+import { PaginatedAdminRecordList } from './components';
 
 const mapStateToProps = (state) => {
     // Filter out non-project entries and ensure we have an array of project objects.
@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
         otherDataToLoad: ['institution', 'collection'],
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
         // Archive projects are hydrated via SWR list in ArchivePage bridge.
-        // Keep query null here so WrappedDataList does not trigger legacy
+        // Keep query null so PaginatedAdminRecordList does not trigger legacy
         // paginated /projects fetch that can replace Redux projects state.
         query: null,
         scope: 'project',
@@ -107,4 +107,7 @@ const mapDispatchToProps = (dispatch) =>
         dispatch
     );
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PaginatedAdminRecordList);

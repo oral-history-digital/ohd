@@ -13,8 +13,8 @@ import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
 
 import AddButton from './AddButton';
-import AdminRecord from './AdminRecord';
 import EditViewOrRedirect from './EditViewOrRedirect';
+import { AdminRecord } from './components';
 
 export default function EventTypesAdminPage() {
     const { t, locale } = useI18n();
