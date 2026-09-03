@@ -5,10 +5,10 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import EditData from './EditData';
-import EditViewOrRedirect from './EditViewOrRedirect';
+import EditData from '../../EditData';
+import EditViewOrRedirect from '../../EditViewOrRedirect';
 
-export default function EditProjectConfig() {
+export default function EditProjectConfigPage() {
     const { t } = useI18n();
     const { project } = useProject();
     const dispatch = useDispatch();
@@ -41,7 +41,7 @@ export default function EditProjectConfig() {
             attribute: 'contact_email',
             type: 'email',
             validate: function (v) {
-                return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+                return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
                     v
                 );
             },

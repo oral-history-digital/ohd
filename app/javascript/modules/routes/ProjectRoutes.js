@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 
 import {
     EditInterview,
-    EditProjectAccessConfig,
-    EditProjectConfig,
-    EditProjectDisplay,
-    EditProjectInfo,
+    EditProjectAccessPage,
+    EditProjectConfigPage,
+    EditProjectDisplayPage,
+    EditProjectInfoPage,
     EventTypesAdminPage,
     InstanceSettingAdminPage,
     MetadataFieldsContainer,
@@ -102,18 +102,21 @@ export default function ProjectRoutes() {
                     element={<StatisticsAdminPage />}
                 />
                 <Route path="uploads/new" element={<UploadsPage />} />
-                <Route path="project/edit-info" element={<EditProjectInfo />} />
+                <Route
+                    path="project/edit-info"
+                    element={<EditProjectInfoPage />}
+                />
                 <Route
                     path="project/edit-config"
-                    element={<EditProjectConfig />}
+                    element={<EditProjectConfigPage />}
                 />
                 <Route
                     path="project/edit-access-config"
-                    element={<EditProjectAccessConfig />}
+                    element={<EditProjectAccessPage />}
                 />
                 <Route
                     path="project/edit-display"
-                    element={<EditProjectDisplay />}
+                    element={<EditProjectDisplayPage />}
                 />
                 <Route
                     path="metadata_fields"
