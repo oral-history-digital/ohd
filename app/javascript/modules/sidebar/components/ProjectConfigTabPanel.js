@@ -1,8 +1,8 @@
 import {
-    PermissionSearchFormContainer,
-    RoleSearchFormContainer,
-    TaskTypeSearchFormContainer,
-    TranslationValuesSearchFormContainer,
+    PermissionSearchForm,
+    RoleSearchForm,
+    TaskTypeSearchForm,
+    TranslationValuesSearchForm,
 } from 'modules/admin';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -61,7 +61,7 @@ export default function ProjectConfigTabPanel() {
                     obj={{ type: 'Role' }}
                     action="update"
                 >
-                    <RoleSearchFormContainer />
+                    <RoleSearchForm />
                 </AdminSubTab>
                 <AdminSubTab
                     title="edit.permission.admin"
@@ -69,7 +69,7 @@ export default function ProjectConfigTabPanel() {
                     obj={{ type: 'Permission' }}
                     action="update"
                 >
-                    <PermissionSearchFormContainer />
+                    <PermissionSearchForm />
                 </AdminSubTab>
                 <AdminSubTab
                     title="edit.translation_value.admin"
@@ -78,7 +78,7 @@ export default function ProjectConfigTabPanel() {
                     action="update"
                 >
                     <ToggleTranslationsView />
-                    <TranslationValuesSearchFormContainer />
+                    <TranslationValuesSearchForm />
                 </AdminSubTab>
                 <AdminSubTab
                     title="edit.task_type.admin"
@@ -86,7 +86,7 @@ export default function ProjectConfigTabPanel() {
                     obj={{ type: 'TaskType' }}
                     action="update"
                 >
-                    <TaskTypeSearchFormContainer />
+                    <TaskTypeSearchForm />
                 </AdminSubTab>
                 <AdminSubTab
                     title="edit.event_type.admin"
