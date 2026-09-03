@@ -57,6 +57,10 @@ const state = {
             },
         },
         projects: {
+            query: {
+                name: 'archive',
+                page: 1,
+            },
             1: {
                 name: 'cdoh',
                 roles: {
@@ -143,6 +147,12 @@ test('getRegistryReferenceTypesQuery retrieves registry reference types query pa
 test('getCollectionsQuery retrieves collections query params', () => {
     expect(selectors.getCollectionsQuery(state)).toEqual(
         state[NAME].collections.query
+    );
+});
+
+test('getProjectsQuery retrieves projects query params', () => {
+    expect(selectors.getProjectsQuery(state)).toEqual(
+        state[NAME].projects.query
     );
 });
 

@@ -18,7 +18,8 @@ export { default as MetadataFieldsContainer } from './MetadataFieldsContainer';
 export { default as parametrizedQuery } from './parametrizedQuery';
 export { default as PeopleAdminPage } from './PeopleAdminPage';
 export { default as PermissionSearchForm } from './PermissionSearchForm';
-export { default as ProjectSearchFormContainer } from './ProjectSearchFormContainer';
+// TODO: Consider removing ProjectSearchForm; it has no in-repository consumer.
+export { default as ProjectSearchForm } from './ProjectSearchForm';
 export { default as RegistryNameTypesSearchForm } from './RegistryNameTypesSearchForm';
 export { default as RegistryReferenceTypesSearchForm } from './RegistryReferenceTypesSearchForm';
 export { default as RoleSearchForm } from './RoleSearchForm';
