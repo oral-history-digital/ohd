@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 function MetadataFieldShow({ data }) {
@@ -22,3 +23,10 @@ function MetadataFieldShow({ data }) {
 }
 
 export default MetadataFieldShow;
+
+MetadataFieldShow.propTypes = {
+    data: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        label: PropTypes.objectOf(PropTypes.string),
+    }).isRequired,
+};
