@@ -8,7 +8,7 @@ import { Button, CancelButton, InlineNotification, Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-import { getCsrfToken } from '../../utils/csrfToken';
+import { getCsrfToken } from '../../../../utils/csrfToken';
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024;
 const ACCEPTED_FILE_TYPES = [
