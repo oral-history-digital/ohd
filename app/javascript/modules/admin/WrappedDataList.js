@@ -1,11 +1,10 @@
-import { createElement, useEffect } from 'react';
+import { createElement } from 'react';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { pluralize } from 'modules/strings';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Observer from 'react-intersection-observer';
@@ -13,9 +12,8 @@ import Observer from 'react-intersection-observer';
 import AddButton from './AddButton';
 import AdminRecord from './AdminRecord';
 import EditViewOrRedirect from './EditViewOrRedirect';
-import parametrizedQuery from './parametrizedQuery';
+import { usePaginatedAdminRecords } from './hooks';
 import sortData from './sortData';
-import statifiedQuery from './statifiedQuery';
 
 export default function WrappedDataList({
     form,
@@ -52,52 +50,22 @@ export default function WrappedDataList({
     const { t, locale } = useI18n();
     const { project, projectId } = useProject();
 
-    useEffect(() => {
-        if (
-            query &&
-            !(
-                dataStatus?.[`for_projects_${project?.id}`] ||
-                dataStatus?.all ||
-                dataStatus?.[statifiedQuery(query)]
-            )
-        ) {
-            fetchData(
-                { locale, project, projectId },
-                pluralize(scope),
-                scopeId || null,
-                nestedScope ? pluralize(nestedScope) : null,
-                parametrizedQuery(query)
-            );
-        }
-        if (otherDataToLoad.length) {
-            otherDataToLoad.forEach((d) => {
-                if (!statuses?.[d]?.all) {
-                    fetchData(
-                        { locale, project, projectId },
-                        pluralize(d),
-                        null,
-                        null,
-                        'all'
-                    );
-                }
-            });
-        }
-    }, []);
-
-    function handleScroll(inView) {
-        if (inView) {
-            setQueryParams(pluralize(nestedScope || scope), {
-                page: query.page + 1,
-            });
-            fetchData(
-                { locale, project, projectId },
-                pluralize(scope),
-                scopeId || null,
-                nestedScope ? pluralize(nestedScope) : null,
-                parametrizedQuery(query)
-            );
-        }
-    }
+    const { hasMorePages, isFetching, loadNextPage, shouldShowPagination } =
+        usePaginatedAdminRecords({
+            query,
+            dataStatus,
+            statuses,
+            otherDataToLoad,
+            resultPagesCount,
+            scope,
+            scopeId,
+            nestedScope,
+            fetchData,
+            setQueryParams,
+            locale,
+            project,
+            projectId,
+        });
 
     function createForm(data, onSubmit, onCancel) {
         if (form) {
@@ -134,20 +102,6 @@ export default function WrappedDataList({
         sortAttributeTranslated,
         locale
     );
-
-    const notFetched = !(
-        /^fetched/.test(dataStatus?.[`for_projects_${project?.id}`]) ||
-        /^fetched/.test(dataStatus?.all)
-    );
-
-    // If query is present, we rely on query-specific status for fetching state.
-    // If not, we fall back to general status flags.
-    const queryStatusKey = query ? statifiedQuery(query) : null;
-    const fetching =
-        queryStatusKey &&
-        dataStatus?.[queryStatusKey]?.split('-')[0] === 'fetching';
-    const currentPage = query?.page ? parseInt(query.page, 10) : 1;
-    const hasMorePages = !resultPagesCount || resultPagesCount > currentPage;
 
     return (
         <EditViewOrRedirect>
@@ -201,16 +155,11 @@ export default function WrappedDataList({
                         />
                     )}
 
-                    {query &&
-                        notFetched &&
-                        (fetching ? (
+                    {shouldShowPagination &&
+                        (isFetching ? (
                             <Spinner />
                         ) : (
-                            hasMorePages && (
-                                <Observer
-                                    onChange={(inView) => handleScroll(inView)}
-                                />
-                            )
+                            hasMorePages && <Observer onChange={loadNextPage} />
                         ))}
                 </AuthShowContainer>
 
