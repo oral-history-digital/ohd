@@ -72,6 +72,7 @@ export default function Data({
             return;
         }
 
+        // TODO: Replace deleteData's positional flags with explicit server and state deletion actions.
         // skip remove from state, only remove server-side
         deleteData(
             { locale, projectId, project },
