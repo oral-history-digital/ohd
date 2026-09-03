@@ -26,7 +26,7 @@ const mapStateToProps = (state) => {
         statuses: getStatuses(state),
         otherDataToLoad: ['institution', 'collection'],
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
-        // Archive projects are hydrated via SWR list in ArchivePage bridge.
+        // Projects are hydrated via the SWR list in ProjectsAdminPage bridge.
         // Keep query null so PaginatedAdminRecordList does not trigger legacy
         // paginated /projects fetch that can replace Redux projects state.
         query: null,
