@@ -13,7 +13,7 @@ import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
 
 import AddButton from './AddButton';
-import DataContainer from './DataContainer';
+import AdminRecord from './AdminRecord';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function EventTypesAdminPage() {
@@ -105,7 +105,7 @@ export default function EventTypesAdminPage() {
                         )}
 
                         {sortedData.map((data) => (
-                            <DataContainer
+                            <AdminRecord
                                 data={data}
                                 scope={scope}
                                 outerScope={outerScope}
