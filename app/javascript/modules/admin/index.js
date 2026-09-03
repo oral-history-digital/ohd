@@ -1,4 +1,3 @@
-export { default as ArchivePage } from './ArchivePage';
 export { default as CollectionsSearchForm } from './CollectionsSearchForm';
 export { default as ContributionTypesSearchForm } from './ContributionTypesSearchForm';
 export { default as DataList } from './DataList';
@@ -15,6 +14,7 @@ export { default as InstanceSettingAdminPage } from './InstanceSettingAdminPage'
 export { default as LanguagesSearchForm } from './LanguagesSearchForm';
 export { default as LogosContainer } from './LogosContainer';
 export { default as MetadataFieldsContainer } from './MetadataFieldsContainer';
+export { default as ProjectsAdminPage } from './pages/ProjectsAdminPage';
 export { default as parametrizedQuery } from './parametrizedQuery';
 export { default as PeopleAdminPage } from './PeopleAdminPage';
 export { default as PermissionSearchForm } from './PermissionSearchForm';
