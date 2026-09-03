@@ -1,6 +1,3 @@
-service: ohd
-image: ghcr.io/oral-history-digital/ohd
-
 servers:
   web:
     - 160.45.152.196
@@ -10,37 +7,10 @@ proxy:
   host: avd-test.ub.fu-berlin.de
   app_port: 3000
 
-registry:
-  server: ghcr.io
-  username: <%= ENV["GITHUB_ACTOR"] %>
-  password: <%= ENV["GITHUB_TOKEN"] %>
-
-env:
-  secret:
-    - RAILS_MASTER_KEY
-    - MYSQL_PASSWORD_PRODUCTION
-  clear:
-    WEB_CONCURRENCY: 2
-    DB_HOST: ohd-db
-    SOLR_URL: http://ohd-solr:8983/solr/blacklight-core
-    TZ: Europe/Berlin
-
-aliases:
-  console: app exec --interactive --reuse "bin/rails console"
-  shell: app exec --interactive --reuse "bash"
-  logs: app logs -f
-  joblogs: app logs -f -r job
-  dbc: app exec --interactive --reuse "bin/rails dbconsole"
-
 volumes:
   - "/home/avd1/avd/storage/app-cache:/app/tmp/cache"
   - "/home/avd1/avd/storage/app-files:/app/tmp/files"
   - "/home/avd1/avd/storage/app-logs:/app/log"
-
-asset_path: /app/public/packs
-
-builder:
-  arch: amd64
 
 ssh:
   user: avd1
