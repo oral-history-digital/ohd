@@ -19,7 +19,6 @@ export { default as parametrizedQuery } from './parametrizedQuery';
 export { default as PeopleAdminPage } from './PeopleAdminPage';
 export { default as PermissionSearchForm } from './PermissionSearchForm';
 // TODO: Consider removing ProjectSearchForm; it has no in-repository consumer.
-export { default as ProjectsAdminList } from './ProjectsAdminList';
 export { default as ProjectSearchForm } from './ProjectSearchForm';
 export { default as RegistryNameTypesSearchForm } from './RegistryNameTypesSearchForm';
 export { default as RegistryReferenceTypesSearchForm } from './RegistryReferenceTypesSearchForm';
