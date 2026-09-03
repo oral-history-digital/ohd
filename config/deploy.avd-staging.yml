@@ -1,6 +1,6 @@
 servers:
   web:
-    - 160.45.152.196
+    - 160.45.152.195
 
 proxy:
   ssl: true
@@ -19,7 +19,7 @@ accessories:
   db:
     image: mariadb:10.5
     hosts:
-      - 160.45.152.196
+      - 160.45.152.195
     env:
       clear:
         MYSQL_HOST_PRODUCTION: '%'
@@ -31,6 +31,6 @@ accessories:
   solr:
     image: solr:5.5
     hosts:
-      - 160.45.152.196
+      - 160.45.152.195
     directories:
       - solr_data:/opt/solr/server/solr/mycores
