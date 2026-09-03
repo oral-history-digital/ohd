@@ -1,22 +1,31 @@
 import { createElement, useState } from 'react';
 
+import {
+    getCollectionsForCurrentProject,
+    getContributionTypesForCurrentProject,
+    getLanguages,
+    submitData,
+} from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { usePeople } from 'modules/person';
 import { usePathBase, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 export default function InterviewForm({
-    collections,
-    contributionTypes,
     interview,
-    languages,
-    submitData,
     submitText,
     withContributions,
 }) {
+    const dispatch = useDispatch();
+    const collections = useSelector(getCollectionsForCurrentProject);
+    const contributionTypes = useSelector(
+        getContributionTypesForCurrentProject
+    );
+    const languages = useSelector(getLanguages);
     const [showForm, setShowForm] = useState(true);
     const [archiveId, setArchiveId] = useState(null);
 
@@ -24,7 +33,7 @@ export default function InterviewForm({
     const { project, projectId } = useProject();
     const pathBase = usePathBase();
 
-    const { data: people, isLoading } = usePeople();
+    const { data: people } = usePeople();
 
     function returnToForm() {
         setShowForm(true);
@@ -51,7 +60,7 @@ export default function InterviewForm({
     function handleSubmit(params) {
         setShowForm(false);
 
-        submitData({ locale, projectId, project }, params);
+        dispatch(submitData({ locale, projectId, project }, params));
     }
 
     function renderForm() {
@@ -205,10 +214,6 @@ export default function InterviewForm({
 
 InterviewForm.propTypes = {
     interview: PropTypes.object,
-    languages: PropTypes.object.isRequired,
-    collections: PropTypes.object.isRequired,
     withContributions: PropTypes.bool,
-    contributionTypes: PropTypes.object.isRequired,
     submitText: PropTypes.string,
-    submitData: PropTypes.func.isRequired,
 };
