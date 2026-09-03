@@ -1,9 +1,9 @@
 import {
     CollectionsSearchForm,
-    ContributionTypesSearchFormContainer,
-    LanguagesSearchFormContainer,
-    RegistryNameTypesSearchFormContainer,
-    RegistryReferenceTypesSearchFormContainer,
+    ContributionTypesSearchForm,
+    LanguagesSearchForm,
+    RegistryNameTypesSearchForm,
+    RegistryReferenceTypesSearchForm,
 } from 'modules/admin';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -58,7 +58,7 @@ export default function IndexingTabPanel() {
                     obj={{ type: 'RegistryReferenceType' }}
                     action="update"
                 >
-                    <RegistryReferenceTypesSearchFormContainer />
+                    <RegistryReferenceTypesSearchForm />
                 </AdminSubTab>
                 {isRegularArchive() && (
                     <AdminSubTab
@@ -67,7 +67,7 @@ export default function IndexingTabPanel() {
                         obj={{ type: 'RegistryNameType' }}
                         action="update"
                     >
-                        <RegistryNameTypesSearchFormContainer />
+                        <RegistryNameTypesSearchForm />
                     </AdminSubTab>
                 )}
                 {isRegularArchive() && (
@@ -77,7 +77,7 @@ export default function IndexingTabPanel() {
                         obj={{ type: 'ContributionType' }}
                         action="update"
                     >
-                        <ContributionTypesSearchFormContainer />
+                        <ContributionTypesSearchForm />
                     </AdminSubTab>
                 )}
                 {isRegularArchive() && (
@@ -97,7 +97,7 @@ export default function IndexingTabPanel() {
                         obj={{ type: 'Language' }}
                         action="update"
                     >
-                        <LanguagesSearchFormContainer />
+                        <LanguagesSearchForm />
                     </AdminSubTab>
                 )}
             </div>
