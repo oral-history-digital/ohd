@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { RECEIVE_DATA, getProjects, useGetProjects } from 'modules/data';
 import { useDispatch, useSelector } from 'react-redux';
 
-import WrappedProjectsContainer from '../WrappedProjectsContainer';
+import ProjectsAdminList from '../ProjectsAdminList';
 
 // Bridge for legacy admin containers:
 // load lightweight project list once via SWR and backfill missing Redux entries.
@@ -57,7 +57,7 @@ export default function ProjectsAdminPage() {
         <div className="wrapper-content project-index">
             {/* Keep legacy container flow while hydrating list data into Redux. */}
             <HydrateProjectsForLegacyContainers />
-            <WrappedProjectsContainer />
+            <ProjectsAdminList />
         </div>
     );
 }
