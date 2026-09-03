@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import {
-    EditInterview,
+    EditInterviewPage,
     EditProjectAccessPage,
     EditProjectConfigPage,
     EditProjectDisplayPage,
@@ -70,7 +70,7 @@ export default function ProjectRoutes() {
                 <Route
                     exact
                     path="interviews/new"
-                    element={<EditInterview />}
+                    element={<EditInterviewPage />}
                 />
                 <Route
                     path="interviews/:archiveId"
