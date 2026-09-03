@@ -12,6 +12,8 @@ export { default as LanguagesAdminPage } from './pages/languages/LanguagesAdminP
 export { default as LanguagesSearchForm } from './pages/languages/LanguagesSearchForm';
 export { default as MetadataFieldsAdminPage } from './pages/metadata/MetadataFieldsAdminPage';
 export { default as PeopleAdminPage } from './pages/PeopleAdminPage';
+export { default as PermissionsAdminPage } from './pages/permissions/PermissionsAdminPage';
+export { default as PermissionSearchForm } from './pages/permissions/PermissionSearchForm';
 export { default as EditProjectAccessPage } from './pages/projects/EditProjectAccessPage';
 export { default as EditProjectConfigPage } from './pages/projects/EditProjectConfigPage';
 export { default as EditProjectDisplayPage } from './pages/projects/EditProjectDisplayPage';
@@ -21,8 +23,6 @@ export { default as StatisticsAdminPage } from './pages/StatisticsAdminPage';
 export { default as UploadsPage } from './pages/uploads/UploadsPage';
 export { default as UsersAdminPage } from './pages/UsersAdminPage';
 export { default as parametrizedQuery } from './parametrizedQuery';
-export { default as PermissionSearchForm } from './PermissionSearchForm';
-export { default as PermissionsAdminPage } from './PermissionsAdminPage';
 export { default as ProjectSearchForm } from './ProjectSearchForm';
 export { default as RegistryNameTypesSearchForm } from './RegistryNameTypesSearchForm';
 export { default as RegistryReferenceTypesSearchForm } from './RegistryReferenceTypesSearchForm';

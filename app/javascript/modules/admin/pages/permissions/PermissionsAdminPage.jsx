@@ -10,7 +10,7 @@ import {
 import { getPermissionsQuery, setQueryParams } from 'modules/search';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PaginatedAdminRecordList } from './components';
+import { PaginatedAdminRecordList } from '../../components';
 
 export default function PermissionsAdminPage() {
     const dispatch = useDispatch();
