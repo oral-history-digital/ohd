@@ -13,6 +13,7 @@ import {
     PeopleAdminPage,
     PermissionsAdminPage,
     StatisticsAdminPage,
+    TranslationValuesAdminPage,
     UploadsPage,
     UsersAdminPage,
     WrappedCollectionsContainer,
@@ -21,7 +22,6 @@ import {
     WrappedRegistryReferenceTypesContainer,
     WrappedRolesContainer,
     WrappedTaskTypesContainer,
-    WrappedTranslationValuesContainer,
 } from 'modules/admin';
 import {
     clearViewModes,
@@ -139,7 +139,7 @@ export default function ProjectRoutes() {
                 <Route path="languages" element={<LanguagesAdminPage />} />
                 <Route
                     path="translation_values"
-                    element={<WrappedTranslationValuesContainer />}
+                    element={<TranslationValuesAdminPage />}
                 />
                 <Route
                     path="conditions"
