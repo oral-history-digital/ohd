@@ -5,14 +5,14 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import EditData from './EditData';
-import EditViewOrRedirect from './EditViewOrRedirect';
-import LogosContainer from './LogosContainer';
-import MediaStreamsContainer from './MediaStreamsContainer';
-import ProjectFaviconForm from './ProjectFaviconForm';
-import SponsorLogosContainer from './SponsorLogosContainer';
+import EditData from '../../EditData';
+import EditViewOrRedirect from '../../EditViewOrRedirect';
+import LogosContainer from '../../LogosContainer';
+import MediaStreamsContainer from '../../MediaStreamsContainer';
+import ProjectFaviconForm from '../../ProjectFaviconForm';
+import SponsorLogosContainer from '../../SponsorLogosContainer';
 
-export default function EditProjectDisplay() {
+export default function EditProjectDisplayPage() {
     const { t } = useI18n();
     const { project } = useProject();
     const dispatch = useDispatch();

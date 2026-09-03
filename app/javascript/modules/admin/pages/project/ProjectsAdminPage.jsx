@@ -1,7 +1,7 @@
 import {
     ProjectsAdminList,
     useHydrateProjectsForAdmin,
-} from '../features/projects';
+} from '../../features/projects';
 
 export default function ProjectsAdminPage() {
     useHydrateProjectsForAdmin();
