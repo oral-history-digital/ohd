@@ -4,6 +4,7 @@ export { default as DataList } from './DataList';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
 export { default as LanguagesSearchForm } from './LanguagesSearchForm';
+export { default as LanguagesAdminPage } from './LanguagesAdminPage';
 export { default as LogosContainer } from './LogosContainer';
 export { default as EventTypesAdminPage } from './pages/EventTypesAdminPage';
 export { default as HelpTextAdminPage } from './pages/HelpTextAdminPage';
@@ -31,7 +32,6 @@ export { default as TranslationValuesSearchForm } from './TranslationValuesSearc
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
 export { default as WrappedContributionTypesContainer } from './WrappedContributionTypesContainer';
 export { default as WrappedInstitutionsContainer } from './WrappedInstitutionsContainer';
-export { default as WrappedLanguagesContainer } from './WrappedLanguagesContainer';
 export { default as WrappedPermissionsContainer } from './WrappedPermissionsContainer';
 export { default as WrappedRegistryNameTypesContainer } from './WrappedRegistryNameTypesContainer';
 export { default as WrappedRegistryReferenceTypesContainer } from './WrappedRegistryReferenceTypesContainer';
