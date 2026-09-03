@@ -1,4 +1,4 @@
-name: Deploy
+name: deploy instance with kamal
 
 on:
   workflow_dispatch:
