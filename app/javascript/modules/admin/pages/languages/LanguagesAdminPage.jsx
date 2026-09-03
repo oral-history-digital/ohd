@@ -10,7 +10,7 @@ import {
 import { getLanguagesQuery, setQueryParams } from 'modules/search';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PaginatedAdminRecordList } from './components';
+import { PaginatedAdminRecordList } from '../../components';
 
 export default function LanguagesAdminPage() {
     const dispatch = useDispatch();

@@ -3,13 +3,13 @@ export { default as ContributionTypesSearchForm } from './ContributionTypesSearc
 export { default as DataList } from './DataList';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
-export { default as LanguagesSearchForm } from './LanguagesSearchForm';
-export { default as LanguagesAdminPage } from './LanguagesAdminPage';
 export { default as LogosContainer } from './LogosContainer';
 export { default as EventTypesAdminPage } from './pages/EventTypesAdminPage';
 export { default as HelpTextAdminPage } from './pages/HelpTextAdminPage';
 export { default as InstanceSettingAdminPage } from './pages/InstanceSettingAdminPage';
 export { default as EditInterviewPage } from './pages/interviews/EditInterviewPage';
+export { default as LanguagesAdminPage } from './pages/languages/LanguagesAdminPage';
+export { default as LanguagesSearchForm } from './pages/languages/LanguagesSearchForm';
 export { default as MetadataFieldsAdminPage } from './pages/metadata/MetadataFieldsAdminPage';
 export { default as PeopleAdminPage } from './pages/PeopleAdminPage';
 export { default as EditProjectAccessPage } from './pages/projects/EditProjectAccessPage';
