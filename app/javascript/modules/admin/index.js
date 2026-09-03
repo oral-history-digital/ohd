@@ -1,5 +1,5 @@
 export { default as ArchivePage } from './ArchivePage';
-export { default as CollectionsSearchFormContainer } from './CollectionsSearchFormContainer';
+export { default as CollectionsSearchForm } from './CollectionsSearchForm';
 export { default as ContributionTypesSearchFormContainer } from './ContributionTypesSearchFormContainer';
 export { default as DataList } from './DataList';
 export { default as EditInterview } from './EditInterview';
