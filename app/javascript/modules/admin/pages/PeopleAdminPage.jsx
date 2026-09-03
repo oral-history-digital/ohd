@@ -10,8 +10,8 @@ import { ErrorMessage } from 'modules/ui';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 
-import AddButton from './AddButton';
-import EditViewOrRedirect from './EditViewOrRedirect';
+import AddButton from '../AddButton';
+import EditViewOrRedirect from '../EditViewOrRedirect';
 
 export default function PeopleAdminPage() {
     const { t } = useI18n();
