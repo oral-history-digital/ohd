@@ -1,4 +1,4 @@
-name: Setup
+name: setup instance with kamal
 
 on:
   workflow_dispatch:
