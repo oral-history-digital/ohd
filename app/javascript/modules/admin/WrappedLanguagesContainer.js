@@ -9,7 +9,7 @@ import { getLanguagesQuery, setQueryParams } from 'modules/search';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import WrappedDataList from './WrappedDataList';
+import { PaginatedAdminRecordList } from './components';
 
 const mapStateToProps = (state) => ({
     data: getLanguages(state),
@@ -42,4 +42,7 @@ const mapDispatchToProps = (dispatch) =>
         dispatch
     );
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PaginatedAdminRecordList);

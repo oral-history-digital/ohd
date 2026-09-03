@@ -10,8 +10,8 @@ import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
-import AdminRecord from './AdminRecord';
 import EditViewOrRedirect from './EditViewOrRedirect';
+import { AdminRecord } from './components';
 
 export default function DataList({
     data,

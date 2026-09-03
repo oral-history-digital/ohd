@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import WrappedDataList from './WrappedDataList';
+import PaginatedAdminRecordList from './PaginatedAdminRecordList';
 
 jest.mock('modules/auth', () => {
     const MockPropTypes = jest.requireActual('prop-types');
@@ -40,7 +40,7 @@ jest.mock('modules/routes', () => ({
 jest.mock('react-helmet', () => ({
     Helmet: ({ children }) => children,
 }));
-jest.mock('./AddButton', () => {
+jest.mock('../AddButton', () => {
     const React = jest.requireActual('react');
     const MockPropTypes = jest.requireActual('prop-types');
 
@@ -75,7 +75,7 @@ jest.mock('./AdminRecord', () => {
 
     return AdminRecord;
 });
-jest.mock('./EditViewOrRedirect', () => {
+jest.mock('../EditViewOrRedirect', () => {
     const MockPropTypes = jest.requireActual('prop-types');
 
     function EditViewOrRedirect({ children }) {
@@ -86,7 +86,7 @@ jest.mock('./EditViewOrRedirect', () => {
 
     return EditViewOrRedirect;
 });
-jest.mock('./hooks', () => ({
+jest.mock('../hooks', () => ({
     usePaginatedAdminRecords: () => ({
         hasMorePages: false,
         isFetching: false,
@@ -109,8 +109,8 @@ const defaultProps = {
     submitData: jest.fn(),
 };
 
-function renderWrappedDataList(props = {}) {
-    return render(<WrappedDataList {...defaultProps} {...props} />);
+function renderPaginatedAdminRecordList(props = {}) {
+    return render(<PaginatedAdminRecordList {...defaultProps} {...props} />);
 }
 
 beforeEach(() => {
@@ -118,7 +118,7 @@ beforeEach(() => {
 });
 
 test('renders records in the configured order', () => {
-    renderWrappedDataList({ sortAttribute: 'position' });
+    renderPaginatedAdminRecordList({ sortAttribute: 'position' });
 
     expect(
         screen
@@ -128,7 +128,7 @@ test('renders records in the configured order', () => {
 });
 
 test('submits the default add form and closes it', () => {
-    renderWrappedDataList();
+    renderPaginatedAdminRecordList();
 
     fireEvent.click(screen.getAllByRole('button', { name: 'add-role' })[0]);
     fireEvent.click(screen.getByRole('button', { name: 'submit-form' }));
@@ -147,7 +147,7 @@ test('submits the default add form and closes it', () => {
 });
 
 test('hides both add controls when creation is disabled', () => {
-    renderWrappedDataList({ hideAdd: true });
+    renderPaginatedAdminRecordList({ hideAdd: true });
 
     expect(
         screen.queryByRole('button', { name: 'add-role' })
