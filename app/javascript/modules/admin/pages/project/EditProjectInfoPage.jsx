@@ -5,16 +5,16 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CooperationPartnersContainer from './CooperationPartnersContainer';
-import EditData from './EditData';
-import EditViewOrRedirect from './EditViewOrRedirect';
-import ExternalLinksContainer from './ExternalLinksContainer';
-import FundersContainer from './FundersContainer';
-import InstitutionProjectsContainer from './InstitutionProjectsContainer';
-import LeadersContainer from './LeadersContainer';
-import ManagersContainer from './ManagersContainer';
+import CooperationPartnersContainer from '../../CooperationPartnersContainer';
+import EditData from '../../EditData';
+import EditViewOrRedirect from '../../EditViewOrRedirect';
+import ExternalLinksContainer from '../../ExternalLinksContainer';
+import FundersContainer from '../../FundersContainer';
+import InstitutionProjectsContainer from '../../InstitutionProjectsContainer';
+import LeadersContainer from '../../LeadersContainer';
+import ManagersContainer from '../../ManagersContainer';
 
-export default function EditProjectInfo() {
+export default function EditProjectInfoPage() {
     const { t } = useI18n();
     const { project } = useProject();
     const dispatch = useDispatch();

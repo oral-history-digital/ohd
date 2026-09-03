@@ -10,12 +10,12 @@ import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import EditData from './EditData';
-import EditViewOrRedirect from './EditViewOrRedirect';
-import { getInitialFormValuesFromElements } from './utils/formUtils';
-import { transformBracketNotationToNested } from './utils/transformBracketNotation';
+import EditData from '../../EditData';
+import EditViewOrRedirect from '../../EditViewOrRedirect';
+import { getInitialFormValuesFromElements } from '../../utils/formUtils';
+import { transformBracketNotationToNested } from '../../utils/transformBracketNotation';
 
-export default function EditProjectAccessConfig() {
+export default function EditProjectAccessPage() {
     const { t } = useI18n();
     const { project, projectDbId } = useProject();
     const dispatch = useDispatch();
