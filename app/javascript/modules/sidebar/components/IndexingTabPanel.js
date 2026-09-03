@@ -1,5 +1,5 @@
 import {
-    CollectionsSearchFormContainer,
+    CollectionsSearchForm,
     ContributionTypesSearchFormContainer,
     LanguagesSearchFormContainer,
     RegistryNameTypesSearchFormContainer,
@@ -87,7 +87,7 @@ export default function IndexingTabPanel() {
                         obj={{ type: 'Collection' }}
                         action="update"
                     >
-                        <CollectionsSearchFormContainer />
+                        <CollectionsSearchForm />
                     </AdminSubTab>
                 )}
                 {isRegularArchive() && (
