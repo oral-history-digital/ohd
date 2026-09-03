@@ -9,8 +9,8 @@ import EditData from '../../EditData';
 import EditViewOrRedirect from '../../EditViewOrRedirect';
 import LogosContainer from '../../LogosContainer';
 import MediaStreamsContainer from '../../MediaStreamsContainer';
-import ProjectFaviconForm from '../../ProjectFaviconForm';
 import SponsorLogosContainer from '../../SponsorLogosContainer';
+import ProjectFaviconForm from '../../features/projects/ProjectFaviconForm';
 
 export default function EditProjectDisplayPage() {
     const { t } = useI18n();
