@@ -5,7 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
 
 import EditViewOrRedirect from './EditViewOrRedirect';
-import InterviewFormContainer from './InterviewFormContainer';
+import InterviewForm from './InterviewForm';
 
 export default function EditInterview() {
     const [showForm, setShowForm] = useState(true);
@@ -22,7 +22,7 @@ export default function EditInterview() {
                         {t('edit.interview.new')}
                     </h1>
                     {showForm ? (
-                        <InterviewFormContainer
+                        <InterviewForm
                             submitText="edit.interview.new"
                             withContributions
                             onSubmitCallback={() => setShowForm(false)}
