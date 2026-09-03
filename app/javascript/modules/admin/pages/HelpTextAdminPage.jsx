@@ -7,7 +7,7 @@ import { hideSidebar } from 'modules/sidebar';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 
-import EditViewOrRedirect from './EditViewOrRedirect';
+import EditViewOrRedirect from '../EditViewOrRedirect';
 
 export default function HelpTextAdminPage() {
     const { t } = useI18n();
