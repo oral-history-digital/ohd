@@ -5,7 +5,7 @@ export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
 export { default as LanguagesSearchForm } from './LanguagesSearchForm';
 export { default as LogosContainer } from './LogosContainer';
-export { default as MetadataFieldsContainer } from './MetadataFieldsContainer';
+export { default as MetadataFieldsAdminPage } from './MetadataFieldsAdminPage';
 export { default as EventTypesAdminPage } from './pages/EventTypesAdminPage';
 export { default as HelpTextAdminPage } from './pages/HelpTextAdminPage';
 export { default as InstanceSettingAdminPage } from './pages/InstanceSettingAdminPage';

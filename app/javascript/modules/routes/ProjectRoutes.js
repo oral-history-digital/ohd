@@ -8,7 +8,7 @@ import {
     EditProjectInfoPage,
     EventTypesAdminPage,
     InstanceSettingAdminPage,
-    MetadataFieldsContainer,
+    MetadataFieldsAdminPage,
     PeopleAdminPage,
     StatisticsAdminPage,
     UploadsPage,
@@ -120,7 +120,7 @@ export default function ProjectRoutes() {
                 />
                 <Route
                     path="metadata_fields"
-                    element={<MetadataFieldsContainer />}
+                    element={<MetadataFieldsAdminPage />}
                 />
                 <Route path="people" element={<PeopleAdminPage />} />
                 <Route path="event_types" element={<EventTypesAdminPage />} />
