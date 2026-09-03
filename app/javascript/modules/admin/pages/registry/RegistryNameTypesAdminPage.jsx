@@ -11,7 +11,7 @@ import {
 import { getRegistryNameTypesQuery, setQueryParams } from 'modules/search';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PaginatedAdminRecordList } from './components';
+import { PaginatedAdminRecordList } from '../../components';
 
 export default function RegistryNameTypesAdminPage() {
     const dispatch = useDispatch();
