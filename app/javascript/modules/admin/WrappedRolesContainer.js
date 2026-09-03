@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import RolePermissionsContainer from './RolePermissionsContainer';
-import WrappedDataList from './WrappedDataList';
+import { PaginatedAdminRecordList } from './components';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -54,4 +54,7 @@ const mapDispatchToProps = (dispatch) =>
         dispatch
     );
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PaginatedAdminRecordList);

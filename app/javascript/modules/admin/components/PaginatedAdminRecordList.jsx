@@ -9,13 +9,13 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Observer from 'react-intersection-observer';
 
-import AddButton from './AddButton';
+import AddButton from '../AddButton';
+import EditViewOrRedirect from '../EditViewOrRedirect';
+import { usePaginatedAdminRecords } from '../hooks';
+import sortData from '../sortData';
 import AdminRecord from './AdminRecord';
-import EditViewOrRedirect from './EditViewOrRedirect';
-import { usePaginatedAdminRecords } from './hooks';
-import sortData from './sortData';
 
-export default function WrappedDataList({
+export default function PaginatedAdminRecordList({
     form,
     formElements,
     initialFormValues,
@@ -171,7 +171,7 @@ export default function WrappedDataList({
     );
 }
 
-WrappedDataList.propTypes = {
+PaginatedAdminRecordList.propTypes = {
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     joinedData: PropTypes.object,
     helpTextCode: PropTypes.string,
