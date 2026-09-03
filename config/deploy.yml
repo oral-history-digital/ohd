@@ -1,8 +1,13 @@
 # Name of your application. Used to uniquely configure containers.
 service: ohd
-
-# Name of the container image.
-image: oral-history-digital/ohd
+#image: oral-history-digital/ohd #@sha256... # add optional digest to deploy
+image: oral-history-digital/ohd:9f309618fb6335e01c530b27c9c24d5d44181016
+#
+# or use:
+# image: oral-history-digital/ohd:v2.8.0-latest
+#
+# or:
+# version: build-2026-09-03-001
 
 registry:
   server: ghcr.io
