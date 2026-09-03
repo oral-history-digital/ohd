@@ -8,7 +8,7 @@ import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
 
-import EditViewOrRedirect from './EditViewOrRedirect';
+import EditViewOrRedirect from '../EditViewOrRedirect';
 
 export default function InstanceSettingAdminPage() {
     const { t } = useI18n();
