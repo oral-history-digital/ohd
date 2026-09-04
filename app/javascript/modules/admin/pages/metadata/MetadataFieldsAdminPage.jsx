@@ -1,34 +1,18 @@
-import { useCallback } from 'react';
-
 import {
-    deleteData,
-    fetchData,
     getCurrentProject,
     getRegistryReferenceTypesStatus,
-    submitData,
 } from 'modules/data';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
+import { useAdminDataActions } from '../../hooks';
 import MetadataFieldForm from './MetadataFieldForm';
 import MetadataFieldShow from './MetadataFieldShow';
 
 export default function MetadataFieldsAdminPage() {
-    const dispatch = useDispatch();
     const project = useSelector(getCurrentProject);
     const joinDataStatus = useSelector(getRegistryReferenceTypesStatus);
-    const fetchAdminData = useCallback(
-        (...args) => dispatch(fetchData(...args)),
-        [dispatch]
-    );
-    const deleteAdminData = useCallback(
-        (...args) => dispatch(deleteData(...args)),
-        [dispatch]
-    );
-    const submitAdminData = useCallback(
-        (...args) => dispatch(submitData(...args)),
-        [dispatch]
-    );
+    const { fetchData, deleteData, submitData } = useAdminDataActions();
 
     return (
         <PaginatedAdminRecordList
@@ -51,9 +35,9 @@ export default function MetadataFieldsAdminPage() {
             ]}
             form={MetadataFieldForm}
             showComponent={MetadataFieldShow}
-            fetchData={fetchAdminData}
-            deleteData={deleteAdminData}
-            submitData={submitAdminData}
+            fetchData={fetchData}
+            deleteData={deleteData}
+            submitData={submitData}
         />
     );
 }

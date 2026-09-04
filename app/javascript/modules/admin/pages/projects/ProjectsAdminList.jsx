@@ -1,14 +1,11 @@
-import { useCallback } from 'react';
-
-import { fetchData, getProjects, submitData } from 'modules/data';
+import { getProjects } from 'modules/data';
 import { ProjectTile, getProjectsStatus, getStatuses } from 'modules/data';
-import { setQueryParams } from 'modules/search';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
+import { useAdminDataActions } from '../../hooks';
 
 export default function ProjectsAdminList() {
-    const dispatch = useDispatch();
     const projectsById = useSelector(getProjects);
     const dataStatus = useSelector(getProjectsStatus);
     const statuses = useSelector(getStatuses);
@@ -24,18 +21,8 @@ export default function ProjectsAdminList() {
             !project.is_ohd
     );
 
-    const fetchAdminData = useCallback(
-        (...args) => dispatch(fetchData(...args)),
-        [dispatch]
-    );
-    const submitAdminData = useCallback(
-        (...args) => dispatch(submitData(...args)),
-        [dispatch]
-    );
-    const updateQueryParams = useCallback(
-        (...args) => dispatch(setQueryParams(...args)),
-        [dispatch]
-    );
+    const { fetchData, deleteData, submitData, setQueryParams } =
+        useAdminDataActions();
 
     return (
         <PaginatedAdminRecordList
@@ -44,9 +31,10 @@ export default function ProjectsAdminList() {
             statuses={statuses}
             otherDataToLoad={['institution', 'collection']}
             resultPagesCount={dataStatus.resultPagesCount}
-            fetchData={fetchAdminData}
-            submitData={submitAdminData}
-            setQueryParams={updateQueryParams}
+            fetchData={fetchData}
+            deleteData={deleteData}
+            submitData={submitData}
+            setQueryParams={setQueryParams}
             // Projects are hydrated via the SWR list in ProjectsAdminPage bridge.
             // Keep query null so PaginatedAdminRecordList does not trigger legacy
             // paginated /projects fetch that can replace Redux projects state.
