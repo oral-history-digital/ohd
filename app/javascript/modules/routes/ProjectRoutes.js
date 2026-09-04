@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import {
+    CollectionsAdminPage,
     ContributionTypesAdminPage,
     EditInterviewPage,
     EditProjectAccessPage,
@@ -19,7 +20,6 @@ import {
     TranslationValuesAdminPage,
     UploadsPage,
     UsersAdminPage,
-    WrappedCollectionsContainer,
     WrappedRolesContainer,
     WrappedTaskTypesContainer,
 } from 'modules/admin';
@@ -158,10 +158,7 @@ export default function ProjectRoutes() {
                     path="legal_info"
                     element={<TextPage code="legal_info" />}
                 />
-                <Route
-                    path="collections"
-                    element={<WrappedCollectionsContainer />}
-                />
+                <Route path="collections" element={<CollectionsAdminPage />} />
                 <Route path="roles" element={<WrappedRolesContainer />} />
                 <Route path="permissions" element={<PermissionsAdminPage />} />
                 <Route
