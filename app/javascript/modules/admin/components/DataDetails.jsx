@@ -6,9 +6,9 @@ export default function DataDetails({
     detailsAttributes,
     data,
     scope,
-    optionsScope,
+    optionsScope, // TODO: This is currently not used, but passed from parent. Either remove it or implement it.
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const { humanReadable } = useHumanReadable();
 
     return (

@@ -12,9 +12,7 @@ import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
 
-import AddButton from '../AddButton';
-import EditViewOrRedirect from '../EditViewOrRedirect';
-import { AdminRecord } from '../components';
+import { AddButton, AdminRecord, EditViewOrRedirect } from '../components';
 
 export default function EventTypesAdminPage() {
     const { t, locale } = useI18n();
