@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import EditData from '../../EditData';
 import EditViewOrRedirect from '../../EditViewOrRedirect';
-import LogosContainer from '../../LogosContainer';
-import MediaStreamsContainer from '../../MediaStreamsContainer';
-import SponsorLogosContainer from '../../SponsorLogosContainer';
+import Logos from '../../Logos';
+import MediaStreams from '../../MediaStreams';
+import SponsorLogos from '../../SponsorLogos';
 import ProjectFaviconForm from './ProjectFaviconForm';
 
 export default function EditProjectDisplayPage() {
@@ -68,7 +68,7 @@ export default function EditProjectDisplayPage() {
                     />
                     <ProjectFaviconForm project={project} />
                     <h2>{t(`edit.logo.admin`)}</h2>
-                    <LogosContainer
+                    <Logos
                         data={project.logos}
                         outerScope={'project'}
                         outerScopeId={project.id}
@@ -79,11 +79,11 @@ export default function EditProjectDisplayPage() {
                         }}
                     />
                     <h2>{t(`edit.sponsor_logo.admin`)}</h2>
-                    <SponsorLogosContainer />
+                    <SponsorLogos />
                     {user?.admin && (
                         <>
                             <h2>{t(`edit.media_stream.admin`)}</h2>
-                            <MediaStreamsContainer />
+                            <MediaStreams />
                         </>
                     )}
                 </AuthShowContainer>

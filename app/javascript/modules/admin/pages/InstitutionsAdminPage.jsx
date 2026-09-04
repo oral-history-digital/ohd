@@ -8,7 +8,7 @@ import { getCookie } from 'modules/persistence';
 import { getInstitutionsQuery } from 'modules/search';
 import { useSelector } from 'react-redux';
 
-import LogosContainer from '../LogosContainer';
+import Logos from '../Logos';
 import { PaginatedAdminRecordList } from '../components';
 import { useAdminDataActions } from '../hooks';
 
@@ -78,7 +78,7 @@ export default function InstitutionsAdminPage() {
                     withEmpty: true,
                 },
             ]}
-            joinedData={{ logo: LogosContainer }}
+            joinedData={{ logo: Logos }}
             showComponent={InstitutionTile}
             helpTextCode="institution_form"
             fetchData={fetchData}
