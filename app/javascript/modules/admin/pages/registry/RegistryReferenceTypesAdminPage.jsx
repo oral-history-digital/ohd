@@ -1,40 +1,21 @@
-import { useCallback } from 'react';
-
 import {
-    deleteData,
-    fetchData,
     getCurrentProject,
     getRegistryReferenceTypesForCurrentProject,
     getRegistryReferenceTypesStatus,
-    submitData,
 } from 'modules/data';
-import { getRegistryReferenceTypesQuery, setQueryParams } from 'modules/search';
-import { useDispatch, useSelector } from 'react-redux';
+import { getRegistryReferenceTypesQuery } from 'modules/search';
+import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
+import { useAdminDataActions } from '../../hooks';
 
 export default function RegistryReferenceTypesAdminPage() {
-    const dispatch = useDispatch();
     const project = useSelector(getCurrentProject);
     const data = useSelector(getRegistryReferenceTypesForCurrentProject);
     const dataStatus = useSelector(getRegistryReferenceTypesStatus);
     const query = useSelector(getRegistryReferenceTypesQuery);
-    const fetchAdminData = useCallback(
-        (...args) => dispatch(fetchData(...args)),
-        [dispatch]
-    );
-    const deleteAdminData = useCallback(
-        (...args) => dispatch(deleteData(...args)),
-        [dispatch]
-    );
-    const submitAdminData = useCallback(
-        (...args) => dispatch(submitData(...args)),
-        [dispatch]
-    );
-    const updateQueryParams = useCallback(
-        (...args) => dispatch(setQueryParams(...args)),
-        [dispatch]
-    );
+    const { fetchData, deleteData, submitData, setQueryParams } =
+        useAdminDataActions();
 
     return (
         <PaginatedAdminRecordList
@@ -81,10 +62,10 @@ export default function RegistryReferenceTypesAdminPage() {
             ]}
             joinedData={{}}
             helpTextCode="registry_reference_type_form"
-            fetchData={fetchAdminData}
-            deleteData={deleteAdminData}
-            submitData={submitAdminData}
-            setQueryParams={updateQueryParams}
+            fetchData={fetchData}
+            deleteData={deleteData}
+            submitData={submitData}
+            setQueryParams={setQueryParams}
         />
     );
 }
