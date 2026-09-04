@@ -8,9 +8,9 @@ import { getCookie } from 'modules/persistence';
 import { getInstitutionsQuery } from 'modules/search';
 import { useSelector } from 'react-redux';
 
-import LogosContainer from './LogosContainer';
-import { PaginatedAdminRecordList } from './components';
-import { useAdminDataActions } from './hooks';
+import LogosContainer from '../LogosContainer';
+import { PaginatedAdminRecordList } from '../components';
+import { useAdminDataActions } from '../hooks';
 
 export default function InstitutionsAdminPage() {
     const data = useSelector(getInstitutions);
