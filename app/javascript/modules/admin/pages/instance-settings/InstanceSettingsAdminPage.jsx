@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { useInstanceSettings } from 'modules/data';
-import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
 
-import { EditViewOrRedirect } from '../components';
+import { EditViewOrRedirect } from '../../components';
+import HomepageBlockForm from './HomepageBlockForm';
+import InstanceSettingsForm from './InstanceSettingsForm';
 
 export default function InstanceSettingsAdminPage() {
     const { t } = useI18n();
@@ -29,87 +30,6 @@ export default function InstanceSettingsAdminPage() {
     function blockName(code) {
         return t(`edit.instance.blocks.${code}`);
     }
-    const instanceFormElements = [
-        {
-            attribute: 'umbrella_project_id',
-            type: 'number',
-            labelKey: 'edit.instance.umbrella_project_id',
-            help: t('edit.instance.umbrella_project_help'),
-        },
-    ];
-
-    function blockFormElements(code) {
-        return [
-            {
-                attribute: 'heading',
-                label: t('edit.instance.block.heading'),
-                multiLocale: true,
-            },
-            {
-                attribute: 'text',
-                elementType: 'textarea',
-                label: t('edit.instance.block.text'),
-                multiLocale: true,
-                htmlOptions: { rows: 2 },
-            },
-            {
-                attribute: 'image_file_de',
-                elementType: 'fileInput',
-                accept: 'image/*',
-                preview: 'image',
-                label: `${t('edit.instance.block.image_file')} (DE)`,
-                currentFiles: blockCurrentImage(code, 'de'),
-            },
-            {
-                attribute: 'image_file_en',
-                elementType: 'fileInput',
-                accept: 'image/*',
-                preview: 'image',
-                label: `${t('edit.instance.block.image_file')} (EN)`,
-                currentFiles: blockCurrentImage(code, 'en'),
-            },
-            {
-                attribute: 'image_alt',
-                label: t('edit.instance.block.image_alt'),
-                multiLocale: true,
-            },
-            {
-                attribute: 'button_primary_label',
-                label: t('edit.instance.block.button_primary_label'),
-                multiLocale: true,
-            },
-            {
-                attribute: 'button_primary_description',
-                label: t('edit.instance.block.button_primary_description'),
-                multiLocale: true,
-            },
-            {
-                attribute: 'button_secondary_label',
-                label: t('edit.instance.block.button_secondary_label'),
-                multiLocale: true,
-            },
-            {
-                attribute: 'button_secondary_description',
-                label: t('edit.instance.block.button_secondary_description'),
-                multiLocale: true,
-            },
-            {
-                attribute: 'button_primary_target',
-                label: t('edit.instance.block.button_primary_target'),
-            },
-            {
-                attribute: 'button_secondary_target',
-                label: t('edit.instance.block.button_secondary_target'),
-            },
-            {
-                attribute: 'show_secondary_button',
-                elementType: 'input',
-                type: 'checkbox',
-                label: t('edit.instance.block.show_secondary_button'),
-            },
-        ];
-    }
-
     function blockData(code) {
         return instanceSettings?.blocks?.[code] || null;
     }
@@ -121,41 +41,6 @@ export default function InstanceSettingsAdminPage() {
         }
 
         return block.images.find((item) => item.locale === imageLocale) || null;
-    }
-
-    function blockCurrentImage(code, imageLocale) {
-        const image = blockImageForLocale(code, imageLocale);
-        if (!image?.src) {
-            return [];
-        }
-
-        return {
-            id: image.id,
-            name:
-                image.filename ||
-                `${t('edit.instance.block.image_file')} (${imageLocale.toUpperCase()})`,
-            url: image.src,
-            contentType: 'image/*',
-        };
-    }
-
-    function instanceInitialValues() {
-        return {
-            umbrella_project_id: instanceSettings?.umbrella_project_id,
-        };
-    }
-
-    function blockInitialValues(code, index) {
-        const block = blockData(code);
-
-        return {
-            id: block?.id,
-            code: block?.code || code,
-            position: block?.position ?? index,
-            button_primary_target: block?.button_primary_target || '',
-            button_secondary_target: block?.button_secondary_target || '',
-            show_secondary_button: !!block?.show_secondary_button,
-        };
     }
 
     // Merges existing translations with updated translations,
@@ -320,13 +205,9 @@ export default function InstanceSettingsAdminPage() {
                         {!isLoading && error && <p>{error.message}</p>}
                         {!isLoading && !error && instanceSettings && (
                             <>
-                                <Form
-                                    data={instanceSettings}
-                                    values={instanceInitialValues()}
-                                    scope="homepage_setting"
-                                    submitText="submit"
-                                    elements={instanceFormElements}
-                                    fetching={isSubmitting}
+                                <InstanceSettingsForm
+                                    instanceSettings={instanceSettings}
+                                    isSubmitting={isSubmitting}
                                     notification={instanceNotification}
                                     onDismissNotification={() =>
                                         setInstanceNotification(null)
@@ -368,18 +249,13 @@ export default function InstanceSettingsAdminPage() {
                                                     key={code}
                                                     className="AdminEditInstance-tabPanel"
                                                 >
-                                                    <Form
-                                                        data={block}
-                                                        values={blockInitialValues(
-                                                            code,
-                                                            index
-                                                        )}
-                                                        scope="homepage_block"
-                                                        submitText="submit"
-                                                        elements={blockFormElements(
-                                                            code
-                                                        )}
-                                                        fetching={isSubmitting}
+                                                    <HomepageBlockForm
+                                                        block={block}
+                                                        code={code}
+                                                        index={index}
+                                                        isSubmitting={
+                                                            isSubmitting
+                                                        }
                                                         notification={
                                                             blockNotifications[
                                                                 code
@@ -391,12 +267,8 @@ export default function InstanceSettingsAdminPage() {
                                                                 null
                                                             )
                                                         }
-                                                        onSubmit={(params) =>
-                                                            submitBlockHandler(
-                                                                code,
-                                                                index,
-                                                                params
-                                                            )
+                                                        onSubmit={
+                                                            submitBlockHandler
                                                         }
                                                     />
                                                 </TabPanel>
