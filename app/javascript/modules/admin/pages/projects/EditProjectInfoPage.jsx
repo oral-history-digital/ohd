@@ -5,14 +5,14 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CooperationPartnersContainer from '../../CooperationPartnersContainer';
+import CooperationPartners from '../../CooperationPartners';
 import EditData from '../../EditData';
 import EditViewOrRedirect from '../../EditViewOrRedirect';
-import ExternalLinksContainer from '../../ExternalLinksContainer';
-import FundersContainer from '../../FundersContainer';
-import InstitutionProjectsContainer from '../../InstitutionProjectsContainer';
-import LeadersContainer from '../../LeadersContainer';
-import ManagersContainer from '../../ManagersContainer';
+import ExternalLinks from '../../ExternalLinks';
+import Funders from '../../Funders';
+import InstitutionProjects from '../../InstitutionProjects';
+import Leaders from '../../Leaders';
+import Managers from '../../Managers';
 
 export default function EditProjectInfoPage() {
     const { t } = useI18n();
@@ -84,19 +84,19 @@ export default function EditProjectInfoPage() {
                         isLoading={isLoading}
                     />
                     <h2>{t('edit.cooperation_partner.admin')}</h2>
-                    <CooperationPartnersContainer />
+                    <CooperationPartners />
                     <h2>{t('edit.leader.admin')}</h2>
-                    <LeadersContainer />
+                    <Leaders />
                     <h2>{t('edit.manager.admin')}</h2>
-                    <ManagersContainer />
+                    <Managers />
                     <h2>{t('edit.funder.admin')}</h2>
-                    <FundersContainer />
+                    <Funders />
 
                     <h2>{t(`edit.external_link.admin`)}</h2>
-                    <ExternalLinksContainer />
+                    <ExternalLinks />
 
                     <h2>{t(`edit.institution_project.admin`)}</h2>
-                    <InstitutionProjectsContainer />
+                    <InstitutionProjects />
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                     {t('devise.failure.unauthenticated')}
