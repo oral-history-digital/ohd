@@ -2,8 +2,8 @@ import { memo } from 'react';
 
 import {
     HelpTextAdminPage,
+    InstitutionsAdminPage,
     ProjectsAdminPage,
-    WrappedInstitutionsContainer,
 } from 'modules/admin';
 import { Homepage } from 'modules/homepage';
 import { ProjectHome } from 'modules/project-home';
@@ -28,7 +28,7 @@ const RoutesWithoutProjectId = ({ project }) => (
                 <Route
                     exact
                     path="/:locale/institutions"
-                    element={<WrappedInstitutionsContainer />}
+                    element={<InstitutionsAdminPage />}
                 />
                 <Route
                     exact
