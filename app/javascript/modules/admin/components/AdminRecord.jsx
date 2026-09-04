@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import BaseData from '../BaseData';
 import DataDetails from '../DataDetails';
 import JoinedData from '../JoinedData';
-import getDataDisplayName from '../getDataDisplayName';
+import { getDataDisplayName } from '../utils';
 
 const Item = AdminMenu.Item;
 

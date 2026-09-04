@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { pluralize } from 'modules/strings';
 
-import parametrizedQuery from '../parametrizedQuery';
-import statifiedQuery from '../statifiedQuery';
+import { parametrizedQuery, statifiedQuery } from '../utils';
 
 export default function usePaginatedAdminRecords({
     query,
