@@ -1,9 +1,7 @@
 import { getCurrentProject } from 'modules/data';
 import { useSelector } from 'react-redux';
 
-import AffiliateForm from '../../AffiliateForm';
-import AffiliateShow from '../../AffiliateShow';
-import DataList from '../../DataList';
+import { AffiliateForm, AffiliateShow, DataList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
 export default function CooperationPartners() {

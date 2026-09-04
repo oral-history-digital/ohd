@@ -8,9 +8,9 @@ import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
 
-import EditViewOrRedirect from '../EditViewOrRedirect';
+import { EditViewOrRedirect } from '../components';
 
-export default function InstanceSettingAdminPage() {
+export default function InstanceSettingsAdminPage() {
     const { t } = useI18n();
     const [instanceNotification, setInstanceNotification] = useState(null);
     const [blockNotifications, setBlockNotifications] = useState({});

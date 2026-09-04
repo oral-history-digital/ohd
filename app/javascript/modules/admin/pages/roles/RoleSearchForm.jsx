@@ -1,6 +1,6 @@
 import { getRolesQuery } from 'modules/search';
 
-import DataSearchForm from '../../DataSearchForm';
+import { DataSearchForm } from '../../components';
 import { useAdminSearch } from '../../hooks';
 
 export default function RoleSearchForm() {

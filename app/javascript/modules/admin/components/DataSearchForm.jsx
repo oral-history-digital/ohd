@@ -8,8 +8,8 @@ import { pluralize } from 'modules/strings';
 import { isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 
+import { parametrizedQuery } from '../utils';
 import DataSearchFormElement from './DataSearchFormElement';
-import { parametrizedQuery } from './utils';
 
 export default function DataSearchForm({
     scope,
