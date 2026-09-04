@@ -1,8 +1,8 @@
 import { getCurrentProject } from 'modules/data';
 import { useSelector } from 'react-redux';
 
-import DataList from './DataList';
-import { useAdminDataActions } from './hooks';
+import DataList from '../../DataList';
+import { useAdminDataActions } from '../../hooks';
 
 export default function ExternalLinks() {
     const project = useSelector(getCurrentProject);
