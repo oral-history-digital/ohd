@@ -9,7 +9,7 @@ import {
     EditProjectDisplayPage,
     EditProjectInfoPage,
     EventTypesAdminPage,
-    InstanceSettingAdminPage,
+    InstanceSettingsAdminPage,
     LanguagesAdminPage,
     MetadataFieldsAdminPage,
     PeopleAdminPage,
@@ -94,7 +94,7 @@ export default function ProjectRoutes() {
                 <Route path="register" element={<RegisterPage />} />
                 <Route
                     path="admin/instance"
-                    element={<InstanceSettingAdminPage />}
+                    element={<InstanceSettingsAdminPage />}
                 />
                 <Route path="users" element={<UsersAdminPage />} />
                 <Route

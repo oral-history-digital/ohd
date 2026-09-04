@@ -5,8 +5,7 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import EditData from '../../EditData';
-import EditViewOrRedirect from '../../EditViewOrRedirect';
+import { EditData, EditViewOrRedirect } from '../../components';
 
 export default function EditProjectConfigPage() {
     const { t } = useI18n();

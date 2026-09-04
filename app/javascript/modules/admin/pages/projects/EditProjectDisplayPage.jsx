@@ -5,9 +5,7 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import EditData from '../../EditData';
-import EditViewOrRedirect from '../../EditViewOrRedirect';
-import Logos from '../../components/Logos';
+import { EditData, EditViewOrRedirect, Logos } from '../../components';
 import MediaStreams from './MediaStreams';
 import ProjectFaviconForm from './ProjectFaviconForm';
 import SponsorLogos from './SponsorLogos';

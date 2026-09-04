@@ -9,11 +9,11 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Observer from 'react-intersection-observer';
 
-import AddButton from '../AddButton';
-import EditViewOrRedirect from '../EditViewOrRedirect';
 import { usePaginatedAdminRecords } from '../hooks';
 import { sortData } from '../utils';
+import AddButton from './AddButton';
 import AdminRecord from './AdminRecord';
+import EditViewOrRedirect from './EditViewOrRedirect';
 
 export default function PaginatedAdminRecordList({
     form,

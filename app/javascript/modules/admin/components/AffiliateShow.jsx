@@ -1,6 +1,5 @@
-import { getLocale, getTranslations } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 function AffiliateShow({ data }) {
     const { locale } = useI18n();
@@ -17,3 +16,12 @@ function AffiliateShow({ data }) {
 }
 
 export default AffiliateShow;
+
+AffiliateShow.propTypes = {
+    data: PropTypes.shape({
+        name_type: PropTypes.string.isRequired,
+        name: PropTypes.objectOf(PropTypes.string),
+        first_name: PropTypes.objectOf(PropTypes.string),
+        last_name: PropTypes.objectOf(PropTypes.string),
+    }).isRequired,
+};

@@ -1,6 +1,6 @@
 import { getProjectsQuery } from 'modules/search';
 
-import DataSearchForm from '../../DataSearchForm';
+import { DataSearchForm } from '../../components';
 import { useAdminSearch } from '../../hooks';
 
 // TODO: Consider removing ProjectSearchForm; it has no in-repository consumer.

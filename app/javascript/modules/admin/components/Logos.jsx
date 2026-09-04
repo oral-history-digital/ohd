@@ -1,8 +1,8 @@
 import { getProjectLocales } from 'modules/data';
 import { useSelector } from 'react-redux';
 
-import DataList from '../DataList';
 import { useAdminDataActions } from '../hooks';
+import DataList from './DataList';
 
 export default function Logos() {
     const locales = useSelector(getProjectLocales);

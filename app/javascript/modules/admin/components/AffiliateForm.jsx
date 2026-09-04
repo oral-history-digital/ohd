@@ -22,7 +22,7 @@ export default function AffiliateForm({
         data?.name_type === 'Personal'
     );
 
-    const handleNameTypeChange = (name, value) => {
+    const handleNameTypeChange = (_, value) => {
         setIsPersonal(value === 'Personal');
     };
 
@@ -76,6 +76,7 @@ export default function AffiliateForm({
 AffiliateForm.propTypes = {
     data: PropTypes.object,
     scope: PropTypes.string.isRequired,
+    values: PropTypes.object,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
 };

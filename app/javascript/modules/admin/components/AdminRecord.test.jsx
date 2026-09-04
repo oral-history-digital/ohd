@@ -88,7 +88,7 @@ jest.mock('react-redux', () => ({
     connect: () => (Component) => Component,
     useDispatch: jest.fn(),
 }));
-jest.mock('../DataDetails', () => {
+jest.mock('./DataDetails', () => {
     const MockPropTypes = jest.requireActual('prop-types');
 
     function DataDetails({ detailsAttributes, data }) {
@@ -106,7 +106,7 @@ jest.mock('../DataDetails', () => {
 
     return DataDetails;
 });
-jest.mock('../JoinedData', () => {
+jest.mock('./JoinedData', () => {
     const MockPropTypes = jest.requireActual('prop-types');
 
     function JoinedData({ joinedData }) {

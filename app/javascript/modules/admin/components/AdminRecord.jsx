@@ -12,10 +12,10 @@ import { AdminMenu } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-import BaseData from '../BaseData';
-import DataDetails from '../DataDetails';
-import JoinedData from '../JoinedData';
 import { getDataDisplayName } from '../utils';
+import BaseData from './BaseData';
+import DataDetails from './DataDetails';
+import JoinedData from './JoinedData';
 
 const Item = AdminMenu.Item;
 

@@ -1,7 +1,7 @@
 import { getCurrentProject, getInstitutions, getStatuses } from 'modules/data';
 import { useSelector } from 'react-redux';
 
-import DataList from '../../DataList';
+import { DataList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
 export default function InstitutionProjects() {

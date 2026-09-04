@@ -40,7 +40,7 @@ jest.mock('modules/routes', () => ({
 jest.mock('react-helmet', () => ({
     Helmet: ({ children }) => children,
 }));
-jest.mock('../AddButton', () => {
+jest.mock('./AddButton', () => {
     const React = jest.requireActual('react');
     const MockPropTypes = jest.requireActual('prop-types');
 
@@ -75,7 +75,7 @@ jest.mock('./AdminRecord', () => {
 
     return AdminRecord;
 });
-jest.mock('../EditViewOrRedirect', () => {
+jest.mock('./EditViewOrRedirect', () => {
     const MockPropTypes = jest.requireActual('prop-types');
 
     function EditViewOrRedirect({ children }) {

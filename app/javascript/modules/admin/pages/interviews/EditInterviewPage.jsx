@@ -4,7 +4,7 @@ import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
 
-import EditViewOrRedirect from '../../EditViewOrRedirect';
+import { EditViewOrRedirect } from '../../components';
 import InterviewForm from './InterviewForm';
 
 export default function EditInterviewPage() {
