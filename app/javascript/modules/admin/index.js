@@ -1,7 +1,6 @@
 export { default as DataList } from './DataList';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
-export { default as InstitutionsAdminPage } from './pages/InstitutionsAdminPage';
 export { default as LogosContainer } from './LogosContainer';
 export { default as CollectionsAdminPage } from './pages/collections/CollectionsAdminPage';
 export { default as CollectionsSearchForm } from './pages/collections/CollectionsSearchForm';
@@ -10,6 +9,7 @@ export { default as ContributionTypesSearchForm } from './pages/contribution-typ
 export { default as EventTypesAdminPage } from './pages/EventTypesAdminPage';
 export { default as HelpTextAdminPage } from './pages/HelpTextAdminPage';
 export { default as InstanceSettingAdminPage } from './pages/InstanceSettingAdminPage';
+export { default as InstitutionsAdminPage } from './pages/InstitutionsAdminPage';
 export { default as EditInterviewPage } from './pages/interviews/EditInterviewPage';
 export { default as LanguagesAdminPage } from './pages/languages/LanguagesAdminPage';
 export { default as LanguagesSearchForm } from './pages/languages/LanguagesSearchForm';
@@ -26,15 +26,15 @@ export { default as RegistryNameTypesAdminPage } from './pages/registry/Registry
 export { default as RegistryNameTypesSearchForm } from './pages/registry/RegistryNameTypesSearchForm';
 export { default as RegistryReferenceTypesAdminPage } from './pages/registry/RegistryReferenceTypesAdminPage';
 export { default as RegistryReferenceTypesSearchForm } from './pages/registry/RegistryReferenceTypesSearchForm';
+export { default as RolesAdminPage } from './pages/roles/RolesAdminPage';
+export { default as RoleSearchForm } from './pages/roles/RoleSearchForm';
 export { default as StatisticsAdminPage } from './pages/StatisticsAdminPage';
+export { default as TaskTypesAdminPage } from './pages/task-types/TaskTypesAdminPage';
+export { default as TaskTypeSearchForm } from './pages/task-types/TaskTypeSearchForm';
 export { default as TranslationValuesAdminPage } from './pages/translations/TranslationValuesAdminPage';
 export { default as TranslationValuesSearchForm } from './pages/translations/TranslationValuesSearchForm';
 export { default as UploadsPage } from './pages/uploads/UploadsPage';
 export { default as UsersAdminPage } from './pages/UsersAdminPage';
 export { default as parametrizedQuery } from './parametrizedQuery';
 export { default as ProjectSearchForm } from './ProjectSearchForm';
-export { default as RolesAdminPage } from './RolesAdminPage';
-export { default as RoleSearchForm } from './RoleSearchForm';
 export { default as SponsorLogosContainer } from './SponsorLogosContainer';
-export { default as TaskTypesAdminPage } from './TaskTypesAdminPage';
-export { default as TaskTypeSearchForm } from './TaskTypeSearchForm';

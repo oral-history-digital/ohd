@@ -6,9 +6,9 @@ import {
 import { getTaskTypesQuery } from 'modules/search';
 import { useSelector } from 'react-redux';
 
+import { PaginatedAdminRecordList } from '../../components';
+import { useAdminDataActions } from '../../hooks';
 import TaskTypePermissions from './TaskTypePermissions';
-import { PaginatedAdminRecordList } from './components';
-import { useAdminDataActions } from './hooks';
 
 export default function TaskTypesAdminPage() {
     const project = useSelector(getCurrentProject);

@@ -1,7 +1,7 @@
 import { getRolesQuery } from 'modules/search';
 
-import DataSearchForm from './DataSearchForm';
-import { useAdminSearch } from './hooks';
+import DataSearchForm from '../../DataSearchForm';
+import { useAdminSearch } from '../../hooks';
 
 export default function RoleSearchForm() {
     const searchProps = useAdminSearch(getRolesQuery);
