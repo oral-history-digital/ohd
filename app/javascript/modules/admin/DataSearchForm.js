@@ -9,7 +9,7 @@ import { isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 
 import DataSearchFormElement from './DataSearchFormElement';
-import parametrizedQuery from './parametrizedQuery';
+import { parametrizedQuery } from './utils';
 
 export default function DataSearchForm({
     scope,
