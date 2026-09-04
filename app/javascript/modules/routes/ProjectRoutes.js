@@ -16,12 +16,12 @@ import {
     PermissionsAdminPage,
     RegistryNameTypesAdminPage,
     RegistryReferenceTypesAdminPage,
+    RolesAdminPage,
     StatisticsAdminPage,
+    TaskTypesAdminPage,
     TranslationValuesAdminPage,
     UploadsPage,
     UsersAdminPage,
-    WrappedRolesContainer,
-    WrappedTaskTypesContainer,
 } from 'modules/admin';
 import {
     clearViewModes,
@@ -159,12 +159,9 @@ export default function ProjectRoutes() {
                     element={<TextPage code="legal_info" />}
                 />
                 <Route path="collections" element={<CollectionsAdminPage />} />
-                <Route path="roles" element={<WrappedRolesContainer />} />
+                <Route path="roles" element={<RolesAdminPage />} />
                 <Route path="permissions" element={<PermissionsAdminPage />} />
-                <Route
-                    path="task_types"
-                    element={<WrappedTaskTypesContainer />}
-                />
+                <Route path="task_types" element={<TaskTypesAdminPage />} />
             </Routes>
         </ErrorBoundary>
     );
