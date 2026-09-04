@@ -1,10 +1,10 @@
 export { default as CollectionsSearchForm } from './CollectionsSearchForm';
-export { default as ContributionTypesAdminPage } from './ContributionTypesAdminPage';
-export { default as ContributionTypesSearchForm } from './ContributionTypesSearchForm';
 export { default as DataList } from './DataList';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
 export { default as LogosContainer } from './LogosContainer';
+export { default as ContributionTypesAdminPage } from './pages/contribution-types/ContributionTypesAdminPage';
+export { default as ContributionTypesSearchForm } from './pages/contribution-types/ContributionTypesSearchForm';
 export { default as EventTypesAdminPage } from './pages/EventTypesAdminPage';
 export { default as HelpTextAdminPage } from './pages/HelpTextAdminPage';
 export { default as InstanceSettingAdminPage } from './pages/InstanceSettingAdminPage';

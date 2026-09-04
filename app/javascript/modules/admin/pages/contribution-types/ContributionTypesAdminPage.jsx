@@ -6,8 +6,8 @@ import {
 import { getContributionTypesQuery } from 'modules/search';
 import { useSelector } from 'react-redux';
 
-import { PaginatedAdminRecordList } from './components';
-import { useAdminDataActions } from './hooks';
+import { PaginatedAdminRecordList } from '../../components';
+import { useAdminDataActions } from '../../hooks';
 
 export default function ContributionTypesAdminPage() {
     const project = useSelector(getCurrentProject);
