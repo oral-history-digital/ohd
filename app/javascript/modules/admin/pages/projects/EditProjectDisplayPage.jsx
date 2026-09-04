@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import EditData from '../../EditData';
 import EditViewOrRedirect from '../../EditViewOrRedirect';
-import Logos from '../../Logos';
-import MediaStreams from '../../MediaStreams';
-import SponsorLogos from '../../SponsorLogos';
+import Logos from '../../components/Logos';
+import MediaStreams from './MediaStreams';
 import ProjectFaviconForm from './ProjectFaviconForm';
+import SponsorLogos from './SponsorLogos';
 
 export default function EditProjectDisplayPage() {
     const { t } = useI18n();

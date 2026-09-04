@@ -1,38 +1,40 @@
-import { getCurrentProject, getInstitutions, getStatuses } from 'modules/data';
+import {
+    getCurrentProject,
+    getMediaStreamsForCurrentProject,
+} from 'modules/data';
 import { useSelector } from 'react-redux';
 
-import DataList from './DataList';
-import { useAdminDataActions } from './hooks';
+import DataList from '../../DataList';
+import { useAdminDataActions } from '../../hooks';
 
-export default function InstitutionProjects() {
+export default function MediaStreams() {
     const project = useSelector(getCurrentProject);
-    const institutions = useSelector(getInstitutions);
-    const statuses = useSelector(getStatuses);
+    const data = useSelector(getMediaStreamsForCurrentProject);
     const { fetchData, deleteData, submitData } = useAdminDataActions();
     return (
         <DataList
             editView
-            data={project.institution_projects}
+            data={data}
             outerScope="project"
             outerScopeId={project.id}
-            scope="institution_project"
-            statuses={statuses}
-            otherDataToLoad={['institution']}
-            detailsAttributes={['name', 'shortname']}
+            scope="media_stream"
+            detailsAttributes={['path', 'media_type']}
             initialFormValues={{ project_id: project.id }}
             formElements={[
                 {
-                    attribute: 'institution_id',
+                    attribute: 'media_type',
                     elementType: 'select',
-                    values: institutions,
+                    values: ['still', 'video', 'audio'],
                     withEmpty: true,
                 },
                 {
-                    attribute: 'primary',
+                    attribute: 'path',
                     elementType: 'input',
-                    type: 'checkbox',
+                    help: 'help_texts.media_streams.path',
                 },
+                { attribute: 'resolution', elementType: 'input' },
             ]}
+            helpTextCode="mediapath_form"
             fetchData={fetchData}
             deleteData={deleteData}
             submitData={submitData}

@@ -5,14 +5,14 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CooperationPartners from '../../CooperationPartners';
 import EditData from '../../EditData';
 import EditViewOrRedirect from '../../EditViewOrRedirect';
-import ExternalLinks from '../../ExternalLinks';
-import Funders from '../../Funders';
-import InstitutionProjects from '../../InstitutionProjects';
-import Leaders from '../../Leaders';
-import Managers from '../../Managers';
+import CooperationPartners from './CooperationPartners';
+import ExternalLinks from './ExternalLinks';
+import Funders from './Funders';
+import InstitutionProjects from './InstitutionProjects';
+import Leaders from './Leaders';
+import Managers from './Managers';
 
 export default function EditProjectInfoPage() {
     const { t } = useI18n();
