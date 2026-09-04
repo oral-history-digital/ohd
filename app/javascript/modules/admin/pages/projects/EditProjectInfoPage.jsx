@@ -5,8 +5,7 @@ import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import EditData from '../../EditData';
-import EditViewOrRedirect from '../../EditViewOrRedirect';
+import { EditData, EditViewOrRedirect } from '../../components';
 import CooperationPartners from './CooperationPartners';
 import ExternalLinks from './ExternalLinks';
 import Funders from './Funders';
