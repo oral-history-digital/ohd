@@ -1,4 +1,5 @@
 export { default as CollectionsSearchForm } from './CollectionsSearchForm';
+export { default as ContributionTypesAdminPage } from './ContributionTypesAdminPage';
 export { default as ContributionTypesSearchForm } from './ContributionTypesSearchForm';
 export { default as DataList } from './DataList';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
@@ -34,7 +35,6 @@ export { default as RoleSearchForm } from './RoleSearchForm';
 export { default as SponsorLogosContainer } from './SponsorLogosContainer';
 export { default as TaskTypeSearchForm } from './TaskTypeSearchForm';
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
-export { default as WrappedContributionTypesContainer } from './WrappedContributionTypesContainer';
 export { default as WrappedInstitutionsContainer } from './WrappedInstitutionsContainer';
 export { default as WrappedRolesContainer } from './WrappedRolesContainer';
 export { default as WrappedTaskTypesContainer } from './WrappedTaskTypesContainer';
