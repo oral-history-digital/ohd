@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import {
+    ContributionTypesAdminPage,
     EditInterviewPage,
     EditProjectAccessPage,
     EditProjectConfigPage,
@@ -19,7 +20,6 @@ import {
     UploadsPage,
     UsersAdminPage,
     WrappedCollectionsContainer,
-    WrappedContributionTypesContainer,
     WrappedRolesContainer,
     WrappedTaskTypesContainer,
 } from 'modules/admin';
@@ -134,7 +134,7 @@ export default function ProjectRoutes() {
                 />
                 <Route
                     path="contribution_types"
-                    element={<WrappedContributionTypesContainer />}
+                    element={<ContributionTypesAdminPage />}
                 />
                 <Route path="languages" element={<LanguagesAdminPage />} />
                 <Route
