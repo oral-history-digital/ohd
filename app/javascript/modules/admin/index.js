@@ -7,7 +7,7 @@ export { default as ContributionTypesAdminPage } from './pages/contribution-type
 export { default as ContributionTypesSearchForm } from './pages/contribution-types/ContributionTypesSearchForm';
 export { default as EventTypesAdminPage } from './pages/EventTypesAdminPage';
 export { default as HelpTextAdminPage } from './pages/HelpTextAdminPage';
-export { default as InstanceSettingsAdminPage } from './pages/InstanceSettingsAdminPage';
+export { default as InstanceSettingsAdminPage } from './pages/instance-settings/InstanceSettingsAdminPage';
 export { default as InstitutionsAdminPage } from './pages/InstitutionsAdminPage';
 export { default as EditInterviewPage } from './pages/interviews/EditInterviewPage';
 export { default as LanguagesAdminPage } from './pages/languages/LanguagesAdminPage';
