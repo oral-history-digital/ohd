@@ -1,27 +1,27 @@
 import { useEffect } from 'react';
 
 import {
-    EditInterview,
-    EditProjectAccessConfig,
-    EditProjectConfig,
-    EditProjectDisplay,
-    EditProjectInfo,
+    CollectionsAdminPage,
+    ContributionTypesAdminPage,
+    EditInterviewPage,
+    EditProjectAccessPage,
+    EditProjectConfigPage,
+    EditProjectDisplayPage,
+    EditProjectInfoPage,
     EventTypesAdminPage,
-    InstanceSettingAdminPage,
-    MetadataFieldsContainer,
+    InstanceSettingsAdminPage,
+    LanguagesAdminPage,
+    MetadataFieldsAdminPage,
     PeopleAdminPage,
+    PermissionsAdminPage,
+    RegistryNameTypesAdminPage,
+    RegistryReferenceTypesAdminPage,
+    RolesAdminPage,
     StatisticsAdminPage,
+    TaskTypesAdminPage,
+    TranslationValuesAdminPage,
     UploadsPage,
     UsersAdminPage,
-    WrappedCollectionsContainer,
-    WrappedContributionTypesContainer,
-    WrappedLanguagesContainer,
-    WrappedPermissionsContainer,
-    WrappedRegistryNameTypesContainer,
-    WrappedRegistryReferenceTypesContainer,
-    WrappedRolesContainer,
-    WrappedTaskTypesContainer,
-    WrappedTranslationValuesContainer,
 } from 'modules/admin';
 import {
     clearViewModes,
@@ -70,7 +70,7 @@ export default function ProjectRoutes() {
                 <Route
                     exact
                     path="interviews/new"
-                    element={<EditInterview />}
+                    element={<EditInterviewPage />}
                 />
                 <Route
                     path="interviews/:archiveId"
@@ -94,7 +94,7 @@ export default function ProjectRoutes() {
                 <Route path="register" element={<RegisterPage />} />
                 <Route
                     path="admin/instance"
-                    element={<InstanceSettingAdminPage />}
+                    element={<InstanceSettingsAdminPage />}
                 />
                 <Route path="users" element={<UsersAdminPage />} />
                 <Route
@@ -102,44 +102,44 @@ export default function ProjectRoutes() {
                     element={<StatisticsAdminPage />}
                 />
                 <Route path="uploads/new" element={<UploadsPage />} />
-                <Route path="project/edit-info" element={<EditProjectInfo />} />
+                <Route
+                    path="project/edit-info"
+                    element={<EditProjectInfoPage />}
+                />
                 <Route
                     path="project/edit-config"
-                    element={<EditProjectConfig />}
+                    element={<EditProjectConfigPage />}
                 />
                 <Route
                     path="project/edit-access-config"
-                    element={<EditProjectAccessConfig />}
+                    element={<EditProjectAccessPage />}
                 />
                 <Route
                     path="project/edit-display"
-                    element={<EditProjectDisplay />}
+                    element={<EditProjectDisplayPage />}
                 />
                 <Route
                     path="metadata_fields"
-                    element={<MetadataFieldsContainer />}
+                    element={<MetadataFieldsAdminPage />}
                 />
                 <Route path="people" element={<PeopleAdminPage />} />
                 <Route path="event_types" element={<EventTypesAdminPage />} />
                 <Route
                     path="registry_reference_types"
-                    element={<WrappedRegistryReferenceTypesContainer />}
+                    element={<RegistryReferenceTypesAdminPage />}
                 />
                 <Route
                     path="registry_name_types"
-                    element={<WrappedRegistryNameTypesContainer />}
+                    element={<RegistryNameTypesAdminPage />}
                 />
                 <Route
                     path="contribution_types"
-                    element={<WrappedContributionTypesContainer />}
+                    element={<ContributionTypesAdminPage />}
                 />
-                <Route
-                    path="languages"
-                    element={<WrappedLanguagesContainer />}
-                />
+                <Route path="languages" element={<LanguagesAdminPage />} />
                 <Route
                     path="translation_values"
-                    element={<WrappedTranslationValuesContainer />}
+                    element={<TranslationValuesAdminPage />}
                 />
                 <Route
                     path="conditions"
@@ -158,19 +158,10 @@ export default function ProjectRoutes() {
                     path="legal_info"
                     element={<TextPage code="legal_info" />}
                 />
-                <Route
-                    path="collections"
-                    element={<WrappedCollectionsContainer />}
-                />
-                <Route path="roles" element={<WrappedRolesContainer />} />
-                <Route
-                    path="permissions"
-                    element={<WrappedPermissionsContainer />}
-                />
-                <Route
-                    path="task_types"
-                    element={<WrappedTaskTypesContainer />}
-                />
+                <Route path="collections" element={<CollectionsAdminPage />} />
+                <Route path="roles" element={<RolesAdminPage />} />
+                <Route path="permissions" element={<PermissionsAdminPage />} />
+                <Route path="task_types" element={<TaskTypesAdminPage />} />
             </Routes>
         </ErrorBoundary>
     );

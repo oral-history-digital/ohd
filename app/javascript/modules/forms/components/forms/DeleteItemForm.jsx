@@ -1,6 +1,7 @@
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 
+// TODO: Rename DeleteItemForm to a generic confirmation form and replace deletion-specific test IDs.
 export default function DeleteItemForm({
     children,
     onSubmit,
@@ -42,4 +43,5 @@ DeleteItemForm.propTypes = {
     ]),
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    submitTextKey: PropTypes.string,
 };

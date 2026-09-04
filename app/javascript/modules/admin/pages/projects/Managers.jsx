@@ -1,0 +1,26 @@
+import { getCurrentProject } from 'modules/data';
+import { useSelector } from 'react-redux';
+
+import { AffiliateForm, AffiliateShow, DataList } from '../../components';
+import { useAdminDataActions } from '../../hooks';
+
+export default function Managers() {
+    const project = useSelector(getCurrentProject);
+    const { fetchData, deleteData, submitData } = useAdminDataActions();
+    return (
+        <DataList
+            editView
+            data={project.managers}
+            outerScope="project"
+            outerScopeId={project.id}
+            scope="manager"
+            detailsAttributes={['name', 'first_name', 'last_name']}
+            initialFormValues={{ project_id: project.id, type: 'Manager' }}
+            form={AffiliateForm}
+            showComponent={AffiliateShow}
+            fetchData={fetchData}
+            deleteData={deleteData}
+            submitData={submitData}
+        />
+    );
+}
