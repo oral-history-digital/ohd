@@ -1,40 +1,21 @@
-import { useCallback } from 'react';
-
 import {
-    deleteData,
-    fetchData,
     getCurrentProject,
     getRegistryNameTypesForCurrentProject,
     getRegistryNameTypesStatus,
-    submitData,
 } from 'modules/data';
-import { getRegistryNameTypesQuery, setQueryParams } from 'modules/search';
-import { useDispatch, useSelector } from 'react-redux';
+import { getRegistryNameTypesQuery } from 'modules/search';
+import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
+import { useAdminDataActions } from '../../hooks';
 
 export default function RegistryNameTypesAdminPage() {
-    const dispatch = useDispatch();
     const project = useSelector(getCurrentProject);
     const data = useSelector(getRegistryNameTypesForCurrentProject);
     const dataStatus = useSelector(getRegistryNameTypesStatus);
     const query = useSelector(getRegistryNameTypesQuery);
-    const fetchAdminData = useCallback(
-        (...args) => dispatch(fetchData(...args)),
-        [dispatch]
-    );
-    const deleteAdminData = useCallback(
-        (...args) => dispatch(deleteData(...args)),
-        [dispatch]
-    );
-    const submitAdminData = useCallback(
-        (...args) => dispatch(submitData(...args)),
-        [dispatch]
-    );
-    const updateQueryParams = useCallback(
-        (...args) => dispatch(setQueryParams(...args)),
-        [dispatch]
-    );
+    const { fetchData, deleteData, submitData, setQueryParams } =
+        useAdminDataActions();
 
     return (
         <PaginatedAdminRecordList
@@ -68,10 +49,10 @@ export default function RegistryNameTypesAdminPage() {
             ]}
             joinedData={{}}
             helpTextCode="registry_name_type_form"
-            fetchData={fetchAdminData}
-            deleteData={deleteAdminData}
-            submitData={submitAdminData}
-            setQueryParams={updateQueryParams}
+            fetchData={fetchData}
+            deleteData={deleteData}
+            submitData={submitData}
+            setQueryParams={setQueryParams}
         />
     );
 }
