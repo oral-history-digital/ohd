@@ -1,9 +1,9 @@
-export { default as CollectionsSearchForm } from './CollectionsSearchForm';
-export { default as CollectionsAdminPage } from './CollectionsAdminPage';
 export { default as DataList } from './DataList';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
 export { default as LogosContainer } from './LogosContainer';
+export { default as CollectionsAdminPage } from './pages/collections/CollectionsAdminPage';
+export { default as CollectionsSearchForm } from './pages/collections/CollectionsSearchForm';
 export { default as ContributionTypesAdminPage } from './pages/contribution-types/ContributionTypesAdminPage';
 export { default as ContributionTypesSearchForm } from './pages/contribution-types/ContributionTypesSearchForm';
 export { default as EventTypesAdminPage } from './pages/EventTypesAdminPage';

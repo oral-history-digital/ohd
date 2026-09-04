@@ -1,7 +1,7 @@
 import { getCollectionsQuery } from 'modules/search';
 
-import DataSearchForm from './DataSearchForm';
-import { useAdminSearch } from './hooks';
+import DataSearchForm from '../../DataSearchForm';
+import { useAdminSearch } from '../../hooks';
 
 export default function CollectionsSearchForm() {
     const { query, fetchData, setQueryParams, resetQuery, hideSidebar } =
