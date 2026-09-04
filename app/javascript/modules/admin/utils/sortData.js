@@ -1,9 +1,4 @@
-export default function sortData(
-    data,
-    sortAttribute,
-    sortAttributeTranslated,
-    locale
-) {
+export function sortData(data, sortAttribute, sortAttributeTranslated, locale) {
     let sorted = [];
     if (data) {
         if (sortAttribute) {

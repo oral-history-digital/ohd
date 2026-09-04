@@ -12,7 +12,7 @@ import Observer from 'react-intersection-observer';
 import AddButton from '../AddButton';
 import EditViewOrRedirect from '../EditViewOrRedirect';
 import { usePaginatedAdminRecords } from '../hooks';
-import sortData from '../sortData';
+import { sortData } from '../utils';
 import AdminRecord from './AdminRecord';
 
 export default function PaginatedAdminRecordList({
