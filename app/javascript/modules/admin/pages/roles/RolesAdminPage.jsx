@@ -6,9 +6,9 @@ import {
 import { getRolesQuery } from 'modules/search';
 import { useSelector } from 'react-redux';
 
+import { PaginatedAdminRecordList } from '../../components';
+import { useAdminDataActions } from '../../hooks';
 import RolePermissions from './RolePermissions';
-import { PaginatedAdminRecordList } from './components';
-import { useAdminDataActions } from './hooks';
 
 export default function RolesAdminPage() {
     const project = useSelector(getCurrentProject);
