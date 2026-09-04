@@ -1,6 +1,7 @@
 export { default as DataList } from './DataList';
 export { default as EditViewOrRedirect } from './EditViewOrRedirect';
 export { default as ExternalLinksContainer } from './ExternalLinksContainer';
+export { default as InstitutionsAdminPage } from './InstitutionsAdminPage';
 export { default as LogosContainer } from './LogosContainer';
 export { default as CollectionsAdminPage } from './pages/collections/CollectionsAdminPage';
 export { default as CollectionsSearchForm } from './pages/collections/CollectionsSearchForm';
