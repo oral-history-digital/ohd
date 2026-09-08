@@ -33,7 +33,7 @@ export default function InstanceSettingsForm({
             attribute: 'umbrella_project_id',
             elementType: 'select',
             labelKey: 'edit.instance.umbrella_project_id',
-            help: t('edit.instance.umbrella_project_help'),
+            help: 'edit.instance.umbrella_project_help',
             values: projectOptions,
         },
     ];

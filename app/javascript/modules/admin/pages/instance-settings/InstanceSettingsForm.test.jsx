@@ -2,9 +2,13 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import InstanceSettingsForm from './InstanceSettingsForm';
 
+const mockT = jest.fn((key) => key);
+
 jest.mock('modules/i18n', () => ({
-    useI18n: () => ({ locale: 'en', t: (key) => key }),
+    useI18n: () => ({ locale: 'en', t: mockT }),
 }));
+
+beforeEach(() => mockT.mockClear());
 
 const projects = [
     { id: 1, name: { en: 'OHD' }, shortname: 'ohd' },
@@ -55,6 +59,14 @@ test('shows existing projects and selects the configured umbrella project', () =
             name: 'Archiv Drei (archive-three)',
         })
     ).toBeInTheDocument();
+    expect(
+        screen.getByTestId('homepage_setting-umbrella_project_id-help-text')
+    ).toHaveTextContent('edit.instance.umbrella_project_help');
+    expect(
+        mockT.mock.calls.filter(
+            ([key]) => key === 'edit.instance.umbrella_project_help'
+        )
+    ).toHaveLength(1);
     expect(screen.getByRole('button', { name: 'submit' })).toBeDisabled();
 });
 
