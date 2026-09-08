@@ -10,7 +10,23 @@ export default function InstanceSettingsForm({
     onSubmit,
     projects,
 }) {
-    const { t } = useI18n();
+    const { locale, t } = useI18n();
+
+    // Build display names for the project options
+    const projectOptions = projects.map((project) => {
+        const names = project.name || {};
+        const name =
+            (typeof names === 'string' && names) ||
+            names[locale] ||
+            names[project.default_locale] ||
+            Object.values(names).find(Boolean) ||
+            project.shortname;
+
+        return {
+            id: project.id,
+            name: `${name} (${project.shortname})`,
+        };
+    });
 
     const elements = [
         {
@@ -18,7 +34,7 @@ export default function InstanceSettingsForm({
             elementType: 'select',
             labelKey: 'edit.instance.umbrella_project_id',
             help: t('edit.instance.umbrella_project_help'),
-            values: projects,
+            values: projectOptions,
         },
     ];
 
@@ -26,7 +42,9 @@ export default function InstanceSettingsForm({
         <Form
             data={instanceSettings}
             values={{
-                umbrella_project_id: instanceSettings?.umbrella_project_id,
+                umbrella_project_id: String(
+                    instanceSettings.umbrella_project_id
+                ),
             }}
             scope="homepage_setting"
             submitText="submit"
@@ -35,6 +53,12 @@ export default function InstanceSettingsForm({
             notification={notification}
             onDismissNotification={onDismissNotification}
             onSubmit={onSubmit}
+            disableIfUnchanged
+            submitConfirmation={{
+                title: t('edit.instance.umbrella_project_confirm.title'),
+                message: t('edit.instance.umbrella_project_confirm.warning'),
+                confirmText: t('edit.instance.umbrella_project_confirm.submit'),
+            }}
         />
     );
 }
