@@ -128,7 +128,7 @@
     "husky": "^9.1.7",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
-    "jsdoc": "^4.0.4",
+    "jsdoc": "^4.0.5",
     "lint-staged": "^16.2.7",
     "prettier": "^3.6.2",
     "react-refresh": "^0.18.0",
@@ -139,7 +139,9 @@
   "resolutions": {
     "form-data": "3.0.5",
     "shell-quote": "1.10.0",
-    "websocket-driver": "0.7.5"
+    "websocket-driver": "0.7.5",
+    "react-rte-18support/**/immutable": "3.8.4",
+    "sass/immutable": "4.3.9"
   },
   "scripts": {
     "lint": "eslint app/javascript",
