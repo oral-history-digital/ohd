@@ -22,9 +22,11 @@ accessories:
       - 160.45.152.195
     env:
       clear:
-        MYSQL_HOST_PRODUCTION: '%'
+        MARIADB_DATABASE: ohd_production
+        MARIADB_USER: ohd
       secret:
-        - MYSQL_PASSWORD_PRODUCTION
+        - MARIADB_ROOT_PASSWORD
+        - MARIADB_PASSWORD
     directories:
       - data:/var/lib/mysql
 
