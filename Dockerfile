@@ -107,8 +107,8 @@ USER appuser
 EXPOSE 3000
 
 # Health check endpoint
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+#HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  #CMD curl -f http://localhost:3000/health || exit 1
 
 # Default environment
 ENV RAILS_ENV=production \
@@ -120,4 +120,4 @@ ENV RAILS_ENV=production \
 
 # Default command (can be overridden in docker-compose or Capistrano)
 #CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
-CMD ["bin/rails", "server"]
+CMD ["bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
