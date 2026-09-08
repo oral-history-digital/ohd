@@ -2,6 +2,7 @@
 /assets
 config/master.key
 config/project.yml
+config/oidc_signing_key-avd-staging.pemconfig/oidc_signing_key-avd-staging.pem
 config/project_config
 config/hls/
 log/
