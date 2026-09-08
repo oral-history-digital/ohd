@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { useInstanceSettings } from 'modules/data';
+import { useGetProjects, useInstanceSettings } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
@@ -16,12 +16,19 @@ export default function InstanceSettingsAdminPage() {
     const [instanceNotification, setInstanceNotification] = useState(null);
     const [blockNotifications, setBlockNotifications] = useState({});
     const {
-        isLoading,
+        isLoading: isLoadingInstanceSettings,
         isSubmitting,
-        error,
+        error: instanceSettingsError,
         instanceSettings,
         updateInstanceSettings,
     } = useInstanceSettings();
+    const {
+        isLoading: isLoadingProjects,
+        error: projectsError,
+        projects,
+    } = useGetProjects({ all: true, includeUmbrella: true });
+    const isLoading = isLoadingInstanceSettings || isLoadingProjects;
+    const error = instanceSettingsError || projectsError;
 
     const [tabIndex, setTabIndex] = useState(0);
 
@@ -213,6 +220,7 @@ export default function InstanceSettingsAdminPage() {
                                         setInstanceNotification(null)
                                     }
                                     onSubmit={submitInstanceHandler}
+                                    projects={projects}
                                 />
                                 <Tabs
                                     className="AdminEditInstance-tabs"

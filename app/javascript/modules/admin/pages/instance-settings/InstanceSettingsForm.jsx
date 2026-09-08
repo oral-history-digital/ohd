@@ -8,15 +8,17 @@ export default function InstanceSettingsForm({
     notification,
     onDismissNotification,
     onSubmit,
+    projects,
 }) {
     const { t } = useI18n();
 
     const elements = [
         {
             attribute: 'umbrella_project_id',
-            type: 'number',
+            elementType: 'select',
             labelKey: 'edit.instance.umbrella_project_id',
             help: t('edit.instance.umbrella_project_help'),
+            values: projects,
         },
     ];
 
@@ -43,4 +45,5 @@ InstanceSettingsForm.propTypes = {
     notification: PropTypes.object,
     onDismissNotification: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    projects: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
