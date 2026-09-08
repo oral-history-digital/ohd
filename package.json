@@ -136,6 +136,11 @@
     "timekeeper": "^2.2.0",
     "webpack-dev-server": "^5.0.4"
   },
+  "resolutions": {
+    "form-data": "3.0.5",
+    "shell-quote": "1.10.0",
+    "websocket-driver": "0.7.5"
+  },
   "scripts": {
     "lint": "eslint app/javascript",
     "test": "jest --verbose true",
