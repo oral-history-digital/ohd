@@ -24,8 +24,18 @@ test('renders confirmation content and handles both actions', () => {
     expect(screen.getByRole('dialog')).toHaveTextContent(
         'This affects the website.'
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Change' }));
-    fireEvent.click(screen.getByTestId('cancel-button'));
+    const cancelButton = screen.getByTestId('cancel-button');
+    const confirmButton = screen.getByRole('button', { name: 'Change' });
+    const buttonRow = cancelButton.parentElement;
+
+    expect(buttonRow).toHaveClass('Form-footer-buttons');
+    expect(Array.from(buttonRow.children)).toEqual([
+        cancelButton,
+        confirmButton,
+    ]);
+
+    fireEvent.click(confirmButton);
+    fireEvent.click(cancelButton);
 
     expect(onConfirm).toHaveBeenCalledTimes(1);
     expect(onCancel).toHaveBeenCalledTimes(1);

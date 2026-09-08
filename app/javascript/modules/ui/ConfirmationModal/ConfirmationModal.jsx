@@ -33,18 +33,20 @@ export default function ConfirmationModal({
                 {message && <p>{message}</p>}
                 {children}
                 <div className="Form-footer u-mt">
-                    <CancelButton
-                        buttonText={cancelText}
-                        handleCancel={onCancel}
-                        isDisabled={isLoading}
-                    />
-                    <Button
-                        variant="contained"
-                        color={confirmColor}
-                        buttonText={confirmText}
-                        isLoading={isLoading}
-                        onClick={onConfirm}
-                    />
+                    <div className="Form-footer-buttons">
+                        <CancelButton
+                            buttonText={cancelText}
+                            handleCancel={onCancel}
+                            isDisabled={isLoading}
+                        />
+                        <Button
+                            variant="contained"
+                            color={confirmColor}
+                            buttonText={confirmText}
+                            isLoading={isLoading}
+                            onClick={onConfirm}
+                        />
+                    </div>
                 </div>
             </div>
         </Modal>
