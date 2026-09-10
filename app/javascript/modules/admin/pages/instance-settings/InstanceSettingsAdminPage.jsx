@@ -9,11 +9,9 @@ import { Helmet } from 'react-helmet';
 
 import { EditViewOrRedirect } from '../../components';
 import HomepageBlockForm from './HomepageBlockForm';
-import InstanceSettingsForm from './InstanceSettingsForm';
 
 export default function InstanceSettingsAdminPage() {
     const { t } = useI18n();
-    const [instanceNotification, setInstanceNotification] = useState(null);
     const [blockNotifications, setBlockNotifications] = useState({});
     const {
         isLoading,
@@ -95,20 +93,6 @@ export default function InstanceSettingsAdminPage() {
             });
             throw submitError;
         }
-    }
-
-    async function submitInstanceHandler(params) {
-        const values = params.homepage_setting || {};
-
-        return submitWithNotification(
-            () =>
-                updateInstanceSettings({
-                    homepage_setting: {
-                        umbrella_project_id: values.umbrella_project_id,
-                    },
-                }),
-            setInstanceNotification
-        );
     }
 
     async function submitBlockHandler(code, index, params) {
@@ -205,15 +189,6 @@ export default function InstanceSettingsAdminPage() {
                         {!isLoading && error && <p>{error.message}</p>}
                         {!isLoading && !error && instanceSettings && (
                             <>
-                                <InstanceSettingsForm
-                                    instanceSettings={instanceSettings}
-                                    isSubmitting={isSubmitting}
-                                    notification={instanceNotification}
-                                    onDismissNotification={() =>
-                                        setInstanceNotification(null)
-                                    }
-                                    onSubmit={submitInstanceHandler}
-                                />
                                 <Tabs
                                     className="AdminEditInstance-tabs"
                                     index={tabIndex}
