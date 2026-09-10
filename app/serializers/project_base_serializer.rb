@@ -25,6 +25,7 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :num_interviews,
     :institution_ids,
     :logos,
+    :is_umbrella,
     :is_ohd,
     :show_preview_img,
     :has_map,
@@ -66,7 +67,12 @@ class ProjectBaseSerializer < ActiveModel::Serializer
   end
 
   def is_ohd
-    object.shortname == 'ohd'
+    # Deprecated compatibility field. New clients should use is_umbrella.
+    object.is_ohd?
+  end
+
+  def is_umbrella
+    object.umbrella?
   end
 
   def type

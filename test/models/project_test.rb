@@ -83,4 +83,20 @@ class ProjectTest < ActiveSupport::TestCase
     assert_not @project.valid?
     assert @project.errors.added?(:favicon, :file_too_large)
   end
+
+  test "identifies umbrella project from instance settings" do
+    umbrella_project = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+
+    assert umbrella_project.umbrella?
+    assert umbrella_project.is_ohd?
+    assert_not @project.umbrella?
+    assert_not @project.is_ohd?
+
+    ohd_project = Project.find_by!(shortname: "ohd")
+    assert_not ohd_project.umbrella?
+    assert_not ohd_project.is_ohd?
+  end
 end
