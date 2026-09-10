@@ -26,7 +26,7 @@ export function findProjectByDomain(
 
     if (normalizedOrigin === normalizeDomain(ohdDomain)) {
         return Object.values(projects).find((project) => {
-            return project?.shortname === 'ohd';
+            return project?.is_umbrella;
         });
     }
 
