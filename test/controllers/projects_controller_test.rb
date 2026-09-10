@@ -90,6 +90,29 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_includes shortnames, 'ohd'
   end
 
+  test 'should identify umbrella project through instance settings' do
+    umbrella_project = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+
+    get list_projects_path(locale: 'en', format: :json), params: { all: true }
+    assert_response :success
+
+    project_ids = JSON.parse(response.body).fetch('data', []).map { |project| project['id'] }
+    # Without include_umbrella, the umbrella project should not be included in the list of projects
+    assert_not_includes project_ids, umbrella_project.id
+    # Check that ohd (created in test/data_helper.rb) is still included in the list of projects
+    assert_includes project_ids, Project.find_by!(shortname: 'ohd').id
+
+    # Now check that the umbrella project is included when include_umbrella is true
+    get list_projects_path(locale: 'en', format: :json), params: { all: true, include_umbrella: 'true' }
+    assert_response :success
+
+    project_ids = JSON.parse(response.body).fetch('data', []).map { |project| project['id'] }
+    assert_includes project_ids, umbrella_project.id
+  end
+
   test 'should hide unshared projects in index all mode for anonymous users' do
     reset!
     host! 'test.portal.oral-history.localhost:47001'

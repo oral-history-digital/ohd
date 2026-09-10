@@ -55,7 +55,8 @@ class ProjectsController < ApplicationController
 
     scoped_projects = policy_scope(Project)
     scoped_projects = scoped_projects.where(workflow_state: normalized_workflow_states) if normalized_workflow_states
-    scoped_projects = scoped_projects.where.not(shortname: 'ohd') unless normalized_include_umbrella
+    umbrella_project_id = InstanceSetting.current.umbrella_project_id
+    scoped_projects = scoped_projects.where.not(id: umbrella_project_id) unless normalized_include_umbrella
 
     if params.keys.include?('all')
       projects = scoped_projects.order(created_at: :desc)
@@ -91,6 +92,7 @@ class ProjectsController < ApplicationController
       projects_cache_scope_key,
       normalized_workflow_states&.join(','),
       "include-umbrella-#{normalized_include_umbrella}",
+      "umbrella-project-#{umbrella_project_id}",
       I18n.locale,
       Project.count,
       Project.maximum(:updated_at),
