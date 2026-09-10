@@ -45,6 +45,7 @@ import {
     getTaskTypesStatus,
     getTasksStatus,
     getTranscriptFetched,
+    getUmbrellaProject,
     getUsersStatus,
 } from './dataSelectors';
 import {
@@ -185,6 +186,23 @@ describe('getCurrentProject', () => {
         };
 
         expect(getCurrentProject(state)).toBeNull();
+    });
+});
+
+describe('getUmbrellaProject', () => {
+    test('gets the project marked as the umbrella project', () => {
+        const umbrellaProject = {
+            id: 2,
+            shortname: 'portal',
+            is_umbrella: true,
+        };
+        const _state = dotProp.set(
+            projectState,
+            'data.projects.2',
+            umbrellaProject
+        );
+
+        expect(getUmbrellaProject(_state)).toEqual(umbrellaProject);
     });
 });
 

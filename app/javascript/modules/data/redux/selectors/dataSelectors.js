@@ -40,10 +40,8 @@ export const getCurrentInterview = createSelector(
     }
 );
 
-export const getOHDProject = createSelector([getProjects], (projects) => {
-    return Object.values(projects).find(
-        (project) => project.shortname === 'ohd'
-    );
+export const getUmbrellaProject = createSelector([getProjects], (projects) => {
+    return Object.values(projects).find((project) => project.is_umbrella);
 });
 
 export const getPublicProjects = createSelector(
