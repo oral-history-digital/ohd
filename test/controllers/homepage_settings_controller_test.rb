@@ -88,4 +88,20 @@ class HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :forbidden
   end
+
+  test 'should not allow changing the umbrella project' do
+    login_as User.find_by!(email: 'alice@example.com')
+    setting = InstanceSetting.current
+    original_umbrella_project = setting.umbrella_project
+    other_project = Project.where.not(id: original_umbrella_project.id).first!
+
+    patch homepage_settings_path(locale: 'de', format: :json), params: {
+      homepage_setting: {
+        umbrella_project_id: other_project.id
+      }
+    }
+
+    assert_response :success
+    assert_equal original_umbrella_project, setting.reload.umbrella_project
+  end
 end
