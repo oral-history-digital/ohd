@@ -119,5 +119,5 @@ ENV RAILS_ENV=production \
     PORT=3000
 
 # Default command (can be overridden in docker-compose or Capistrano)
-#CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
-CMD ["bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+LABEL service="ohd"
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
