@@ -3,7 +3,7 @@ servers:
     - 160.45.152.195
 
 proxy:
-  host: avd-test.ub.fu-berlin.de
+  host: staging.audio-visual.digital,avd-test.ub.fu-berlin.de
   app_port: 3000
   ssl:
     certificate_pem: CERTIFICATE_PEM
