@@ -27,7 +27,7 @@ env:
     SOLR_URL: ohd-solr
     SOLR_URL: http://ohd-solr:8983/solr/blacklight-core
 
-    OHD_EXTRA_HOSTS_PRODUCTION: avd-test.ub.fu-berlin.de
+    OHD_EXTRA_HOSTS_PRODUCTION: staging.audio-visual.digital,avd-test.ub.fu-berlin.de
     ALLOW_LOCALHOST_IN_PRODUCTION: true
 
     # Log everything from Rails
