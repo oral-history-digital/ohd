@@ -3,12 +3,11 @@ servers:
     - 160.45.152.195
 
 proxy:
-  forward_headers: true
+  host: avd-test.ub.fu-berlin.de
+  app_port: 3000
   ssl:
     certificate_pem: CERTIFICATE_PEM
     private_key_pem: PRIVATE_KEY_PEM
-  host: avd-test.ub.fu-berlin.de
-  app_port: 3000
 
 volumes:
   - "/home/avd1/avd/storage/app-cache:/app/tmp/cache"
