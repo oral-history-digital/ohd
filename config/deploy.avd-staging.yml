@@ -3,7 +3,10 @@ servers:
     - 160.45.152.195
 
 proxy:
-  ssl: true
+  forward_headers: true
+  ssl:
+    certificate_pem: CERTIFICATE_PEM
+    private_key_pem: PRIVATE_KEY_PEM
   host: avd-test.ub.fu-berlin.de
   app_port: 3000
 
