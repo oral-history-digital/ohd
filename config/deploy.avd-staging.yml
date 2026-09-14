@@ -5,9 +5,11 @@ servers:
 env:
   clear:
     SENTRY_DISABLED: "true"
+    OHD_DOMAIN_PRODUCTION: "https://staging.audio-visual.digital"
+    OHD_DOMAIN: "https://staging.audio-visual.digital"
 
 proxy:
-  host: staging.audio-visual.digital,avd-test.ub.fu-berlin.de
+  host: staging.audio-visual.digital
   app_port: 3000
   ssl:
     certificate_pem: CERTIFICATE_PEM
