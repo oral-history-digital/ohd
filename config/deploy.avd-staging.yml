@@ -2,6 +2,10 @@ servers:
   web:
     - 160.45.152.195
 
+env:
+  clear:
+    SENTRY_DISABLED: "true"
+
 proxy:
   host: staging.audio-visual.digital,avd-test.ub.fu-berlin.de
   app_port: 3000
