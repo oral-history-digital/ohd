@@ -84,6 +84,11 @@ class ActiveSupport::TestCase
     fill_in 'user[email]', with: user_or_email
     fill_in 'user[password]', with: password
     click_on 'Login'
+
+    # Login may cross domains and hydrate the React session state asynchronously.
+    # A user with MFA lands on the OTP form first; otherwise the Account link is
+    # the stable signal that the authenticated navigation has finished.
+    assert_selector '.SessionButtons a, input.otp-digit', wait: 10
   end
 
   def logout

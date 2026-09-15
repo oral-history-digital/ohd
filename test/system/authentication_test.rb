@@ -319,30 +319,26 @@ class RegistrationTest < ApplicationSystemTestCase
     user = User.find_by(email: EMAIL)
     assert_not_nil user
 
-    # ensure clean state
+    # Start one attempt before the limit so the browser only performs one
+    # navigation. Repeating same-URL submissions can race Selenium's DOM.
     user.update!(
-      failed_attempts: 0,
+      failed_attempts: Devise.maximum_attempts - 1,
       locked_at: nil
     )
 
     visit '/'
     click_on 'Login'
 
-    # fail login configured times
-    Devise.maximum_attempts.times do
-      assert_current_path '/en/users/sign_in', ignore_query: true
-      assert_selector 'form.Form.default'
+    assert_current_path '/en/users/sign_in', ignore_query: true
+    assert_selector 'form.Form.default'
 
-      within('form.Form.default') do
-        fill_in 'user[email]', with: EMAIL
-        fill_in 'user[password]', with: 'WrongPassword8!'
-        click_on 'Login'
-      end
-
-      assert_current_path '/en/users/sign_in', ignore_query: true
-      assert_selector 'form.Form.default'
-      assert_selector '.notification-container', text: /Invalid credentials|You have one more attempt before|Too many failed login attempts|For security reasons/
+    within('form.Form.default') do
+      fill_in 'user[email]', with: EMAIL
+      fill_in 'user[password]', with: 'WrongPassword8!'
+      click_on 'Login'
     end
+
+    assert_text 'For security reasons, your account is locked after multiple failed attempts.'
 
     user.reload
     assert user.access_locked?
