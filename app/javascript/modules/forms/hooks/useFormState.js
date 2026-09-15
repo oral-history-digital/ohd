@@ -419,6 +419,7 @@ export function useFormState(
 
     return {
         values,
+        initialFormValues,
         errors,
         touched,
         isDirty: dirtyState.isDirty,

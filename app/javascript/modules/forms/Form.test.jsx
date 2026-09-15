@@ -77,3 +77,69 @@ test('runs the completion callback synchronously for synchronous submissions', (
 
     expect(onSubmitCallback).toHaveBeenCalledTimes(1);
 });
+
+test('confirms submission before calling onSubmit', async () => {
+    const onSubmit = jest.fn().mockResolvedValue({});
+    render(
+        <Form
+            scope="setting"
+            elements={[{ attribute: 'name' }]}
+            values={{ name: 'Before' }}
+            onSubmit={onSubmit}
+            submitConfirmation={{
+                title: 'Confirm change',
+                message: 'This affects the website.',
+                confirmText: 'Change',
+            }}
+        />
+    );
+
+    fireEvent.change(screen.getByTestId('setting-name-text-input'), {
+        target: { value: 'After' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'submit' }));
+
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(await screen.findByRole('dialog')).toHaveTextContent(
+        'This affects the website.'
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Change' }));
+
+    await waitFor(() =>
+        expect(onSubmit).toHaveBeenCalledWith(
+            { setting: { name: 'After' } },
+            undefined
+        )
+    );
+    await waitFor(() =>
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+});
+
+test('keeps form dirty when confirmation is cancelled', async () => {
+    const onSubmit = jest.fn();
+    render(
+        <Form
+            scope="setting"
+            elements={[{ attribute: 'name' }]}
+            values={{ name: 'Before' }}
+            onSubmit={onSubmit}
+            disableIfUnchanged
+            submitConfirmation={{
+                title: 'Confirm change',
+                message: 'Warning',
+            }}
+        />
+    );
+    const submitButton = screen.getByRole('button', { name: 'submit' });
+
+    fireEvent.change(screen.getByTestId('setting-name-text-input'), {
+        target: { value: 'After' },
+    });
+    fireEvent.click(submitButton);
+    await screen.findByRole('dialog');
+    fireEvent.click(screen.getByTestId('cancel-button'));
+
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(submitButton).toBeEnabled();
+});
