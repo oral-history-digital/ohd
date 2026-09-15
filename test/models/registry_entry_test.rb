@@ -47,4 +47,15 @@ class RegistryEntryTest < ActiveSupport::TestCase
     assert_includes archive_ids, @interview2.archive_id
   end
 
+  test "ohd helpers use the configured umbrella registry" do
+    umbrella_project = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+    subjects = umbrella_project.root_registry_entry.create_child("Subjects", :en)
+    subjects.update!(code: "subjects")
+
+    assert_equal subjects, RegistryEntry.ohd_subjects
+  end
+
 end

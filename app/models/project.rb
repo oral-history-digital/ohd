@@ -167,7 +167,12 @@ class Project < ApplicationRecord
     end
 
     def ohd
-      where(shortname: 'ohd').first
+      # Deprecated compatibility alias. Use .umbrella.
+      umbrella
+    end
+
+    def umbrella
+      InstanceSetting.current.umbrella_project
     end
 
     def archive_domains
@@ -247,6 +252,10 @@ class Project < ApplicationRecord
       where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
       includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       order(:facet_order)
+  end
+
+  def search_facets_including_umbrella
+    Project.umbrella.search_facets | search_facets
   end
 
   def search_facets_names

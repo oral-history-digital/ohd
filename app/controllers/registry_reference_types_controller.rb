@@ -75,7 +75,7 @@ class RegistryReferenceTypesController < ApplicationController
   end
 
   def global
-    ref_types = Project.ohd.registry_reference_types
+    ref_types = Project.umbrella.registry_reference_types
     authorize ref_types
 
     respond_to do |format|

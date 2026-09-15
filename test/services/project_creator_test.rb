@@ -118,6 +118,29 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert_equal ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"], @project.upload_types
   end
 
+  test 'uses configured umbrella reference types for shared metadata fields' do
+    umbrella_project = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+    umbrella_type = RegistryReferenceType.create!(
+      project: umbrella_project,
+      registry_entry: umbrella_project.root_registry_entry,
+      code: "level_of_indexing_ohd",
+      name: "Level of indexing"
+    )
+
+    created_project = ProjectCreator.perform(
+      @project_params.merge(shortname: "new#{SecureRandom.hex(2)}a"),
+      @user
+    )
+    metadata_field = created_project.metadata_fields.find_by!(
+      name: "level_of_indexing_ohd"
+    )
+
+    assert_equal umbrella_type, metadata_field.registry_reference_type
+  end
+
   test 'creats default landing_page_texts' do
     assert_equal @project.landing_page_text('de'), 'Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.'
     assert_equal @project.landing_page_text('en'), 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.'

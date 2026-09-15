@@ -246,7 +246,7 @@ class Interview < ApplicationRecord
     end
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
-      ((Project.ohd.present? ? Project.ohd.search_facets : []) | project.search_facets).inject({}) do |mem, facet|
+      project.search_facets_including_umbrella.inject({}) do |mem, facet|
         if interviewee
           mem[facet.name] = case facet.source
             when 'RegistryReferenceType'

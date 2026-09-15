@@ -165,12 +165,12 @@ class MetadataImport
     sub_category = row[sub_category_col_key].strip.chomp if row[sub_category_col_key]
 
     sub_category_registry_entry = sub_category && field_rrt_re.find_descendant_by_name(sub_category, locale) ||
-      (!field_rrt_re.project.is_ohd? && sub_category && field_rrt_re.create_child(sub_category, locale))
+      (!field_rrt_re.project.umbrella? && sub_category && field_rrt_re.create_child(sub_category, locale))
 
     registry_entries = row[col_key] && row[col_key].split('#').map do |name|
       name.sub(/\"/, '') if name.count("\"") == 1
       field_rrt_re.find_descendant_by_name(name, locale) || 
-        (!field_rrt_re.project.is_ohd? && (sub_category_registry_entry || field_rrt_re).create_child(name, locale))
+        (!field_rrt_re.project.umbrella? && (sub_category_registry_entry || field_rrt_re).create_child(name, locale))
     end || []
 
     (registry_entries.empty? ? [sub_category_registry_entry] : registry_entries).compact.uniq
