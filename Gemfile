@@ -99,6 +99,11 @@ end
 #gem 'mini_racer', platforms: :ruby
 gem 'mini_racer', '~> 0.16.0', platforms: :ruby
 
+# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+gem "kamal", require: false
+
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
 
 # TODO: ruby 2.7 fixes
 gem 'net-http'
