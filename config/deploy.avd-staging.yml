@@ -39,8 +39,11 @@ accessories:
       - data:/var/lib/mysql
 
   solr:
-    image: solr:5.5
+    image: ghcr.io/oral-history-digital/ohd-solr:5.5-sunspot
     hosts:
       - 160.45.152.195
+    env:
+      clear:
+        SOLR_CORE: blacklight-core
     directories:
       - solr_data:/opt/solr/server/solr/mycores
