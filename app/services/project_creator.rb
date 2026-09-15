@@ -133,7 +133,7 @@ class ProjectCreator < ApplicationService
 
   def create_default_registry_reference_type_metadata_fields
     YAML.load_file(File.join(Rails.root, 'config/defaults/registry_reference_type_metadata_fields.yml')).each do |(name, settings)|
-      registry_reference_type_id = (settings['ohd'] ? Project.ohd : project).registry_reference_types.where(code: name).first&.id
+      registry_reference_type_id = (settings['umbrella'] ? Project.umbrella : project).registry_reference_types.where(code: name).first&.id
       unless registry_reference_type_id.nil?
         metadata_field = MetadataField.create(
           registry_reference_type_id: registry_reference_type_id,

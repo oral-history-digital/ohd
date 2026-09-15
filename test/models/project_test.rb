@@ -90,6 +90,8 @@ class ProjectTest < ActiveSupport::TestCase
     )
     InstanceSetting.current.update!(umbrella_project: umbrella_project)
 
+    assert_equal umbrella_project, Project.umbrella
+    assert_equal umbrella_project, Project.ohd
     assert umbrella_project.umbrella?
     assert umbrella_project.is_ohd?
     assert_not @project.umbrella?
@@ -98,5 +100,29 @@ class ProjectTest < ActiveSupport::TestCase
     ohd_project = Project.find_by!(shortname: "ohd")
     assert_not ohd_project.umbrella?
     assert_not ohd_project.is_ohd?
+  end
+
+  test "combines configured umbrella and project search facets" do
+    umbrella_project = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+
+    umbrella_facet = MetadataField.create!(
+      project: umbrella_project,
+      source: "Interview",
+      name: "umbrella_facet",
+      use_as_facet: true,
+      facet_order: 1
+    )
+    project_facet = MetadataField.create!(
+      project: @project,
+      source: "Interview",
+      name: "project_facet",
+      use_as_facet: true,
+      facet_order: 2
+    )
+
+    assert_equal [umbrella_facet, project_facet], @project.search_facets_including_umbrella
   end
 end

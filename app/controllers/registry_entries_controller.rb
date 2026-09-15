@@ -201,7 +201,7 @@ class RegistryEntriesController < ApplicationController
   end
 
   def global_tree
-    registry_entries = RegistryEntry.for_tree(I18n.locale, Project.ohd.id)
+    registry_entries = RegistryEntry.for_tree(I18n.locale, Project.umbrella.id)
     authorize registry_entries
 
     respond_to do |format|
