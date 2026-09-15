@@ -1,6 +1,10 @@
 servers:
   web:
     - 160.45.152.195
+  job:
+    hosts:
+      - 160.45.152.195
+    cmd: bundle exec rake jobs:work
 
 env:
   clear:
