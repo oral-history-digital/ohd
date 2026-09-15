@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Allow override; default to /home/<ssh-user>/avd/storage
+BASE="${KAMAL_STORAGE_BASE:-/home/avd1/avd/storage}"
+
+# Create full tree even on empty server
+sudo mkdir -p \
+  "${BASE}" \
+  "${BASE}/app-cache" \
+  "${BASE}/app-files" \
+  "${BASE}/app-logs" \
+  "${BASE}/solr_data"
+
+# App container runtime UID/GID
+APP_UID="${APP_UID:-1000}"
+APP_GID="${APP_GID:-1000}"
+
+# Solr container runtime UID/GID (solr official image)
+SOLR_UID="${SOLR_UID:-8983}"
+SOLR_GID="${SOLR_GID:-8983}"
+
+sudo chown -R "${APP_UID}:${APP_GID}" \
+  "${BASE}/app-cache" \
+  "${BASE}/app-files" \
+  "${BASE}/app-logs"
+
+sudo chown -R "${SOLR_UID}:${SOLR_GID}" \
+  "${BASE}/solr_data"
+
+sudo chmod -R ug+rwX \
+  "${BASE}/app-cache" \
+  "${BASE}/app-files" \
+  "${BASE}/app-logs" \
+  "${BASE}/solr_data"
