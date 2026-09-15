@@ -1,35 +1,42 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Allow override; default to /home/<ssh-user>/avd/storage
-BASE="${KAMAL_STORAGE_BASE:-/home/avd1/avd/storage}"
-
-# Create full tree even on empty server
-sudo mkdir -p \
-  "${BASE}" \
-  "${BASE}/app-cache" \
-  "${BASE}/app-files" \
-  "${BASE}/app-logs" \
-  "${BASE}/solr_data"
-
-# App container runtime UID/GID
+# Generic defaults (override via env if needed)
+SSH_USER="${KAMAL_SSH_USER:-${USER}}"
 APP_UID="${APP_UID:-1000}"
 APP_GID="${APP_GID:-1000}"
-
-# Solr container runtime UID/GID (solr official image)
 SOLR_UID="${SOLR_UID:-8983}"
 SOLR_GID="${SOLR_GID:-8983}"
 
+# App bind-mount base (used by deploy volumes)
+APP_BASE="${KAMAL_STORAGE_BASE:-/home/${SSH_USER}/avd/storage}"
+
+# Kamal accessory managed dir for "solr" with directories: - solr_data:/...
+# Kamal stores this under ~/ohd-solr/solr_data by default.
+KAMAL_ACCESSORY_BASE="${KAMAL_ACCESSORY_BASE:-/home/${SSH_USER}/ohd-solr}"
+SOLR_DATA_DIR="${SOLR_DATA_DIR:-${KAMAL_ACCESSORY_BASE}/solr_data}"
+
+# Create all dirs (works on empty server)
+sudo mkdir -p \
+  "${APP_BASE}" \
+  "${APP_BASE}/app-cache" \
+  "${APP_BASE}/app-files" \
+  "${APP_BASE}/app-logs" \
+  "${KAMAL_ACCESSORY_BASE}" \
+  "${SOLR_DATA_DIR}"
+
+# App writable dirs
 sudo chown -R "${APP_UID}:${APP_GID}" \
-  "${BASE}/app-cache" \
-  "${BASE}/app-files" \
-  "${BASE}/app-logs"
+  "${APP_BASE}/app-cache" \
+  "${APP_BASE}/app-files" \
+  "${APP_BASE}/app-logs"
 
-sudo chown -R "${SOLR_UID}:${SOLR_GID}" \
-  "${BASE}/solr_data"
+# Solr writable dir
+sudo chown -R "${SOLR_UID}:${SOLR_GID}" "${SOLR_DATA_DIR}"
 
+# Sensible perms
 sudo chmod -R ug+rwX \
-  "${BASE}/app-cache" \
-  "${BASE}/app-files" \
-  "${BASE}/app-logs" \
-  "${BASE}/solr_data"
+  "${APP_BASE}/app-cache" \
+  "${APP_BASE}/app-files" \
+  "${APP_BASE}/app-logs" \
+  "${SOLR_DATA_DIR}"
