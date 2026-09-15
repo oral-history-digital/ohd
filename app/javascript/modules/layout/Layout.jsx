@@ -11,7 +11,7 @@ import {
 } from 'modules/banner';
 import { VIEWMODE_WORKFLOW } from 'modules/constants';
 import {
-    getOHDProject,
+    getUmbrellaProject,
     useCurrentProject,
     useHydrateProjectsByIds,
 } from 'modules/data';
@@ -65,7 +65,7 @@ export default function Layout({ children }) {
         useCurrentProject();
     // `useCurrentProject` resolves via SWR, but most children read the project
     // from the Redux store via `useProject`. The store is seeded server-side
-    // with only OHD and the current project, so a client-side navigation into
+    // with only the umbrella and current projects, so a client-side navigation into
     // any other project leaves Redux one `useHydrateProjectsByIds` round-trip
     // behind SWR. Children that render in that window see `project: undefined`.
     const { project: hydratedProject } = useProject();
@@ -74,7 +74,7 @@ export default function Layout({ children }) {
 
     const bannerActive = useSelector(getBannerActive);
     const currentViewMode = useSelector(getViewMode);
-    const ohdProject = useSelector(getOHDProject);
+    const umbrellaProject = useSelector(getUmbrellaProject);
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
     const isLoggedIn = useSelector(getIsLoggedIn);
@@ -91,7 +91,9 @@ export default function Layout({ children }) {
 
     // Temporary workaround to ensure we have all necessary project data
     // TODO: Refactor data fetching to use SWR here, too.
-    const projectIdsToHydrate = [projectDbId, ohdProject?.id].filter(Boolean);
+    const projectIdsToHydrate = [projectDbId, umbrellaProject?.id].filter(
+        Boolean
+    );
     const needsFullProjectHydration = (candidateProject) =>
         !candidateProject ||
         !Array.isArray(candidateProject.translations_attributes) ||

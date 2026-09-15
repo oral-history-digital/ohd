@@ -130,9 +130,9 @@ class ApplicationController < ActionController::Base
         type: :missing_current_project,
         host: request.base_url,
       }
-    elsif Project.ohd.nil?
+    elsif InstanceSetting.current.umbrella_project.nil?
       @project_bootstrap_issue = {
-        type: :missing_ohd_project,
+        type: :missing_umbrella_project,
         host: request.base_url,
       }
     else
@@ -147,16 +147,16 @@ class ApplicationController < ActionController::Base
 
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   def initial_redux_state
-    ohd_project = Project.ohd
-    on_ohd_portal = current_project&.is_ohd?
+    umbrella_project = InstanceSetting.current.umbrella_project
+    on_umbrella_portal = current_project&.umbrella?
 
     # Keep initial projects payload intentionally small.
     # We preload only the entries that are required for cross-domain routing
     # and immediate page rendering; all other project records are loaded on demand.
     initial_projects_payload = build_initial_projects_payload(
       current_project: current_project,
-      ohd_project: ohd_project,
-      on_ohd_portal: on_ohd_portal
+      umbrella_project: umbrella_project,
+      on_umbrella_portal: on_umbrella_portal
     )
     project_statuses = initial_projects_payload[:project_statuses]
     projects_data = initial_projects_payload[:projects_data]
@@ -338,29 +338,29 @@ class ApplicationController < ActionController::Base
   private
 
   # Builds the minimal bootstrap slice for data.projects and data.statuses.projects.
-  def build_initial_projects_payload(current_project:, ohd_project:, on_ohd_portal:)
+  def build_initial_projects_payload(current_project:, umbrella_project:, on_umbrella_portal:)
     project_statuses = {}
     projects_data = {}
 
-    # OHD is always present when available because cross-project links and
+    # The umbrella project is always present because cross-project links and
     # auth/session redirects rely on its domain context.
-    if ohd_project
-      ohd_project_id = ohd_project.id.to_s
-      project_statuses[ohd_project_id] = 'fetched'
-      projects_data[ohd_project_id] = cache_single(
-        ohd_project,
+    if umbrella_project
+      umbrella_project_id = umbrella_project.id.to_s
+      project_statuses[umbrella_project_id] = 'fetched'
+      projects_data[umbrella_project_id] = cache_single(
+        umbrella_project,
         serializer_name: 'ProjectBase'
       )
     end
 
-    # Also include the current project when it differs from OHD.
-    # On OHD portal we can keep ProjectBase for parity with lightweight usage.
+    # Also include the current project when it differs from the umbrella project.
+    # On the umbrella portal we can keep ProjectBase for parity with lightweight usage.
     # On project portals we keep the richer serializer currently expected by
     # legacy Redux consumers on initial render.
-    if current_project && (!ohd_project || current_project.id != ohd_project.id)
+    if current_project && (!umbrella_project || current_project.id != umbrella_project.id)
       current_project_id = current_project.id.to_s
       project_statuses[current_project_id] = 'fetched'
-      projects_data[current_project_id] = on_ohd_portal ?
+      projects_data[current_project_id] = on_umbrella_portal ?
         cache_single(current_project, serializer_name: 'ProjectBase') :
         cache_single(current_project)
     end
@@ -404,10 +404,13 @@ class ApplicationController < ActionController::Base
   # serialized compiled cache of an instance
   #
   def cache_single(data, opts={})
-    cache_key_prefix = current_project ? current_project.shortname : 'ohd'
+    instance_setting_cache_key = data.is_a?(Project) ?
+      InstanceSetting.current.cache_key_with_version : nil
+    cache_key_prefix = current_project ?
+      current_project.shortname : InstanceSetting.current.umbrella_project.shortname
     cache_key = "#{cache_key_prefix}-#{(opts[:serializer_name] || data.class.name).underscore}"\
       "-#{data.id}-#{data.updated_at}-#{opts[:related] && data.send(opts[:related]).updated_at}"\
-      "-#{opts[:cache_key_suffix]}-#{I18n.locale}"
+      "-#{instance_setting_cache_key}-#{opts[:cache_key_suffix]}-#{I18n.locale}"
     Rails.cache.fetch(cache_key) do
       raw = "#{opts[:serializer_name] || data.class.name}Serializer".constantize.new(data, opts)
       # Use as_json instead of JSON.parse(to_json) to avoid unnecessary string conversion
