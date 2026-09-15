@@ -65,6 +65,7 @@ class ProjectSerializer < ApplicationSerializer
     :workflow_state,
     :grant_project_access_instantly,
     :grant_access_without_login,
+    :is_umbrella,
     :is_ohd,
     :analytics_site_id,
     :favicon_url,
@@ -148,7 +149,12 @@ class ProjectSerializer < ApplicationSerializer
   end
 
   def is_ohd
-    object.shortname == 'ohd'
+    # Deprecated compatibility field. New clients should use is_umbrella.
+    object.is_ohd?
+  end
+
+  def is_umbrella
+    object.umbrella?
   end
 
   def doi
