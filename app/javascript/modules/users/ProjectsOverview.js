@@ -6,7 +6,7 @@ export default function ProjectsOverview({ user }) {
     const { t, locale } = useI18n();
     const userProjects = Object.values(user.user_projects)
         .filter((userProject) => userProject.shortname)
-        .filter((userProject) => userProject.shortname !== 'ohd')
+        .filter((userProject) => !userProject.is_umbrella)
         .sort((a, b) =>
             `${a.name} ${a.shortname}`.localeCompare(
                 `${b.name} ${b.shortname}`,
