@@ -118,7 +118,7 @@ describe('<UserForm />', () => {
         domain_with_optional_identifier: 'https://example.org',
         name: { de: 'Projekt DE', en: 'Project EN' },
         contact_email: 'contact@example.org',
-        is_ohd: false,
+        is_umbrella: false,
         external_links: {
             1: {
                 id: 1,

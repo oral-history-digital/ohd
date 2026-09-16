@@ -1,3 +1,4 @@
+/* global railsMode */
 import { OHD_DOMAINS } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
@@ -14,7 +15,7 @@ export default function CatalogLink({ id, type }) {
     const hasOwnDomain =
         typeof project.archive_domain === 'string' &&
         project.archive_domain !== '' &&
-        !project.is_ohd;
+        !project.is_umbrella;
 
     const ohdDomain = OHD_DOMAINS[railsMode];
     const title = t(`modules.interview_metadata.${type}_link_title`);

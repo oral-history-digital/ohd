@@ -19,7 +19,7 @@ export default function IndexingTabPanel() {
     const pathBase = usePathBase();
 
     function isRegularArchive() {
-        return !project.is_ohd;
+        return !project.is_umbrella;
     }
 
     if (!isAuthorized({ type: 'General' }, 'edit')) {

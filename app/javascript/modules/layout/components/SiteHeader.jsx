@@ -13,10 +13,10 @@ export function SiteHeader() {
     const showProjectLogo =
         !isHome &&
         project &&
-        !project?.is_ohd &&
+        !project?.is_umbrella &&
         project?.display_ohd_link === false;
     const canShowBreadcrumbs =
-        (project && project?.is_ohd) ||
+        (project && project?.is_umbrella) ||
         (project && project?.display_ohd_link === true);
     const showBreadcrumbs = !isHome && !showProjectLogo && canShowBreadcrumbs;
 

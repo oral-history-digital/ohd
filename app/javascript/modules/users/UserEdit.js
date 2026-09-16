@@ -9,7 +9,7 @@ import UserFormContainer from './UserFormContainer';
 export default function UserEdit({ data, dataPath, onSubmit }) {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
-    const scope = project.is_ohd ? 'user' : 'user_project';
+    const scope = project.is_umbrella ? 'user' : 'user_project';
     const userProject = Object.values(data.user_projects).find(
         (urp) => urp.project_id === project.id
     );
@@ -93,7 +93,7 @@ export default function UserEdit({ data, dataPath, onSubmit }) {
                 </div>
             </section>
 
-            {!project.is_ohd && (
+            {!project.is_umbrella && (
                 <section className="UserEdit-section">
                     <h3>{t('modules.project_access.one')}</h3>
                     <div className="UserEdit-details">
@@ -108,14 +108,14 @@ export default function UserEdit({ data, dataPath, onSubmit }) {
                 </section>
             )}
 
-            {project.is_ohd && (
+            {project.is_umbrella && (
                 <section className="UserEdit-section">
                     <ProjectsOverview user={data} />
                 </section>
             )}
 
             <UserFormContainer
-                data={project.is_ohd ? data : userProject}
+                data={project.is_umbrella ? data : userProject}
                 dataPath={dataPath}
                 userId={data.id}
                 scope={scope}

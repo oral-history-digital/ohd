@@ -10,7 +10,7 @@ import { getIsLoggedIn } from '../selectors';
 export default function ActivationFlow({ className }) {
     const isLoggedIn = useSelector(getIsLoggedIn);
     const { t } = useI18n();
-    const { project, isOhd } = useProject();
+    const { project, isUmbrella } = useProject();
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(project);
 
@@ -22,7 +22,7 @@ export default function ActivationFlow({ className }) {
         showActivationFlow = false;
     } else if (isLoggedIn && project?.grant_project_access_instantly) {
         showActivationFlow = false;
-    } else if (isOhd) {
+    } else if (isUmbrella) {
         showActivationFlow = false;
     } else if (projectAccessGranted) {
         showActivationFlow = false;

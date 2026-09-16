@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import useSWRImmutable from 'swr/immutable';
 
 export default function useCombinedRegistryReferenceTypes() {
-    const { isOhd } = useProject();
+    const { isUmbrella } = useProject();
     const projectRegistryReferenceTypes = useSelector(
         getRegistryReferenceTypesForCurrentProject
     );
@@ -20,7 +20,7 @@ export default function useCombinedRegistryReferenceTypes() {
     } = useSWRImmutable(path, fetcher);
 
     let combinedRegistryReferenceTypes;
-    if (isOhd) {
+    if (isUmbrella) {
         combinedRegistryReferenceTypes = Object.values(
             projectRegistryReferenceTypes
         );

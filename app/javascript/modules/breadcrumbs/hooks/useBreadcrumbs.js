@@ -16,7 +16,7 @@ export function useBreadcrumbs() {
         return [];
     }
 
-    const projectLabel = project.is_ohd
+    const projectLabel = project.is_umbrella
         ? null
         : getProjectLabel(project, locale);
 

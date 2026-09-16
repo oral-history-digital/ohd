@@ -23,7 +23,7 @@ export function SiteFooter() {
             <ul className="footer-bottom-nav">
                 {!project.grant_project_access_instantly &&
                     !project.grant_access_without_login &&
-                    !project.is_ohd && (
+                    !project.is_umbrella && (
                         <li>
                             <Link
                                 to={`${pathBase}/conditions`}

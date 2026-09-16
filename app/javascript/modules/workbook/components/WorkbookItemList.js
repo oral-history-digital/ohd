@@ -13,18 +13,18 @@ import WorkbookItemContainer from './WorkbookItemContainer';
 export default function WorkbookItemList({ type, contents }) {
     const { t } = useI18n();
     const [open, setOpen] = useState(false);
-    const { project, isOhd } = useProject();
+    const { project, isUmbrella } = useProject();
     const projects = useSelector(getProjects);
 
     const items = useMemo(() => {
-        if (isOhd) {
+        if (isUmbrella) {
             return contents || [];
         }
 
         return (
             contents?.filter((item) => item.project_id === project?.id) || []
         );
-    }, [contents, isOhd, project?.id]);
+    }, [contents, isUmbrella, project?.id]);
 
     const projectIds = useMemo(
         () => items.map((item) => item.project_id),
