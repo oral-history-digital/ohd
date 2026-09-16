@@ -31,8 +31,18 @@ export default function t(
     const translation = translations[key]?.[locale];
     const defaultTranslation = translations[defaultKey(key)]?.[locale];
 
-    // Fallback chain: specific translation → default translation → key name
-    let text = translation || defaultTranslation || productionFallback(key);
+    // en fallback
+    const enTranslation = translations[key]?.['en'];
+    const enDefaultTranslation = translations[defaultKey(key)]?.['en'];
+
+    // Fallback chain: specific translation → default translation →
+    // en-translation → en-default-translation → key name
+    let text =
+        translation ||
+        defaultTranslation ||
+        enTranslation ||
+        enDefaultTranslation ||
+        productionFallback(key);
 
     // Substitute parameters into the translation string.
     // reactStringReplace returns an array of interleaved strings and substituted values,
