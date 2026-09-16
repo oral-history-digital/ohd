@@ -7,7 +7,7 @@ export default function ProjectAccessGrantedCell({ row }) {
         return (
             n +
             (up.shortname &&
-                up.shortname !== 'ohd' &&
+                !up.is_umbrella &&
                 up.workflow_state === 'project_access_granted')
         );
     }, 0);
