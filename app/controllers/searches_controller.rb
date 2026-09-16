@@ -218,7 +218,7 @@ class SearchesController < ApplicationController
         end
 
         search = Interview.archive_search(current_user, current_project, locale, params)
-        public_description = current_project.is_ohd? ? false : current_project.public_description?
+        public_description = current_project.umbrella? ? false : current_project.public_description?
         search_results_metadata_fields = current_project.search_results_metadata_fields
 
         render json: {

@@ -125,4 +125,29 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert_equal [umbrella_facet, project_facet], @project.search_facets_including_umbrella
   end
+
+  test "collection facets are global only for the configured umbrella" do
+    umbrella = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a")
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+
+    archive = Project.find_by!(shortname: "ohd")
+    other_archive = DataHelper.test_project(shortname: "arc#{SecureRandom.hex(2)}a")
+    hidden = DataHelper.test_project(shortname: "hid#{SecureRandom.hex(2)}a", workflow_state: "unshared")
+
+    other_collection = Collection.create!(name: "Other archive collection", project: other_archive)
+    archive_collection = Collection.create!(name: "Archive collection", project: archive)
+    hidden_collection = Collection.create!(name: "Hidden collection", project: hidden)
+    
+    [umbrella, archive].each do |project|
+      MetadataField.create!(project: project, source: "Interview", name: "collection_id", use_as_facet: true)
+    end
+
+    umbrella_ids = umbrella.search_facets_hash.fetch(:collection_id).fetch(:subfacets).keys
+    assert_includes umbrella_ids, other_collection.id.to_s
+    assert_includes umbrella_ids, archive_collection.id.to_s
+    assert_not_includes umbrella_ids, hidden_collection.id.to_s
+
+    archive_ids = archive.search_facets_hash.fetch(:collection_id).fetch(:subfacets).keys
+    assert_equal [archive_collection.id.to_s], archive_ids
+  end
 end

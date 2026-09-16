@@ -67,8 +67,8 @@ class ProjectBaseSerializer < ActiveModel::Serializer
   end
 
   def is_ohd
-    # Deprecated compatibility field. New clients should use is_umbrella.
-    object.is_ohd?
+    # TODO: Deprecated compatibility field. New clients should use is_umbrella.
+    object.umbrella?
   end
 
   def is_umbrella

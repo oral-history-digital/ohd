@@ -48,8 +48,8 @@ class InterviewStatisticsExporter < ApplicationService
       add_language_section(csv, slots)
       add_media_type_section(csv, slots)
 
-      # For OHD projects, this section includes counts by level of indexing registry entry.
-      if @project.is_ohd?
+      # For the umbrella project, include counts by level of indexing registry entry.
+      if @project.umbrella?
         add_indexing_level_section(csv, slots)
       end
     end
@@ -58,9 +58,9 @@ class InterviewStatisticsExporter < ApplicationService
   private
 
   def base_interviews
-    # For the OHD project, the report includes interviews from all projects.
+    # For the umbrella project, the report includes interviews from all projects.
     # For all other projects, only interviews belonging to the current project are included.
-    if @project.is_ohd?
+    if @project.umbrella?
       Interview.all
     else
       Interview.where(project_id: @project.id)
@@ -217,7 +217,7 @@ class InterviewStatisticsExporter < ApplicationService
     # Find the registry root entry that represents "level of indexing".
     level_root = RegistryEntry.ohd_level_of_indexing
 
-    # Indexing level statistics are only relevant for OHD projects.
+    # Indexing level statistics are only relevant for the umbrella project.
     return unless level_root
 
     add_section_header(csv, 'indexing_level')

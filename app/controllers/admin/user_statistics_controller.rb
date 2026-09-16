@@ -42,12 +42,12 @@ class Admin::UserStatisticsController < Admin::BaseController
   def generate_csv(locale = I18n.locale)
     live_since = current_project.live_since || current_project.created_at
 
-    users = current_project.is_ohd? ? User.where.not(confirmed_at: nil) : current_project.users
+    users = current_project.umbrella? ? User.where.not(confirmed_at: nil) : current_project.users
     users = users.where(country: params[:countries]) if params[:countries].present?
 
     archive_categories = ['job_description', 'user_projects.research_intentions', 'country', 'default_locale']
-    ohd_categories = ['country', 'default_locale']
-    date_attribute = current_project.is_ohd? ? 'users.confirmed_at' : 'user_projects.activated_at'
+    umbrella_categories = ['country', 'default_locale']
+    date_attribute = current_project.umbrella? ? 'users.confirmed_at' : 'user_projects.activated_at'
 
     time_slots = (
       total(date_attribute, locale) +
@@ -64,7 +64,7 @@ class Admin::UserStatisticsController < Admin::BaseController
         nil,
       ] + time_slots.map{|k, conditions| users.where(conditions).count }
 
-      (current_project.is_ohd? ? ohd_categories : archive_categories).each do |category|
+      (current_project.umbrella? ? umbrella_categories : archive_categories).each do |category|
         category_key = category.split('.').last
         csv << ["'=== #{TranslationValue.for("activerecord.attributes.user.#{category_key}", locale)} ==='"]
         users.
@@ -97,7 +97,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       end
 
       # add a row for each archive
-      if current_project.is_ohd?
+      if current_project.umbrella?
         date_attribute = 'user_projects.activated_at'
 
         time_slots = (
@@ -107,7 +107,7 @@ class Admin::UserStatisticsController < Admin::BaseController
         ).to_h
 
         csv << ["'=== #{TranslationValue.for("activerecord.models.project.one", locale)} ==='"]
-        Project.where.not(shortname: 'ohd').
+        Project.where.not(id: InstanceSetting.current.umbrella_project_id).
           left_joins(:user_projects).
           where.not(user_projects: {activated_at: nil}).
           group(:id).
