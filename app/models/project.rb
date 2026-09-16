@@ -167,7 +167,7 @@ class Project < ApplicationRecord
     end
 
     def ohd
-      # Deprecated compatibility alias. Use .umbrella.
+      # TODO: Deprecated compatibility alias. Use .umbrella.
       umbrella
     end
 
@@ -176,7 +176,7 @@ class Project < ApplicationRecord
     end
 
     def archive_domains
-      where.not(shortname: 'ohd').
+      where.not(id: InstanceSetting.current.umbrella_project_id).
         where.not(archive_domain: ['', nil]).
         pluck(:archive_domain).uniq
     end

@@ -4,7 +4,7 @@ module SignInRedirect
   private
 
   def set_project
-    @project = Project.where(shortname: params[:project]).first || Project.ohd
+    @project = Project.where(shortname: params[:project]).first || Project.umbrella
   end
 
   def set_path

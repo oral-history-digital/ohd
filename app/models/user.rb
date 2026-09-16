@@ -102,19 +102,19 @@ class User < ApplicationRecord
 
   def block
     subject = TranslationValue.for('devise.mailer.block.subject', self.locale_with_project_fallback)
-    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
+    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.umbrella}).deliver_later(wait: 5.seconds)
     access_tokens.destroy_all
     sessions.destroy_all
   end
 
   def revoke_block
     subject = TranslationValue.for('devise.mailer.revoke_block.subject', self.locale_with_project_fallback)
-    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
+    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.umbrella}).deliver_later(wait: 5.seconds)
   end
 
   def remove
     subject = TranslationValue.for('devise.mailer.remove.subject', self.locale_with_project_fallback)
-    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.ohd}).deliver_later(wait: 5.seconds)
+    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.umbrella}).deliver_later(wait: 5.seconds)
     RemoveUserJob.set(wait: 10.seconds).perform_later(user_id: self.id)
   end
 

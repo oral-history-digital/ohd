@@ -150,4 +150,24 @@ class ProjectTest < ActiveSupport::TestCase
     archive_ids = archive.search_facets_hash.fetch(:collection_id).fetch(:subfacets).keys
     assert_equal [archive_collection.id.to_s], archive_ids
   end
+
+  test "archive routing domains exclude configured umbrella but retain former ohd" do
+    umbrella = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a",
+      archive_domain: "http://umbrella.localhost:47001"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+    former_umbrella = Project.find_by!(shortname: "ohd")
+    former_umbrella.update!(archive_domain: "http://legacy-archive.localhost:47001")
+    @project.update!(archive_domain: "http://ordinary-archive.localhost:47001")
+
+    # Get the list of archive domains used for routing
+    domains = Project.archive_domains
+    
+    assert_not_includes domains, umbrella.archive_domain
+    assert_includes domains, former_umbrella.archive_domain
+    assert_includes domains, @project.archive_domain
+    assert_not_includes domains, nil
+    assert_not_includes domains, ""
+  end
 end
