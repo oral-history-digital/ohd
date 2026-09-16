@@ -239,10 +239,10 @@ class InterviewStatisticsExporterTest < ActiveSupport::TestCase
   test 'does not add indexing level header when level root is missing' do
     ohd_project = Project.find_by!(shortname: 'ohd')
     exporter = InterviewStatisticsExporter.new(project: ohd_project, locale: :en)
-    original_method = RegistryEntry.method(:ohd_level_of_indexing)
+    original_method = RegistryEntry.method(:umbrella_level_of_indexing)
 
     # Stub the OHD level of indexing method to return nil, simulating a missing level root.
-    RegistryEntry.define_singleton_method(:ohd_level_of_indexing) { nil }
+    RegistryEntry.define_singleton_method(:umbrella_level_of_indexing) { nil }
 
     begin
       csv = exporter.perform
@@ -252,7 +252,7 @@ class InterviewStatisticsExporterTest < ActiveSupport::TestCase
       refute_includes csv, expected_header
     ensure
       # Restore the original method to avoid side effects on other tests.
-      RegistryEntry.define_singleton_method(:ohd_level_of_indexing, original_method)
+      RegistryEntry.define_singleton_method(:umbrella_level_of_indexing, original_method)
     end
   end
 

@@ -40,11 +40,11 @@ class ApplicationRecord < ActiveRecord::Base
   }.freeze
 
   %w(subjects countries findability).each do |ref_type|
-    define_method("ohd_#{ref_type}_registry_entry_ids") do
+    define_method("umbrella_#{ref_type}_registry_entry_ids") do
       interview_ids = respond_to?(:interviews) ? interviews.pluck(:id) : [id]
-      if RegistryEntry.send("ohd_#{ref_type}")&.children&.any?
+      if RegistryEntry.send("umbrella_#{ref_type}")&.children&.any?
         RegistryReference.where(
-          registry_entry_id: RegistryEntry.send("ohd_#{ref_type}").children.pluck(:id),
+          registry_entry_id: RegistryEntry.send("umbrella_#{ref_type}").children.pluck(:id),
           ref_object_id: interview_ids,
           ref_object_type: "Interview",
         ).pluck(:registry_entry_id).uniq
@@ -57,7 +57,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   %w(subjects countries).each do |ref_type|
     define_method("oai_#{ref_type}_tags") do |xml, format=:dc|
-      RegistryEntry.where(id: send("ohd_#{ref_type}_registry_entry_ids")).each do |registry_entry|
+      RegistryEntry.where(id: send("umbrella_#{ref_type}_registry_entry_ids")).each do |registry_entry|
         opts = {}
         [:de, :en].each do |locale|
           entry_name = registry_entry.to_s(locale, fallback: false)
@@ -76,7 +76,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def oai_findability_tags(xml, format=:dc)
-    RegistryEntry.where(id: ohd_findability_registry_entry_ids).each do |registry_entry|
+    RegistryEntry.where(id: umbrella_findability_registry_entry_ids).each do |registry_entry|
       xml.tag! "#{format == :dc ? 'dc:' : ''}subject",
         registry_entry.to_s(:en),
         "xml:lang": :en
@@ -123,9 +123,9 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
-  def ohd_subject_registry_entries
+  def umbrella_subject_registry_entries
     if respond_to?(:interviews)
-      RegistryEntry.where(id: ohd_subjects_registry_entry_ids).map do |entry|
+      RegistryEntry.where(id: umbrella_subjects_registry_entry_ids).map do |entry|
         {
           descriptor: entry.localized_hash(:descriptor),
         }
@@ -135,10 +135,10 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
-  def ohd_level_of_indexing_registry_entry_groups
-    if respond_to?(:interviews) && RegistryEntry.ohd_level_of_indexing
+  def umbrella_level_of_indexing_registry_entry_groups
+    if respond_to?(:interviews) && RegistryEntry.umbrella_level_of_indexing
       RegistryReference.where(
-        registry_entry_id: RegistryEntry.ohd_level_of_indexing.children.pluck(:id),
+        registry_entry_id: RegistryEntry.umbrella_level_of_indexing.children.pluck(:id),
         ref_object_id: interviews.pluck(:id),
         ref_object_type: "Interview",
       ).group(:registry_entry_id).count
@@ -147,9 +147,9 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
-  def ohd_level_of_indexing_registry_entries
+  def umbrella_level_of_indexing_registry_entries
     if respond_to?(:interviews)
-      ohd_level_of_indexing_registry_entry_groups.map do |id, count|
+      umbrella_level_of_indexing_registry_entry_groups.map do |id, count|
         {
           descriptor: RegistryEntry.find(id).localized_hash(:descriptor),
           count: count
@@ -162,7 +162,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def has_media_files?
     if respond_to?(:interviews)
-      loim_registry_entry = RegistryEntry.ohd_level_of_indexing_media
+      loim_registry_entry = RegistryEntry.umbrella_level_of_indexing_media
       if loim_registry_entry
         loim_registry_entry.registry_references.where(interview_id: interviews.pluck(:id)).exists?
       else
@@ -175,7 +175,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def has_transcripts?
     if respond_to?(:interviews)
-      loit_registry_entry = RegistryEntry.ohd_level_of_indexing_transcript
+      loit_registry_entry = RegistryEntry.umbrella_level_of_indexing_transcript
       if loit_registry_entry
         loit_registry_entry.registry_references.where(interview_id: interviews.pluck(:id)).exists?
       else

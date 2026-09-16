@@ -215,7 +215,7 @@ class InterviewStatisticsExporter < ApplicationService
 
   def add_indexing_level_section(csv, slots)
     # Find the registry root entry that represents "level of indexing".
-    level_root = RegistryEntry.ohd_level_of_indexing
+    level_root = RegistryEntry.umbrella_level_of_indexing
 
     # Indexing level statistics are only relevant for the umbrella project.
     return unless level_root
