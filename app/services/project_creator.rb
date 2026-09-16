@@ -1,8 +1,8 @@
 class ProjectCreator < ApplicationService
   attr_accessor :project_params, :user, :project, :default_registry_name_type,
-    :root_registry_entry, :is_ohd
+    :root_registry_entry, :umbrella
 
-  def initialize(project_params, user, is_ohd = false)
+  def initialize(project_params, user, umbrella = false)
     @project_params = project_params.merge(
       archive_id_number_length: 4,
       has_map: true,
@@ -11,7 +11,8 @@ class ProjectCreator < ApplicationService
       editorial_color: '#5f8ac3',
     )
     @user = user
-    @is_ohd = is_ohd
+    # Creation mode, not a lookup of the configured umbrella project's identity.
+    @umbrella = umbrella
   end
 
   def perform(*args)
@@ -25,15 +26,15 @@ class ProjectCreator < ApplicationService
     # create_default_event_types  # Do not create default event types for now.
     create_default_interviewee_metadata_fields
     create_default_interview_metadata_fields
-    create_default_contribution_types unless is_ohd
+    create_default_contribution_types unless umbrella
     create_default_roles
-    create_default_task_types unless is_ohd
+    create_default_task_types unless umbrella
     create_default_texts
     create_default_landing_page_texts
     create_default_media_streams
     project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
-    ) unless is_ohd
+    ) unless umbrella
     project
   end
 

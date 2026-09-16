@@ -32,9 +32,9 @@ namespace :maintenance do
     }, User.where(email: 'cord.pagenstecher@cedis.fu-berlin.de').first, true)
   end
 
-  desc "create default data for projects (except ohd) (if not already present)"
+  desc "create default data for projects (except umbrella) (if not already present)"
   task create_default_data: :environment do
-    Project.where.not(shortname: 'ohd').each do |project|
+    Project.where.not(id: InstanceSetting.current.umbrella_project_id).each do |project|
       $current_project = project
       Rake::Task['roles:create_permissions'].invoke
       Rake::Task['roles:create_default_roles_and_permissions'].invoke
