@@ -11,7 +11,7 @@ import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 
 export default function RegistryReferenceForm({
-    ohdProject,
+    umbrellaProject,
     registryReference,
     registryReferenceTypes,
     registryReferenceTypesStatus,
@@ -45,8 +45,8 @@ export default function RegistryReferenceForm({
         }
     });
 
-    function isOhdRegistryReferenceType() {
-        return ohdProject.registry_reference_type_ids.includes(
+    function isUmbrellaRegistryReferenceType() {
+        return umbrellaProject.registry_reference_type_ids.includes(
             registryReferenceTypeId
         );
     }
@@ -57,7 +57,7 @@ export default function RegistryReferenceForm({
                 elementType: 'registryEntryTreeSelect',
                 attribute: 'registry_entry_id',
                 lowestAllowedRegistryEntryId,
-                loadOhdTree: isOhdRegistryReferenceType(),
+                loadOhdTree: isUmbrellaRegistryReferenceType(),
                 inTranscript,
                 goDeeper: true,
             },
@@ -157,7 +157,7 @@ export default function RegistryReferenceForm({
 }
 
 RegistryReferenceForm.propTypes = {
-    ohdProject: PropTypes.object.isRequired,
+    umbrellaProject: PropTypes.object.isRequired,
     registryReference: PropTypes.object,
     refObject: PropTypes.object,
     inTranscript: PropTypes.bool,

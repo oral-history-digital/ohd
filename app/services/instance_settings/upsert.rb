@@ -7,7 +7,6 @@ module InstanceSettings
 
     def perform
       ActiveRecord::Base.transaction do
-        update_setting!
         upsert_blocks!
       end
 
@@ -15,13 +14,6 @@ module InstanceSettings
     end
 
     private
-
-    def update_setting!
-      umbrella_project_id = @attributes['umbrella_project_id'] || @attributes[:umbrella_project_id]
-      return if umbrella_project_id.blank?
-
-      @instance_setting.update!(umbrella_project_id: umbrella_project_id)
-    end
 
     def upsert_blocks!
       blocks = @attributes['blocks'] || @attributes[:blocks] || []
