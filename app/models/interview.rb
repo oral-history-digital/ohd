@@ -849,7 +849,9 @@ class Interview < ApplicationRecord
       cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), (project ? project.updated_at : Project.maximum(:updated_at))]
         .compact.max.strftime("%d.%m-%H:%M")
 
-      Rails.cache.fetch("#{project ? project.shortname : 'ohd'}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
+      # Global results must never share a cache namespace with a single project.
+      cache_key_prefix = project ? "project-#{project.id}" : 'global'
+      Rails.cache.fetch("#{cache_key_prefix}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
         search = Interview.search do
           adjust_solr_params do |params|
             params[:rows] = project ? project.interviews.size : Interview.count
