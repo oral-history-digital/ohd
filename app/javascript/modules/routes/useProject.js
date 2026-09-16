@@ -30,6 +30,6 @@ export default function useProject() {
         projectId: currentProject?.shortname,
         // Numeric database id when available — useful for API calls that require the real id.
         projectDbId: currentProject?.id,
-        isOhd: currentProject?.is_ohd,
+        isUmbrella: currentProject?.is_umbrella,
     };
 }

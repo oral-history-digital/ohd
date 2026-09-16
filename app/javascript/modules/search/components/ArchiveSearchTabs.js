@@ -80,19 +80,17 @@ export default function ArchiveSearchTabs({
             <Fetch
                 fetchParams={[
                     'projects',
-                    project.is_ohd ? null : project.id,
+                    project.is_umbrella ? null : project.id,
                     null,
-                    project.is_ohd ? 'all' : null,
+                    project.is_umbrella ? 'all' : null,
                 ]}
                 testDataType="projects"
-                testIdOrDesc={project.is_ohd ? 'all' : project.id}
+                testIdOrDesc={project.is_umbrella ? 'all' : project.id}
             >
                 <Fetch
                     fetchParams={['collections', null, null, 'all']}
-                    //fetchParams={['collections', null, null, project.is_ohd ? 'all' : `for_projects=${project.id}`]}
                     testDataType="collections"
                     testIdOrDesc={'all'}
-                    //testIdOrDesc={project.is_ohd ? 'all' : `for_projects_${project.id}`}
                 >
                     <TabPanels className="u-mt">
                         {viewModes?.map((viewMode) => {

@@ -58,7 +58,7 @@ export default function InterviewPreviewInner({
                 )}
             </div>
 
-            {currentProject?.is_ohd && (
+            {currentProject?.is_umbrella && (
                 <InterviewArchiveDisplay project={project} />
             )}
 

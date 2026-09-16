@@ -26,7 +26,6 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     :institution_ids,
     :logos,
     :is_umbrella,
-    :is_ohd,
     :show_preview_img,
     :has_map,
     :subjects,
@@ -64,11 +63,6 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     return unless object.favicon.attached?
 
     Rails.application.routes.url_helpers.rails_blob_path(object.favicon, only_path: true)
-  end
-
-  def is_ohd
-    # TODO: Deprecated compatibility field. New clients should use is_umbrella.
-    object.umbrella?
   end
 
   def is_umbrella

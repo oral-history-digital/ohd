@@ -19,20 +19,20 @@ export default function normalizeCurrentPageWithProjectContext(
     projectContext = {}
 ) {
     const {
-        isOhd = false,
+        isUmbrella = false,
         projectShortname = null,
         projectId = null,
     } = projectContext;
 
     // Check whether the route contains a project shortname param
     const routeProjectShortname = currentPage.params?.projectShortname ?? null;
-    const isOhdLocaleRoot =
+    const isUmbrellaLocaleRoot =
         currentPage.pageType === 'project_startpage' &&
         !routeProjectShortname &&
-        isOhd;
+        isUmbrella;
 
     const fallbackProjectShortname = projectShortname ?? null;
-    const resolvedProjectShortname = isOhdLocaleRoot
+    const resolvedProjectShortname = isUmbrellaLocaleRoot
         ? null
         : (routeProjectShortname ?? fallbackProjectShortname);
     const resolvedProjectId = resolvedProjectShortname
@@ -48,7 +48,7 @@ export default function normalizeCurrentPageWithProjectContext(
         },
     };
 
-    if (isOhdLocaleRoot) {
+    if (isUmbrellaLocaleRoot) {
         return {
             ...normalizedCurrentPage,
             pageType: 'site_startpage',

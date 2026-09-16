@@ -675,7 +675,7 @@ describe('useBreadcrumbModel', () => {
             },
             project: {
                 shortname: 'adg',
-                is_ohd: false,
+                is_umbrella: false,
                 default_locale: 'de',
                 display_name: { de: 'Archiv Deutsches Gedaechtnis' },
             },
@@ -760,7 +760,7 @@ describe('useBreadcrumbModel', () => {
             },
             project: {
                 shortname: 'adg',
-                is_ohd: false,
+                is_umbrella: false,
                 default_locale: 'de',
                 display_name: { de: 'Archiv Deutsches Gedaechtnis' },
             },
@@ -837,7 +837,7 @@ describe('useBreadcrumbModel', () => {
             },
             project: {
                 shortname: 'adg',
-                is_ohd: false,
+                is_umbrella: false,
                 default_locale: 'de',
                 display_name: { de: 'Archiv Deutsches Gedaechtnis' },
             },

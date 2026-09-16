@@ -39,12 +39,12 @@ export default function RefTree({
         return Array.isArray(refTree?.project?.children);
     }
 
-    function hasOHDReferences() {
-        return Array.isArray(refTree?.ohd?.children);
+    function hasUmbrellaReferences() {
+        return Array.isArray(refTree?.umbrella?.children);
     }
 
     function hasAnyReferences() {
-        return hasProjectReferences() || hasOHDReferences();
+        return hasProjectReferences() || hasUmbrellaReferences();
     }
 
     return (
@@ -58,8 +58,8 @@ export default function RefTree({
                     {hasProjectReferences() && (
                         <RefTreeChildren entries={refTree.project.children} />
                     )}
-                    {hasOHDReferences() && (
-                        <RefTreeChildren entries={refTree.ohd.children} />
+                    {hasUmbrellaReferences() && (
+                        <RefTreeChildren entries={refTree.umbrella.children} />
                     )}
                 </div>
             ) : (

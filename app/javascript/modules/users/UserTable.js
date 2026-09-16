@@ -61,18 +61,18 @@ export default function UserTable() {
         setLocaleFilter(value);
     };
     const localeFilterValues = ['all'].concat(
-        project.is_ohd
+        project.is_umbrella
             ? ['de', 'en', 'ru', 'es', 'el']
             : project.available_locales
     );
 
     const [workflowStateFilter, setWorkflowStateFilter] = useState(
-        project.is_ohd ? 'afirmed' : 'project_access_requested'
+        project.is_umbrella ? 'afirmed' : 'project_access_requested'
     );
     const handleWorkflowStateFilterChange = (_, value) => {
         setWorkflowStateFilter(value);
     };
-    const workflowStateFilterValues = project.is_ohd
+    const workflowStateFilterValues = project.is_umbrella
         ? ['afirmed', 'blocked', 'all']
         : [
               'project_access_requested',
@@ -133,7 +133,7 @@ export default function UserTable() {
         [locale]
     );
 
-    const ohdColumns = useMemo(
+    const umbrellaColumns = useMemo(
         () => [
             {
                 id: 'workflow_state',
@@ -169,7 +169,7 @@ export default function UserTable() {
                         project
                     ).workflow_state;
                     return t(
-                        `workflow_states.user${project.is_ohd ? '' : '_project'}s.${workflowState}`
+                        `workflow_states.user${project.is_umbrella ? '' : '_project'}s.${workflowState}`
                     );
                 },
             },
@@ -208,7 +208,7 @@ export default function UserTable() {
             },
         ];
 
-        if (!project.is_ohd) {
+        if (!project.is_umbrella) {
             columns.push({
                 id: 'interviewPermissions',
                 enableSorting: false,
@@ -222,7 +222,7 @@ export default function UserTable() {
     }, [locale, project, dataPath]);
 
     const columns = baseColumns
-        .concat(!project.is_ohd ? projectColumns : ohdColumns)
+        .concat(!project.is_umbrella ? projectColumns : umbrellaColumns)
         .concat(actionColumns);
 
     return (
@@ -252,7 +252,7 @@ export default function UserTable() {
                         values={workflowStateFilterValues}
                         label={t('activerecord.attributes.user.workflow_state')}
                         attribute="workflow_state"
-                        optionsScope={`workflow_states.user${project.is_ohd ? '' : '_project'}s`}
+                        optionsScope={`workflow_states.user${project.is_umbrella ? '' : '_project'}s`}
                         handleChange={handleWorkflowStateFilterChange}
                         withEmpty={false}
                         keepOrder={true}
@@ -282,7 +282,7 @@ export default function UserTable() {
                         withEmpty={true}
                         keepOrder={true}
                     />
-                    {project.is_ohd && (
+                    {project.is_umbrella && (
                         <>
                             <SelectField
                                 className="UserTable-filter"
@@ -315,7 +315,7 @@ export default function UserTable() {
                             />
                         </>
                     )}
-                    {!project.is_ohd && (
+                    {!project.is_umbrella && (
                         <Fetch
                             fetchParams={[
                                 'roles',
