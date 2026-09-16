@@ -14,7 +14,7 @@ namespace :roles do
 
   desc 'create default roles and permissions' 
   task :create_default_roles_and_permissions => :environment do
-    Project.where.not(shortname: 'ohd').each do |project|
+    Project.where.not(id: InstanceSetting.current.umbrella_project_id).each do |project|
       YAML.load_file(File.join(Rails.root, 'config/defaults/roles.yml')).each do |role_permission|
         role = Role.find_or_create_by(name: role_permission[:attributes][0][:translations_attributes][0]["name"], project_id: project.id)
         role_permission[:permissions].each do |permission|

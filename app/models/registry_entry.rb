@@ -239,8 +239,9 @@ class RegistryEntry < ApplicationRecord
       findability
     ).each do |code|
       define_method "ohd_#{code}" do
-        Project.umbrella.root_registry_entry.children.find_by(code: code) ||
-          find_by(code: code)
+        umbrella = Project.umbrella
+        umbrella.root_registry_entry.children.find_by(code: code) ||
+          umbrella.registry_entries.find_by(code: code)
       end
     end
 

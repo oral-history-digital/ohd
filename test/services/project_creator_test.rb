@@ -31,6 +31,21 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert @project.registry_name_types.where(code: 'ancient').exists?
   end
 
+  test 'umbrella creation mode skips archive-only defaults regardless of shortname' do
+    # Create a new project in umbrella mode, which should skip archive-only defaults 
+    # like contribution_types and task_types
+    project = ProjectCreator.perform(
+      @project_params.merge(shortname: "umb#{SecureRandom.hex(2)}a"), @user, true
+    )
+
+    assert project.persisted?
+    assert project.root_registry_entry.present?
+    assert project.roles.exists?
+    assert_empty project.contribution_types
+    assert_empty project.task_types
+    refute_includes Array(project.upload_types), 'bulk_metadata'
+  end
+
   %w(root places people subjects).each do |code|
     test "creates default #{code} registry_entry" do
       assert @project.registry_entries.where(code: code).exists?
