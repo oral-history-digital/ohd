@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.0] - 2026-09-16
+
+### Added
+
+- feat: use configured umbrella project ([#145](https://github.com/oral-history-digital/ohd/pull/145))
+- added turkish to available locales ([c756dc07c](https://github.com/oral-history-digital/ohd/commit/c756dc07c9596d44ffd1bf6e555fd6c2cec5772e))
+- adding turkish default texts ([71205d832](https://github.com/oral-history-digital/ohd/commit/71205d832300796f63b4c249835ccc0440889c8e))
+- enable en fallbacks (if en translations loaded) ([4ab921e4f](https://github.com/oral-history-digital/ohd/commit/4ab921e4f4a4a9d7713947a869d48906df7cbf41))
+- feat: add confirmation modal ([#144](https://github.com/oral-history-digital/ohd/pull/144))
+
+### Fixed
+
+- fix: library updates ([#140](https://github.com/oral-history-digital/ohd/pull/140))
+- fix: update jsdoc to version 4.0.5 and add resolutions for immutable ([#141](https://github.com/oral-history-digital/ohd/pull/141))
+- fix: improve test stability ([#147](https://github.com/oral-history-digital/ohd/pull/147))
+- fix: prevent race in password recovery email validation ([093187860](https://github.com/oral-history-digital/ohd/commit/093187860496540f28950bb55f1e287a2107b28a))
+
+### Changed
+
+- refactor: admin module ([#139](https://github.com/oral-history-digital/ohd/pull/139))
+
+### Removed
+
+- chore: remove unused files for cleanup ([#148](https://github.com/oral-history-digital/ohd/pull/148))
+
 ## [2.8.0] - 2026-09-02
 
 ### Added
