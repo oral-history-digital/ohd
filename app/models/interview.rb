@@ -884,9 +884,9 @@ class Interview < ApplicationRecord
         # the follwing is a really restrictive approach
         # it allows only users with project-access to find interviews of those projects
         #with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')
-        if project.is_ohd? && user && params[:fulltext]
+        if project.umbrella? && user && params[:fulltext]
           with(:project_id, user&.accessible_projects&.pluck(:id))
-        elsif project.is_ohd? && !params[:fulltext]
+        elsif project.umbrella? && !params[:fulltext]
           with(:project_id, Project.where(workflow_state: 'public').pluck(:id))
         else
           with(:project_id, project.id)
