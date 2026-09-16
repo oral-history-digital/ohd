@@ -80,7 +80,7 @@ class UsersController < ApplicationController
       "modules.registration.messages.#{msg}",
       params[:locale],
       email: email,
-      project: current_project ? current_project.name : 'Oral-History.Digital'
+      project: (current_project || Project.umbrella).name(params[:locale])
     )
 
     respond_to do |format|

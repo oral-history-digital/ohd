@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -90,6 +91,34 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     user_ids = JSON.parse(response.body).fetch('data').map { |user| user.fetch('id') }
     assert_includes user_ids, member.id
     assert_not_includes user_ids, admin.id
+  end
+
+  test 'registration messages use localized umbrella fallback but preserve archive context' do
+    umbrella = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a", name: 'Shared platform')
+    Globalize.with_locale(:de) { umbrella.update!(name: 'Gemeinsame Plattform') }
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+    
+    # Make the portal request genuinely global, with no matching project domain.
+    Project.where(archive_domain: OHD_DOMAIN).update_all(archive_domain: '')
+    original_translation = TranslationValue.method(:for)
+    translation = ->(key, locale, **values) do
+      if key.start_with?('modules.registration.messages.')
+        values.fetch(:project)
+      else
+        original_translation.call(key, locale, **values)
+      end
+    end
+
+    TranslationValue.stub(:for, translation) do
+      get '/de/users/check_email.json', params: { email: 'not-registered@example.com' }
+      assert_response :success
+      assert_equal umbrella.name('de'), JSON.parse(response.body).fetch('msg')
+
+      archive = Project.find_by!(shortname: 'ohd')
+      get '/ohd/de/users/check_email.json', params: { email: 'not-registered@example.com' }
+      assert_response :success
+      assert_equal archive.name('de'), JSON.parse(response.body).fetch('msg')
+    end
   end
 
   private
