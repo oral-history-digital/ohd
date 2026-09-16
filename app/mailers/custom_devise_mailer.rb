@@ -22,10 +22,11 @@ class CustomDeviseMailer < Devise::Mailer
     return if ['removed', 'blocked'].include?(record.workflow_state)
     @token = token
 
+    umbrella = Project.umbrella
     domain = OHD_DOMAIN
-    contact_email = 'mail@oral-history.digital'
+    contact_email = umbrella.contact_email
     locale = record.default_locale || 'de'
-    @project_name = 'Oral-History.Digital'
+    @project_name = umbrella.name(locale)
     @application_type = :interview_portal 
 
     if record.unconfirmed_email
@@ -42,13 +43,11 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def reset_password_instructions(record, token, opts={})
-    token = token
-    project = opts[:project]
-
+    umbrella = Project.umbrella
     domain = OHD_DOMAIN
-    contact_email = 'mail@oral-history.digital'
+    contact_email = umbrella.contact_email
     locale = record.default_locale || 'de'
-    @project_name = 'Oral-History.Digital'
+    @project_name = umbrella.name(locale)
 
     @url = "#{domain}/#{locale}/users/password/edit?reset_password_token=#{token}"
 
