@@ -195,7 +195,12 @@ class Project < ApplicationRecord
   end
 
   def is_ohd?
-    identifier == 'ohd'
+    # Deprecated compatibility alias. Use umbrella? for new role checks.
+    umbrella?
+  end
+
+  def umbrella?
+    id == InstanceSetting.current.umbrella_project_id
   end
 
   def interviewer_on_landing_page?
