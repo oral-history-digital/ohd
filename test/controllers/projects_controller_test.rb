@@ -332,7 +332,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       use_in_transcript: false
     )
 
-    subject_entry = RegistryEntry.ohd_subjects&.children&.first
+    subject_entry = RegistryEntry.umbrella_subjects&.children&.first
     if subject_entry
       RegistryReference.create!(
         interview: interview,
@@ -343,7 +343,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
       )
     end
 
-    level_entry = RegistryEntry.ohd_level_of_indexing&.children&.first
+    level_entry = RegistryEntry.umbrella_level_of_indexing&.children&.first
     if level_entry
       RegistryReference.create!(
         interview: interview,

@@ -47,7 +47,7 @@ class RegistryEntryTest < ActiveSupport::TestCase
     assert_includes archive_ids, @interview2.archive_id
   end
 
-  test "ohd helpers use the configured umbrella registry" do
+  test "umbrella helpers use the configured umbrella registry" do
     umbrella_project = DataHelper.test_project(
       shortname: "umb#{SecureRandom.hex(2)}a"
     )
@@ -55,7 +55,7 @@ class RegistryEntryTest < ActiveSupport::TestCase
     subjects = umbrella_project.root_registry_entry.create_child("Subjects", :en)
     subjects.update!(code: "subjects")
 
-    assert_equal subjects, RegistryEntry.ohd_subjects
+    assert_equal subjects, RegistryEntry.umbrella_subjects
   end
 
   test "umbrella registry fallback never selects another project's entry" do
@@ -65,11 +65,11 @@ class RegistryEntryTest < ActiveSupport::TestCase
     other_subjects.update!(code: 'subjects')
 
     # A matching code elsewhere must not substitute for missing shared data.
-    assert_nil RegistryEntry.ohd_subjects
+    assert_nil RegistryEntry.umbrella_subjects
 
     # Legacy entries outside the root tree still work, but only within umbrella.
     subjects = RegistryEntry.create!(project: umbrella_project, code: 'subjects', workflow_state: 'public')
-    assert_equal subjects, RegistryEntry.ohd_subjects
+    assert_equal subjects, RegistryEntry.umbrella_subjects
   end
 
 end
