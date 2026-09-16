@@ -74,28 +74,6 @@ RUN RAILS_ENV=production \
 # =============================================================================
 FROM base AS runtime
 
-# Install only runtime system dependencies (no build tools)
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    --no-install-recommends \
-    # Runtime only - no build-essential
-    default-mysql-client \
-    libmariadb3 \
-    libxml2 \
-    libxslt1.1 \
-    libmagickwand-6.q16-6 \
-    libffi8 \
-    default-jre-headless \
-    # PDF generation via rails-latex gem (required)
-    texlive-base \
-    texlive-xetex \
-    fonts-freefont-ttf \
-    fonts-noto \
-    # Utilities
-    curl \
-    netcat-openbsd \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 # Copy bundler from builder with appuser ownership so runtime bundle install
 # works when /usr/local/bundle is mounted as a named volume in local dev.
 COPY --from=builder --chown=appuser:appuser /usr/local/bundle /usr/local/bundle
@@ -129,8 +107,8 @@ USER appuser
 EXPOSE 3000
 
 # Health check endpoint
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+#HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  #CMD curl -f http://localhost:3000/health || exit 1
 
 # Default environment
 ENV RAILS_ENV=production \
@@ -141,4 +119,5 @@ ENV RAILS_ENV=production \
     PORT=3000
 
 # Default command (can be overridden in docker-compose or Capistrano)
+LABEL service="ohd"
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

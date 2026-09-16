@@ -121,5 +121,13 @@ Rails.application.configure do
     config.hosts << "portal.oral-history.localhost"
   end
 
+  config.hosts << IPAddr.new("10.0.0.0/8")
+  config.hosts << IPAddr.new("172.16.0.0/12")
+  config.hosts << IPAddr.new("192.168.0.0/16")
+
+  config.host_authorization = {
+    exclude: ->(request) { request.path == "/up" }
+  }
+
   config.hosts.uniq!
 end
