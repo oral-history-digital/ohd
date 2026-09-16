@@ -259,7 +259,7 @@ class SearchesController < ApplicationController
     respond_to do |format|
       format.json do
         dropdown_values = Interview.dropdown_search_values(current_project, current_user)
-        cache_key_prefix = current_project.present? ? current_project.shortname : 'OHD'
+        cache_key_prefix = current_project.present? ? "project-#{current_project.id}" : 'global'
         render json: {
           all_interviews_titles: current_user ? dropdown_values[:all_interviews_titles] : [],
           all_interviews_pseudonyms: current_user ? dropdown_values[:all_interviews_pseudonyms] : [],
