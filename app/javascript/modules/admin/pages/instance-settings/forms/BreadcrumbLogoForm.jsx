@@ -99,8 +99,6 @@ export default function BreadcrumbLogoForm({
 
     return (
         <section className="InstanceBreadcrumbLogoForm">
-            <h2>{t('edit.instance.breadcrumb_logos.title')}</h2>
-            <p>{t('edit.instance.breadcrumb_logos.description')}</p>
             <Form
                 disableIfUnchanged
                 elements={elements}
