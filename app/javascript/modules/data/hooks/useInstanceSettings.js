@@ -1,10 +1,13 @@
 import { useState } from 'react';
 
 import buildFormData from 'modules/api/buildFormData';
+import { replaceInstanceSettings } from 'modules/data';
 import { usePathBase } from 'modules/routes';
+import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
 export function useInstanceSettings() {
+    const dispatch = useDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const pathBase = usePathBase();
     const path = `${pathBase}/admin/instance-settings.json`;
@@ -40,6 +43,7 @@ export function useInstanceSettings() {
 
         const updated = await res.json();
         mutate(updated, { revalidate: false });
+        dispatch(replaceInstanceSettings(updated.data));
         return updated;
     }
 
@@ -63,6 +67,7 @@ export function useInstanceSettings() {
 
         const updated = await res.json();
         mutate(updated, { revalidate: false });
+        dispatch(replaceInstanceSettings(updated.data));
         return updated;
     }
 
@@ -80,6 +85,7 @@ export function useInstanceSettings() {
 
         const updated = await res.json();
         mutate(updated, { revalidate: false });
+        dispatch(replaceInstanceSettings(updated.data));
         return updated;
     }
 
