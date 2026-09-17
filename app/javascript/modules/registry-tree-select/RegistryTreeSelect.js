@@ -6,7 +6,7 @@ import useRegistryTree from './useRegistryTree';
 
 export default function TreeSelect(props) {
     const { isLoading, data: tree } = useRegistryTree(
-        props.loadOhdTree,
+        props.loadUmbrellaTree,
         props.data?.registry_entry_id
     );
 
@@ -20,7 +20,7 @@ export default function TreeSelect(props) {
 }
 
 TreeSelect.propTypes = {
-    loadOhdTree: PropTypes.bool.isRequired,
+    loadUmbrellaTree: PropTypes.bool.isRequired,
     data: PropTypes.object,
     attribute: PropTypes.string,
     value: PropTypes.any,
