@@ -80,3 +80,20 @@ test('supports persisted files supplied by a form element definition', () => {
         document.querySelector('.FileInputField-preview img')
     ).toHaveAttribute('src', '/hero-de.png');
 });
+
+test('passes persisted-file removal to the parent form', () => {
+    const onRemoveCurrent = jest.fn();
+    render(
+        <FileInputFormElement
+            {...defaultProps}
+            currentFiles={{ name: 'logo.svg', url: '/logo.svg' }}
+            onRemoveCurrent={onRemoveCurrent}
+        />
+    );
+
+    fireEvent.click(
+        screen.getByRole('button', { name: 'file_input.remove: logo.svg' })
+    );
+
+    expect(onRemoveCurrent).toHaveBeenCalledTimes(1);
+});

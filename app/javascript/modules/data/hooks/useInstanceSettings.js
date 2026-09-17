@@ -43,6 +43,46 @@ export function useInstanceSettings() {
         return updated;
     }
 
+    async function updateBreadcrumbLogo(variant, file) {
+        setIsSubmitting(true);
+
+        const formData = new FormData();
+        formData.append('instance_setting[file]', file);
+        const res = await fetch(
+            `${pathBase}/admin/instance-settings/breadcrumb-logo/${variant}.json`,
+            {
+                method: 'PUT',
+                headers: { Accept: 'application/json' },
+                body: formData,
+            }
+        );
+
+        setIsSubmitting(false);
+        if (!res.ok)
+            throw new Error(`Request failed with status ${res.status}`);
+
+        const updated = await res.json();
+        mutate(updated, { revalidate: false });
+        return updated;
+    }
+
+    async function removeBreadcrumbLogo(variant) {
+        setIsSubmitting(true);
+
+        const res = await fetch(
+            `${pathBase}/admin/instance-settings/breadcrumb-logo/${variant}.json`,
+            { method: 'DELETE', headers: { Accept: 'application/json' } }
+        );
+
+        setIsSubmitting(false);
+        if (!res.ok)
+            throw new Error(`Request failed with status ${res.status}`);
+
+        const updated = await res.json();
+        mutate(updated, { revalidate: false });
+        return updated;
+    }
+
     return {
         isLoading,
         isSubmitting,
@@ -50,6 +90,8 @@ export function useInstanceSettings() {
         mutate,
         instanceSettings: response?.data,
         updateInstanceSettings,
+        updateBreadcrumbLogo,
+        removeBreadcrumbLogo,
     };
 }
 

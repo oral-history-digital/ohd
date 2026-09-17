@@ -8,6 +8,7 @@ import { Spinner } from 'modules/spinners';
 import { Helmet } from 'react-helmet';
 
 import { EditViewOrRedirect } from '../../components';
+import BreadcrumbLogoForm from './BreadcrumbLogoForm';
 import HomepageBlockForm from './HomepageBlockForm';
 
 export default function InstanceSettingsAdminPage() {
@@ -19,6 +20,8 @@ export default function InstanceSettingsAdminPage() {
         error,
         instanceSettings,
         updateInstanceSettings,
+        updateBreadcrumbLogo,
+        removeBreadcrumbLogo,
     } = useInstanceSettings();
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -189,6 +192,12 @@ export default function InstanceSettingsAdminPage() {
                         {!isLoading && error && <p>{error.message}</p>}
                         {!isLoading && !error && instanceSettings && (
                             <>
+                                <BreadcrumbLogoForm
+                                    instanceSettings={instanceSettings}
+                                    isSubmitting={isSubmitting}
+                                    onUpload={updateBreadcrumbLogo}
+                                    onRemove={removeBreadcrumbLogo}
+                                />
                                 <Tabs
                                     className="AdminEditInstance-tabs"
                                     index={tabIndex}
