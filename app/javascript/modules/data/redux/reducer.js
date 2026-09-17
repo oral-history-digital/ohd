@@ -3,6 +3,7 @@ import {
     RECEIVE_DATA,
     RECEIVE_ERROR,
     REMOVE_DATA,
+    REPLACE_INSTANCE_SETTINGS,
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
@@ -12,6 +13,7 @@ const initialState = {
         current: null,
     },
     projects: {},
+    instance_settings: null,
     statuses: {
         users: { resultPagesCount: 1 },
         interviews: {},
@@ -42,6 +44,8 @@ const initialState = {
 
 export const dataReducer = (state = initialState, action) => {
     switch (action.type) {
+        case REPLACE_INSTANCE_SETTINGS:
+            return { ...state, instance_settings: action.data };
         case DELETE_STATUS_MSG:
             return Object.assign({}, state, {
                 statuses: Object.assign({}, state.statuses, {
