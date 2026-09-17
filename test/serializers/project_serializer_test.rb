@@ -24,6 +24,17 @@ class ProjectSerializerTest < ActiveSupport::TestCase
     assert_nil ProjectSerializer.new(project).as_json[:favicon_url]
   end
 
+  test "includes the raw display shortname in project payloads" do
+    project = DataHelper.test_project(
+      shortname: "dsp#{SecureRandom.hex(2)}a",
+      display_shortname: 'Display label'
+    )
+
+    [ProjectSerializer, ProjectBaseSerializer, ProjectArchiveSerializer].each do |serializer|
+      assert_equal 'Display label', serializer.new(project).as_json[:display_shortname]
+    end
+  end
+
   test "identifies configured umbrella project without legacy compatibility flag" do
     project = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a")
     InstanceSetting.current.update!(umbrella_project: project)

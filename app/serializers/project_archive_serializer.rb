@@ -3,6 +3,7 @@ class ProjectArchiveSerializer < ActiveModel::Serializer
     :name,
     :display_name,
     :shortname,
+    :display_shortname,
     :archive_domain,
     :oai_doi_identifier,
     :latitude,
