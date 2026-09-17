@@ -66,16 +66,7 @@ export default function EditProjectDisplayPage() {
                     />
                     <ProjectFaviconForm project={project} />
                     <h2>{t(`edit.logo.admin`)}</h2>
-                    <Logos
-                        data={project.logos}
-                        outerScope={'project'}
-                        outerScopeId={project.id}
-                        initialFormValues={{
-                            ref_id: project.id,
-                            ref_type: 'Project',
-                            type: 'Logo',
-                        }}
-                    />
+                    <Logos />
                     <h2>{t(`edit.sponsor_logo.admin`)}</h2>
                     <SponsorLogos />
                     {user?.admin && (
