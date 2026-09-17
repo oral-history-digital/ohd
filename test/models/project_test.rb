@@ -52,6 +52,13 @@ class ProjectTest < ActiveSupport::TestCase
     assert_operator @parent_institution.updated_at, :>, 1.day.ago
   end
 
+  test "limits display shortname to the database column length" do
+    @project.display_shortname = 'a' * 256
+
+    assert_not @project.valid?
+    assert @project.errors.added?(:display_shortname, :too_long, count: 255)
+  end
+
   test "accepts PNG and icon favicons up to one megabyte" do
     @project.favicon.attach(
       io: StringIO.new("favicon"),

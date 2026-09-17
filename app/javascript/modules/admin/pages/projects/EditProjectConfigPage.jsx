@@ -20,10 +20,15 @@ export default function EditProjectConfigPage() {
     const formElements = [
         {
             attribute: 'shortname',
+            help: 'activerecord.attributes.project.shortname_help',
             validate: function (v) {
                 return /^[-a-z0-9]{1,11}[a-z]$/.test(v);
             },
             hidden: !user?.admin,
+        },
+        {
+            attribute: 'display_shortname',
+            help: 'activerecord.attributes.project.display_shortname_help',
         },
         {
             attribute: 'domain',
