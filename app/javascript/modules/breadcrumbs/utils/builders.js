@@ -52,7 +52,7 @@ export function buildInterviewItems(currentPage, context) {
         params.archiveId ||
         labels.interview_detail;
 
-    // Start empty (Project Home will be added globally for non-OHD projects)
+    // Start empty (Project Home will be added globally for non-umbrella projects)
     const items = [];
 
     // If the interview belongs to a collection, include that as an intermediate breadcrumb item

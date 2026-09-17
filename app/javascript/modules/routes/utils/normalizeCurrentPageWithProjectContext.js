@@ -5,14 +5,14 @@
  * - `getCurrentPageFromLocation` intentionally stays URL-only and pure.
  * - Some screens still need project context values (`projectShortname`, numeric
  *   `projectId`) even when the URL has no explicit project segment.
- * - The OHD locale root (`/:locale`, e.g. `/de`) is a special case: this page
+ * - The umbrella locale root (`/:locale`, e.g. `/de`) is a special case: this page
  *   must remain a site page (`site_startpage`) with no project identifiers.
  *
  * Rules:
  * 1. URL-derived `params.projectShortname` is authoritative when present.
- * 2. If missing, fallback to project context only outside the OHD locale root case.
+ * 2. If missing, fallback to project context only outside the umbrella locale root case.
  * 3. Numeric `projectId` is only set when a project shortname is resolved.
- * 4. OHD locale root remaps `project_startpage` to `site_startpage`.
+ * 4. Umbrella locale root remaps `project_startpage` to `site_startpage`.
  */
 export default function normalizeCurrentPageWithProjectContext(
     currentPage,

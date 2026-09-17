@@ -359,10 +359,10 @@ export const getProjectLocales = createSelector(
 export const getStartpageProjects = createSelector(
     [getPublicProjects],
     (projects) => {
-        const projectsWithoutOhd = projects.filter(
+        const projectsWithoutUmbrella = projects.filter(
             (project) => !project.is_umbrella
         );
-        return shuffle(projectsWithoutOhd);
+        return shuffle(projectsWithoutUmbrella);
     }
 );
 
