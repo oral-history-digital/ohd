@@ -61,6 +61,31 @@ class Admin::HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
     assert_match '/users/sign_in', response.location
   end
 
+  test 'should allow admin to upload and remove a breadcrumb logo' do
+    login_as User.find_by!(email: 'alice@example.com')
+    get admin_instance_setting_path(locale: 'de', format: :json)
+    assert_response :success
+
+    upload = Rack::Test::UploadedFile.new(
+      StringIO.new('<svg xmlns="http://www.w3.org/2000/svg"/>'),
+      'image/svg+xml',
+      original_filename: 'logo.svg'
+    )
+
+    put '/de/admin/instance-settings/breadcrumb-logo/breadcrumb_logo.json', params: {
+      instance_setting: { file: upload }
+    }
+
+    assert_response :success
+    assert InstanceSetting.current.reload.breadcrumb_logo.attached?
+    assert_match %r{/rails/active_storage/blobs/}, JSON.parse(response.body).dig('data', 'breadcrumb_logo_url')
+
+    delete '/de/admin/instance-settings/breadcrumb-logo/breadcrumb_logo.json'
+
+    assert_response :success
+    assert_not InstanceSetting.current.reload.breadcrumb_logo.attached?
+  end
+
   private
 
   def upsert_translation(block, locale, heading)
