@@ -1,15 +1,18 @@
 /* global railsMode */
 /* global VERSION */
 import { GITHUB_URL, OHD_DOMAINS } from 'modules/constants';
+import { getUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import { FaGithub } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ProjectFooter from './ProjectFooter';
 
 export function SiteFooter() {
     const { project, projectId } = useProject();
+    const umbrellaProject = useSelector(getUmbrellaProject);
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
 
@@ -17,6 +20,11 @@ export function SiteFooter() {
 
     const links = project.external_links || {};
     const sponsorLogos = project.sponsor_logos || [];
+    const umbrellaShortname =
+        umbrellaProject?.display_shortname || umbrellaProject?.shortname;
+    const umbrellaConditionsLabel = umbrellaShortname
+        ? `${t('conditions')} (${umbrellaShortname})`
+        : t('conditions');
 
     return (
         <footer>
@@ -39,9 +47,9 @@ export function SiteFooter() {
                             href={`${OHD_DOMAINS[railsMode]}/${locale}/conditions`}
                             target="_blank"
                             rel="noreferrer"
-                            title={`${t('conditions')} (oh.d)`} // TODO: Replace hardcoded string with umbrella project shortname
+                            title={umbrellaConditionsLabel}
                         >
-                            {`${t('conditions')} (oh.d)`}
+                            {umbrellaConditionsLabel}
                         </a>
                     </li>
                 }
