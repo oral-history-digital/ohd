@@ -7,6 +7,7 @@ import {
     RECEIVE_DATA,
     RECEIVE_ERROR,
     REMOVE_DATA,
+    REPLACE_INSTANCE_SETTINGS,
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
@@ -59,6 +60,11 @@ export const receiveData = (json) => ({
     msg: json.msg,
     page: json.page,
     resultPagesCount: json.result_pages_count,
+});
+
+export const replaceInstanceSettings = (data) => ({
+    type: REPLACE_INSTANCE_SETTINGS,
+    data,
 });
 
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
