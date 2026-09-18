@@ -31,6 +31,21 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert @project.registry_name_types.where(code: 'ancient').exists?
   end
 
+  test 'umbrella creation mode skips archive-only defaults regardless of shortname' do
+    # Create a new project in umbrella mode, which should skip archive-only defaults 
+    # like contribution_types and task_types
+    project = ProjectCreator.perform(
+      @project_params.merge(shortname: "umb#{SecureRandom.hex(2)}a"), @user, true
+    )
+
+    assert project.persisted?
+    assert project.root_registry_entry.present?
+    assert project.roles.exists?
+    assert_empty project.contribution_types
+    assert_empty project.task_types
+    refute_includes Array(project.upload_types), 'bulk_metadata'
+  end
+
   %w(root places people subjects).each do |code|
     test "creates default #{code} registry_entry" do
       assert @project.registry_entries.where(code: code).exists?
@@ -118,11 +133,34 @@ class ProjectCreatorTest < ActiveSupport::TestCase
     assert_equal ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"], @project.upload_types
   end
 
+  test 'uses configured umbrella reference types for shared metadata fields' do
+    umbrella_project = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+    umbrella_type = RegistryReferenceType.create!(
+      project: umbrella_project,
+      registry_entry: umbrella_project.root_registry_entry,
+      code: "level_of_indexing_ohd",
+      name: "Level of indexing"
+    )
+
+    created_project = ProjectCreator.perform(
+      @project_params.merge(shortname: "new#{SecureRandom.hex(2)}a"),
+      @user
+    )
+    metadata_field = created_project.metadata_fields.find_by!(
+      name: "level_of_indexing_ohd"
+    )
+
+    assert_equal umbrella_type, metadata_field.registry_reference_type
+  end
+
   test 'creats default landing_page_texts' do
-    assert_equal @project.landing_page_text('de'), 'Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.'
-    assert_equal @project.landing_page_text('en'), 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.'
-    assert_equal @project.restricted_landing_page_text(:de), '<p>Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.</p><p>Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.</p>'
-    assert_equal @project.restricted_landing_page_text(:en), '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>'
+    assert_equal @project.landing_page_text('de'), 'Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.'.gsub('Oral-History.Digital', Project.umbrella.name('de'))
+    assert_equal @project.landing_page_text('en'), 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.'.gsub('Oral-History.Digital', Project.umbrella.name('en'))
+    assert_equal @project.restricted_landing_page_text(:de), '<p>Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.</p><p>Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.</p>'.gsub('Oral-History.Digital', Project.umbrella.name('de'))
+    assert_equal @project.restricted_landing_page_text(:en), '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>'.gsub('Oral-History.Digital', Project.umbrella.name('en'))
   end
 
 end

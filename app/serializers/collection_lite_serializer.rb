@@ -92,13 +92,13 @@ class CollectionLiteSerializer < ActiveModel::Serializer
   end
 
   def subjects
-    object.ohd_subject_registry_entries.map do |subject|
+    object.umbrella_subject_registry_entries.map do |subject|
       localized_descriptor(subject[:descriptor])
     end
   end
 
   def levels_of_indexing
-    object.ohd_level_of_indexing_registry_entries.map do |level|
+    object.umbrella_level_of_indexing_registry_entries.map do |level|
       {
         descriptor: localized_descriptor(level[:descriptor]),
         count: level[:count]

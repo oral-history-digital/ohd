@@ -21,7 +21,7 @@ html
           - if params[:controller] != 'passkeys'
             header.LoginHeader
               = image_tag  "/logo-ohd.svg", class: 'LoginHeader-logo'
-              - if @project && @project.logo && !@project.is_ohd?
+              - if @project && @project.logo && !@project.umbrella?
                 = image_tag @project.logo.file, class: 'LoginHeader-logo'
 
           main.Site-content
