@@ -3,16 +3,18 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import ProjectAccessGrantedCell from './ProjectAccessGrantedCell';
 
 describe('<ProjectAccessGrantedCell />', () => {
-    it('counts granted non-OHD user projects', () => {
+    it('counts granted projects excluding only the configured umbrella', () => {
         const row = {
             original: {
                 user_projects: {
                     1: {
-                        shortname: 'ohd',
+                        shortname: 'shared',
+                        is_umbrella: true,
                         workflow_state: 'project_access_granted',
                     },
                     2: {
-                        shortname: 'test',
+                        shortname: 'ohd',
+                        is_umbrella: false,
                         workflow_state: 'project_access_granted',
                     },
                     3: {
@@ -29,6 +31,6 @@ describe('<ProjectAccessGrantedCell />', () => {
 
         expect(
             renderToStaticMarkup(<ProjectAccessGrantedCell row={row} />)
-        ).toContain('2');
+        ).toBe('<p>2</p>');
     });
 });

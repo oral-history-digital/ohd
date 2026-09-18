@@ -31,8 +31,8 @@ export function useCheckLocaleAgainstProject() {
             return;
         }
 
-        // make exception for password paths
-        // TODO: removethis exception when all locales are present in OHD
+        // Allow account and legal pages independently of the current project's locales.
+        // TODO: Remove this exception when all locales are present
         const password = location.pathname.match(/\/password\//);
         const confirmation = location.pathname.match(/\/confirmation\?/);
         const conditions = location.pathname.match(/\/conditions$/);

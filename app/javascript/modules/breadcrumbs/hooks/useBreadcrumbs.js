@@ -16,7 +16,7 @@ export function useBreadcrumbs() {
         return [];
     }
 
-    const projectLabel = project.is_ohd
+    const projectLabel = project.is_umbrella
         ? null
         : getProjectLabel(project, locale);
 
@@ -39,7 +39,7 @@ export function useBreadcrumbs() {
         ...(item.loading ? { loading: true } : {}),
     }));
 
-    // Add project root as first breadcrumb item for non-OHD projects
+    // Add project root as first breadcrumb item for non-umbrella projects
     const shouldPrependProjectRoot =
         projectLabel && crumbs.length > 0 && crumbs[0]?.isProjectRoot !== true;
 

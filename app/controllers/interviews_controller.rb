@@ -407,13 +407,12 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.shortname}-interview-ref-tree-#{@interview.id}-#{@interview.updated_at}" do
+        json = Rails.cache.fetch "#{current_project.shortname}-interview-ref-tree-v2-#{@interview.id}-#{@interview.updated_at}" do
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           umbrella_part = ref_tree.part(Project.umbrella.root_registry_entry.id)
           project_part = ref_tree.part(current_project.root_registry_entry.id)
           {
-            # TODO: Remove the legacy response key once the frontend contract is migrated.
-            data: { "ohd": umbrella_part, "project": project_part },
+            data: { "umbrella": umbrella_part, "project": project_part },
             nested_data_type: "ref_tree",
             data_type: "interviews",
             archive_id: params[:id],

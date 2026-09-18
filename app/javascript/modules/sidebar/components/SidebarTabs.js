@@ -87,29 +87,29 @@ export default function SidebarTabs({
         }
     }
 
-    const showCatalogTab = project?.is_ohd;
+    const showCatalogTab = project?.is_umbrella;
     const showInterviewTab = !!interview;
     const showRegistryTab =
         (!isLoggedIn &&
             project?.logged_out_visible_registry_entry_ids?.length > 0) ||
         isLoggedIn;
-    const showMapTab = hasMap && !project?.is_ohd;
+    const showMapTab = hasMap && !project?.is_umbrella;
     const showWorkbookTab = isLoggedIn;
     const showIndexingTab = isAuthorized({ type: 'General' }, 'edit');
     const showAdministrationTab = isAuthorized({ type: 'General' }, 'edit');
     const showProjectAdminTab = isAuthorized({ type: 'Project' }, 'update');
     const showProjectsTab =
-        project?.is_ohd && isAuthorized({ type: 'Project' }, 'create');
+        project?.is_umbrella && isAuthorized({ type: 'Project' }, 'create');
     const showInstitutionsTab =
-        project?.is_ohd && isAuthorized({ type: 'Institution' }, 'create');
+        project?.is_umbrella && isAuthorized({ type: 'Institution' }, 'create');
     const showHelpTextsTab =
-        project?.is_ohd && isAuthorized({ type: 'HelpText' }, 'update');
+        project?.is_umbrella && isAuthorized({ type: 'HelpText' }, 'update');
 
     // TODO: Remove this special handling
     const isCampscapesWithoutArchive = isCampscapesProject && !archiveId;
     const searchTabLabelKey = isCampscapesWithoutArchive
         ? 'user.notes_on_tos_agreement'
-        : project?.is_ohd
+        : project?.is_umbrella
           ? 'modules.sidebar.search'
           : 'archive_search';
     const searchTabLabelParams = isCampscapesWithoutArchive

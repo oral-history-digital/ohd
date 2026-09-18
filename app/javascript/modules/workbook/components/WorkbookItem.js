@@ -26,7 +26,7 @@ export default function WorkbookItem({
 }) {
     const { t, locale } = useI18n();
     const { facets } = useFacets();
-    const { isOhd } = useProject();
+    const { isUmbrella } = useProject();
     const projectId = project?.shortname;
     const interview = interviews[data.media_id];
 
@@ -159,7 +159,7 @@ export default function WorkbookItem({
                 )}
             </p>
 
-            {!isOhd && (
+            {!isUmbrella && (
                 <WorkbookActions
                     item={data}
                     itemPath={itemPath}

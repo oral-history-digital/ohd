@@ -4,7 +4,10 @@ import useSWRImmutable from 'swr/immutable';
 
 import createRegistryTree from './createRegistryTree';
 
-export default function useRegistryTree(loadOhdTree, selectedRegistryEntryId) {
+export default function useRegistryTree(
+    loadUmbrellaTree,
+    selectedRegistryEntryId
+) {
     const pathBase = usePathBase();
 
     const { isLoading, isValidating, data, error } = useSWRImmutable(
@@ -18,7 +21,7 @@ export default function useRegistryTree(loadOhdTree, selectedRegistryEntryId) {
 
     function path() {
         let result;
-        if (loadOhdTree) {
+        if (loadUmbrellaTree) {
             result = `${pathBase}/global_registry_entry_tree.json`;
         } else {
             result = `${pathBase}/registry_entry_tree.json`;

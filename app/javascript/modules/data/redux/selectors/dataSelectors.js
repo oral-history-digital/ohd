@@ -218,11 +218,16 @@ export const getFlattenedRefTree = createSelector(
         if (refTree?.project) {
             flattenedTree = flattenTree(flattenedTree, refTree.project);
         }
-        if (refTree?.ohd) {
-            flattenedTree = flattenTree(flattenedTree, refTree.ohd);
+        if (refTree?.umbrella) {
+            flattenedTree = flattenTree(flattenedTree, refTree.umbrella);
         }
         // Handle case where refTree is the direct tree structure
-        if (refTree && !refTree.project && !refTree.ohd && refTree.children) {
+        if (
+            refTree &&
+            !refTree.project &&
+            !refTree.umbrella &&
+            refTree.children
+        ) {
             flattenedTree = flattenTree(flattenedTree, refTree);
         }
 
@@ -354,10 +359,10 @@ export const getProjectLocales = createSelector(
 export const getStartpageProjects = createSelector(
     [getPublicProjects],
     (projects) => {
-        const projectsWithoutOhd = projects.filter(
-            (project) => !project.is_ohd
+        const projectsWithoutUmbrella = projects.filter(
+            (project) => !project.is_umbrella
         );
-        return shuffle(projectsWithoutOhd);
+        return shuffle(projectsWithoutUmbrella);
     }
 );
 

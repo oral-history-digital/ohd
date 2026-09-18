@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class InterviewsControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -67,13 +68,20 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
       resource_owner_id: User.find_by!(email: "alice@example.com").id
     ).token
 
-    get "/#{project.shortname}/en/interviews/#{interview.archive_id}/ref_tree.json",
-      params: { access_token: access_token }
+    # Old cached responses must not reintroduce the removed "ohd" tree key.
+    cache = ActiveSupport::Cache::MemoryStore.new
+    legacy_key = "#{project.shortname}-interview-ref-tree-#{interview.id}-#{interview.reload.updated_at}"
+    cache.write(legacy_key, { data: { ohd: { id: 999 }, project: nil } })
+    Rails.stub(:cache, cache) do
+      get "/#{project.shortname}/en/interviews/#{interview.archive_id}/ref_tree.json",
+        params: { access_token: access_token }
+    end
 
     assert_response :success
     data = JSON.parse(response.body).fetch("data")
-    assert_equal umbrella_project.root_registry_entry.id, data.fetch("ohd").fetch("id")
+    assert_not data.key?('ohd')
+    assert_equal umbrella_project.root_registry_entry.id, data.fetch("umbrella").fetch("id")
     assert_not_equal Project.find_by!(shortname: "ohd").root_registry_entry.id,
-      data.fetch("ohd").fetch("id")
+      data.fetch("umbrella").fetch("id")
   end
 end

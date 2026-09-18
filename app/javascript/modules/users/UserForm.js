@@ -82,7 +82,7 @@ export default function UserForm({
                 ),
             value: data?.workflow_state,
             optionsScope: `workflow_states.user${
-                project.is_ohd ? '' : '_project'
+                project.is_umbrella ? '' : '_project'
             }s`,
             withEmpty: true,
             handlechangecallback: (name, value) => {
@@ -197,7 +197,7 @@ UserForm.propTypes = {
         domain_with_optional_identifier: PropTypes.string,
         name: PropTypes.object,
         contact_email: PropTypes.string,
-        is_ohd: PropTypes.bool,
+        is_umbrella: PropTypes.bool,
     }).isRequired,
     onSubmit: PropTypes.func,
 };

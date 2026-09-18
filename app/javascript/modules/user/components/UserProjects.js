@@ -27,7 +27,7 @@ function UserProjects() {
     );
 
     // TODO: Remove this component-level fetch once project loading is unified.
-    // On non-OHD reloads, Redux often starts with only current project + OHD.
+    // On project reloads, Redux often starts with only current project + umbrella.
     // UserProject needs projects[userProject.project_id], so we hydrate missing
     // projects referenced by user.user_projects here as a temporary bridge.
     useEffect(() => {
