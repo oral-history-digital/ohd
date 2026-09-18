@@ -108,7 +108,12 @@ class User < ApplicationRecord
   end
 
   def revoke_block
-    subject = TranslationValue.for('devise.mailer.revoke_block.subject', self.locale_with_project_fallback)
+    locale = self.locale_with_project_fallback
+    subject = TranslationValue.for(
+      'devise.mailer.revoke_block.subject',
+      locale,
+      umbrella_project_name: InstanceSetting.current.umbrella_project_brand_name(locale)
+    )
     CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.umbrella}).deliver_later(wait: 5.seconds)
   end
 

@@ -8,6 +8,7 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     Rails.application.reload_routes! if Devise.mappings.empty?
     @umbrella = DataHelper.test_project(
       shortname: "umb#{SecureRandom.hex(2)}a",
+      name: 'Shared platform',
       contact_email: 'umbrella@example.com'
     )
     InstanceSetting.current.update!(umbrella_project: @umbrella)
@@ -70,6 +71,30 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     message = CustomDeviseMailer.reset_password_instructions(@user, 'reset-token').message
 
     assert_umbrella_authentication_mail(message, '/de/users/password/edit?reset_password_token=reset-token')
+  end
+
+  test 'authentication mail subjects use configured umbrella display name' do
+    @umbrella.update!(display_shortname: 'shared')
+    @user.update!(default_locale: 'en')
+    original_translation = TranslationValue.method(:for)
+    translation = ->(key, locale, **values) do
+      if key.start_with?('devise.mailer.') && key.end_with?('.subject')
+        values.fetch(:umbrella_project_name)
+      else
+        original_translation.call(key, locale, **values)
+      end
+    end
+
+    TranslationValue.stub(:for, translation) do
+      confirmation = CustomDeviseMailer.confirmation_instructions(@user, 'confirmation-token').message
+      reset = CustomDeviseMailer.reset_password_instructions(@user, 'reset-token').message
+
+      assert_equal 'Shared platform (shared)', confirmation.subject
+      assert_equal 'Shared platform (shared)', reset.subject
+
+      perform_enqueued_jobs(only: ActionMailer::MailDeliveryJob) { @user.revoke_block }
+      assert_equal 'Shared platform (shared)', ActionMailer::Base.deliveries.last.subject
+    end
   end
 
   private

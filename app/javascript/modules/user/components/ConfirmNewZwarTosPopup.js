@@ -61,6 +61,7 @@ export default function ConfirmNewZwarTosPopup() {
                     <p>
                         {t('update.zwar.tos.content_one', {
                             archive_name: project.name[locale],
+                            umbrella_project_name: umbrellaProjectLabel,
                         })}
                     </p>
                     <p>{t('update.zwar.tos.content_two')}</p>
@@ -89,6 +90,7 @@ export default function ConfirmNewZwarTosPopup() {
                                     return v && v !== '0';
                                 },
                                 help: t('update.zwar.tos.tos_agreement_ohd', {
+                                    umbrella_project_name: umbrellaProjectLabel,
                                     tos_link: (
                                         <a
                                             className="Link"

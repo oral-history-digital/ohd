@@ -103,7 +103,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     original_translation = TranslationValue.method(:for)
     translation = ->(key, locale, **values) do
       if key.start_with?('modules.registration.messages.')
-        values.fetch(:project)
+        [values.fetch(:project), values.fetch(:umbrella_project_name)].join('|')
       else
         original_translation.call(key, locale, **values)
       end
@@ -112,12 +112,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     TranslationValue.stub(:for, translation) do
       get '/de/users/check_email.json', params: { email: 'not-registered@example.com' }
       assert_response :success
-      assert_equal umbrella.name('de'), JSON.parse(response.body).fetch('msg')
+      expected_umbrella_name = umbrella.display_shortname.present? ?
+        "#{umbrella.name('de')} (#{umbrella.display_shortname})" : umbrella.name('de')
+      assert_equal [umbrella.name('de'), expected_umbrella_name].join('|'), JSON.parse(response.body).fetch('msg')
 
       archive = Project.find_by!(shortname: 'ohd')
       get '/ohd/de/users/check_email.json', params: { email: 'not-registered@example.com' }
       assert_response :success
-      assert_equal archive.name('de'), JSON.parse(response.body).fetch('msg')
+      assert_equal [archive.name('de'), expected_umbrella_name].join('|'), JSON.parse(response.body).fetch('msg')
     end
   end
 

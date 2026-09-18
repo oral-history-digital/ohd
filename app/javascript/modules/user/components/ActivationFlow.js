@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useProjectAccessStatus } from 'modules/auth';
+import { getProjectBrandName, getUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -9,8 +10,9 @@ import { getIsLoggedIn } from '../selectors';
 
 export default function ActivationFlow({ className }) {
     const isLoggedIn = useSelector(getIsLoggedIn);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { project, isUmbrella } = useProject();
+    const umbrellaProject = useSelector(getUmbrellaProject);
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(project);
 
@@ -38,6 +40,7 @@ export default function ActivationFlow({ className }) {
     }
 
     let activationStep = 1;
+    const umbrellaProjectName = getProjectBrandName(umbrellaProject, locale);
     if (isLoggedIn) {
         activationStep = 2;
     }
@@ -57,11 +60,15 @@ export default function ActivationFlow({ className }) {
                 title={
                     activationStep == 1
                         ? ''
-                        : t('modules.project_access.sign_in')
+                        : t('modules.project_access.sign_in', {
+                              umbrella_project_name: umbrellaProjectName,
+                          })
                 }
             >
                 <span className="Flow-text">
-                    {t('modules.project_access.sign_in')}
+                    {t('modules.project_access.sign_in', {
+                        umbrella_project_name: umbrellaProjectName,
+                    })}
                 </span>
             </li>
             <li
