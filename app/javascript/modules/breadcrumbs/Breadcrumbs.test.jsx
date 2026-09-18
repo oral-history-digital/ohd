@@ -1,4 +1,4 @@
-import { getBreadcrumbLogoTitle, selectBreadcrumbLogo } from './Breadcrumbs';
+import { selectBreadcrumbLogo } from './Breadcrumbs';
 
 describe('selectBreadcrumbLogo', () => {
     const defaultLogo = '/uploads/breadcrumb.svg';
@@ -48,25 +48,5 @@ describe('selectBreadcrumbLogo', () => {
                 instanceSettings: {},
             })
         ).toBeUndefined();
-    });
-});
-
-describe('getBreadcrumbLogoTitle', () => {
-    test('includes the umbrella display shortname after its name', () => {
-        expect(
-            getBreadcrumbLogoTitle(
-                {
-                    display_shortname: 'Portal',
-                    name: { en: 'Portal archive' },
-                },
-                'en'
-            )
-        ).toBe('Portal archive (Portal)');
-    });
-
-    test('uses only the localized umbrella name without a display shortname', () => {
-        expect(
-            getBreadcrumbLogoTitle({ name: { en: 'Portal archive' } }, 'en')
-        ).toBe('Portal archive');
     });
 });

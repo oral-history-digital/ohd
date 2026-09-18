@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { getUmbrellaProject } from 'modules/data';
+import { getProjectBrandName, getUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -20,17 +20,6 @@ export function selectBreadcrumbLogo({
               instanceSettings?.breadcrumb_logo_url
         : instanceSettings?.breadcrumb_logo_url ||
               instanceSettings?.secondary_breadcrumb_logo_url;
-}
-
-export function getBreadcrumbLogoTitle(umbrellaProject, locale) {
-    const name =
-        umbrellaProject?.name?.[locale] ||
-        umbrellaProject?.display_name?.[locale];
-    const displayShortname = umbrellaProject?.display_shortname;
-
-    if (!name) return undefined;
-
-    return displayShortname ? `${name} (${displayShortname})` : name;
 }
 
 export default function Breadcrumbs({ logoSrc }) {
@@ -61,7 +50,7 @@ export default function Breadcrumbs({ logoSrc }) {
                 <li className="Breadcrumbs-item">
                     <Logo
                         logoSrc={breadcrumbLogoSrc}
-                        title={getBreadcrumbLogoTitle(umbrellaProject, locale)}
+                        title={getProjectBrandName(umbrellaProject, locale)}
                         variant={logoVariant}
                     />
                 </li>
