@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_10_100000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_17_110100) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -764,6 +764,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_10_100000) do
     t.string "publication_date"
     t.string "used_doi_prefix"
     t.string "doi_status"
+    t.string "display_shortname"
     t.index ["workflow_state"], name: "index_projects_on_workflow_state"
   end
 
