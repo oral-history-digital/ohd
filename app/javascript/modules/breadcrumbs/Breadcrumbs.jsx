@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { getUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -21,6 +22,17 @@ export function selectBreadcrumbLogo({
               instanceSettings?.secondary_breadcrumb_logo_url;
 }
 
+export function getBreadcrumbLogoTitle(umbrellaProject, locale) {
+    const name =
+        umbrellaProject?.name?.[locale] ||
+        umbrellaProject?.display_name?.[locale];
+    const displayShortname = umbrellaProject?.display_shortname;
+
+    if (!name) return undefined;
+
+    return displayShortname ? `${name} (${displayShortname})` : name;
+}
+
 export default function Breadcrumbs({ logoSrc }) {
     const { project } = useProject();
     const { locale } = useI18n();
@@ -28,6 +40,7 @@ export default function Breadcrumbs({ logoSrc }) {
     const instanceSettings = useSelector(
         (state) => state.data?.instance_settings
     );
+    const umbrellaProject = useSelector(getUmbrellaProject);
 
     const shouldHideBreadcrumbs =
         crumbs.length === 0 ||
@@ -48,7 +61,7 @@ export default function Breadcrumbs({ logoSrc }) {
                 <li className="Breadcrumbs-item">
                     <Logo
                         logoSrc={breadcrumbLogoSrc}
-                        title={project.name[locale]}
+                        title={getBreadcrumbLogoTitle(umbrellaProject, locale)}
                         variant={logoVariant}
                     />
                 </li>
