@@ -21,6 +21,13 @@ class InstanceSetting < ApplicationRecord
     Project.find_by(shortname: shortname) || Project.first || raise('No project available for InstanceSetting')
   end
 
+  def umbrella_project_brand_name(locale = I18n.locale)
+    name = umbrella_project.name(locale)
+    return name if umbrella_project.display_shortname.blank?
+
+    "#{name} (#{umbrella_project.display_shortname})"
+  end
+
   private
 
   def breadcrumb_logos_are_supported_images

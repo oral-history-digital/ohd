@@ -4,7 +4,11 @@ import { useCallback } from 'react';
 import classNames from 'classnames';
 import { setProjectId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
-import { getCurrentUser, getUmbrellaProject } from 'modules/data';
+import {
+    getCurrentUser,
+    getProjectBrandName,
+    getUmbrellaProject,
+} from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { getProjectLogoSrc } from 'modules/project-home';
 import { useCurrentPage, useProject } from 'modules/routes';
@@ -39,10 +43,7 @@ function SiteLogo({ className }) {
     const displayLogo = project?.display_ohd_link || isHome;
     const logoSrc =
         getProjectLogoSrc(umbrellaProject, locale) || '/logo-ohd.svg';
-    const logoTitle =
-        umbrellaProject?.name?.[locale] ||
-        umbrellaProject?.display_name?.[locale] ||
-        'Oral-History.Digital';
+    const logoTitle = getProjectBrandName(umbrellaProject, locale);
 
     return (
         displayLogo && (
