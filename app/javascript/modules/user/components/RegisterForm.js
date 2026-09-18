@@ -3,7 +3,11 @@ import { useRef, useState } from 'react';
 
 import { getCountryKeys } from 'modules/archive';
 import { EMAIL_REGEX, OHD_DOMAINS, PASSWORD_REGEX } from 'modules/constants';
-import { getCurrentProject } from 'modules/data';
+import {
+    getCurrentProject,
+    getProjectBrandName,
+    getUmbrellaProject,
+} from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { sanitizeInternalReturnPath } from 'modules/query-string';
@@ -22,11 +26,13 @@ export default function RegisterForm({
     showCancelButton = false,
 }) {
     const project = useSelector(getCurrentProject);
+    const umbrellaProject = useSelector(getUmbrellaProject);
     const countryKeys = useSelector(getCountryKeys);
     const registrationStatus = useSelector(getRegistrationStatus);
     const dispatch = useDispatch();
 
     const { t, locale } = useI18n();
+    const umbrellaProjectName = getProjectBrandName(umbrellaProject, locale);
     const pathBase = usePathBase();
 
     const storedReturnPath = sessionStorage.getItem('registrationReturnPath');
@@ -205,6 +211,7 @@ export default function RegisterForm({
                     return v && v !== '0';
                 },
                 help: t('user.notes_on_tos_agreement_ohd', {
+                    umbrella_project_name: umbrellaProjectName,
                     tos_link: (
                         <a
                             className="Link"

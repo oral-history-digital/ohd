@@ -1,9 +1,14 @@
 import { useState } from 'react';
 
 import classNames from 'classnames';
-import { useGetInstitutionsList } from 'modules/data';
+import {
+    getProjectBrandName,
+    getUmbrellaProject,
+    useGetInstitutionsList,
+} from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import {
     useAccordion,
@@ -23,7 +28,9 @@ export function InstitutionsList({
     instProjectMax,
     institutionLevel,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const umbrellaProject = useSelector(getUmbrellaProject);
+    const umbrellaProjectName = getProjectBrandName(umbrellaProject, locale);
     const [isMapExpanded, setIsMapExpanded] = useState(false);
     const { expandedId, toggle } = useAccordion();
     const { sort, setSort } = useInstitutionsSort();
@@ -85,6 +92,7 @@ export function InstitutionsList({
                 <p className="InstitutionsList-description">
                     {t('explorer.institutions_list.description', {
                         count: topLevelInstitutionsCount,
+                        umbrella_project_name: umbrellaProjectName,
                     })}
                 </p>
                 <InstitutionsMap
