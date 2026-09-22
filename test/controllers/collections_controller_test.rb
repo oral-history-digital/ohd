@@ -148,6 +148,24 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
+  test 'should allow an admin to update a collection workflow state' do
+    project = DataHelper.test_project(shortname: "cs#{SecureRandom.hex(4)}a")
+    collection = Collection.create!(
+      project: project,
+      institution: Institution.first,
+      name: 'Configurable collection',
+      workflow_state: 'unshared'
+    )
+
+    login_as User.find_by!(email: 'alice@example.com')
+    patch collection_path(collection, locale: 'en', format: :json), params: {
+      collection: { workflow_state: 'public' }
+    }
+
+    assert_response :success
+    assert_equal 'public', collection.reload.workflow_state
+  end
+
   test 'should return lightweight single collection payload in show when lite flag is set' do
     project = DataHelper.test_project(shortname: "cw#{SecureRandom.hex(4)}a")
     institution = Institution.first

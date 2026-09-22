@@ -282,6 +282,7 @@ class CollectionsController < ApplicationController
         'institution_id',
         'shortname',
         'publication_date',
+        'workflow_state',
         translations_attributes: [:locale, :id, :name, :responsibles, :notes, :countries, :homepage, :interviewers]
     )
   end

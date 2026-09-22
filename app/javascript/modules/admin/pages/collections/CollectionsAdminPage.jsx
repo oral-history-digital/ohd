@@ -56,6 +56,12 @@ export default function CollectionsAdminPage() {
                     },
                 },
                 {
+                    attribute: 'workflow_state',
+                    elementType: 'select',
+                    values: ['public', 'unshared'],
+                    optionsScope: 'workflow_states',
+                },
+                {
                     attribute: 'homepage',
                     multiLocale: true,
                     baseLocales: ['de', 'en'],
