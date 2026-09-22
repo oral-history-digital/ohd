@@ -16,6 +16,8 @@ class Collection < ApplicationRecord
   accepts_nested_attributes_for :translations
 
   validates_presence_of :name, :project_id
+  validates :workflow_state, inclusion: { in: %w(public unshared),
+    message: "%{value} is not a valid workflow state" }
 
   def num_interviews
     interviews_count
