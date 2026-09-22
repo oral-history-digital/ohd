@@ -128,7 +128,8 @@ project content or project registry trees.
 Creating, updating, or deleting a registry reference queues interview
 reindexing. Reindex affected interviews after changing an existing metadata
 field's facet setting; changing `use_as_facet` does not automatically reindex
-existing interviews.
+existing interviews. See [Reindexing](../operations/reindexing.md) for commands
+and verification.
 
 ## Relevant code
 

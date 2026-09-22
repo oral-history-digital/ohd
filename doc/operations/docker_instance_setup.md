@@ -226,40 +226,8 @@ docker compose --profile db exec \
 
 ### Solr indexing in Docker
 
-When the app runs in containers, trigger indexing from the `app` container.
-
-Verify Solr container status:
-
-```bash
-docker compose --profile db ps solr
-```
-
-Run a full Sunspot reindex:
-
-```bash
-docker compose --profile db exec app bundle exec rake sunspot:reindex
-```
-
-Run targeted custom reindex tasks (faster for partial updates):
-
-```bash
-# Reindex all custom model tasks + commit
-docker compose --profile db exec app bundle exec rake solr:reindex:all
-
-# Reindex only segments
-docker compose --profile db exec app bundle exec rake solr:reindex:segments
-
-# Reindex only interviews
-docker compose --profile db exec app bundle exec rake solr:reindex:interviews
-
-# Commit pending index changes
-docker compose --profile db exec app bundle exec rake solr:reindex:commit
-
-# Limit to one Project and a given number of items
-docker compose --profile db exec app bundle exec rake solr:reindex:scoped PROJECT_SHORTNAME=za LIMIT=10 WITH_RELATED=true
-```
-
-Tip: use `sunspot:reindex` for complete rebuilds and `solr:reindex:*` for incremental maintenance.
+For Docker commands, task selection, and verification, see
+[Reindexing](reindexing.md#run-in-docker).
 
 ## Environment Variables
 
