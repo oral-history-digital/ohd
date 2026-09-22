@@ -18,6 +18,7 @@ describe('findProjectByDomain', () => {
         1: {
             id: 1,
             shortname: 'ohd',
+            is_umbrella: true,
             archive_domain: 'http://portal.oral-history.localhost:3000/',
         },
         2: {
@@ -45,11 +46,12 @@ describe('findProjectByDomain', () => {
         expect(project).toBeUndefined();
     });
 
-    test('falls back to OHD project on OHD portal domain', () => {
-        const projectsWithoutOhdArchiveDomain = {
+    test('falls back to umbrella project on the portal domain', () => {
+        const projectsWithoutUmbrellaArchiveDomain = {
             1: {
                 id: 1,
-                shortname: 'ohd',
+                shortname: 'portal',
+                is_umbrella: true,
                 archive_domain: null,
             },
             2: {
@@ -60,11 +62,11 @@ describe('findProjectByDomain', () => {
         };
 
         const project = findProjectByDomain(
-            projectsWithoutOhdArchiveDomain,
+            projectsWithoutUmbrellaArchiveDomain,
             'http://portal.oral-history.localhost:3000',
             'http://portal.oral-history.localhost:3000'
         );
 
-        expect(project?.shortname).toBe('ohd');
+        expect(project?.shortname).toBe('portal');
     });
 });

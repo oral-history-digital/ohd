@@ -320,4 +320,9 @@ class Person < ApplicationRecord
 
     result
   end
+
+  def description_interviewee
+    localized_hash(:description)
+  end
+
 end

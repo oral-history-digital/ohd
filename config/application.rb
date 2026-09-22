@@ -26,9 +26,9 @@ module Archive
     config.datacite = config_for("datacite")
 
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-    config.i18n.available_locales = [:en, :de, :ru, :el, :es, :uk, :ar]
+    config.i18n.available_locales = [:en, :de, :ru, :el, :es, :uk, :ar, :tr]
     config.i18n.default_locale = :de || config.i18n.default_locale
-    config.i18n.fallbacks = [:en, :de, :ru, :el, :es, :uk, :ar]
+    config.i18n.fallbacks = [:en, :de, :ru, :el, :es, :uk, :ar, :tr]
 
     config.time_zone = "Berlin"
     config.active_record.time_zone_aware_types = [:datetime, :time]
@@ -69,7 +69,7 @@ module Archive
     # Add Content-Security-Policy instead
     config.action_dispatch.default_headers['Content-Security-Policy'] = ([
       'frame-ancestors', 
-      'self'
+      "'self'"
     ] + allowed_domains).join(' ')
 
     # Allow WebAuthn in iframes from these domains

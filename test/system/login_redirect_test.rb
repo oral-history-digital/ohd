@@ -32,6 +32,9 @@ class LoginRedirectTest < ApplicationSystemTestCase
     fill_in 'user[password]', with: 'Password123!'
     click_on 'Login'
 
+    # Cross-domain session handover and the project page render asynchronously.
+    # Wait for project-specific content before asserting the final URL.
+    assert_text 'Redirect Project', wait: 10
     redirected_url = URI.parse(current_url)
     redirected_query = Rack::Utils.parse_nested_query(redirected_url.query)
 

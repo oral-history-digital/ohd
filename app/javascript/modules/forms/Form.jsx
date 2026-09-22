@@ -4,7 +4,12 @@ import classNames from 'classnames';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { RegistryTreeSelect } from 'modules/registry-tree-select';
-import { CancelButton, InlineNotification, SubmitButton } from 'modules/ui';
+import {
+    CancelButton,
+    ConfirmationModal,
+    InlineNotification,
+    SubmitButton,
+} from 'modules/ui';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-18support';
 
@@ -12,6 +17,7 @@ import {
     ColorPicker,
     ErrorMessages,
     Extra,
+    FileInputFormElement,
     FormRow,
     InputField,
     MultiLocaleWrapper,
@@ -34,6 +40,7 @@ const elementTypeToComponent = {
     speakerDesignationInputs: SpeakerDesignationInputs,
     textarea: Textarea,
     extra: Extra,
+    fileInput: FileInputFormElement,
 };
 
 export default function Form({
@@ -60,10 +67,14 @@ export default function Form({
     scope,
     submitScope,
     submitText,
+    submitConfirmation,
     cancelText,
     values: initialValues,
 }) {
     const [submitted, setSubmitted] = useState(false);
+    // Keep validated params stable while the user decides whether to submit.
+    // Cancelling drops these params without changing the form's dirty baseline.
+    const [pendingSubmission, setPendingSubmission] = useState(null);
     const baseFormIdentifier = formId || scope || submitScope || 'form';
     const formIdentifier =
         typeof index === 'number'
@@ -72,6 +83,7 @@ export default function Form({
 
     const {
         values,
+        initialFormValues,
         errors,
         touched,
         updateField,
@@ -86,6 +98,7 @@ export default function Form({
         markCurrentValuesAsClean,
         getDirtyStateForValues,
         submitButtonState,
+        dirtyFields,
     } = useFormState(initialValues, data, elements, {
         fetching,
         hasValidationErrors,
@@ -132,20 +145,83 @@ export default function Form({
         }
     }
 
+    function finishSuccessfulSubmit() {
+        // Clear selected local files after a successful submission so file inputs
+        // display the persisted files returned by the parent.
+        const savedValues = { ...values };
+
+        elements
+            .filter((element) => element.elementType === 'fileInput')
+            .forEach((element) => {
+                savedValues[element.attribute] = null;
+                updateField(element.attribute, null);
+            });
+
+        markCurrentValuesAsClean(savedValues);
+        setSubmitted(false);
+        if (typeof onSubmitCallback === 'function') {
+            onSubmitCallback();
+        }
+    }
+
+    function performSubmit(params) {
+        // Confirmed and non-confirmed submissions share this path so successful
+        // saves always run the same completion and clean-state logic.
+        const result = onSubmit(params, index);
+
+        // Promise-based submissions complete after the request resolves. Synchronous
+        // nested forms must complete immediately to preserve their callback timing.
+        if (result && typeof result.then === 'function') {
+            // Asynchronous submission returns a Promise with a .then method
+            return result
+                .then((response) => {
+                    finishSuccessfulSubmit();
+                    setPendingSubmission(null);
+                    return response;
+                })
+                .catch(() => {
+                    // The parent handles submission errors and notifications.
+                });
+        } else {
+            // Preserve synchronous completion for nested forms.
+            finishSuccessfulSubmit();
+            setPendingSubmission(null);
+            return result;
+        }
+    }
+
+    function cancelPendingSubmission() {
+        // Cancellation closes the modal without marking current edits as saved.
+        setPendingSubmission(null);
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
         touchAllFields();
 
-        if (valid()) {
-            onSubmit({ [scope || submitScope]: values }, index);
-            markCurrentValuesAsClean(values);
-            setSubmitted(false);
-            if (typeof onSubmitCallback === 'function') {
-                onSubmitCallback();
-            }
-        } else {
+        if (!valid()) {
             setSubmitted(true);
+            return;
         }
+
+        const params = { [scope || submitScope]: values };
+        // A predicate lets callers limit confirmation to high-impact changes.
+        // Without one, every valid submission requires confirmation.
+        const requiresConfirmation =
+            submitConfirmation &&
+            (typeof submitConfirmation.when !== 'function' ||
+                submitConfirmation.when({
+                    values,
+                    initialValues: initialFormValues,
+                    dirtyFields,
+                }));
+
+        if (requiresConfirmation) {
+            setPendingSubmission(params);
+            return;
+        }
+
+        return performSubmit(params);
     }
 
     const organizedElements = organizeElementsByGroup(elements);
@@ -304,6 +380,20 @@ export default function Form({
                     )}
                 </div>
             </form>
+            {submitConfirmation && (
+                <ConfirmationModal
+                    isOpen={Boolean(pendingSubmission)}
+                    title={submitConfirmation.title}
+                    message={submitConfirmation.message}
+                    confirmText={submitConfirmation.confirmText}
+                    cancelText={submitConfirmation.cancelText}
+                    confirmColor={submitConfirmation.confirmColor}
+                    className={submitConfirmation.className}
+                    isLoading={fetching}
+                    onCancel={cancelPendingSubmission}
+                    onConfirm={() => performSubmit(pendingSubmission)}
+                />
+            )}
         </div>
     );
 }
@@ -357,6 +447,20 @@ Form.propTypes = {
     scope: PropTypes.string,
     submitScope: PropTypes.string,
     submitText: PropTypes.string,
+    submitConfirmation: PropTypes.shape({
+        title: PropTypes.node.isRequired,
+        message: PropTypes.node.isRequired,
+        confirmText: PropTypes.node,
+        cancelText: PropTypes.string,
+        confirmColor: PropTypes.oneOf([
+            'primary',
+            'secondary',
+            'error',
+            'success',
+        ]),
+        className: PropTypes.string,
+        when: PropTypes.func,
+    }),
     cancelText: PropTypes.string,
     values: PropTypes.object,
 };

@@ -51,4 +51,52 @@ class ProjectTest < ActiveSupport::TestCase
     assert_operator @child_institution.updated_at, :>, 1.day.ago
     assert_operator @parent_institution.updated_at, :>, 1.day.ago
   end
+
+  test "accepts PNG and icon favicons up to one megabyte" do
+    @project.favicon.attach(
+      io: StringIO.new("favicon"),
+      filename: "favicon.png",
+      content_type: "image/png"
+    )
+
+    assert @project.valid?
+  end
+
+  test "rejects unsupported favicon types" do
+    @project.favicon.attach(
+      io: StringIO.new("not an image"),
+      filename: "favicon.txt",
+      content_type: "text/plain"
+    )
+
+    assert_not @project.valid?
+    assert @project.errors.added?(:favicon, :invalid_content_type)
+  end
+
+  test "rejects favicons larger than one megabyte" do
+    @project.favicon.attach(
+      io: StringIO.new("x" * (1.megabyte + 1)),
+      filename: "favicon.png",
+      content_type: "image/png"
+    )
+
+    assert_not @project.valid?
+    assert @project.errors.added?(:favicon, :file_too_large)
+  end
+
+  test "identifies umbrella project from instance settings" do
+    umbrella_project = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+
+    assert umbrella_project.umbrella?
+    assert umbrella_project.is_ohd?
+    assert_not @project.umbrella?
+    assert_not @project.is_ohd?
+
+    ohd_project = Project.find_by!(shortname: "ohd")
+    assert_not ohd_project.umbrella?
+    assert_not ohd_project.is_ohd?
+  end
 end

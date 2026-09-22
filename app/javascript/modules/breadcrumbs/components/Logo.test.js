@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { OHD_DOMAINS } from 'modules/constants';
 import { MemoryRouter } from 'react-router-dom';
 
 import { Logo } from './Logo';
@@ -9,6 +8,7 @@ jest.mock('modules/i18n', () => ({
 }));
 
 describe('<Logo />', () => {
+    const ohdDomain = 'https://portal.oral-history.digital';
     const renderLogo = (props = {}) =>
         render(
             <MemoryRouter>
@@ -17,30 +17,16 @@ describe('<Logo />', () => {
         );
 
     it('uses anchor with absolute OHD URL when on a different domain', () => {
-        Object.defineProperty(window, 'location', {
-            value: {
-                origin: 'http://localhost:3000',
-            },
-            writable: true,
-        });
-
-        renderLogo();
+        renderLogo({ currentOrigin: 'http://localhost:3000', ohdDomain });
 
         expect(screen.getByRole('link')).toHaveAttribute(
             'href',
-            `${OHD_DOMAINS.test}/de`
+            `${ohdDomain}/de`
         );
     });
 
     it('uses Link without reload when already on OHD domain', () => {
-        Object.defineProperty(window, 'location', {
-            value: {
-                origin: OHD_DOMAINS.test,
-            },
-            writable: true,
-        });
-
-        renderLogo();
+        renderLogo({ currentOrigin: ohdDomain, ohdDomain });
 
         expect(screen.getByRole('link')).toHaveAttribute('href', '/de');
     });

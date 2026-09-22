@@ -30,7 +30,6 @@ module HomepageSettingsActions
 
   def homepage_setting_params
     params.require(:homepage_setting).permit(
-      :umbrella_project_id,
       blocks: [
         :id,
         :code,

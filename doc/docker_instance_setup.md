@@ -312,7 +312,33 @@ Notes:
 - `OHD_EXTRA_HOSTS_DEVELOPMENT` (comma-separated hostnames)
 - `OHD_EXTRA_HOSTS_STAGING` (comma-separated hostnames)
 - `OHD_EXTRA_HOSTS_PRODUCTION` (comma-separated hostnames)
-- `ACTIVE_RECORD_ENCRYPTION_*`
+
+### Active Record encryption for multi-factor authentication
+
+OTP authentication stores encrypted data and requires all three Active Record
+encryption settings:
+
+- `ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY`
+- `ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY`
+- `ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT`
+
+For a new instance, generate the values once from the application container:
+
+```bash
+docker compose exec app bin/rails db:encryption:init
+```
+
+Copy the generated values into the host's `.env` file. Keep them secret, back
+them up, and never commit them. Existing instances must reuse their original
+keys; replacing or losing the keys makes previously encrypted values
+unreadable.
+
+Environment changes are only applied when containers are created. After adding
+the keys, recreate the application and worker containers:
+
+```bash
+docker compose up -d --force-recreate app worker
+```
 
 ## Staging Deployment
 

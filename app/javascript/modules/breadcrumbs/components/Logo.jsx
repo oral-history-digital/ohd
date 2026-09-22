@@ -5,7 +5,13 @@ import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-export function Logo({ logoSrc, title, variant = 'default' }) {
+export function Logo({
+    logoSrc,
+    title,
+    variant = 'default',
+    currentOrigin = window.location.origin,
+    ohdDomain = OHD_DOMAINS[railsMode],
+}) {
     const { locale } = useI18n();
 
     const src =
@@ -15,11 +21,9 @@ export function Logo({ logoSrc, title, variant = 'default' }) {
             : '/logo-ohd-no-text.svg');
     const displayTitle = title || 'Oral-History.Digital (oh.d)';
     const altText = `${displayTitle} logo`;
-    const ohdDomain = OHD_DOMAINS[railsMode];
     const localPath = `/${locale}`;
     const targetUrl = `${ohdDomain}${localPath}`;
-    const isOnOhdDomain =
-        typeof window !== 'undefined' && window.location.origin === ohdDomain;
+    const isOnOhdDomain = currentOrigin === ohdDomain;
 
     if (isOnOhdDomain) {
         return (
@@ -60,6 +64,8 @@ Logo.propTypes = {
     logoSrc: PropTypes.string,
     title: PropTypes.string,
     variant: PropTypes.oneOf(['default', 'outline']),
+    currentOrigin: PropTypes.string,
+    ohdDomain: PropTypes.string,
 };
 
 export default Logo;

@@ -27,6 +27,15 @@ class ProjectPolicyTest < ActiveSupport::TestCase
     assert ProjectPolicy.new(admin_context, @project).update?
   end
 
+  test "favicon actions use the project update permission" do
+    assert_not ProjectPolicy.new(@context, @project).remove_favicon?
+    assert_not ProjectPolicy.new(@context, @project).update_favicon?
+
+    admin_context = ProjectContext.new(@admin, @project)
+    assert ProjectPolicy.new(admin_context, @project).remove_favicon?
+    assert ProjectPolicy.new(admin_context, @project).update_favicon?
+  end
+
   # task_permissions? is the method that crashed; guard it directly for any
   # record that neither is an Interview nor responds to interview_id.
   test "task_permissions? returns nil for a record without interview_id" do

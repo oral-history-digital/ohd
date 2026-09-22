@@ -136,6 +136,7 @@ export default function SelectField({
             attribute={attribute}
             label={label}
             labelKey={labelKey}
+            htmlFor={`${scope}_${id ? id : attribute}`}
             showErrors={showErrors}
             className={className}
             hidden={hidden}

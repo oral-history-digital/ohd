@@ -1,7 +1,9 @@
-export default function interviewUrl(pathBase, interviewId) {
-    const protocol = window.location.protocol;
-    const host = window.location.host;
-    const url = `${protocol}//${host}${pathBase}/interviews/${interviewId}`;
+export default function interviewUrl(
+    pathBase,
+    interviewId,
+    origin = window.location.origin
+) {
+    const url = `${origin}${pathBase}/interviews/${interviewId}`;
 
     return url;
 }

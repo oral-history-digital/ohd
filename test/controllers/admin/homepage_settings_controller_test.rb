@@ -21,6 +21,17 @@ class Admin::HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should return full locale payload for admin' do
+    FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+
+    hero_block = InstanceSetting.current.homepage_blocks.find_by!(code: 'hero')
+    image = HomepageImage.new(ref: hero_block, locale: 'de')
+    image.file.attach(
+      io: StringIO.new('hero image'),
+      filename: 'hero-de.png',
+      content_type: 'image/png'
+    )
+    image.save!
+
     login_as User.find_by!(email: 'alice@example.com')
 
     get admin_instance_setting_path(locale: 'de', format: :json)
@@ -38,6 +49,7 @@ class Admin::HomepageSettingsControllerTest < ActionDispatch::IntegrationTest
     de_translation = hero['translations_attributes'].find { |entry| entry['locale'] == 'de' }
     assert_equal 'Primary description de', de_translation['button_primary_description']
     assert_equal 'Secondary description de', de_translation['button_secondary_description']
+    assert_equal 'hero-de.png', hero['images'].first['filename']
   end
 
   test 'should reject non admin' do

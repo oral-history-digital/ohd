@@ -26,7 +26,7 @@ export const PROJECT_ZWAR = 'zwar';
 export const PROJECT_CAMPSCAPES = 'campscapes';
 
 export const DEFAULT_LOCALES = ['de', 'en'];
-export const SYSTEM_LOCALES = ['de', 'en', 'el', 'es', 'ru', 'uk', 'ar'];
+export const SYSTEM_LOCALES = ['de', 'en', 'el', 'es', 'ru', 'uk', 'ar', 'tr'];
 
 export const VIEWMODE_GRID = 'grid';
 export const VIEWMODE_LIST = 'list';
@@ -59,6 +59,7 @@ export const ALPHA2_TO_ALPHA3 = {
     ru: 'rus',
     uk: 'ukr',
     ar: 'ara',
+    tr: 'tur',
 };
 
 export const ALPHA3_TO_ALPHA2 = {

@@ -232,7 +232,10 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Recover password'
     fill_in 'Email', with: 'john@example.com'
     click_on 'Submit'
-    assert_text 'You have been sent an email with instructions on how to change your password.'
+    assert_text(
+      'You have been sent an email with instructions on how to change your password.',
+      wait: 10
+    )
 
     mail = ActionMailer::Base.deliveries.last
     assert_match /Oral-History.Digital. Steps to recover your password./, mail.subject
@@ -371,15 +374,25 @@ class BasicsTest < ApplicationSystemTestCase
     login_as 'alice@example.com'
     visit "/en/interviews/#{interview.archive_id}"
     click_on 'Editing interface'
-    click_on 'About the interview'
+    find_button('About the interview', wait: 10).click
     within '#transcript-downloads' do
       click_on 'Edit'
     end
     uncheck 'accessible', visible: :all
     click_on 'Submit'
 
-    sleep 2
-    interview.reload
-    assert interview.properties[:public_attributes]['transcript'] == 'false'
+    # The form closes immediately after dispatch; waiting for that state avoids
+    # racing the asynchronous update request with the database assertion below.
+    assert_no_selector '#transcript-downloads form', wait: 10
+
+    # The API request completes after the form closes, so poll the persisted
+    # value for max 10 seconds instead of relying on a fixed sleep duration.
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 10
+    until interview.reload.properties[:public_attributes]['transcript'] == 'false'
+      break if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+
+      sleep 0.1
+    end
+    assert_equal 'false', interview.reload.properties[:public_attributes]['transcript']
   end
 end

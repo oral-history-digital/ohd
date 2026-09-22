@@ -1,0 +1,30 @@
+.ProjectFaviconForm {
+  margin-top: 2rem;
+  max-width: 36rem;
+
+  &-description {
+    margin-top: 0;
+    color: $gray-dark;
+  }
+
+  &-submit {
+    margin-top: 1rem;
+  }
+
+  &-confirmDialog.Modal-dialog {
+    width: min(92vw, 30rem);
+
+    .Form-footer {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  }
+
+  .FormLabel {
+    display: none;
+  }
+
+  .InlineNotification {
+    margin-top: 1rem;
+  }
+}
