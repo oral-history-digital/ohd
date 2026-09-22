@@ -1,4 +1,4 @@
-![ohd-logo](https://github.com/oral-history-digital/ohd/blob/364a3aed24c3c092d1a22cae0635b060facaffbc/public/logo-ohd.svg?raw=true)
+<img align="right" height="50" src="https://github.com/oral-history-digital/ohd/blob/364a3aed24c3c092d1a22cae0635b060facaffbc/public/logo-ohd.svg?raw=true">
 
 # Oral-History.Digital
 
