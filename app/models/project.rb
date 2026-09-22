@@ -467,8 +467,8 @@ class Project < ApplicationRecord
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
               subfacets: ( is_ohd? ?
-                Collection.joins(:project).where(project: {workflow_state: 'public'}) :
-                collections
+                Collection.shared.joins(:project).where(project: {workflow_state: 'public'}) :
+                collections.shared
               ).includes(:translations).inject({}) do |subfacets, sf|
                 subfacets[sf.id.to_s] = {
                   id: sf.id,
