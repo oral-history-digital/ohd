@@ -24,7 +24,9 @@ coverage
 spec/examples.txt
 # Secrets — never bake into image layers
 config/master.key
-config/credentials.yml.enc
+# encrypted credentials file, which is generated from the master key
+# must not be excluded. it has to be baked into the image layers so that the app can read it at runtime
+#config/credentials.yml.enc
 
 # Keep devcontainer files for now since we need them
 # .devcontainer

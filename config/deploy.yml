@@ -1,0 +1,33 @@
+service: ohd
+image: oral-history-digital/ohd
+
+registry:
+  server: ghcr.io
+  username: <%= ENV["GITHUB_ACTOR"] %>
+  password: <%= ENV["GITHUB_TOKEN"] %>
+
+env:
+  secret:
+    - RAILS_MASTER_KEY
+    - MYSQL_PASSWORD_PRODUCTION
+    - OIDC_SIGNING_KEY
+    - SECRET_KEY_BASE
+  clear:
+    WEB_CONCURRENCY: 2
+    MYSQL_HOST_PRODUCTION: ohd-db
+    SOLR_URL: http://ohd-solr:8983/solr/blacklight-core
+    OHD_EXTRA_HOSTS_PRODUCTION: staging.audio-visual.digital,avd-test.ub.fu-berlin.de
+    ALLOW_LOCALHOST_IN_PRODUCTION: "true"
+    TZ: Europe/Berlin
+
+aliases:
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f
+  joblogs: app logs -f -r job
+  dbc: app exec --interactive --reuse "bin/rails dbconsole"
+
+asset_path: /app/public/packs
+
+builder:
+  arch: amd64
