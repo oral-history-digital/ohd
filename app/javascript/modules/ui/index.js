@@ -7,6 +7,7 @@ export { default as CopyText } from './CopyText';
 export { default as DebouncedInput } from './DebouncedInput';
 export { default as Disclosure } from './Disclosure';
 export { default as ErrorMessage } from './ErrorMessage';
+export { default as NewTabLink } from './NewTabLink';
 export { default as InlineNotification } from './InlineNotification';
 export { default as Modal } from './Modal';
 export { default as Pagination } from './Pagination';
