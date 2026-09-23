@@ -19,7 +19,7 @@ class InterviewMetadataExporter
     @md.num_speakers = @interview.interviewees.count + @interview.interviewers.count
     @md.corpus_name = @interview.project.name  # must match element Title in corpus CMDI
     @md.recording_date = recording_date
-    @md.dominant_language = @interview.language.code
+    @md.dominant_language = @interview.language.code.split(/[\/-]/).first
     interviewees = @interview.interviewees.map { |interviewee| contributor_details(interviewee, 'interviewee') }
     interviewers = @interview.interviewers.map { |interviewer| contributor_details(interviewer, 'interviewer') }
     @md.actors = interviewees + interviewers
