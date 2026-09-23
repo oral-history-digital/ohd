@@ -12,8 +12,10 @@ class CmdiMetadataExporterTest < ActiveSupport::TestCase
     )
 
     language = Language.create!(code: 'ger/rus', name: 'Deutsch/Russisch')
-    @interview = DataHelper.test_interview(
-      @project,
+    @interview = Interview.create!(
+      project: @project,
+      archive_id: "#{@project.shortname}001",
+      media_type: 'audio',
       interview_languages: [InterviewLanguage.new(language: language, spec: 'primary')]
     )
   end
