@@ -3,7 +3,10 @@ class InterpolateUmbrellaProjectBranding < ActiveRecord::Migration[8.0]
     devise.mailer.confirmation_instructions.subject
     devise.mailer.new_email_confirmation_instructions.subject
     devise.mailer.reset_password_instructions.subject
+    devise.mailer.block.text
     devise.mailer.revoke_block.subject
+    devise.mailer.revoke_block.text
+    devise.mailer.remove.text
     explorer.institutions_list.description
     modules.interview_metadata.archive_link_title
     modules.interview_metadata.collection_link_title
@@ -19,8 +22,12 @@ class InterpolateUmbrellaProjectBranding < ActiveRecord::Migration[8.0]
   ].freeze
 
   BRAND_NAME_PLACEHOLDER = '%{umbrella_project_name}'.freeze
+  PROJECT_NAME_PLACEHOLDER = '%{project_name}'.freeze
   DEFAULT_REPLACEMENT = ['Oral-History.Digital', BRAND_NAME_PLACEHOLDER].freeze
   KEY_REPLACEMENTS = {
+    'devise.mailer.block.text' => ['Oral-History.Digital', PROJECT_NAME_PLACEHOLDER],
+    'devise.mailer.revoke_block.text' => ['Oral-History.Digital', PROJECT_NAME_PLACEHOLDER],
+    'devise.mailer.remove.text' => ['Oral-History.Digital', PROJECT_NAME_PLACEHOLDER],
     'modules.interview_metadata.archive_link_title' => ['OHD', BRAND_NAME_PLACEHOLDER],
     'modules.interview_metadata.collection_link_title' => ['oh.d', BRAND_NAME_PLACEHOLDER],
     'modules.project_access.sign_in' => ['oh.d', BRAND_NAME_PLACEHOLDER]
