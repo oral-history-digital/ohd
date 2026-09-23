@@ -979,7 +979,7 @@ class Interview < ApplicationRecord
       registry_references
     )
     translation_columns = translation_alpha3s.map{|alpha3| "translation_#{alpha3}"}
-    annotation_columns = alpha3s.map{|alpha3| "annotation_#{alpha3}"}
+    annotation_columns = alpha3s_with_transcript.map{|alpha3| "annotation_#{alpha3}"}
     heading_columns =  project.available_locales.map do |locale|
       alpha3 = ISO_639.find(locale).alpha3
       ["mainheading_#{alpha3}", "subheading_#{alpha3}"]
