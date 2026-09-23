@@ -304,7 +304,9 @@ export default function RegisterForm({
                         >
                             {t('user.tos_agreement')}
                         </a>
-                        {t('user.registration_text_two')}
+                        {t('user.registration_text_two', {
+                            umbrella_project_name: umbrellaProjectName,
+                        })}
                         <a
                             href={privacyLink}
                             target="_blank"
