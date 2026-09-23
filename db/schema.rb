@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_23_112000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_23_130000) do
   create_table "access_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "organization"
@@ -51,7 +51,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_23_112000) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "affiliate_translations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "affiliate_translations", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.bigint "affiliate_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_23_112000) do
     t.index ["locale"], name: "index_affiliate_translations_on_locale"
   end
 
-  create_table "affiliates", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "affiliates", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "type"
     t.string "name_type"
     t.integer "project_id"
@@ -459,8 +459,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_23_112000) do
     t.boolean "transcript_coupled", default: true
     t.text "links"
     t.string "publication_date"
-    t.boolean "include_notes_in_transcript_pdf", default: false, null: false
     t.string "used_doi_prefix"
+    t.boolean "include_notes_in_transcript_pdf", default: false, null: false
     t.index ["collection_id"], name: "index_interviews_on_collection_id"
     t.index ["created_at"], name: "index_interviews_on_created_at"
     t.index ["media_type"], name: "index_interviews_on_media_type"
