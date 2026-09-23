@@ -12,6 +12,7 @@ import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { sanitizeInternalReturnPath } from 'modules/query-string';
 import { usePathBase } from 'modules/routes';
+import { NewTabLink } from 'modules/ui';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,8 +45,8 @@ export default function RegisterForm({
         ? `${location.origin}${sanitizedStoredReturnPath}`
         : location.href;
 
-    const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
-    const privacyLink = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
+    const conditionsUrl = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
+    const privacyUrl = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
 
     const [emailCheckResponse, setEmailCheckResponse] = useState({
         registration_error: false,
@@ -213,15 +214,9 @@ export default function RegisterForm({
                 help: t('user.notes_on_tos_agreement_ohd', {
                     umbrella_project_name: umbrellaProjectName,
                     tos_link: (
-                        <a
-                            className="Link"
-                            href={conditionsLink}
-                            target="_blank"
-                            title="Externer Link"
-                            rel="noreferrer"
-                        >
+                        <NewTabLink className="Link" href={conditionsUrl}>
                             {t('user.tos_agreement')}
-                        </a>
+                        </NewTabLink>
                     ),
                 }),
                 group: 'agreements',
@@ -236,15 +231,9 @@ export default function RegisterForm({
                 },
                 help: t('user.notes_on_priv_agreement', {
                     priv_link: (
-                        <a
-                            className="Link"
-                            href={privacyLink}
-                            target="_blank"
-                            title="Externer Link"
-                            rel="noreferrer"
-                        >
+                        <NewTabLink className="Link" href={privacyUrl}>
                             {t('user.priv_agreement')}
-                        </a>
+                        </NewTabLink>
                     ),
                 }),
                 group: 'agreements',
@@ -282,6 +271,25 @@ export default function RegisterForm({
         dispatch(clearRegistrationStatus());
     };
 
+    const registrationContent = t(
+        project.is_umbrella
+            ? 'user.registration_text_umbrella'
+            : 'user.registration_text_project',
+        {
+            umbrella_project_name: umbrellaProjectName,
+            conditions_link: (
+                <NewTabLink key="conditions" href={conditionsUrl}>
+                    {t('user.tos_agreement').trim()}
+                </NewTabLink>
+            ),
+            privacy_link: (
+                <NewTabLink key="privacy" href={privacyUrl}>
+                    {t('user.priv_agreement_alias').trim()}
+                </NewTabLink>
+            ),
+        }
+    );
+
     return (
         <>
             {registrationStatus ? (
@@ -292,34 +300,7 @@ export default function RegisterForm({
                 </div>
             ) : (
                 <div>
-                    <p>
-                        {project.is_umbrella
-                            ? t('user.registration_text_one_ohd')
-                            : t('user.registration_text_one')}
-                        <a
-                            href={conditionsLink}
-                            target="_blank"
-                            title=""
-                            rel="noreferrer"
-                        >
-                            {t('user.tos_agreement')}
-                        </a>
-                        {t('user.registration_text_two', {
-                            umbrella_project_name: umbrellaProjectName,
-                        })}
-                        <a
-                            href={privacyLink}
-                            target="_blank"
-                            title=""
-                            rel="noreferrer"
-                        >
-                            {t('user.priv_agreement_alias')}
-                        </a>
-                        {t('user.registration_text_three')}
-                        {project.is_umbrella
-                            ? t('user.registration_text_four')
-                            : ''}
-                    </p>
+                    <p>{registrationContent}</p>
                 </div>
             )}
             <Form

@@ -25,10 +25,29 @@ jest.mock('modules/forms', () => ({
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({
         locale: 'en',
-        t: (key, values) =>
-            key === 'user.registration_text_two'
-                ? `Use of ${values.umbrella_project_name}`
-                : key,
+        t: (key, values = {}) => {
+            if (key === 'user.registration_text_umbrella') {
+                return [
+                    `Use ${values.umbrella_project_name}: `,
+                    values.conditions_link,
+                    ' and ',
+                    values.privacy_link,
+                    '. Request archive access.',
+                ];
+            }
+
+            if (key === 'user.registration_text_project') {
+                return [
+                    'Access interviews: ',
+                    values.conditions_link,
+                    ' and ',
+                    values.privacy_link,
+                    '.',
+                ];
+            }
+
+            return key;
+        },
     }),
 }));
 jest.mock('modules/query-string', () => ({
@@ -49,12 +68,12 @@ beforeAll(() => {
     globalThis.railsMode = 'test';
 });
 
-beforeEach(() => {
+function renderRegisterForm(isUmbrella) {
     useDispatch.mockReturnValue(jest.fn());
     useSelector.mockImplementation((selector) =>
         selector({
             countryKeys: {},
-            project: { is_umbrella: true },
+            project: { is_umbrella: isUmbrella },
             umbrellaProject: {
                 display_shortname: 'tp.d',
                 name: { en: 'Test-Portal.Digital' },
@@ -62,18 +81,33 @@ beforeEach(() => {
             user: { registrationStatus: null },
         })
     );
-});
 
-test('interpolates the umbrella project name in registration text', () => {
-    render(<RegisterForm />);
+    return render(<RegisterForm />);
+}
+
+test('renders the complete umbrella registration text with its links', () => {
+    renderRegisterForm(true);
 
     expect(
         screen.getByText(
             (_, element) =>
                 element?.tagName === 'P' &&
-                element.textContent.includes(
-                    'Use of Test-Portal.Digital (tp.d)'
-                )
+                element.textContent.includes('Use Test-Portal.Digital (tp.d)')
         )
     ).toBeInTheDocument();
+    expect(
+        screen.getByRole('link', { name: /^user\.tos_agreement/ })
+    ).toHaveAttribute('href', 'https://portal.example/en/conditions');
+    expect(
+        screen.getByRole('link', { name: /^user\.priv_agreement_alias/ })
+    ).toHaveAttribute('href', 'https://portal.example/en/privacy_protection');
+});
+
+test('renders the project registration text without the umbrella-only follow-up', () => {
+    renderRegisterForm(false);
+
+    expect(screen.getByText(/Access interviews:/)).toBeInTheDocument();
+    expect(
+        screen.queryByText(/Request archive access/)
+    ).not.toBeInTheDocument();
 });
