@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class CustomDeviseMailerTest < ActionMailer::TestCase
   include ActiveJob::TestHelper
@@ -71,6 +72,13 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     message = CustomDeviseMailer.reset_password_instructions(@user, 'reset-token').message
 
     assert_umbrella_authentication_mail(message, '/de/users/password/edit?reset_password_token=reset-token')
+  end
+
+  test 'two-factor authentication code uses configured umbrella sender' do
+    message = CustomDeviseMailer.two_factor_authentication_code(@user, '123456').message
+
+    assert_equal [@umbrella.contact_email], message.from
+    assert_equal [@umbrella.contact_email], message.reply_to
   end
 
   test 'authentication mail subjects use configured umbrella display name' do

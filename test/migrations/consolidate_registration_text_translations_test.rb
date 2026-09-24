@@ -1,5 +1,5 @@
 require 'test_helper'
-require Rails.root.join('db/migrate/20260923110000_consolidate_registration_text_translations')
+require Rails.root.join('db/migrate/20260923130000_consolidate_registration_text_translations')
 
 class ConsolidateRegistrationTextTranslationsTest < ActiveSupport::TestCase
   TEXTS = {
