@@ -531,6 +531,10 @@ class Interview < ApplicationRecord
     interview_languages.joins(:language).pluck('languages.code').uniq
   end
 
+  def annotation_alpha3s
+    interview_languages.joins(:language).where.not(spec: 'secondary').pluck('languages.code').uniq
+  end
+
   def alpha3s_with_transcript
     alpha3s.select { |l| has_transcript?(l) }
   end
@@ -979,7 +983,7 @@ class Interview < ApplicationRecord
       registry_references
     )
     translation_columns = translation_alpha3s.map{|alpha3| "translation_#{alpha3}"}
-    annotation_columns = alpha3s_with_transcript.map{|alpha3| "annotation_#{alpha3}"}
+    annotation_columns = annotation_alpha3s.map{|alpha3| "annotation_#{alpha3}"}
     heading_columns =  project.available_locales.map do |locale|
       alpha3 = ISO_639.find(locale).alpha3
       ["mainheading_#{alpha3}", "subheading_#{alpha3}"]

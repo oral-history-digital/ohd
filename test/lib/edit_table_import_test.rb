@@ -36,7 +36,6 @@ class EditTableImportTest < ActiveSupport::TestCase
         'Zwischenüberschrift (ger)',
         'Verknüpfungen',
         'Anmerkungen (rus)',
-        'Anmerkungen (pol)',
         'Anmerkungen (ger)',
         'Anmerkungen (eng)'
       ]
@@ -53,7 +52,6 @@ class EditTableImportTest < ActiveSupport::TestCase
         nil,
         germany.id,
         "Главное местонахождение — Берлин Филиал по добыче",
-        '',
         "Hauptsitz Berlin\nFiliale für die Eisenerzgewinnung in Elsass-Lothringen",
         "Headquarters Berlin\nBranch for iron ore mining in Alsace-Lorraine"
       ]
@@ -70,7 +68,6 @@ class EditTableImportTest < ActiveSupport::TestCase
         "Leben",
         [france, poland].map(&:id).join("#"),
         "Построенный для размещения восточных рабочих барачный",
-        '',
         "Für die Unterbringung der Ostarbeiter errichtetes Barackenlager",
         "Barracks camp built for housing Eastern workers"
       ]

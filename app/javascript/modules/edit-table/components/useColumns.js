@@ -12,7 +12,7 @@ export default function useColumns(interview) {
     const translationColumns = interview.translation_alpha3s.map(
         (alpha3) => `translation_${alpha3}`
     );
-    const annotationColumns = interview.alpha3s_with_transcript.map(
+    const annotationColumns = interview.annotation_alpha3s.map(
         (alpha3) => `annotation_${alpha3}`
     );
     const headingColumns = project.available_locales
