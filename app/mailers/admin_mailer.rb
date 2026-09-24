@@ -8,7 +8,7 @@ class AdminMailer < ApplicationMailer
 
     mail(
       subject: TranslationValue.for('devise.mailer.new_registration_info.subject', @project.default_locale),
-      from: "noreply@oral-history.digital",
+      **umbrella_mail_options,
       to: @project.contact_email,
       date: Time.now
     )
@@ -22,7 +22,7 @@ class AdminMailer < ApplicationMailer
 
     mail(
       subject: TranslationValue.for('devise.mailer.corrected_project_access_data.subject', @project.default_locale),
-      from: "noreply@oral-history.digital",
+      **umbrella_mail_options,
       to: @project.contact_email,
       date: Time.now
     )
@@ -37,7 +37,7 @@ class AdminMailer < ApplicationMailer
     mail(
       subject: "Sperrung eines Nutzer*innen-Accounts in der Anwendung #{@project.name(:de)}",
       from: @project.contact_email,
-      to: "mail@cedis.fu-berlin.de",
+      to: Project.umbrella.contact_email,
       date: Time.now
     )
   end
@@ -55,7 +55,7 @@ class AdminMailer < ApplicationMailer
     subject = "Interview-Archiv #{@project_name} - #{TranslationValue.for('jobs.'+@type, 'de')} #{@filename}"
     mail(
       subject: subject,
-      from: "noreply@oral-history.digital",
+      **umbrella_mail_options,
       to: @receiver.email,
       date: Time.now
     )
@@ -68,7 +68,7 @@ class AdminMailer < ApplicationMailer
     @text = params[:text]
     mail(
       subject: 'Interview-Archiv: Neuer Kommentar',
-      from: "noreply@oral-history.digital",
+      **umbrella_mail_options,
       to: @receiver.email,
       date: Time.now
     )
@@ -79,7 +79,7 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe zugewiesen',
-      from: "noreply@oral-history.digital",
+      **umbrella_mail_options,
       to: @receiver.email,
       date: Time.now
     )
@@ -90,7 +90,7 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe abgeschlossen',
-      from: "noreply@oral-history.digital",
+      **umbrella_mail_options,
       to: @receiver.email,
       date: Time.now
     )
@@ -101,10 +101,17 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe erneut geöffnet',
-      from: "noreply@oral-history.digital",
+      **umbrella_mail_options,
       to: @receiver.email,
       date: Time.now
     )
+  end
+
+  private
+
+  def umbrella_mail_options
+    contact_email = Project.umbrella.contact_email
+    { from: contact_email, reply_to: contact_email }
   end
 
 end
