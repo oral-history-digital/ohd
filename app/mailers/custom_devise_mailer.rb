@@ -66,9 +66,12 @@ class CustomDeviseMailer < Devise::Mailer
     @code = code
     @valid_for = User::EMAIL_OTP_VALID_FOR / 60
     locale = locale || user.default_locale || 'de'
+    contact_email = Project.umbrella.contact_email
 
     devise_opts = {
       scope: :user,
+      from: contact_email,
+      reply_to: contact_email,
       subject: TranslationValue.for('devise.mailer.two_factor_authentication_code.subject', locale)
     }
 
