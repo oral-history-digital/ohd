@@ -11,6 +11,7 @@ import {
 } from 'modules/banner';
 import { VIEWMODE_WORKFLOW } from 'modules/constants';
 import {
+    getProjectBrandName,
     getUmbrellaProject,
     useCurrentProject,
     useHydrateProjectsByIds,
@@ -122,7 +123,7 @@ export default function Layout({ children }) {
         doNotShowBannerAgainThisSession();
     }
 
-    let titleBase = 'Oral-History.Digital'; // TODO: Make configurable in Frontend
+    let titleBase = getProjectBrandName(umbrellaProject, locale);
     if (project) {
         titleBase = project?.display_name?.[locale] || project?.name?.[locale];
     }
@@ -170,7 +171,7 @@ export default function Layout({ children }) {
                 <ConfirmNewZwarTosPopup />
                 <Helmet
                     defaultTitle={titleBase}
-                    titleTemplate={`%s | ${titleBase}`}
+                    titleTemplate={titleBase ? `%s | ${titleBase}` : '%s'}
                 >
                     <html lang={locale} />
                     <link rel="icon" type="image/x-icon" href={faviconUrl} />

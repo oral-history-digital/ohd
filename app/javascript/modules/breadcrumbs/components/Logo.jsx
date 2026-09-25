@@ -14,6 +14,8 @@ export function Logo({
 }) {
     const { locale } = useI18n();
 
+    // One configured logo is deliberately shared across both contexts.
+    // Built-in assets are only used when the instance has none.
     const src =
         logoSrc ||
         (variant === 'outline'

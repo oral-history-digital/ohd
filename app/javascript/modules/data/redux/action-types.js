@@ -6,3 +6,4 @@ export const REQUEST_DATA = `${NAME}/request`;
 export const RECEIVE_DATA = `${NAME}/receive`;
 export const DELETE_STATUS_MSG = `${NAME}/deleteStatusMsg`;
 export const RECEIVE_ERROR = `${NAME}/receiveError`;
+export const REPLACE_INSTANCE_SETTINGS = `${NAME}/replaceInstanceSettings`;

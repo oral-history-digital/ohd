@@ -324,7 +324,10 @@ Rails.application.routes.draw do
         resource :instance_setting,
                  only: [:show, :update],
                  path: 'instance-settings',
-                 controller: :homepage_settings
+                 controller: :homepage_settings do
+          put 'breadcrumb-logo/:variant', action: :update_breadcrumb_logo
+          delete 'breadcrumb-logo/:variant', action: :remove_breadcrumb_logo
+        end
       end
       concerns :all_project_routes
       resources :institutions do
