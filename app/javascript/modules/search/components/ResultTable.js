@@ -24,7 +24,7 @@ export default function ResultTable({ interviews }) {
                 <tr className="Table-row">
                     {showCheckboxes() && <th className="Table-header" />}
                     <th className="Table-header">{t('interviewee_name')}</th>
-                    {project.is_ohd && (
+                    {project.is_umbrella && (
                         <th className="Table-header">
                             {t('activerecord.models.project.one')}
                         </th>

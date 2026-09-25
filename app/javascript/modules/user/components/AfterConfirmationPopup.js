@@ -17,7 +17,7 @@ export default function AfterConfirmationPopup() {
         !currentProjectAccess?.tos_agreement &&
         currentUser?.pre_register_location?.split('?')[0] ===
             location.origin + location.pathname &&
-        !currentProject.is_ohd &&
+        !currentProject.is_umbrella &&
         !currentProject.grant_project_access_instantly &&
         !currentProject.grant_access_without_login;
 

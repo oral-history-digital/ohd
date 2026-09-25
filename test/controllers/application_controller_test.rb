@@ -1,7 +1,26 @@
 require 'test_helper'
+require 'minitest/mock'
 require 'securerandom'
 
 class ApplicationControllerTest < ActiveSupport::TestCase
+  test 'project serialization ignores cached legacy compatibility payloads' do
+    project = DataHelper.test_project(shortname: "cch#{SecureRandom.hex(2)}a")
+    setting = InstanceSetting.current
+    setting.update!(umbrella_project: project)
+    controller = ApplicationController.new
+    controller.define_singleton_method(:current_project) { project }
+    cache = ActiveSupport::Cache::MemoryStore.new
+    legacy_key = "#{project.shortname}-project_base-#{project.id}-#{project.updated_at}--#{setting.cache_key_with_version}--#{I18n.locale}"
+    cache.write(legacy_key, { is_ohd: true })
+
+    Rails.stub(:cache, cache) do
+      payload = controller.send(:cache_single, project, serializer_name: 'ProjectBase')
+
+      assert payload[:is_umbrella]
+      assert_not payload.key?(:is_ohd)
+    end
+  end
+
   test 'initial projects payload includes configured umbrella project' do
     umbrella_project = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a")
     current_project = DataHelper.test_project(shortname: "cur#{SecureRandom.hex(2)}a")

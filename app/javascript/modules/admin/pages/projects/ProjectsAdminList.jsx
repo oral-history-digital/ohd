@@ -18,7 +18,7 @@ export default function ProjectsAdminList() {
             !Array.isArray(project) &&
             project.id !== undefined &&
             project.id !== null &&
-            !project.is_ohd
+            !project.is_umbrella
     );
 
     const { fetchData, deleteData, submitData, setQueryParams } =

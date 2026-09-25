@@ -60,6 +60,19 @@ import {
 
 /** Interview Tests */
 
+test('getFlattenedRefTree combines archive and umbrella response parts', () => {
+    const leaf = { type: 'leafe', time: 1, tape_nbr: 1 };
+    const archiveNode = { id: 10, type: 'node', children: [leaf] };
+    const sharedNode = { id: 20, type: 'node', children: [leaf] };
+
+    expect(
+        getFlattenedRefTree.resultFunc({
+            project: { children: [archiveNode] },
+            umbrella: { children: [sharedNode] },
+        })
+    ).toEqual({ 10: archiveNode, 20: sharedNode });
+});
+
 test('getCurrentInterviewFetched retrieves if current interview has been fetched', () => {
     expect(getCurrentInterviewFetched(state)).toBe(true);
 });

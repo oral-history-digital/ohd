@@ -11,7 +11,7 @@ function RouteDivider() {
     const { project } = useCurrentProject();
 
     const useRoutesWithoutProjectId =
-        Boolean(project?.archive_domain) || Boolean(project?.is_ohd);
+        Boolean(project?.archive_domain) || Boolean(project?.is_umbrella);
 
     return (
         <AnalyticsProvider project={project}>

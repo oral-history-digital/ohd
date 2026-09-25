@@ -11,7 +11,7 @@ export default function RegisterPopupLink() {
     const currentProject = useSelector(getCurrentProject);
 
     if (!currentProject) return null;
-    const showStepOne = !currentProject.is_ohd;
+    const showStepOne = !currentProject.is_umbrella;
 
     return (
         <>

@@ -12,7 +12,7 @@ export default function useProject() {
 
     let currentProject;
     if (matchWithProject && isLocaleValid(matchWithProject.params.locale)) {
-        // Archive is running on OHD domain.
+        // Archive is running on the umbrella project's domain.
         currentProject = projectArray.find(
             (project) => project.shortname === matchWithProject.params.projectId
         );
@@ -30,6 +30,6 @@ export default function useProject() {
         projectId: currentProject?.shortname,
         // Numeric database id when available — useful for API calls that require the real id.
         projectDbId: currentProject?.id,
-        isOhd: currentProject?.is_ohd,
+        isUmbrella: currentProject?.is_umbrella,
     };
 }

@@ -405,7 +405,7 @@ class ApplicationController < ActionController::Base
   #
   def cache_single(data, opts={})
     instance_setting_cache_key = data.is_a?(Project) ?
-      InstanceSetting.current.cache_key_with_version : nil
+      "v2-#{InstanceSetting.current.cache_key_with_version}" : nil
     cache_key_prefix = current_project ?
       current_project.shortname : InstanceSetting.current.umbrella_project.shortname
     cache_key = "#{cache_key_prefix}-#{(opts[:serializer_name] || data.class.name).underscore}"\

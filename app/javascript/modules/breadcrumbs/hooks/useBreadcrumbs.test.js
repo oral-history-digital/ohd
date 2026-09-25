@@ -36,7 +36,7 @@ describe('useBreadcrumbs', () => {
     it('returns project breadcrumb on project start page even when model items are empty', () => {
         const result = renderHookResult({
             project: {
-                is_ohd: false,
+                is_umbrella: false,
                 default_locale: 'de',
                 display_name: { de: 'Projekt Alpha' },
             },
@@ -56,7 +56,7 @@ describe('useBreadcrumbs', () => {
     it('prepends project breadcrumb for non-ohd pages when archive root is missing', () => {
         const result = renderHookResult({
             project: {
-                is_ohd: false,
+                is_umbrella: false,
                 default_locale: 'de',
                 display_name: { de: 'Projekt Alpha' },
             },
@@ -89,7 +89,7 @@ describe('useBreadcrumbs', () => {
     it('does not prepend a duplicate project breadcrumb when archive root already exists', () => {
         const result = renderHookResult({
             project: {
-                is_ohd: false,
+                is_umbrella: false,
                 default_locale: 'de',
                 display_name: { de: 'Projekt Alpha' },
             },
@@ -127,7 +127,7 @@ describe('useBreadcrumbs', () => {
     it('preserves loading state from model items', () => {
         const result = renderHookResult({
             project: {
-                is_ohd: false,
+                is_umbrella: false,
                 default_locale: 'de',
                 display_name: { de: 'Projekt Alpha' },
             },

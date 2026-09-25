@@ -21,7 +21,7 @@ describe('normalizeCurrentPageWithProjectContext', () => {
         const result = normalizeCurrentPageWithProjectContext(
             buildCurrentPage(),
             {
-                isOhd: true,
+                isUmbrella: true,
                 projectShortname: 'ohd',
                 projectId: 21894749,
             }
@@ -48,7 +48,7 @@ describe('normalizeCurrentPageWithProjectContext', () => {
                 pathname: '/mog/de/interviews/ARC-1',
             }),
             {
-                isOhd: false,
+                isUmbrella: false,
                 projectShortname: 'other',
                 projectId: 99,
             }
@@ -74,7 +74,7 @@ describe('normalizeCurrentPageWithProjectContext', () => {
                 pathname: '/de/contact',
             }),
             {
-                isOhd: false,
+                isUmbrella: false,
                 projectShortname: 'mog',
                 projectId: 42,
             }

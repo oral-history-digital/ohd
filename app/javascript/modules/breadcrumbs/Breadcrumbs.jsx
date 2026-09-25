@@ -13,11 +13,11 @@ export default function Breadcrumbs({ logoSrc }) {
 
     const shouldHideBreadcrumbs =
         crumbs.length === 0 ||
-        (!project?.is_ohd && project?.display_ohd_link === false);
+        (!project?.is_umbrella && project?.display_ohd_link === false);
 
     if (shouldHideBreadcrumbs) return null;
 
-    const logoVariant = project?.is_ohd ? 'default' : 'outline';
+    const logoVariant = project?.is_umbrella ? 'default' : 'outline';
 
     return (
         <nav aria-label="breadcrumb" className={classNames('Breadcrumbs')}>
