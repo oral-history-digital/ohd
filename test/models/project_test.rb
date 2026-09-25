@@ -90,6 +90,8 @@ class ProjectTest < ActiveSupport::TestCase
     )
     InstanceSetting.current.update!(umbrella_project: umbrella_project)
 
+    assert_equal umbrella_project, Project.umbrella
+    assert_equal umbrella_project, Project.ohd
     assert umbrella_project.umbrella?
     assert umbrella_project.is_ohd?
     assert_not @project.umbrella?
@@ -98,5 +100,74 @@ class ProjectTest < ActiveSupport::TestCase
     ohd_project = Project.find_by!(shortname: "ohd")
     assert_not ohd_project.umbrella?
     assert_not ohd_project.is_ohd?
+  end
+
+  test "combines configured umbrella and project search facets" do
+    umbrella_project = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+
+    umbrella_facet = MetadataField.create!(
+      project: umbrella_project,
+      source: "Interview",
+      name: "umbrella_facet",
+      use_as_facet: true,
+      facet_order: 1
+    )
+    project_facet = MetadataField.create!(
+      project: @project,
+      source: "Interview",
+      name: "project_facet",
+      use_as_facet: true,
+      facet_order: 2
+    )
+
+    assert_equal [umbrella_facet, project_facet], @project.search_facets_including_umbrella
+  end
+
+  test "collection facets are global only for the configured umbrella" do
+    umbrella = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a")
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+
+    archive = Project.find_by!(shortname: "ohd")
+    other_archive = DataHelper.test_project(shortname: "arc#{SecureRandom.hex(2)}a")
+    hidden = DataHelper.test_project(shortname: "hid#{SecureRandom.hex(2)}a", workflow_state: "unshared")
+
+    other_collection = Collection.create!(name: "Other archive collection", project: other_archive)
+    archive_collection = Collection.create!(name: "Archive collection", project: archive)
+    hidden_collection = Collection.create!(name: "Hidden collection", project: hidden)
+    
+    [umbrella, archive].each do |project|
+      MetadataField.create!(project: project, source: "Interview", name: "collection_id", use_as_facet: true)
+    end
+
+    umbrella_ids = umbrella.search_facets_hash.fetch(:collection_id).fetch(:subfacets).keys
+    assert_includes umbrella_ids, other_collection.id.to_s
+    assert_includes umbrella_ids, archive_collection.id.to_s
+    assert_not_includes umbrella_ids, hidden_collection.id.to_s
+
+    archive_ids = archive.search_facets_hash.fetch(:collection_id).fetch(:subfacets).keys
+    assert_equal [archive_collection.id.to_s], archive_ids
+  end
+
+  test "archive routing domains exclude configured umbrella but retain former ohd" do
+    umbrella = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a",
+      archive_domain: "http://umbrella.localhost:47001"
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+    former_umbrella = Project.find_by!(shortname: "ohd")
+    former_umbrella.update!(archive_domain: "http://legacy-archive.localhost:47001")
+    @project.update!(archive_domain: "http://ordinary-archive.localhost:47001")
+
+    # Get the list of archive domains used for routing
+    domains = Project.archive_domains
+    
+    assert_not_includes domains, umbrella.archive_domain
+    assert_includes domains, former_umbrella.archive_domain
+    assert_includes domains, @project.archive_domain
+    assert_not_includes domains, nil
+    assert_not_includes domains, ""
   end
 end

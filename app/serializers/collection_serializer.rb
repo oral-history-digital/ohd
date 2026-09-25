@@ -31,10 +31,10 @@ class CollectionSerializer < ApplicationSerializer
   end
 
   def subjects
-    object.ohd_subject_registry_entries
+    object.umbrella_subject_registry_entries
   end
 
   def levels_of_indexing
-    object.ohd_level_of_indexing_registry_entries
+    object.umbrella_level_of_indexing_registry_entries
   end
 end
