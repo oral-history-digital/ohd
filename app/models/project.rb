@@ -113,6 +113,7 @@ class Project < ApplicationRecord
   validates :aspect_y, numericality: { only_integer: true },  allow_nil: true
   validates :archive_id_number_length, numericality: { only_integer: true },  allow_nil: true
   validates :shortname, format: { with: /\A[\-a-z0-9]{1,11}[a-z]\z/ },  uniqueness: true,  presence: true
+  validates :display_shortname, length: { maximum: 255 }, allow_blank: true
   validates :workflow_state, inclusion: { in: %w(public unshared),
     message: "%{value} is not a valid workflow state" }
   validates :upload_types, inclusion: { in: %w(bulk_metadata bulk_photos bulk_registry_entries bulk_texts),
