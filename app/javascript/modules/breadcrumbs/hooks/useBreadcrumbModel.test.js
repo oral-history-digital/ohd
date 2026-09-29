@@ -78,7 +78,9 @@ function getHookResult({
 
     getCurrentInterview.mockImplementation(() => interview);
     getCurrentUser.mockImplementation(() => currentUser || null);
-    getUsersStatus.mockImplementation(() => usersStatus || 'fetched');
+    getUsersStatus.mockImplementation(
+        () => usersStatus || { current: 'fetched' }
+    );
     useGetCollection.mockImplementation((id) => ({
         collection:
             (id && (collections?.[id] || collections?.[Number(id)])) || null,
@@ -540,7 +542,7 @@ describe('useBreadcrumbModel', () => {
             currentUser: {
                 interview_permissions: [],
             },
-            usersStatus: 'fetching',
+            usersStatus: { current: 'fetching' },
             collections: {},
             institutions: {},
             projects: {},
@@ -861,5 +863,45 @@ describe('useBreadcrumbModel', () => {
                 loading: false,
             },
         ]);
+    });
+
+    it('does not wait for account resolution when logged out', () => {
+        const result = getHookResult({
+            currentPage: {
+                pageType: 'interview_detail',
+                isKnown: true,
+                params: {
+                    projectId: 'mog',
+                    locale: 'de',
+                    archiveId: 'za001',
+                },
+                pathBase: '/mog/de',
+                pathname: '/mog/de/interviews/za001',
+                search: '',
+            },
+            project: { shortname: 'mog', default_locale: 'de' },
+            interview: {
+                archive_id: 'za001',
+                workflow_state: 'restricted',
+                anonymous_title: { de: 'A. Person' },
+            },
+            currentUser: null,
+            usersStatus: { current: 'fetching' },
+            collections: {},
+            institutions: {},
+            projects: {},
+            projectAccessGranted: false,
+            authCanUpdate: false,
+            translations: {
+                home: 'Start',
+                'activerecord.models.interview.one': 'Interview',
+            },
+        });
+
+        expect(result.items.at(-1)).toMatchObject({
+            key: 'interview',
+            label: 'A. Person',
+            loading: false,
+        });
     });
 });

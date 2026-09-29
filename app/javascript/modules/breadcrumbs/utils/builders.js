@@ -31,13 +31,10 @@ export function buildInterviewItems(currentPage, context) {
         locale,
         canShowFullTitle
     );
-    const usersFetched =
-        typeof usersStatus === 'string'
-            ? usersStatus.startsWith('fetched')
-            : false;
+    const usersFetched = usersStatus?.current?.startsWith('fetched');
     const interviewIsRestricted = interview?.workflow_state === 'restricted';
     const waitingForUserAccessResolution =
-        interviewIsRestricted && !usersFetched;
+        interviewIsRestricted && Boolean(currentUser) && !usersFetched;
     const waitingForProjectResolution =
         interviewIsRestricted && Boolean(currentUser) && !project;
     const shouldShowInterviewSkeleton =
