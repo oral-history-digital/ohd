@@ -97,9 +97,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     umbrella = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a", name: 'Shared platform')
     Globalize.with_locale(:de) { umbrella.update!(name: 'Gemeinsame Plattform') }
     InstanceSetting.current.update!(umbrella_project: umbrella)
-    
+
+    # Simulate an earlier request so the old archive-domain lookup is cached.
+    get '/de/users/check_email.json', params: { email: 'not-registered@example.com' }
+
     # Make the portal request genuinely global, with no matching project domain.
     Project.where(archive_domain: OHD_DOMAIN).update_all(archive_domain: '')
+    # The direct database update does not clear the cached lookup.
+    Rails.cache.clear
     original_translation = TranslationValue.method(:for)
     translation = ->(key, locale, **values) do
       if key.start_with?('modules.registration.messages.')
