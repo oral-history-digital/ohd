@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.10.0] - 2026-09-29
+
+### Added
+
+- feat: remove hardcoded umbrella ([#150](https://github.com/oral-history-digital/ohd/pull/150))
+- feat: add project display shortname ([#153](https://github.com/oral-history-digital/ohd/pull/153))
+- feat: add instance branding ([#155](https://github.com/oral-history-digital/ohd/pull/155))
+- feat: translation cleanup ([#157](https://github.com/oral-history-digital/ohd/pull/157))
+- feat: remove hardcoded e-mail addresses ([#159](https://github.com/oral-history-digital/ohd/pull/159))
+
+### Fixed
+
+- fix: support all locales during custom-domain session handover ([#160](https://github.com/oral-history-digital/ohd/pull/160))
+- add missing method to person to prevent empty landing-page data ([67ae6afe8](https://github.com/oral-history-digital/ohd/commit/67ae6afe8d4af5baf054e68f97950a4137c446b9))
+- fallback to de registry_name_translations, also if original is '' ([2b79e102a](https://github.com/oral-history-digital/ohd/commit/2b79e102a82952ed6dcefc89d9e51ed497d822a0))
+- #559 prevent annotations on secondary language ([72c981d60](https://github.com/oral-history-digital/ohd/commit/72c981d60e09edddd76c997cac68111543233a28))
+- fix edit_table_import ([a9f364083](https://github.com/oral-history-digital/ohd/commit/a9f364083b1c2c93e2d5780c84c2a592d1134c8a))
+- #639 fix routing to /conditions, /contact, etc. in locales other than :en, :de ([cdc270dac](https://github.com/oral-history-digital/ohd/commit/cdc270dac78d3646a206a1336b0256c20e114837))
+- #534 do not introduce extra new lines when importing biographies ([09572223c](https://github.com/oral-history-digital/ohd/commit/09572223c05659b2682f1bac5ac871c0132a199d))
+- #448 fix norm-data provider selection in pagination ([0f606683b](https://github.com/oral-history-digital/ohd/commit/0f606683bbdb7d8eda4bd219384db2f6915edae2))
+- fix: resolve restricted interview breadcrumb titles ([daac9f710](https://github.com/oral-history-digital/ohd/commit/daac9f7102d543ae8ebfab2428ff45fc9dad1f03))
+
+### Changed
+
+- refactor: remove hardcoded ohd references in frontend ([#151](https://github.com/oral-history-digital/ohd/pull/151))
+
 ## [2.9.1] - 2026-09-18
 
 ### Fixed
@@ -780,6 +806,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.10.0]: https://github.com/oral-history-digital/ohd/compare/v2.9.1...v2.10.0
 [2.9.1]: https://github.com/oral-history-digital/ohd/compare/v2.9.0...v2.9.1
 [2.9.0]: https://github.com/oral-history-digital/ohd/compare/v2.8.0...v2.9.0
 [2.8.0]: https://github.com/oral-history-digital/ohd/compare/v2.7.2...v2.8.0
