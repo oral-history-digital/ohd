@@ -1,8 +1,8 @@
 class ProjectCreator < ApplicationService
   attr_accessor :project_params, :user, :project, :default_registry_name_type,
-    :root_registry_entry, :is_ohd
+    :root_registry_entry, :umbrella
 
-  def initialize(project_params, user, is_ohd = false)
+  def initialize(project_params, user, umbrella = false)
     @project_params = project_params.merge(
       archive_id_number_length: 4,
       has_map: true,
@@ -11,7 +11,8 @@ class ProjectCreator < ApplicationService
       editorial_color: '#5f8ac3',
     )
     @user = user
-    @is_ohd = is_ohd
+    # Creation mode, not a lookup of the configured umbrella project's identity.
+    @umbrella = umbrella
   end
 
   def perform(*args)
@@ -25,15 +26,15 @@ class ProjectCreator < ApplicationService
     # create_default_event_types  # Do not create default event types for now.
     create_default_interviewee_metadata_fields
     create_default_interview_metadata_fields
-    create_default_contribution_types unless is_ohd
+    create_default_contribution_types unless umbrella
     create_default_roles
-    create_default_task_types unless is_ohd
+    create_default_task_types unless umbrella
     create_default_texts
     create_default_landing_page_texts
     create_default_media_streams
     project.update(
       upload_types: ["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"]
-    ) unless is_ohd
+    ) unless umbrella
     project
   end
 
@@ -133,7 +134,7 @@ class ProjectCreator < ApplicationService
 
   def create_default_registry_reference_type_metadata_fields
     YAML.load_file(File.join(Rails.root, 'config/defaults/registry_reference_type_metadata_fields.yml')).each do |(name, settings)|
-      registry_reference_type_id = (settings['ohd'] ? Project.ohd : project).registry_reference_types.where(code: name).first&.id
+      registry_reference_type_id = (settings['umbrella'] ? Project.umbrella : project).registry_reference_types.where(code: name).first&.id
       unless registry_reference_type_id.nil?
         metadata_field = MetadataField.create(
           registry_reference_type_id: registry_reference_type_id,
@@ -266,6 +267,7 @@ class ProjectCreator < ApplicationService
               #institution_city: project.institutions.first&.city,
               #institution_country: project.institutions.first&.country,
               privacy_protection_link: "#{OHD_DOMAIN}/#{locale}/privacy_protection",
+              umbrella_name: ERB::Util.html_escape(Project.umbrella.name(locale)),
               project_conditions_link: "#{project.domain_with_optional_identifier}/#{locale}/conditions",
               ohd_conditions_link: "#{OHD_DOMAIN}/#{locale}/conditions",
             }
@@ -277,28 +279,28 @@ class ProjectCreator < ApplicationService
 
   def create_default_landing_page_texts
     landing_page_texts = {
-      de: 'Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.',
-      en: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
-      ru: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
-      es: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
-      el: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
-      uk: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
-      ar: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.'
+      de: 'Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "%{umbrella_name}" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.',
+      en: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      ru: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      es: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      el: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      uk: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.',
+      ar: 'The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.'
     }
     restricted_landing_page_texts = {
-      de: '<p>Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "Oral-History.Digital" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.</p><p>Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.</p>',
-      en: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
-      ru: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
-      es: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
-      el: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
-      uk: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
-      ar: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “Oral-History.Digital” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>'
+      de: '<p>Das Interview mit INTERVIEWEE ist Teil des Online-Archivs „ARCHIVE_TITLE“. Um Zugang zu den vollständigen Interviews mit Transkript und weiteren Materialien zu erhalten, müssen Sie sich in der Plattform "%{umbrella_name}" registrieren und Ihre Freischaltung für das Archiv "ARCHIVE_TITLE" beantragen. Bitte beachten Sie die Nutzungsbedingungen, insbesondere die Persönlichkeitsrechte der Interviewten.</p><p>Aus rechtlichen oder ethischen Gründen ist dieses Interview nur beschränkt zugänglich. Bitte beantragen Sie den erweiterten Zugang per E-Mail.</p>',
+      en: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
+      ru: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
+      es: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
+      el: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
+      uk: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>',
+      ar: '<p>The interview with INTERVIEWEE is part of the online archive “ARCHIVE_TITLE.” To access the complete interviews with transcripts and additional materials, you must register on the “%{umbrella_name}” platform and apply for access to the “ARCHIVE_TITLE” archive. Please note the terms of use, particularly with regard to the personal rights of the interviewees.</p><p>For legal or ethical reasons, this interview is only accessible on request. Please request extended access via e-mail.</p>'
     }
 
     (project.available_locales | ['en']).each do |locale|
       project.update(
-        landing_page_text: landing_page_texts[locale.to_sym],
-        restricted_landing_page_text: restricted_landing_page_texts[locale.to_sym],
+        landing_page_text: landing_page_texts[locale.to_sym]&.gsub('%{umbrella_name}') { Project.umbrella.name(locale) },
+        restricted_landing_page_text: restricted_landing_page_texts[locale.to_sym]&.gsub('%{umbrella_name}') { ERB::Util.html_escape(Project.umbrella.name(locale)) },
         locale: locale
       )
     end
@@ -327,7 +329,7 @@ class ProjectCreator < ApplicationService
 
   def replace_with_project_params(text, params)
     params.each do |key, value|
-      text.gsub!("%{#{key}}", value) if value
+      text.gsub!("%{#{key}}") { value } if value
     end
     text
   end

@@ -12,7 +12,7 @@ class Admin::UserPolicy < ApplicationPolicy
     def resolve
       if user && (user.admin? || user.roles?(project, 'User', 'update'))
         users = scope.where.not(confirmed_at: nil)
-        users = users.joins(:user_projects).where("user_projects.project_id = ?", project.id) if !project.is_ohd?
+        users = users.joins(:user_projects).where("user_projects.project_id = ?", project.id) if !project.umbrella?
         users
       else
         scope.none

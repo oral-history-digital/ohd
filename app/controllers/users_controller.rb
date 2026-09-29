@@ -63,7 +63,7 @@ class UsersController < ApplicationController
         msg = 'account_confirmation_missing'
         user.resend_confirmation_instructions
         reset_password_error = true
-      elsif current_project && !current_project.is_ohd?
+      elsif current_project && !current_project.umbrella?
         project_access = user.user_projects.where(project: current_project).first
         if project_access
           msg = project_access.workflow_state
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
       "modules.registration.messages.#{msg}",
       params[:locale],
       email: email,
-      project: current_project ? current_project.name : 'Oral-History.Digital'
+      project: (current_project || Project.umbrella).name(params[:locale])
     )
 
     respond_to do |format|
@@ -115,7 +115,7 @@ class UsersController < ApplicationController
       workflow_state
     ).include?(params[:order]) ? params[:order] : 'last_name'
     if ['processed_at', 'workflow_state'].include? order
-      if current_project.is_ohd?
+      if current_project.umbrella?
         order = "users.#{order}"
       else
         order = "user_projects.#{order}"
@@ -126,8 +126,8 @@ class UsersController < ApplicationController
     users = policy_scope(User).
       where("first_name LIKE ? OR last_name LIKE ? OR email LIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
 
-    users = users.where(workflow_state: params[:workflow_state] || 'afirmed') if current_project.is_ohd? && params[:workflow_state] != 'all'
-    users = users.joins(:user_projects).where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.is_ohd? && params[:workflow_state] != 'all' && params[:workflow_users_for_project].blank?
+    users = users.where(workflow_state: params[:workflow_state] || 'afirmed') if current_project.umbrella? && params[:workflow_state] != 'all'
+    users = users.joins(:user_projects).where("user_projects.workflow_state = ?", params[:workflow_state] || 'project_access_requested') if !current_project.umbrella? && params[:workflow_state] != 'all' && params[:workflow_users_for_project].blank?
     users = users.joins(:user_projects).where("user_projects.project_id = ?", params[:project]) if !params[:project].blank?
 
     users = users.where(default_locale: params[:default_locale]) if I18n.available_locales.map(&:to_s).include?(params[:default_locale])

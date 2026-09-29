@@ -169,7 +169,9 @@ namespace :bootstrap do
       raise "Missing task types for project '#{shortname}'" if project.task_types.count.zero?
       raise "Missing user link for project '#{shortname}'" if UserProject.where(project_id: project.id).count.zero?
     else
-      raise "Missing baseline project 'ohd'" if Project.find_by(shortname: 'ohd').blank?
+      # Verification must not initialize settings or infer an umbrella from its name.
+      settings = InstanceSetting.find_by(singleton_key: InstanceSetting::SINGLETON_KEY)
+      raise 'Missing configured umbrella project' if settings&.umbrella_project.blank?
       raise 'Missing TranslationValue records' if TranslationValue.count.zero?
       raise 'Missing Role records' if Role.count.zero?
       raise 'Missing Permission records' if Permission.count.zero?

@@ -36,4 +36,26 @@ class ShortUrlRoutingTest < ActionDispatch::IntegrationTest
         "expected 404 for #{path}, got #{response.status}"
     end
   end
+
+  test 'configured umbrella serves portal while former ohd serves its archive domain' do
+    umbrella = DataHelper.test_project(
+      shortname: "umb#{SecureRandom.hex(2)}a",
+      archive_domain: OHD_DOMAIN
+    )
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+    # Shared fixtures originally use the same domain. Give archives distinct
+    # domains so current_project can resolve the configured portal unambiguously.
+    Project.find_by!(shortname: 'test').update!(archive_domain: 'http://ordinary-archive.localhost:47001')
+    Project.find_by!(shortname: 'ohd').update!(archive_domain: 'http://legacy-archive.localhost:47001')
+
+    get '/en'
+    assert_response :success
+    assert_equal 'index', request.path_parameters[:action]
+
+    host! 'legacy-archive.localhost:47001'
+    # Bypass the existing central-session check to test archive route selection.
+    get '/en', params: { checked_ohd_session: true }
+    assert_response :success
+    assert_equal 'show', request.path_parameters[:action]
+  end
 end

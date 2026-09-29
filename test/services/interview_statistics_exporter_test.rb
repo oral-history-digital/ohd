@@ -2,6 +2,23 @@ require 'test_helper'
 require 'securerandom'
 
 class InterviewStatisticsExporterTest < ActiveSupport::TestCase
+  test 'configured umbrella report includes all interviews while former ohd stays scoped' do
+    umbrella = DataHelper.test_project(shortname: unique_shortname('umb'))
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+    archive = Project.find_by!(shortname: 'ohd')
+    collection = Collection.create!(name: 'Former umbrella collection', project: archive)
+    create_interview(project: archive, collection: collection, suffix: 41, media_type: 'video')
+
+    umbrella_rows = CSV.parse(InterviewStatisticsExporter.perform(project: umbrella, locale: :en), **CSV_OPTIONS)
+    archive_rows = CSV.parse(InterviewStatisticsExporter.perform(project: archive, locale: :en), **CSV_OPTIONS)
+
+    # Umbrella report should include all interviews, while the former OHD report 
+    # should only include its own scoped interviews.
+    assert_equal Interview.count, umbrella_rows[1][1].to_i
+    assert_equal archive.interviews.count, archive_rows[1][1].to_i
+    assert_operator umbrella_rows[1][1].to_i, :>, archive_rows[1][1].to_i
+  end
+
   test 'institution_counts aggregates child-linked projects under top-level institutions' do
     project = DataHelper.test_project(shortname: unique_shortname('isf'))
 
@@ -222,10 +239,10 @@ class InterviewStatisticsExporterTest < ActiveSupport::TestCase
   test 'does not add indexing level header when level root is missing' do
     ohd_project = Project.find_by!(shortname: 'ohd')
     exporter = InterviewStatisticsExporter.new(project: ohd_project, locale: :en)
-    original_method = RegistryEntry.method(:ohd_level_of_indexing)
+    original_method = RegistryEntry.method(:umbrella_level_of_indexing)
 
     # Stub the OHD level of indexing method to return nil, simulating a missing level root.
-    RegistryEntry.define_singleton_method(:ohd_level_of_indexing) { nil }
+    RegistryEntry.define_singleton_method(:umbrella_level_of_indexing) { nil }
 
     begin
       csv = exporter.perform
@@ -235,7 +252,7 @@ class InterviewStatisticsExporterTest < ActiveSupport::TestCase
       refute_includes csv, expected_header
     ensure
       # Restore the original method to avoid side effects on other tests.
-      RegistryEntry.define_singleton_method(:ohd_level_of_indexing, original_method)
+      RegistryEntry.define_singleton_method(:umbrella_level_of_indexing, original_method)
     end
   end
 

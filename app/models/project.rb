@@ -167,11 +167,16 @@ class Project < ApplicationRecord
     end
 
     def ohd
-      where(shortname: 'ohd').first
+      # TODO: Deprecated compatibility alias. Use .umbrella.
+      umbrella
+    end
+
+    def umbrella
+      InstanceSetting.current.umbrella_project
     end
 
     def archive_domains
-      where.not(shortname: 'ohd').
+      where.not(id: InstanceSetting.current.umbrella_project_id).
         where.not(archive_domain: ['', nil]).
         pluck(:archive_domain).uniq
     end
@@ -247,6 +252,10 @@ class Project < ApplicationRecord
       where(source: ['RegistryReferenceType', 'Interview', 'Person'], use_as_facet: true).
       includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       order(:facet_order)
+  end
+
+  def search_facets_including_umbrella
+    Project.umbrella.search_facets | search_facets
   end
 
   def search_facets_names
@@ -466,7 +475,7 @@ class Project < ApplicationRecord
           mem[facet.name.to_sym] = Rails.cache.fetch("#{shortname}-facet-#{facet.id}-#{cache_key_date}-#{Collection.count}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-              subfacets: ( is_ohd? ?
+              subfacets: ( umbrella? ?
                 Collection.joins(:project).where(project: {workflow_state: 'public'}) :
                 collections
               ).includes(:translations).inject({}) do |subfacets, sf|

@@ -246,7 +246,7 @@ class Interview < ApplicationRecord
     end
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
-      ((Project.ohd.present? ? Project.ohd.search_facets : []) | project.search_facets).inject({}) do |mem, facet|
+      project.search_facets_including_umbrella.inject({}) do |mem, facet|
         if interviewee
           mem[facet.name] = case facet.source
             when 'RegistryReferenceType'
@@ -853,7 +853,9 @@ class Interview < ApplicationRecord
       cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), (project ? project.updated_at : Project.maximum(:updated_at))]
         .compact.max.strftime("%d.%m-%H:%M")
 
-      Rails.cache.fetch("#{project ? project.shortname : 'ohd'}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
+      # Global results must never share a cache namespace with a single project.
+      cache_key_prefix = project ? "project-#{project.id}" : 'global'
+      Rails.cache.fetch("#{cache_key_prefix}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
         search = Interview.search do
           adjust_solr_params do |params|
             params[:rows] = project ? project.interviews.size : Interview.count
@@ -888,9 +890,9 @@ class Interview < ApplicationRecord
         # the follwing is a really restrictive approach
         # it allows only users with project-access to find interviews of those projects
         #with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')
-        if project.is_ohd? && user && params[:fulltext]
+        if project.umbrella? && user && params[:fulltext]
           with(:project_id, user&.accessible_projects&.pluck(:id))
-        elsif project.is_ohd? && !params[:fulltext]
+        elsif project.umbrella? && !params[:fulltext]
           with(:project_id, Project.where(workflow_state: 'public').pluck(:id))
         else
           with(:project_id, project.id)

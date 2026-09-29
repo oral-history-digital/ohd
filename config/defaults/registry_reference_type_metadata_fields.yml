@@ -27,14 +27,14 @@
   use_in_details_view: true
   use_in_metadata_import: true
 :level_of_indexing_ohd:
-  ohd: true
+  umbrella: true
   ref_object_type: Interview
   use_in_metadata_import: true
 :subjects_ohd:
-  ohd: true
+  umbrella: true
   ref_object_type: Interview
   use_in_metadata_import: true
 :countries_ohd:
-  ohd: true
+  umbrella: true
   ref_object_type: Interview
   use_in_metadata_import: true
