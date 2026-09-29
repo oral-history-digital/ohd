@@ -3,6 +3,7 @@ class ProjectSerializer < ApplicationSerializer
     :name,
     :display_name,
     :shortname,
+    :display_shortname,
     :title,
     :num_interviews,
     :available_locales,
