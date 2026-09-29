@@ -29,7 +29,7 @@ ssh:
 
 accessories:
   db:
-    image: mariadb:10.5
+    image: docker.io/mariadb:10.5
     hosts:
       - 160.45.152.195
     env:
