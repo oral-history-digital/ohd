@@ -5,6 +5,16 @@ GIT
     oai_repository (0.9.6)
       oai
 
+GIT
+  remote: https://github.com/phoozle/kamal_podman.git
+  revision: b7635a5695e551131138793bc7fa3b2582b76820
+  branch: main
+  specs:
+    kamal_podman (0.1.0)
+      activesupport (>= 7.0)
+      kamal (= 2.12.0)
+      zeitwerk (>= 2.6.18, < 3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -620,6 +630,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kamal
+  kamal_podman!
   mime-types
   mini_exiftool
   mini_magick
