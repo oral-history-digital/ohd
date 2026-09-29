@@ -51,7 +51,7 @@ export default function AdminTabPanel() {
         <ErrorBoundary small>
             <h3 className="SidebarTabs-title">{t('edit.administration')}</h3>
             <div className="flyout-sub-tabs-container flyout-video">
-                {project?.is_ohd && user?.admin && (
+                {project?.is_umbrella && user?.admin && (
                     <AdminSubTab
                         title="edit.instance.title"
                         url={`${pathBase}/admin/instance`}

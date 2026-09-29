@@ -110,7 +110,9 @@ export default function InterviewListRow({
                     )}
                 </LinkOrA>
             </td>
-            {project.is_ohd && <td className="Table-cell">{projectName}</td>}
+            {project.is_umbrella && (
+                <td className="Table-cell">{projectName}</td>
+            )}
             {project.list_columns?.map((column) => {
                 const allowedToSee =
                     !isRestricted ||

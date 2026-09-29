@@ -1,6 +1,7 @@
 class UserProjectSerializer < ApplicationSerializer
   attributes :id,
     :project_id,
+    :is_umbrella,
     :shortname,
     :name,
     :user_id,
@@ -39,6 +40,10 @@ class UserProjectSerializer < ApplicationSerializer
 
   def shortname
     object.project&.shortname
+  end
+
+  def is_umbrella
+    object.project&.umbrella? || false
   end
 
   def name

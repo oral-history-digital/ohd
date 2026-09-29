@@ -15,7 +15,7 @@ export default function ActivationFlow({ className }) {
     const { t } = useI18n();
     const isLoggedIn = useSelector(getIsLoggedIn);
     const user = useSelector(getCurrentUser);
-    const { project, isOhd } = useProject();
+    const { project, isUmbrella } = useProject();
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(project);
 
@@ -33,7 +33,7 @@ export default function ActivationFlow({ className }) {
         return null;
     } else if (isLoggedIn && project?.grant_project_access_instantly) {
         return null;
-    } else if (isOhd) {
+    } else if (isUmbrella) {
         return null;
     } else if (
         projectAccessStatus === 'project_access_requested' ||

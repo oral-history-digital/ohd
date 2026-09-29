@@ -5,34 +5,34 @@
  * - `getCurrentPageFromLocation` intentionally stays URL-only and pure.
  * - Some screens still need project context values (`projectShortname`, numeric
  *   `projectId`) even when the URL has no explicit project segment.
- * - The OHD locale root (`/:locale`, e.g. `/de`) is a special case: this page
+ * - The umbrella locale root (`/:locale`, e.g. `/de`) is a special case: this page
  *   must remain a site page (`site_startpage`) with no project identifiers.
  *
  * Rules:
  * 1. URL-derived `params.projectShortname` is authoritative when present.
- * 2. If missing, fallback to project context only outside the OHD locale root case.
+ * 2. If missing, fallback to project context only outside the umbrella locale root case.
  * 3. Numeric `projectId` is only set when a project shortname is resolved.
- * 4. OHD locale root remaps `project_startpage` to `site_startpage`.
+ * 4. Umbrella locale root remaps `project_startpage` to `site_startpage`.
  */
 export default function normalizeCurrentPageWithProjectContext(
     currentPage,
     projectContext = {}
 ) {
     const {
-        isOhd = false,
+        isUmbrella = false,
         projectShortname = null,
         projectId = null,
     } = projectContext;
 
     // Check whether the route contains a project shortname param
     const routeProjectShortname = currentPage.params?.projectShortname ?? null;
-    const isOhdLocaleRoot =
+    const isUmbrellaLocaleRoot =
         currentPage.pageType === 'project_startpage' &&
         !routeProjectShortname &&
-        isOhd;
+        isUmbrella;
 
     const fallbackProjectShortname = projectShortname ?? null;
-    const resolvedProjectShortname = isOhdLocaleRoot
+    const resolvedProjectShortname = isUmbrellaLocaleRoot
         ? null
         : (routeProjectShortname ?? fallbackProjectShortname);
     const resolvedProjectId = resolvedProjectShortname
@@ -48,7 +48,7 @@ export default function normalizeCurrentPageWithProjectContext(
         },
     };
 
-    if (isOhdLocaleRoot) {
+    if (isUmbrellaLocaleRoot) {
         return {
             ...normalizedCurrentPage,
             pageType: 'site_startpage',

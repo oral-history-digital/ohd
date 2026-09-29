@@ -1,8 +1,6 @@
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-//import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
-
 import { Disclosure } from 'modules/ui';
 import PropTypes from 'prop-types';
 
@@ -12,13 +10,13 @@ import useEntryReferences from './useEntryReferences';
 
 export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
     const { t } = useI18n();
-    const { project, projectId } = useProject();
-    const { isLoading, groupedRefs, referenceCount, error } =
+    const { project } = useProject();
+    const { isLoading, groupedRefs, referenceCount } =
         useEntryReferences(registryEntry);
     const projectRefs = groupedRefs?.filter(
         ([shortname]) => shortname === project.shortname
     );
-    const usedReferenceCount = project.is_ohd
+    const usedReferenceCount = project.is_umbrella
         ? referenceCount
         : projectRefs?.[0]?.[1]?.length || 0;
 
@@ -26,7 +24,7 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
         return <Spinner />;
     }
 
-    if (!project.is_ohd && usedReferenceCount > 0) {
+    if (!project.is_umbrella && usedReferenceCount > 0) {
         return (
             <>
                 <h4>{referenceCountTitle(t, usedReferenceCount)}</h4>
@@ -36,7 +34,7 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
                 />
             </>
         );
-    } else if (project.is_ohd) {
+    } else if (project.is_umbrella) {
         return (
             <>
                 <h4>{referenceCountTitle(t, usedReferenceCount)}</h4>

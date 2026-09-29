@@ -29,8 +29,11 @@ describe('<ProjectsOverview />', () => {
             <ProjectsOverview
                 user={{
                     user_projects: {
-                        1: userProject(1, 'ohd', 'Oral-History.Digital'),
-                        2: userProject(2, 'test', 'Test Project'),
+                        1: {
+                            ...userProject(1, 'shared', 'Umbrella Project'),
+                            is_umbrella: true,
+                        },
+                        2: userProject(2, 'ohd', 'Test Project'),
                         3: userProject(3, 'demo', 'Demo Project'),
                         4: userProject(
                             4,
@@ -66,7 +69,9 @@ describe('<ProjectsOverview />', () => {
         expect(html).toContain(
             'workflow_states.user_projects.project_access_blocked'
         );
-        expect(html).not.toContain('Oral-History.Digital');
+        // The configured umbrella is hidden, not an ordinary archive named ohd.
+        expect(html).not.toContain('Umbrella Project');
+        expect(html).toContain('(ohd)');
     });
 
     it('uses a disclosure for larger groups', () => {

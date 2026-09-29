@@ -22,7 +22,7 @@ function readHookResult(location, project = null) {
     useProject.mockReturnValue({
         projectShortname: project?.shortname,
         projectDbId: project?.id,
-        isOhd: project?.is_ohd,
+        isUmbrella: project?.is_umbrella,
     });
     return renderHook(() => useCurrentPage()).result.current;
 }
@@ -48,7 +48,7 @@ describe('useCurrentPage', () => {
     it('returns site_startpage context for locale root route on ohd project', () => {
         const result = readHookResult(
             { pathname: '/de', search: '' },
-            { id: 21894749, shortname: 'ohd', is_ohd: true }
+            { id: 21894749, shortname: 'ohd', is_umbrella: true }
         );
 
         expect(result.pageType).toBe('site_startpage');
@@ -104,7 +104,7 @@ describe('useCurrentPage', () => {
             {
                 id: 42,
                 shortname: 'mog',
-                is_ohd: false,
+                is_umbrella: false,
             }
         );
 

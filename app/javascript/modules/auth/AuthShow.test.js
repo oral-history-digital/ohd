@@ -33,7 +33,7 @@ function buildProject(overrides = {}) {
     return {
         id: 1,
         shortname: 'project',
-        is_ohd: false,
+        is_umbrella: false,
         is_catalog_project: false,
         grant_access_without_login: false,
         grant_project_access_instantly: false,
@@ -131,7 +131,7 @@ describe('AuthShow', () => {
             project: buildProject({
                 id: 21894749,
                 shortname: 'ohd',
-                is_ohd: true,
+                is_umbrella: true,
                 grant_access_without_login: true,
             }),
         });

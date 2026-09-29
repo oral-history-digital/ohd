@@ -12,11 +12,13 @@ import SubTab from './SubTab';
 
 export default function ArchiveSearchTabPanel() {
     const { t } = useI18n();
-    const { isOhd } = useProject();
+    const { isUmbrella } = useProject();
     const selectedArchiveIds = useSelector(getSelectedArchiveIds);
 
-    const titleString = isOhd ? 'modules.sidebar.search' : 'archive_search';
-    const helpTextString = isOhd ? 'search_page' : 'archive_search_page';
+    const titleString = isUmbrella
+        ? 'modules.sidebar.search'
+        : 'archive_search';
+    const helpTextString = isUmbrella ? 'search_page' : 'archive_search_page';
 
     return (
         <ErrorBoundary small>

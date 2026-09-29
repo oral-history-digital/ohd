@@ -57,7 +57,7 @@ export default function RegistryReferenceForm({
                 elementType: 'registryEntryTreeSelect',
                 attribute: 'registry_entry_id',
                 lowestAllowedRegistryEntryId,
-                loadOhdTree: isUmbrellaRegistryReferenceType(),
+                loadUmbrellaTree: isUmbrellaRegistryReferenceType(),
                 inTranscript,
                 goDeeper: true,
             },

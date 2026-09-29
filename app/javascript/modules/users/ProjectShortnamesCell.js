@@ -21,7 +21,7 @@ export default function ProjectShortnamesCell({ row }) {
             );
             const project = projects[userProject.project_id];
 
-            if (project.shortname === 'ohd') {
+            if (project.is_umbrella) {
                 return null;
             }
 

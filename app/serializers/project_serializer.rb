@@ -66,7 +66,6 @@ class ProjectSerializer < ApplicationSerializer
     :grant_project_access_instantly,
     :grant_access_without_login,
     :is_umbrella,
-    :is_ohd,
     :analytics_site_id,
     :favicon_url,
     :publication_date
@@ -146,11 +145,6 @@ class ProjectSerializer < ApplicationSerializer
 
   def root_registry_entry_id
     object.root_registry_entry.id
-  end
-
-  def is_ohd
-    # TODO: Deprecated compatibility field. New clients should use is_umbrella.
-    object.umbrella?
   end
 
   def is_umbrella

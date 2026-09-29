@@ -24,7 +24,7 @@ class ProjectSerializerTest < ActiveSupport::TestCase
     assert_nil ProjectSerializer.new(project).as_json[:favicon_url]
   end
 
-  test "identifies configured umbrella project through current and compatibility flags" do
+  test "identifies configured umbrella project without legacy compatibility flag" do
     project = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a")
     InstanceSetting.current.update!(umbrella_project: project)
 
@@ -32,7 +32,8 @@ class ProjectSerializerTest < ActiveSupport::TestCase
       payload = serializer.new(project).as_json
 
       assert payload[:is_umbrella]
-      assert payload[:is_ohd]
+      assert_not payload.key?(:is_ohd)
+      assert_not serializer.new(Project.find_by!(shortname: 'ohd')).as_json[:is_umbrella]
     end
   end
 end

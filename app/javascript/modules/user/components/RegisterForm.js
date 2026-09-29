@@ -286,7 +286,7 @@ export default function RegisterForm({
             ) : (
                 <div>
                     <p>
-                        {project.is_ohd
+                        {project.is_umbrella
                             ? t('user.registration_text_one_ohd')
                             : t('user.registration_text_one')}
                         <a
@@ -307,7 +307,9 @@ export default function RegisterForm({
                             {t('user.priv_agreement_alias')}
                         </a>
                         {t('user.registration_text_three')}
-                        {project.is_ohd ? t('user.registration_text_four') : ''}
+                        {project.is_umbrella
+                            ? t('user.registration_text_four')
+                            : ''}
                     </p>
                 </div>
             )}

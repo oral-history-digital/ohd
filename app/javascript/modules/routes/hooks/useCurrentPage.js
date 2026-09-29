@@ -13,7 +13,11 @@ import {
  */
 export function useCurrentPage() {
     const location = useLocation();
-    const { projectShortname, projectDbId: projectId, isOhd } = useProject();
+    const {
+        projectShortname,
+        projectDbId: projectId,
+        isUmbrella,
+    } = useProject();
 
     return useMemo(() => {
         const currentPage = getCurrentPageFromLocation({
@@ -22,14 +26,14 @@ export function useCurrentPage() {
         });
 
         return normalizeCurrentPageWithProjectContext(currentPage, {
-            isOhd,
+            isUmbrella,
             projectShortname,
             projectId,
         });
     }, [
         location.pathname,
         location.search,
-        isOhd,
+        isUmbrella,
         projectShortname,
         projectId,
     ]);
