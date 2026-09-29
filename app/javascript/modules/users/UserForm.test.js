@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
@@ -34,8 +34,10 @@ jest.mock('modules/i18n', () => ({
                 : 'Translated',
         locale: 'de',
     }),
-    t: (opts, key) =>
-        key && key.startsWith('devise.mailer') ? ['Mail text'] : 'Translated',
+    t: (opts, key, values = {}) =>
+        key && key.startsWith('devise.mailer')
+            ? [`Mail text for ${values.project_name}`]
+            : 'Translated',
 }));
 
 describe('<UserForm />', () => {
@@ -118,7 +120,7 @@ describe('<UserForm />', () => {
         domain_with_optional_identifier: 'https://example.org',
         name: { de: 'Projekt DE', en: 'Project EN' },
         contact_email: 'contact@example.org',
-        is_umbrella: false,
+        is_umbrella: true,
         external_links: {
             1: {
                 id: 1,
@@ -158,5 +160,17 @@ describe('<UserForm />', () => {
             screen.getByTestId('scope-mail_text-textarea')
         ).toBeInTheDocument();
         expect(screen.getByTestId('submit-button')).toBeInTheDocument();
+    });
+
+    it('uses the umbrella project name when generating account mail text', () => {
+        renderUserForm();
+
+        fireEvent.change(screen.getByTestId('scope-workflow_state-select'), {
+            target: { value: 'remove' },
+        });
+
+        expect(screen.getByTestId('scope-mail_text-textarea')).toHaveValue(
+            'Mail text for Projekt DE'
+        );
     });
 });

@@ -26,15 +26,15 @@ class CustomDeviseMailer < Devise::Mailer
     domain = OHD_DOMAIN
     contact_email = umbrella.contact_email
     locale = record.default_locale || 'de'
-    @project_name = umbrella.name(locale)
+    @project_name = InstanceSetting.current.umbrella_project_brand_name(locale)
     @application_type = :interview_portal 
 
     if record.unconfirmed_email
       @url = "#{domain}/#{locale}/users/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
-      opts[:subject] = TranslationValue.for('devise.mailer.new_email_confirmation_instructions.subject', record.default_locale)
+      opts[:subject] = TranslationValue.for('devise.mailer.new_email_confirmation_instructions.subject', locale, umbrella_project_name: @project_name)
     else
       @url = "#{domain}/#{locale}/users/confirmation?confirmation_token=#{record.confirmation_token}"
-      opts[:subject] = TranslationValue.for('devise.mailer.confirmation_instructions.subject', record.default_locale)
+      opts[:subject] = TranslationValue.for('devise.mailer.confirmation_instructions.subject', locale, umbrella_project_name: @project_name)
     end
 
     opts[:from] = contact_email
@@ -47,14 +47,14 @@ class CustomDeviseMailer < Devise::Mailer
     domain = OHD_DOMAIN
     contact_email = umbrella.contact_email
     locale = record.default_locale || 'de'
-    @project_name = umbrella.name(locale)
+    @project_name = InstanceSetting.current.umbrella_project_brand_name(locale)
 
     @url = "#{domain}/#{locale}/users/password/edit?reset_password_token=#{token}"
 
     devise_opts = {}
     devise_opts[:from] = contact_email
     devise_opts[:reply_to] = contact_email
-    devise_opts[:subject] = TranslationValue.for('devise.mailer.reset_password_instructions.subject', record.default_locale)
+    devise_opts[:subject] = TranslationValue.for('devise.mailer.reset_password_instructions.subject', locale, umbrella_project_name: @project_name)
     devise_mail(record, :reset_password_instructions, devise_opts)
   end
 
@@ -66,9 +66,12 @@ class CustomDeviseMailer < Devise::Mailer
     @code = code
     @valid_for = User::EMAIL_OTP_VALID_FOR / 60
     locale = locale || user.default_locale || 'de'
+    contact_email = Project.umbrella.contact_email
 
     devise_opts = {
       scope: :user,
+      from: contact_email,
+      reply_to: contact_email,
       subject: TranslationValue.for('devise.mailer.two_factor_authentication_code.subject', locale)
     }
 

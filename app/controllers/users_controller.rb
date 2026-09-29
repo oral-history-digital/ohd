@@ -80,7 +80,8 @@ class UsersController < ApplicationController
       "modules.registration.messages.#{msg}",
       params[:locale],
       email: email,
-      project: (current_project || Project.umbrella).name(params[:locale])
+      project: (current_project || Project.umbrella).name(params[:locale]),
+      umbrella_project_name: InstanceSetting.current.umbrella_project_brand_name(params[:locale])
     )
 
     respond_to do |format|
