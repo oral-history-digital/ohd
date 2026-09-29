@@ -315,15 +315,19 @@ Rails.application.routes.draw do
   #
   # In production this should be the ohd-domain
   constraints(lambda { |request| OHD_DOMAIN == request.base_url }) do
+    # Custom-domain visitors use this endpoint to check the portal session
+    # before returning to their archive. It must accept every system locale,
+    # including locales not served by portal pages below.
+    scope "/:locale", :constraints => { locale: LOCALE_ROUTE_CONSTRAINT } do
+      devise_scope :user do
+        get "users/is_logged_in", to: "sessions#is_logged_in"
+      end
+    end
+
     # Main-level routes (no :project_id), e.g. homepage
-    # The portal itself is only served in German and English, so the locale is
-    # constrained to de|en. Other locales are only valid below as
-    # /:project_id/:locale (e.g. /cd/ru). This also keeps short URLs from being
-    # misinterpreted as a locale: junk like /sitemap.xml or /testscript.php and
-    # two-letter project shortnames like /cd now fall through to the
-    # project-level routes below (/cd redirects to /cd/<default_locale>) or 404
-    # instead of hitting projects#index with a bogus locale.
-    scope "/:locale", :constraints => { locale: /(?:de|en)/ } do
+    # The portal itself is only served in German and English,
+    # but pages like /conditions, /privacy_protection, /contact, /legal_info are available in all locales.
+    scope "/:locale", :constraints => { locale: LOCALE_ROUTE_CONSTRAINT } do
       get "", to: "projects#index"
       get "/", to: "projects#index"
       resource :homepage_settings, only: [:show, :update]

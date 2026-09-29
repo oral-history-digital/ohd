@@ -196,7 +196,7 @@ class RegistryEntry < ApplicationRecord
       .select(<<~SQL.squish)
         registry_entries.id,
         GROUP_CONCAT(
-          COALESCE(registry_name_translations.descriptor, fallback_translations.descriptor)
+          COALESCE(NULLIF(registry_name_translations.descriptor, ''), fallback_translations.descriptor)
           ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC
           SEPARATOR ', '
         ) AS label,

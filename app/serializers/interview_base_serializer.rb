@@ -22,6 +22,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :alpha2,
     :alpha3s,
     :alpha3s_with_transcript,
+    :annotation_alpha3s,
     :translation_alpha3,
     :translation_alpha3s,
     :toc_alpha3s,

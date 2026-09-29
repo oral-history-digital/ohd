@@ -20,7 +20,7 @@ function NormDataForDescriptor({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const [filter, setFilter] = useState(null);
+    const [filters, setFilters] = useState({});
     //const [placeTypeFilter, setPlaceTypeFilter] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [apiResult, setApiResult] = useState({});
@@ -48,7 +48,8 @@ function NormDataForDescriptor({
             //withEmpty: true,
             optionsScope: 'normdata',
             keepOrder: true,
-            handlechangecallback: (name, value) => setFilter(value),
+            handlechangecallback: (name, value) =>
+                setFilters({ ...filters, [name]: value }),
         },
     ];
 
@@ -110,8 +111,8 @@ function NormDataForDescriptor({
         ];
         ['geo_filter', 'place_type', 'place_extended', 'api'].forEach(
             (filter) => {
-                if (params[filter]) {
-                    urlAndFilters.push(`${filter}=${params[filter]}`);
+                if (filters[filter]) {
+                    urlAndFilters.push(`${filter}=${filters[filter]}`);
                 }
             }
         );
@@ -200,7 +201,10 @@ function NormDataForDescriptor({
                             className="Icon Icon--secondary"
                             onClick={() => {
                                 setFrom(from - 10);
-                                fetchAPIResults({ from: from - 10 });
+                                fetchAPIResults({
+                                    from: from - 10,
+                                    ...filters,
+                                });
                             }}
                         >
                             {t('previous')}
@@ -211,7 +215,7 @@ function NormDataForDescriptor({
                         className="Icon Icon--primary u-ml-tiny"
                         onClick={() => {
                             setFrom(from + 10);
-                            fetchAPIResults({ from: from + 10 });
+                            fetchAPIResults({ from: from + 10, ...filters });
                         }}
                     >
                         {t('next')}
@@ -222,6 +226,7 @@ function NormDataForDescriptor({
                         onClick={() => {
                             setShowResults(false);
                             setApiResult({});
+                            setFilters({});
                             setFrom(0);
                         }}
                     >

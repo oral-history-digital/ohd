@@ -102,7 +102,7 @@ class EditTableImport
 
   def create_annotations(row, interview, segment)
     annotations_with_translations = {}
-    interview.alpha3s.map do |alpha3|
+    interview.annotation_alpha3s.map do |alpha3|
       annotations_with_translations[alpha3] = row["annotation_#{alpha3}".to_sym]&.split('#')
     end
 
@@ -110,7 +110,7 @@ class EditTableImport
     if original
       while original&.length > 0
         translations_attributes = []
-        interview.alpha3s.each do |alpha3|
+        interview.annotation_alpha3s.each do |alpha3|
           translations_attributes << {
             text: annotations_with_translations[alpha3]&.pop,
             locale: alpha3
