@@ -69,6 +69,31 @@ class LoginRedirectTest < ApplicationSystemTestCase
     assert_equal '/ohf/de', current_path
   end
 
+  test "guest visiting a non-default locale on a custom domain returns to that domain" do
+    # The default test project shares the portal domain. Production does not,
+    # because Project.archive_domains deliberately excludes the OHD project.
+    # Remove the fixture collision so this follows production routing.
+    Project.find_by!(shortname: 'test').update!(archive_domain: nil)
+
+    project = DataHelper.test_project(
+      shortname: 'za',
+      archive_domain: 'http://za.localhost:47001',
+      available_locales: %w[en ru],
+      default_locale: 'en',
+      name: 'ZA Project'
+    )
+
+    Capybara.reset_sessions!
+    visit "#{project.archive_domain}/ru"
+
+    assert_text 'ZA Project', wait: 10
+
+    redirected_url = URI.parse(current_url)
+    assert_equal 'za.localhost', redirected_url.host
+    assert_equal '/ru', redirected_url.path
+    assert_equal 'true', Rack::Utils.parse_nested_query(redirected_url.query)['checked_ohd_session']
+  end
+
   test "login with TOTP from project subpage keeps redirect context on quick click" do
     project = setup_redirect_project_for_user(email: EMAIL)
     user = User.find_by(email: EMAIL)
