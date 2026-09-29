@@ -11,7 +11,7 @@ html
     == stylesheet_link_tag 'login'
     == javascript_pack_tag 'login'
 
-    title == @project ? @project.name(I18n.locale.to_s) : 'OHD'
+    title == @project ? @project.name(I18n.locale.to_s) : current_umbrella_project_brand_name
 
   body
     .layout-indicator style="display: block;"
@@ -20,7 +20,8 @@ html
 
           - if params[:controller] != 'passkeys'
             header.LoginHeader
-              = image_tag  "/logo-ohd.svg", class: 'LoginHeader-logo'
+              - umbrella_logo = InstanceSetting.current.umbrella_project.logo
+              = image_tag umbrella_logo ? umbrella_logo.file : "/logo-ohd.svg", class: 'LoginHeader-logo'
               - if @project && @project.logo && !@project.umbrella?
                 = image_tag @project.logo.file, class: 'LoginHeader-logo'
 

@@ -6,6 +6,7 @@ import FileInputField from './FileInputField';
 
 /**
  * Connects FileInputField to the generic Form element API.
+ * Pass `onRemoveCurrent` through when a parent must remove a persisted file.
  */
 export default function FileInputFormElement({
     scope,
@@ -30,6 +31,7 @@ export default function FileInputFormElement({
     handleErrors,
     touchField,
     disabled,
+    onRemoveCurrent,
 }) {
     const { t } = useI18n();
     const onBlur = useTouchFieldOnBlur(touchField);
@@ -81,6 +83,7 @@ export default function FileInputFormElement({
             error={error}
             onChange={onChange}
             onBlur={onBlur}
+            onRemoveCurrent={onRemoveCurrent}
         />
     );
 }
@@ -131,4 +134,5 @@ FileInputFormElement.propTypes = {
     handleErrors: PropTypes.func.isRequired,
     touchField: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
+    onRemoveCurrent: PropTypes.func,
 };

@@ -1,16 +1,24 @@
+/* global railsMode */
 import { OHD_DOMAINS } from 'modules/constants';
-import { submitData } from 'modules/data';
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import {
+    getCurrentProject,
+    getCurrentUser,
+    getProjectBrandName,
+    getUmbrellaProject,
+    submitData,
+} from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-export default function ConfirmNewZwarTosPopup({}) {
+// TODO: Check if this is still needed or if it can be removed
+export default function ConfirmNewZwarTosPopup() {
     const { t, locale } = useI18n();
     const dispatch = useDispatch();
     const project = useSelector(getCurrentProject);
+    const umbrellaProject = useSelector(getUmbrellaProject);
 
     const projectId = 'za';
     const currentUser = useSelector(getCurrentUser);
@@ -37,6 +45,7 @@ export default function ConfirmNewZwarTosPopup({}) {
     const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
     const conditionsLinkZWAR = `${project.domain_with_optional_identifier}/${locale}/conditions`;
     const privacyLink = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
+    const umbrellaProjectLabel = getProjectBrandName(umbrellaProject, locale);
 
     return (
         <Modal
@@ -72,7 +81,9 @@ export default function ConfirmNewZwarTosPopup({}) {
                             {
                                 elementType: 'input',
                                 attribute: 'tos_agreement_ohd',
-                                label: t('user.tos_agreement') + ' (OHD)',
+                                label: umbrellaProjectLabel
+                                    ? `${t('user.tos_agreement')} (${umbrellaProjectLabel})`
+                                    : t('user.tos_agreement'),
                                 type: 'checkbox',
                                 validate: function (v) {
                                     return v && v !== '0';

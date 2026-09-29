@@ -81,7 +81,7 @@ class PasskeysController < ApplicationController
       },
       exclude: current_user.webauthn_credentials.pluck(:external_id),
       rp: {
-        name: "OHD",
+        name: InstanceSetting.current.umbrella_project_brand_name,
         id: rp_id
       }
     )

@@ -230,6 +230,7 @@ class ApplicationController < ActionController::Base
           contribution_types: {},
         },
         projects: projects_data,
+        instance_settings: cache_single(InstanceSetting.current),
         institutions: {},
         collections: {},
         norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.maximum(:updated_at)}") do

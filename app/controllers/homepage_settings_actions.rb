@@ -26,6 +26,31 @@ module HomepageSettingsActions
     }
   end
 
+  def update_breadcrumb_logo
+    instance_setting = InstanceSetting.current
+    authorize instance_setting, :update?
+
+    updated_setting = InstanceSettings::UpdateBreadcrumbLogo.perform(
+      instance_setting: instance_setting,
+      attribute: params[:variant],
+      upload: breadcrumb_logo_params[:file]
+    )
+
+    respond_to_breadcrumb_logo_update(updated_setting)
+  end
+
+  def remove_breadcrumb_logo
+    instance_setting = InstanceSetting.current
+    authorize instance_setting, :update?
+
+    updated_setting = InstanceSettings::RemoveBreadcrumbLogo.perform(
+      instance_setting: instance_setting,
+      attribute: params[:variant]
+    )
+
+    respond_to_breadcrumb_logo_update(updated_setting)
+  end
+
   private
 
   def homepage_setting_params
@@ -61,5 +86,22 @@ module HomepageSettingsActions
         }
       ]
     )
+  end
+
+  def breadcrumb_logo_params
+    params.require(:instance_setting).permit(:file)
+  end
+
+  def respond_to_breadcrumb_logo_update(instance_setting)
+    if instance_setting.errors.any?
+      render json: {
+        errors: instance_setting.errors.details.fetch(params[:variant].to_sym, []).map { |error| error[:error] }
+      }, status: :unprocessable_entity
+    else
+      render json: {
+        data_type: 'homepage_settings',
+        data: serializer_class.new(instance_setting).as_json
+      }
+    end
   end
 end

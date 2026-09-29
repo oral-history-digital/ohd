@@ -1,6 +1,10 @@
 .AdminEditInstance {
   margin-top: 0px !important; // TODO: Remove this override when is-sticky is scoped to interview pages
 
+  .InstanceSettingsSection {
+    margin-top: $base-unit * 3;
+  }
+
   .AdminEditInstance-tabs {
     margin-top: $base-unit * 2;
 

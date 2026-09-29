@@ -32,6 +32,7 @@ class AdminMailer < ApplicationMailer
     @project = params[:project]
     @user = params[:user]
     @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/users"
+    @umbrella_project_brand_name = InstanceSetting.current.umbrella_project_brand_name(:de)
 
     mail(
       subject: "Sperrung eines Nutzer*innen-Accounts in der Anwendung #{@project.name(:de)}",

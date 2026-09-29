@@ -19,4 +19,15 @@ class InstanceSettingTest < ActiveSupport::TestCase
     assert_not duplicate.valid?
     assert_includes duplicate.errors[:singleton_key], 'has already been taken'
   end
+
+  test 'formats umbrella project name with its display shortname' do
+    setting = InstanceSetting.current
+    setting.umbrella_project.update!(display_shortname: 'portal')
+
+    assert_equal "#{setting.umbrella_project.name(:en)} (portal)", setting.umbrella_project_brand_name(:en)
+
+    setting.umbrella_project.update!(display_shortname: nil)
+
+    assert_equal setting.umbrella_project.name(:en), setting.umbrella_project_brand_name(:en)
+  end
 end

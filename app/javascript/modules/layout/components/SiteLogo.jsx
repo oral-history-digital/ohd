@@ -4,8 +4,13 @@ import { useCallback } from 'react';
 import classNames from 'classnames';
 import { setProjectId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
-import { getCurrentUser } from 'modules/data';
+import {
+    getCurrentUser,
+    getProjectBrandName,
+    getUmbrellaProject,
+} from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { getProjectLogoSrc } from 'modules/project-home';
 import { useCurrentPage, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +21,7 @@ function SiteLogo({ className }) {
     const { project } = useProject();
     const dispatch = useDispatch();
     const currentAccount = useSelector(getCurrentUser);
+    const umbrellaProject = useSelector(getUmbrellaProject);
     const currentPage = useCurrentPage();
     const isHome = currentPage.pageType === 'site_startpage';
 
@@ -35,21 +41,24 @@ function SiteLogo({ className }) {
         : `/${locale}`;
 
     const displayLogo = project?.display_ohd_link || isHome;
+    const logoSrc =
+        getProjectLogoSrc(umbrellaProject, locale) || '/logo-ohd.svg';
+    const logoTitle = getProjectBrandName(umbrellaProject, locale);
 
     return (
         displayLogo && (
             <div className="SiteHeader-homeLink">
                 <Link
                     to={targetUrl}
-                    title={project.name[locale]}
+                    title={logoTitle}
                     onClick={unsetProjectId}
                     className={classNames(className, 'u-mr')}
                     data-testid="SiteLogo-link"
                 >
                     <img
                         className="SiteHeader-logo"
-                        src="/logo-ohd.svg"
-                        alt={project.name[locale]}
+                        src={logoSrc}
+                        alt={logoTitle}
                     />
                 </Link>
             </div>
