@@ -31,10 +31,12 @@ export default function UserForm({
 
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [workflowState, setWorkflowState] = useState(false);
-    const responseLocale =
-        project.available_locales.indexOf(data.default_locale) > -1
-            ? data.default_locale
-            : project.default_locale;
+    // Use recipient locale only when target platform or project enables it.
+    const responseLocale = project.available_locales.includes(
+        data.default_locale
+    )
+        ? data.default_locale
+        : project.default_locale;
     dispatch(fetchTranslationsForLocale(responseLocale, `/${responseLocale}`));
     const conditionsLink = `${project.domain_with_optional_identifier}/${responseLocale}/conditions`;
     const conditionsLinkTitle = originalT(
