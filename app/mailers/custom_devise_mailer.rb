@@ -66,6 +66,7 @@ class CustomDeviseMailer < Devise::Mailer
     @code = code
     @valid_for = User::EMAIL_OTP_VALID_FOR / 60
     locale = locale || user.default_locale || 'de'
+    @project_name = InstanceSetting.current.umbrella_project_brand_name(locale)
     contact_email = Project.umbrella.contact_email
 
     devise_opts = {

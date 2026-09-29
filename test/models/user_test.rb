@@ -51,4 +51,19 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [expected_title, 'Firstname Lastname'].join(' '), user.display_name
   end
 
+  test 'uses project default locale when user locale is unavailable' do
+    user = User.find_by!(email: 'john@example.com')
+    user.update!(default_locale: 'es')
+    project = DataHelper.test_project(
+      shortname: "locale#{SecureRandom.hex(2)}a",
+      available_locales: %w[de en],
+      default_locale: 'de'
+    )
+
+    assert_equal 'de', user.locale_with_project_fallback(project)
+
+    project.update!(available_locales: %w[de en es])
+    assert_equal 'es', user.locale_with_project_fallback(project)
+  end
+
 end

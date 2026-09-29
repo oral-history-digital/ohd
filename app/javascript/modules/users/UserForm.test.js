@@ -132,17 +132,17 @@ describe('<UserForm />', () => {
 
     const onSubmit = jest.fn();
 
-    const renderUserForm = () =>
+    const renderUserForm = ({ user = data, currentProject = project } = {}) =>
         render(
             <Provider store={mockStore(initialState)}>
                 <BrowserRouter>
                     <UserForm
-                        data={data}
+                        data={user}
                         dataPath={dataPath}
                         userId={userId}
                         scope={scope}
                         locale={locale}
-                        project={project}
+                        project={currentProject}
                         onSubmit={onSubmit}
                     />
                 </BrowserRouter>
@@ -167,6 +167,24 @@ describe('<UserForm />', () => {
 
         fireEvent.change(screen.getByTestId('scope-workflow_state-select'), {
             target: { value: 'remove' },
+        });
+
+        expect(screen.getByTestId('scope-mail_text-textarea')).toHaveValue(
+            'Mail text for Projekt DE'
+        );
+    });
+
+    it('uses umbrella default locale when user locale is unavailable', () => {
+        renderUserForm({
+            user: { ...data, default_locale: 'es' },
+            currentProject: {
+                ...project,
+                name: { ...project.name, es: 'Proyecto ES' },
+            },
+        });
+
+        fireEvent.change(screen.getByTestId('scope-workflow_state-select'), {
+            target: { value: 'block' },
         });
 
         expect(screen.getByTestId('scope-mail_text-textarea')).toHaveValue(

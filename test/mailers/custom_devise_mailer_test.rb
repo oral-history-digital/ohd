@@ -74,11 +74,16 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     assert_umbrella_authentication_mail(message, '/de/users/password/edit?reset_password_token=reset-token')
   end
 
-  test 'two-factor authentication code uses configured umbrella sender' do
+  test 'two-factor authentication code uses configured umbrella branding and sender' do
+    @user.update!(default_locale: 'en')
     message = CustomDeviseMailer.two_factor_authentication_code(@user, '123456').message
 
     assert_equal [@umbrella.contact_email], message.from
     assert_equal [@umbrella.contact_email], message.reply_to
+    [message.html_part, message.text_part].each do |part|
+      # The umbrella name should appear twice in the body
+      assert_equal 2, part.body.decoded.scan(@umbrella.name('en')).count
+    end
   end
 
   test 'authentication mail subjects use configured umbrella display name' do

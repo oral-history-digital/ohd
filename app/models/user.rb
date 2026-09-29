@@ -101,25 +101,28 @@ class User < ApplicationRecord
   end
 
   def block
-    subject = TranslationValue.for('devise.mailer.block.subject', self.locale_with_project_fallback)
-    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.umbrella}).deliver_later(wait: 5.seconds)
+    project = Project.umbrella
+    subject = TranslationValue.for('devise.mailer.block.subject', locale_with_project_fallback(project))
+    CustomDeviseMailer.access_mail(self, {subject: subject, project: project}).deliver_later(wait: 5.seconds)
     access_tokens.destroy_all
     sessions.destroy_all
   end
 
   def revoke_block
-    locale = self.locale_with_project_fallback
+    project = Project.umbrella
+    locale = locale_with_project_fallback(project)
     subject = TranslationValue.for(
       'devise.mailer.revoke_block.subject',
       locale,
       umbrella_project_name: InstanceSetting.current.umbrella_project_brand_name(locale)
     )
-    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.umbrella}).deliver_later(wait: 5.seconds)
+    CustomDeviseMailer.access_mail(self, {subject: subject, project: project}).deliver_later(wait: 5.seconds)
   end
 
   def remove
-    subject = TranslationValue.for('devise.mailer.remove.subject', self.locale_with_project_fallback)
-    CustomDeviseMailer.access_mail(self, {subject: subject, project: Project.umbrella}).deliver_later(wait: 5.seconds)
+    project = Project.umbrella
+    subject = TranslationValue.for('devise.mailer.remove.subject', locale_with_project_fallback(project))
+    CustomDeviseMailer.access_mail(self, {subject: subject, project: project}).deliver_later(wait: 5.seconds)
     RemoveUserJob.set(wait: 10.seconds).perform_later(user_id: self.id)
   end
 
@@ -168,7 +171,9 @@ class User < ApplicationRecord
   end
 
   def locale_with_project_fallback(project = nil)
-    self.default_locale || project&.default_locale || self.projects.last&.default_locale || :de
+    return default_locale if default_locale.present? && (project.nil? || project.available_locales.include?(default_locale))
+
+    project&.default_locale || self.projects.last&.default_locale || :de
   end
 
   def full_name
