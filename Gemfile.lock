@@ -1,19 +1,19 @@
 GIT
-  remote: https://github.com/grgr/oai_repository
-  revision: 9ae57d6bb0554501a285bf375b41cdf968b8e4bb
-  specs:
-    oai_repository (0.9.6)
-      oai
-
-GIT
-  remote: https://github.com/phoozle/kamal_podman.git
-  revision: b7635a5695e551131138793bc7fa3b2582b76820
+  remote: https://github.com/grgr/kamal_podman.git
+  revision: 634cc25464d7de2a2cc7e2afa77632bda00f4312
   branch: main
   specs:
     kamal_podman (0.1.0)
       activesupport (>= 7.0)
       kamal (= 2.12.0)
       zeitwerk (>= 2.6.18, < 3.0)
+
+GIT
+  remote: https://github.com/grgr/oai_repository
+  revision: 9ae57d6bb0554501a285bf375b41cdf968b8e4bb
+  specs:
+    oai_repository (0.9.6)
+      oai
 
 GEM
   remote: https://rubygems.org/
@@ -114,9 +114,9 @@ GEM
     android_key_attestation (0.3.0)
     base64 (0.2.0)
     bcrypt (3.1.22)
-    bcrypt_pbkdf (1.1.1)
-    benchmark (0.4.1)
-    bigdecimal (3.2.1)
+    bcrypt_pbkdf (1.1.2)
+    benchmark (0.5.0)
+    bigdecimal (3.3.1)
     bindata (2.5.1)
     brotli (0.6.0)
     builder (3.3.0)
@@ -162,7 +162,7 @@ GEM
     clamby (1.6.11)
     coderay (1.1.3)
     concurrent-ruby (1.3.8)
-    connection_pool (2.5.3)
+    connection_pool (3.0.2)
     cose (1.3.1)
       cbor (~> 0.5.9)
       openssl-signature_algorithm (~> 1.0)
@@ -247,7 +247,7 @@ GEM
       mini_mime (>= 0.1.1, < 2)
     highline (3.1.2)
       reline
-    i18n (1.14.7)
+    i18n (1.15.2)
       concurrent-ruby (~> 1.0)
     image_processing (1.14.0)
       mini_magick (>= 4.9.5, < 6)
@@ -312,7 +312,9 @@ GEM
     mini_mime (1.1.5)
     mini_racer (0.16.0)
       libv8-node (~> 18.19.0.0)
-    minitest (5.25.5)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
     minitest-retry (0.2.5)
       minitest (>= 5.0)
     mysql2 (0.5.6)
@@ -332,7 +334,7 @@ GEM
       net-ssh (>= 5.0.0, < 8.0.0)
     net-smtp (0.5.1)
       net-protocol
-    net-ssh (7.3.0)
+    net-ssh (7.3.3)
     nio4r (2.7.4)
     nokogiri (1.19.4-aarch64-linux-gnu)
       racc (~> 1.4)
@@ -352,7 +354,7 @@ GEM
       openssl (> 2.0)
     options (2.3.2)
     orm_adapter (0.5.0)
-    ostruct (0.6.1)
+    ostruct (0.6.3)
     package_json (0.1.0)
     pdf-inspector (1.3.0)
       pdf-reader (>= 1.0, < 3.0.a)
@@ -366,6 +368,7 @@ GEM
       prettyprint
     pr_geohash (1.0.0)
     prettyprint (0.2.0)
+    prism (1.9.0)
     progress_bar (1.3.4)
       highline (>= 1.6)
       options (~> 2.3.0)
@@ -527,7 +530,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sshkit (1.24.0)
+    sshkit (1.25.1)
       base64
       logger
       net-scp (>= 1.1.2)
@@ -544,7 +547,7 @@ GEM
       sunspot (= 2.7.1)
     sunspot_solr (2.7.1)
     temple (0.10.3)
-    thor (1.3.2)
+    thor (1.5.0)
     thruster (0.1.26-aarch64-linux)
     thruster (0.1.26-x86_64-linux)
     tilt (2.6.0)
@@ -587,7 +590,7 @@ GEM
       workflow (~> 3.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.7.3)
+    zeitwerk (2.8.3)
 
 PLATFORMS
   aarch64-linux
