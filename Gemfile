@@ -30,6 +30,8 @@ gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.13'
 gem 'rails-latex'
 gem 'react_on_rails', '~> 14.0.4'
+# react_on_rails < 16.2.0 requires connection_pool < 3.0, see
+gem 'connection_pool', '< 3.0'
 gem 'slim-rails'
 gem 'iso-639'
 gem 'countries'
