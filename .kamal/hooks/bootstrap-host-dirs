@@ -1,42 +1,68 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Generic defaults (override via env if needed)
+# Runs on remote host as deploy user (e.g. avd1)
 SSH_USER="${KAMAL_SSH_USER:-${USER}}"
-APP_UID="${APP_UID:-1000}"
-APP_GID="${APP_GID:-1000}"
+
+# App bind mounts from deploy.yml:
+#   /home/avd1/avd/storage/app-cache:/app/tmp/cache
+#   /home/avd1/avd/storage/app-files:/app/tmp/files
+#   /home/avd1/avd/storage/app-logs:/app/log
+APP_BASE="${KAMAL_STORAGE_BASE:-/home/${SSH_USER}/avd/storage}"
+
+# Accessory dirs from deploy.yml:
+#   db:   data:/var/lib/mysql        -> /home/avd1/ohd-db/data
+#   solr: solr_data:/opt/.../mycores -> /home/avd1/ohd-solr/solr_data
+DB_BASE="${DB_BASE:-/home/${SSH_USER}/ohd-db}"
+DB_DATA_DIR="${DB_DATA_DIR:-${DB_BASE}/data}"
+
+SOLR_BASE="${SOLR_BASE:-/home/${SSH_USER}/ohd-solr}"
+SOLR_DATA_DIR="${SOLR_DATA_DIR:-${SOLR_BASE}/solr_data}"
+
+# Container UIDs (official images)
+DB_UID="${DB_UID:-999}"
+DB_GID="${DB_GID:-999}"
 SOLR_UID="${SOLR_UID:-8983}"
 SOLR_GID="${SOLR_GID:-8983}"
 
-# App bind-mount base (used by deploy volumes)
-APP_BASE="${KAMAL_STORAGE_BASE:-/home/${SSH_USER}/avd/storage}"
-
-# Kamal accessory managed dir for "solr" with directories: - solr_data:/...
-# Kamal stores this under ~/ohd-solr/solr_data by default.
-KAMAL_ACCESSORY_BASE="${KAMAL_ACCESSORY_BASE:-/home/${SSH_USER}/ohd-solr}"
-SOLR_DATA_DIR="${SOLR_DATA_DIR:-${KAMAL_ACCESSORY_BASE}/solr_data}"
-
-# Create all dirs (works on empty server)
-sudo mkdir -p \
-  "${APP_BASE}" \
+echo "==> Creating directories"
+mkdir -p \
   "${APP_BASE}/app-cache" \
   "${APP_BASE}/app-files" \
   "${APP_BASE}/app-logs" \
-  "${KAMAL_ACCESSORY_BASE}" \
+  "${DB_DATA_DIR}" \
   "${SOLR_DATA_DIR}"
 
-# App writable dirs
-sudo chown -R "${APP_UID}:${APP_GID}" \
+# App dirs are written by app user in container; keep owned by SSH user on host.
+echo "==> Setting app dir ownership/perms"
+chown -R "${SSH_USER}:${SSH_USER}" \
+  "${APP_BASE}/app-cache" \
+  "${APP_BASE}/app-files" \
+  "${APP_BASE}/app-logs"
+chmod -R ug+rwX \
   "${APP_BASE}/app-cache" \
   "${APP_BASE}/app-files" \
   "${APP_BASE}/app-logs"
 
-# Solr writable dir
-sudo chown -R "${SOLR_UID}:${SOLR_GID}" "${SOLR_DATA_DIR}"
+# IMPORTANT for rootless podman: use podman unshare chown for container-owned data dirs.
+# If these were previously created by root/sudo, reclaim first (ignore if not needed).
+echo "==> Preparing accessory ownership (db/solr)"
+if command -v sudo >/dev/null 2>&1; then
+  sudo chown -R "${SSH_USER}:${SSH_USER}" "${DB_DATA_DIR}" "${SOLR_DATA_DIR}" || true
+fi
 
-# Sensible perms
-sudo chmod -R ug+rwX \
-  "${APP_BASE}/app-cache" \
-  "${APP_BASE}/app-files" \
-  "${APP_BASE}/app-logs" \
-  "${SOLR_DATA_DIR}"
+podman unshare chown -R "${DB_UID}:${DB_GID}" "${DB_DATA_DIR}"
+podman unshare chown -R "${SOLR_UID}:${SOLR_GID}" "${SOLR_DATA_DIR}"
+
+# Optional but helpful: ensure rootless can bind :80/:443 for kamal-proxy.
+# Ignore if sudo unavailable.
+echo "==> Ensuring unprivileged low-port binding"
+if command -v sudo >/dev/null 2>&1; then
+  current="$(cat /proc/sys/net/ipv4/ip_unprivileged_port_start || echo 1024)"
+  if [ "${current}" -gt 80 ]; then
+    echo "net.ipv4.ip_unprivileged_port_start=80" | sudo tee /etc/sysctl.d/99-rootless-ports.conf >/dev/null
+    sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80 >/dev/null || true
+  fi
+fi
+
+echo "==> bootstrap-host-dirs done"
