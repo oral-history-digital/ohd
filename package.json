@@ -134,7 +134,7 @@
     "react-refresh": "^0.18.0",
     "react-test-renderer": "^18.3.1",
     "timekeeper": "^2.2.0",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.2.6"
   },
   "resolutions": {
     "@xmldom/xmldom": "0.8.15",
