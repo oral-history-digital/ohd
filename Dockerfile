@@ -26,13 +26,19 @@ RUN gem install bundler:2.5.14
 COPY Gemfile Gemfile.lock ./
 COPY package.json yarn.lock ./
 
-# Configure bundler deterministically for production
-ENV BUNDLE_PATH=/usr/local/bundle \
+# Default environment
+ENV RAILS_ENV=production \
+    RACK_ENV=production \
+    NODE_ENV=production \
+    RAILS_SERVE_STATIC_FILES=false \
+    RAILS_LOG_TO_STDOUT=true \
+    PORT=3000 \
+    BUNDLE_PATH=/usr/local/bundle \
     BUNDLE_APP_CONFIG=/usr/local/bundle \
-    BUNDLE_WITHOUT=development:test:kamal \
+    BUNDLE_WITHOUT=development:test \
     BUNDLE_DEPLOYMENT=1
 RUN bundle config set --local path '/usr/local/bundle' \
-  && bundle config set --local without 'development:test:kamal' \
+  && bundle config set --local without 'development:test' \
   && bundle config set --local deployment 'true' \
   && bundle config set --local jobs $(nproc) \
   && bundle config set --local retry 3
@@ -111,18 +117,6 @@ EXPOSE 3000
 # Health check endpoint
 #HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   #CMD curl -f http://localhost:3000/health || exit 1
-
-# Default environment
-ENV RAILS_ENV=production \
-    RACK_ENV=production \
-    NODE_ENV=production \
-    BUNDLE_PATH=/usr/local/bundle \
-    BUNDLE_APP_CONFIG=/usr/local/bundle \
-    BUNDLE_WITHOUT=development:test:kamal \
-    BUNDLE_DEPLOYMENT=1 \
-    RAILS_SERVE_STATIC_FILES=false \
-    RAILS_LOG_TO_STDOUT=true \
-    PORT=3000
 
 # Default command (can be overridden in docker-compose or Capistrano)
 LABEL service="ohd"
