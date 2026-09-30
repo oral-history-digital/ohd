@@ -102,8 +102,10 @@ end
 gem 'mini_racer', '~> 0.16.0', platforms: :ruby
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-gem "kamal", require: false
-gem 'kamal_podman', git: 'https://github.com/grgr/kamal_podman.git', branch: 'main'
+group :kamal, optional: true do
+  gem "kamal", require: false
+  gem 'kamal_podman', git: 'https://github.com/grgr/kamal_podman.git', branch: 'main'
+end
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
