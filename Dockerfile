@@ -26,9 +26,14 @@ RUN gem install bundler:2.5.14
 COPY Gemfile Gemfile.lock ./
 COPY package.json yarn.lock ./
 
-# Configure bundler for production (no development/test gems)
-# Note: Not using --deployment flag to allow platform flexibility in Docker
-RUN bundle config set --local without 'development:test' \
+# Configure bundler deterministically for production
+ENV BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_APP_CONFIG=/usr/local/bundle \
+    BUNDLE_WITHOUT=development:test \
+    BUNDLE_DEPLOYMENT=1
+RUN bundle config set --local path '/usr/local/bundle' \
+  && bundle config set --local without 'development:test' \
+  && bundle config set --local deployment 'true' \
   && bundle config set --local jobs $(nproc) \
   && bundle config set --local retry 3
 
@@ -74,9 +79,8 @@ RUN RAILS_ENV=production \
 # =============================================================================
 FROM base AS runtime
 
-# Copy bundler from builder with appuser ownership so runtime bundle install
-# works when /usr/local/bundle is mounted as a named volume in local dev.
-COPY --from=builder --chown=appuser:appuser /usr/local/bundle /usr/local/bundle
+# Copy gems exactly as built (keep root ownership/metadata stable)
+COPY --from=builder /usr/local/bundle /usr/local/bundle
 
 # Copy application
 COPY --chown=appuser:appuser . /app
@@ -85,7 +89,7 @@ COPY --chown=appuser:appuser . /app
 COPY --from=assets --chown=appuser:appuser /app/node_modules /app/node_modules
 COPY --from=assets --chown=appuser:appuser /app/public/packs /app/public/packs
 
-# Create directories for runtime data
+# Create directories for runtime data (do not recursively chown /usr/local/bundle)
 RUN mkdir -p \
     tmp/cache \
     tmp/pids \
@@ -93,9 +97,7 @@ RUN mkdir -p \
     tmp/files \
     log \
     storage \
-    /usr/local/bundle \
   && chown -R appuser:appuser \
-    /usr/local/bundle \
     tmp \
     log \
     storage
@@ -114,6 +116,10 @@ EXPOSE 3000
 ENV RAILS_ENV=production \
     RACK_ENV=production \
     NODE_ENV=production \
+    BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_APP_CONFIG=/usr/local/bundle \
+    BUNDLE_WITHOUT=development:test \
+    BUNDLE_DEPLOYMENT=1 \
     RAILS_SERVE_STATIC_FILES=false \
     RAILS_LOG_TO_STDOUT=true \
     PORT=3000
