@@ -104,7 +104,7 @@
     "superagent-no-cache": "^0.1.1",
     "swr": "^2.2.5",
     "terser-webpack-plugin": "^5.3.9",
-    "video.js": "^8.17.2",
+    "video.js": "^8.24.1",
     "webpack": "^5.93.0",
     "webpack-assets-manifest": "^5.2.1",
     "webpack-cli": "^5.1.4",
@@ -137,6 +137,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "resolutions": {
+    "@xmldom/xmldom": "0.8.15",
     "form-data": "3.0.5",
     "shell-quote": "1.10.0",
     "websocket-driver": "0.7.5",
