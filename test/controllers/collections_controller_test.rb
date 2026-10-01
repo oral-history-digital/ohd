@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 require 'securerandom'
 
 class CollectionsControllerTest < ActionDispatch::IntegrationTest
@@ -126,6 +127,42 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     ids = data.map { |item| item['id'] }
     assert_not_includes ids, public_collection.id
     assert_equal [], data
+  end
+
+  test 'cached collections index does not reveal unshared collections to anonymous users' do
+    project = DataHelper.test_project(
+      shortname: "cc#{SecureRandom.hex(4)}a",
+      workflow_state: 'public'
+    )
+    public_collection = Collection.create!(
+      project: project,
+      institution: Institution.first,
+      name: 'Visible collection',
+      workflow_state: 'public'
+    )
+    unshared_collection = Collection.create!(
+      project: project,
+      institution: Institution.first,
+      name: 'Hidden collection',
+      workflow_state: 'unshared'
+    )
+    cache = ActiveSupport::Cache::MemoryStore.new
+
+    Rails.stub(:cache, cache) do
+      login_as User.find_by!(email: 'alice@example.com')
+      get collections_path(locale: 'en', format: :json), params: { all: true }
+      assert_response :success
+      assert JSON.parse(response.body).fetch('data').key?(unshared_collection.id.to_s)
+
+      reset!
+      host! 'test.portal.oral-history.localhost:47001'
+      get collections_path(locale: 'en', format: :json), params: { all: true }
+      assert_response :success
+
+      data = JSON.parse(response.body).fetch('data')
+      assert data.key?(public_collection.id.to_s)
+      assert_not data.key?(unshared_collection.id.to_s)
+    end
   end
 
   test 'should forbid anonymous users from loading unshared collection lite payload' do

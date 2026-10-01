@@ -4,6 +4,44 @@ require 'minitest/mock'
 class SearchesControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
+  test 'collection facets respect collection visibility' do
+    umbrella = DataHelper.test_project(shortname: "fac#{SecureRandom.hex(4)}a")
+    public_project = DataHelper.test_project(
+      shortname: "pub#{SecureRandom.hex(4)}a",
+      workflow_state: 'public'
+    )
+    hidden_project = DataHelper.test_project(
+      shortname: "hid#{SecureRandom.hex(4)}a",
+      workflow_state: 'unshared'
+    )
+    visible = Collection.create!(project: public_project, name: 'Visible collection', workflow_state: 'public')
+    unshared = Collection.create!(project: public_project, name: 'Private collection', workflow_state: 'unshared')
+    cross_project = Collection.create!(project: hidden_project, name: 'Hidden project collection', workflow_state: 'public')
+    subfacets = [visible, unshared, cross_project].to_h do |collection|
+      [collection.id.to_s, { name: { en: collection.name }, count: 1 }]
+    end
+    facet_data = { collection_id: { subfacets: subfacets }, media_type: { subfacets: { video: { count: 1 } } } }
+
+    Interview.stub(:archive_search, Object.new) do
+      umbrella.stub(:updated_search_facets, ->(*) { facet_data.deep_dup }) do
+        @controller.stub(:current_project, umbrella) do
+          get :facets, params: { locale: 'en', format: :json }
+          assert_response :success
+          anonymous_facets = JSON.parse(response.body).fetch('facets')
+          assert_equal [visible.id.to_s], anonymous_facets.dig('collection_id', 'subfacets').keys
+          assert anonymous_facets.key?('media_type')
+
+          sign_in User.find_by!(email: 'alice@example.com')
+          get :facets, params: { locale: 'en', format: :json }
+          assert_response :success
+          authorized_facets = JSON.parse(response.body).fetch('facets')
+          assert_includes authorized_facets.dig('collection_id', 'subfacets').keys, unshared.id.to_s
+          assert_includes authorized_facets.dig('collection_id', 'subfacets').keys, cross_project.id.to_s
+        end
+      end
+    end
+  end
+
   test 'suggestion archive IDs use separate global and project cache namespaces' do
     project = DataHelper.test_project(shortname: 'global')
     cache = ActiveSupport::Cache::MemoryStore.new

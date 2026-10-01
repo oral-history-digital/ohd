@@ -33,7 +33,7 @@ export default function ResultTable({ interviews }) {
                         <th key={column.name} className="Table-header">
                             {project.metadata_fields?.[column.id]?.label?.[
                                 locale
-                            ] || t(column.name)}
+                            ] || t(`metadata_labels.${column.name}`)}
                         </th>
                     ))}
                     {fulltext && (
