@@ -82,6 +82,7 @@ class CollectionsController < ApplicationController
           current_project.shortname,
           'collections',
           extra_params,
+          projects_cache_scope_key,
           Collection.count,
           Collection.maximum(:updated_at),
           collection_linkability_cache_key(current_project.id)
