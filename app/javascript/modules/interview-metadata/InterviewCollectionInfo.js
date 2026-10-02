@@ -24,6 +24,8 @@ export default function InterviewCollectionInfo({ interview }) {
     const collection = collections?.[interview.collection_id];
     const titleText = t('modules.interview_metadata.show_collection_desc');
 
+    if (collection?.workflow_state === 'unshared') return null;
+
     return (
         <SingleValueWithForm
             elementType="select"
