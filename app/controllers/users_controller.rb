@@ -97,14 +97,29 @@ class UsersController < ApplicationController
   
   def confirm_new_email
     user = User.find(params[:id])
-    if user.confirmation_token == params[:confirmation_token]
-      user.confirm
+    if params[:confirmation_token].present? &&
+        user.confirmation_token == params[:confirmation_token] && user.confirm
       user.update(login: user.email)
       sign_in(user)
       redirect_to user_url('current')
     else
-      raise 'confirmation_token does not fit!!'
+      head :unprocessable_entity
     end
+  end
+
+  def cancel_email_change
+    user = params[:id] == 'current' ? current_user : User.find(params[:id])
+    authorize(user)
+    user.with_lock do
+      if user.unconfirmed_email.present?
+        user.update!(unconfirmed_email: nil, confirmation_token: nil, confirmation_sent_at: nil)
+      end
+    end
+    render json: {
+      id: 'current',
+      data_type: 'users',
+      data: UserSerializer.new(user, is_current_user: true)
+    }
   end
 
   def index

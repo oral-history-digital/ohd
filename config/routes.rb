@@ -205,6 +205,7 @@ Rails.application.routes.draw do
     resources :users, only: [:update, :index] do
       member do
         get :confirm_new_email
+        delete :cancel_email_change
       end
       collection do
         get :current

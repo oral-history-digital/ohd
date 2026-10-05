@@ -1,8 +1,6 @@
-import { getCountryKeys } from 'modules/archive';
 import { EMAIL_REGEX } from 'modules/constants';
 import { Form } from 'modules/forms';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 export default function UserDetailsForm({
     user,
@@ -12,17 +10,26 @@ export default function UserDetailsForm({
     onSubmit,
     submitData,
     onCancel,
+    onEmailChange,
 }) {
-    const countryKeys = useSelector(getCountryKeys);
+    function handleSubmit(params) {
+        submitData({ locale, project, projectId }, params, {}, (response) => {
+            if (
+                response.data?.unconfirmed_email &&
+                response.data.unconfirmed_email !== user.unconfirmed_email &&
+                typeof onEmailChange === 'function'
+            ) {
+                onEmailChange();
+            }
+            onSubmit();
+        });
+    }
 
     return (
         <Form
             data={user}
             scope="user"
-            onSubmit={(params) => {
-                submitData({ locale, project, projectId }, params);
-                onSubmit();
-            }}
+            onSubmit={handleSubmit}
             onCancel={onCancel}
             submitText="submit"
             elements={[
@@ -59,4 +66,5 @@ UserDetailsForm.propTypes = {
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    onEmailChange: PropTypes.func,
 };

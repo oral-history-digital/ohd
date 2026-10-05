@@ -16,6 +16,10 @@ class UserPolicy < ApplicationPolicy
     user == record
   end
 
+  def cancel_email_change?
+    user == record
+  end
+
   class Scope < Scope
     def resolve
       if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
