@@ -14,6 +14,8 @@ export default function AfterConfirmationPopup() {
         });
 
     const recentlyConfirmed =
+        !currentUser?.admin &&
+        currentProjectAccess?.workflow_state !== 'project_access_granted' &&
         !currentProjectAccess?.tos_agreement &&
         currentUser?.pre_register_location?.split('?')[0] ===
             location.origin + location.pathname &&
