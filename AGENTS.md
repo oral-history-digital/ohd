@@ -166,3 +166,4 @@ yarn test
 - Check downstream effects appropriate to the change, including schema, translations, serializers/API contracts, background jobs, and search indexing when affected.
 - Review `git status` and `git diff` for unintended files.
 - Report changed behavior, tests run, failures, skipped checks, and remaining limitations accurately.
+- Include a proposed short commit message in the final report using fix:(scope): concise description and a short description of the changes. Do not create the commit unless explicitly requested.
