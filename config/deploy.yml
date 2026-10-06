@@ -31,3 +31,7 @@ asset_path: /app/public/packs
 
 builder:
   arch: amd64
+
+deploy_timeout: 120
+drain_timeout: 60
+
