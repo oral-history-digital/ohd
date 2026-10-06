@@ -1,6 +1,6 @@
 /* global railsMode */
 import { OHD_DOMAINS } from 'modules/constants';
-import { getProjectBrandName, getUmbrellaProject } from 'modules/data';
+import { getUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -21,9 +21,13 @@ export default function CatalogLink({ id, type }) {
         !project.is_umbrella;
 
     const ohdDomain = OHD_DOMAINS[railsMode];
-    const title = t(`modules.interview_metadata.${type}_link_title`, {
-        umbrella_project_name: getProjectBrandName(umbrellaProject, locale),
+    const translatedTitle = t(`modules.interview_metadata.${type}_link_title`, {
+        umbrella_project_name:
+            umbrellaProject?.display_shortname || umbrellaProject?.shortname,
     });
+    const title = Array.isArray(translatedTitle)
+        ? translatedTitle.join('')
+        : translatedTitle;
     const className = 'u-ml-tiny';
     const icon = (
         <FaExternalLinkAlt className="Icon Icon--unobtrusive Facet-collectionIcon" />
