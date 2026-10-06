@@ -44,12 +44,19 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'another user including an admin cannot cancel the owners change' do
-    sign_in User.find_by!(email: 'alice@example.com')
-    delete "/en/users/#{@user.id}/cancel_email_change.json"
-    assert_response :forbidden
-    assert_equal 'changed@example.com', @user.reload.unconfirmed_email
-    assert_equal @token, @user.confirmation_token
+  test 'numeric IDs cannot cancel either the owners or the callers pending change' do
+    admin = User.find_by!(email: 'alice@example.com')
+    admin.update_columns(unconfirmed_email: 'admin-changed@example.com', confirmation_token: 'admin-token')
+    sign_in admin
+
+    [@user.id, admin.id].each do |id|
+      delete "/en/users/#{id}/cancel_email_change.json"
+      assert_response :not_found
+      assert_equal 'changed@example.com', @user.reload.unconfirmed_email
+      assert_equal @token, @user.confirmation_token
+      assert_equal 'admin-changed@example.com', admin.reload.unconfirmed_email
+      assert_equal 'admin-token', admin.confirmation_token
+    end
   end
 
   test 'anonymous callers cannot cancel a pending change' do

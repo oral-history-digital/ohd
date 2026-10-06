@@ -108,8 +108,10 @@ class UsersController < ApplicationController
   end
 
   def cancel_email_change
-    user = params[:id] == 'current' ? current_user : User.find(params[:id])
+    user = current_user
     authorize(user)
+    return head :not_found unless params[:id] == 'current'
+
     user.with_lock do
       if user.unconfirmed_email.present?
         user.update!(unconfirmed_email: nil, confirmation_token: nil, confirmation_sent_at: nil)
