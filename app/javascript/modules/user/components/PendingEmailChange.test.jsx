@@ -1,8 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { receiveData } from 'modules/data';
 import { useDispatch, useSelector } from 'react-redux';
+import { SWRConfig } from 'swr';
 
 import PendingEmailChange from './PendingEmailChange';
+
+function SwrWrapper(props) {
+    return <SWRConfig {...props} value={{ provider: () => new Map() }} />;
+}
 
 jest.mock('modules/data', () => ({
     getCurrentUser: jest.fn(),
@@ -42,7 +47,9 @@ describe('PendingEmailChange', () => {
             data: { unconfirmed_email: null },
         };
         window.fetch.mockResolvedValue({ ok: true, json: async () => payload });
-        const { rerender } = render(<PendingEmailChange />);
+        const { rerender } = render(<PendingEmailChange />, {
+            wrapper: SwrWrapper,
+        });
         expect(screen.getByText('pending@example.com')).toBeInTheDocument();
         fireEvent.click(screen.getByRole('button'));
         expect(screen.getByRole('button')).toBeDisabled();
@@ -62,7 +69,7 @@ describe('PendingEmailChange', () => {
 
     it('keeps the notice and permits retry if cancellation fails', async () => {
         window.fetch.mockResolvedValue({ ok: false });
-        render(<PendingEmailChange />);
+        render(<PendingEmailChange />, { wrapper: SwrWrapper });
         fireEvent.click(screen.getByRole('button'));
         expect(await screen.findByRole('alert')).toHaveTextContent(
             'user.pending_email_change.error'
@@ -73,7 +80,9 @@ describe('PendingEmailChange', () => {
 
     it('shows nothing when there is no pending change', () => {
         useSelector.mockReturnValue({ unconfirmed_email: null });
-        const { container } = render(<PendingEmailChange />);
+        const { container } = render(<PendingEmailChange />, {
+            wrapper: SwrWrapper,
+        });
         expect(container).toBeEmptyDOMElement();
     });
 });

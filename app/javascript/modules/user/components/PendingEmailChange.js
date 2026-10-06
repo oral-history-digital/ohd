@@ -1,19 +1,15 @@
-import { useState } from 'react';
-
-import { getCurrentUser, receiveData } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
 import { Button } from 'modules/ui/Buttons';
 import InlineNotification from 'modules/ui/InlineNotification';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+
+import { useCancelEmailChange } from '../hooks/useCancelEmailChange';
 
 export default function PendingEmailChange() {
     const user = useSelector(getCurrentUser);
-    const dispatch = useDispatch();
     const { t } = useI18n();
-    const pathBase = usePathBase();
-    const [isCancelling, setIsCancelling] = useState(false);
-    const [failed, setFailed] = useState(false);
+    const { cancelEmailChange, isCancelling, error } = useCancelEmailChange();
 
     if (!user?.unconfirmed_email) return null;
 
@@ -21,30 +17,11 @@ export default function PendingEmailChange() {
         email: user.unconfirmed_email,
     });
 
-    async function cancelEmailChange() {
-        setIsCancelling(true);
-        setFailed(false);
+    async function handleCancelEmailChange() {
         try {
-            const response = await fetch(
-                `${pathBase}/users/current/cancel_email_change.json`,
-                {
-                    method: 'DELETE',
-                    credentials: 'same-origin',
-                    headers: {
-                        Accept: 'application/json',
-                        'X-CSRF-Token':
-                            document.querySelector('meta[name="csrf-token"]')
-                                ?.content || '',
-                    },
-                }
-            );
-            if (!response.ok)
-                throw new Error('Email change cancellation failed');
-            dispatch(receiveData(await response.json()));
+            await cancelEmailChange();
         } catch {
-            setFailed(true);
-        } finally {
-            setIsCancelling(false);
+            // The hook exposes the error for the notification below.
         }
     }
 
@@ -61,9 +38,9 @@ export default function PendingEmailChange() {
                 variant="contained"
                 size="sm"
                 isLoading={isCancelling}
-                onClick={cancelEmailChange}
+                onClick={handleCancelEmailChange}
             />
-            {failed && (
+            {error && (
                 <InlineNotification
                     variant="error"
                     description={t('user.pending_email_change.error')}
