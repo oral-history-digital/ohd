@@ -17,14 +17,6 @@ export default function PendingEmailChange() {
         email: user.unconfirmed_email,
     });
 
-    async function handleCancelEmailChange() {
-        try {
-            await cancelEmailChange();
-        } catch {
-            // The hook exposes the error for the notification below.
-        }
-    }
-
     return (
         <div className="pending-email-change">
             <InlineNotification
@@ -38,7 +30,7 @@ export default function PendingEmailChange() {
                 variant="contained"
                 size="sm"
                 isLoading={isCancelling}
-                onClick={handleCancelEmailChange}
+                onClick={cancelEmailChange}
             />
             {error && (
                 <InlineNotification

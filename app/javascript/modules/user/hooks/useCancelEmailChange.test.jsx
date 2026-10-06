@@ -81,9 +81,9 @@ describe('useCancelEmailChange', () => {
             wrapper: SwrWrapper,
         });
         await act(async () => {
-            await expect(result.current.cancelEmailChange()).rejects.toThrow(
-                'Email change cancellation failed'
-            );
+            await expect(
+                result.current.cancelEmailChange()
+            ).resolves.toBeUndefined();
         });
         expect(result.current.error).toBeTruthy();
         expect(result.current.isCancelling).toBe(false);

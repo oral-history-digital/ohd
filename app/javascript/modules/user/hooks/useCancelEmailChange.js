@@ -27,6 +27,7 @@ export function useCancelEmailChange() {
         `${pathBase}/users/current/cancel_email_change.json`,
         cancelPendingEmailChange,
         {
+            throwOnError: false,
             onSuccess(payload) {
                 // Keep the Redux-backed account view synchronized during the SWR migration.
                 dispatch(receiveData(payload));
