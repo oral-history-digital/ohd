@@ -1,30 +1,45 @@
-import { getCountryKeys } from 'modules/archive';
 import { EMAIL_REGEX } from 'modules/constants';
+import { getCurrentUser } from 'modules/data';
 import { Form } from 'modules/forms';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-export default function UserDetailsForm({
-    user,
-    locale,
-    project,
-    projectId,
-    onSubmit,
-    submitData,
-    onCancel,
-}) {
-    const countryKeys = useSelector(getCountryKeys);
+import { useUpdateAccount } from '../hooks/useUpdateAccount';
+
+export default function UserDetailsForm({ onSubmit, onCancel, onEmailChange }) {
+    const user = useSelector(getCurrentUser);
+    const { updateAccount, isSaving, error } = useUpdateAccount();
+
+    async function handleSubmit(params) {
+        const response = await updateAccount(params);
+        if (
+            response.data?.unconfirmed_email &&
+            response.data.unconfirmed_email !== user.unconfirmed_email &&
+            typeof onEmailChange === 'function'
+        ) {
+            onEmailChange();
+        }
+        onSubmit();
+        return response;
+    }
 
     return (
         <Form
             data={user}
             scope="user"
-            onSubmit={(params) => {
-                submitData({ locale, project, projectId }, params);
-                onSubmit();
-            }}
+            onSubmit={handleSubmit}
             onCancel={onCancel}
             submitText="submit"
+            fetching={isSaving}
+            notification={
+                error
+                    ? {
+                          variant: 'error',
+                          description: error.message,
+                          isClosable: false,
+                      }
+                    : null
+            }
             elements={[
                 {
                     attribute: 'email',
@@ -52,11 +67,7 @@ export default function UserDetailsForm({
 }
 
 UserDetailsForm.propTypes = {
-    locale: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    user: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    onEmailChange: PropTypes.func,
 };

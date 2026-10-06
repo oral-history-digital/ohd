@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useTrackPageView } from 'modules/analytics';
 import { useIsEditor } from 'modules/archive';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
@@ -11,16 +13,19 @@ import { Helmet } from 'react-helmet';
 import { FaPencilAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
+import AfterUpdateEmailPopup from './AfterUpdateEmailPopup';
 import PasskeyPopup from './PasskeyPopup';
+import PendingEmailChange from './PendingEmailChange';
 import TwoFAPopup from './TwoFAPopup';
 import UserDetailsContainer from './UserDetailsContainer';
-import UserDetailsFormContainer from './UserDetailsFormContainer';
+import UserDetailsForm from './UserDetailsForm';
 import UserProjects from './UserProjects';
 
 export default function AccountPage() {
     const { t } = useI18n();
     const isEditor = useIsEditor();
     const user = useSelector(getCurrentUser);
+    const [showEmailChangePopup, setShowEmailChangePopup] = useState(false);
     useTrackPageView();
 
     return (
@@ -44,9 +49,12 @@ export default function AccountPage() {
                                     }
                                 >
                                     {(close) => (
-                                        <UserDetailsFormContainer
+                                        <UserDetailsForm
                                             onSubmit={close}
                                             onCancel={close}
+                                            onEmailChange={() =>
+                                                setShowEmailChangePopup(true)
+                                            }
                                         />
                                     )}
                                 </Modal>
@@ -67,6 +75,12 @@ export default function AccountPage() {
                     <div className="user-registration boxes">
                         {user && <UserDetailsContainer />}
                     </div>
+                    {user?.unconfirmed_email && <PendingEmailChange />}
+                    {showEmailChangePopup && (
+                        <AfterUpdateEmailPopup
+                            onClose={() => setShowEmailChangePopup(false)}
+                        />
+                    )}
                     <div className="user-registration boxes">
                         {user && <UserProjects />}
                     </div>
