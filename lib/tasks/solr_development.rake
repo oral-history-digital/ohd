@@ -8,12 +8,14 @@ end
 
 namespace :solr do
   namespace :reindex do
-    desc "Reindex with project/limit/model scoping: pass PROJECT_SHORTNAME or PROJECT_ID; MODEL (default Interview); LIMIT and BATCH_SIZE"
+    desc "Reindex with project/collection/limit/model scoping: pass PROJECT_SHORTNAME or PROJECT_ID; COLLECTION_ID; MODEL (default Interview); LIMIT, BATCH_SIZE and WITH_RELATED"
     # Usage examples:
     #   bin/rake solr:reindex:scoped                                      # Reindex all Interview records
     #   bin/rake solr:reindex:scoped MODEL=RegistryEntry                  # Reindex all RegistryEntry records
     #   bin/rake solr:reindex:scoped PROJECT_SHORTNAME=za                 # Reindex Interviews for project 'za'
     #   bin/rake solr:reindex:scoped PROJECT_ID=1                         # Reindex Interviews for project with ID 1
+    #   bin/rake solr:reindex:scoped MODEL=Interview COLLECTION_ID=1 BATCH_SIZE=100 # Reindex Interviews for collection with ID 1
+    #   bin/rake solr:reindex:scoped PROJECT_SHORTNAME=za COLLECTION_ID=1 # Combine project and collection filters
     #   bin/rake solr:reindex:scoped LIMIT=100                            # Reindex first 100 Interview records
     #   bin/rake solr:reindex:scoped BATCH_SIZE=1000                      # Use batch size of 1000 (default 500)
     #   bin/rake solr:reindex:scoped MODEL=Interview PROJECT_SHORTNAME=za LIMIT=50 BATCH_SIZE=10
@@ -35,6 +37,7 @@ namespace :solr do
 
     project_short = ENV['PROJECT_SHORTNAME']
     project_id = ENV['PROJECT_ID']
+    collection_id = ENV['COLLECTION_ID'].presence
     limit = ENV['LIMIT']&.to_i
     batch_size = (ENV['BATCH_SIZE'] || 500).to_i
     with_related = ENV['WITH_RELATED'] == 'true'
@@ -58,12 +61,27 @@ namespace :solr do
       scope = scope.where(project_id: project_id.to_i)
     end
 
+    if collection_id
+      unless model.column_names.include?('collection_id')
+        puts "Error: Model '#{model_name}' has no collection_id column"
+        exit 1
+      end
+
+      unless Collection.exists?(id: collection_id)
+        puts "Error: Collection with ID '#{collection_id}' not found"
+        exit 1
+      end
+
+      scope = scope.where(collection_id: collection_id)
+    end
+
     scope = scope.limit(limit) if limit && limit > 0
 
     puts "Sunspot reindex starting..."
     puts "  Model: #{model_name}"
     puts "  Project shortname: #{project_short || 'all'}"
     puts "  Project ID: #{project_id || 'all'}"
+    puts "  Collection ID: #{collection_id || 'all'}"
     puts "  Limit: #{limit || 'none'}"
     puts "  Batch size: #{batch_size}"
     

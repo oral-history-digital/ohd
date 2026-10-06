@@ -113,6 +113,7 @@ log "Solr Reindexing Options:"
 log "  • Quick start:         bin/rake solr:reindex:scoped LIMIT=10 WITH_RELATED=true"
 log "  • More data:           bin/rake solr:reindex:scoped LIMIT=100 WITH_RELATED=true"
 log "  • By project:          bin/rake solr:reindex:scoped PROJECT_SHORTNAME=za LIMIT=50 WITH_RELATED=true"
+log "  • By collection:       bin/rake solr:reindex:scoped COLLECTION_ID=1"
 log "  • Other model:         bin/rake solr:reindex:scoped MODEL=RegistryEntry"
 log "  • Full reindex:        bin/rake solr:reindex:all"
 
