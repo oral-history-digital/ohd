@@ -89,13 +89,17 @@ describe('UserDetailsForm email changes', () => {
         window.fetch.mockResolvedValueOnce({
             ok: false,
             json: async () => ({
-                error: 'Email has already been taken',
-                errors: { email: ['has already been taken'] },
+                error: 'This email address cannot be used. Please enter a different email address.',
+                errors: {
+                    email: [
+                        'This email address cannot be used. Please enter a different email address.',
+                    ],
+                },
             }),
         });
         submit('taken@example.com');
         expect(await screen.findByRole('alert')).toHaveTextContent(
-            'Email has already been taken'
+            'This email address cannot be used. Please enter a different email address.'
         );
         expect(
             screen.getByLabelText(/activerecord.attributes.user.email/)

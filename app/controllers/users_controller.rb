@@ -28,9 +28,12 @@ class UsersController < ApplicationController
     user = params[:id] == 'current' ? current_user : User.find(params[:id])
     authorize(user)
     unless user.update(user_params)
+      errors = user.errors.to_hash
+      email_error = TranslationValue.for('user.email_cannot_be_used', I18n.locale) if errors[:email].present?
+      errors[:email] = [email_error] if email_error
       return render json: {
-        error: user.errors.full_messages.join(', '),
-        errors: user.errors.to_hash
+        error: email_error || user.errors.full_messages.join(', '),
+        errors: errors
       }, status: :unprocessable_entity
     end
 

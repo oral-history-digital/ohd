@@ -2,6 +2,10 @@ require 'test_helper'
 
 class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   setup do
+    TranslationValue.create_or_update_for_key('user.email_cannot_be_used', {
+      de: 'Diese E-Mail-Adresse kann nicht verwendet werden. Bitte geben Sie eine andere E-Mail-Adresse ein.',
+      en: 'This email address cannot be used. Please enter a different email address.'
+    })
     host! 'test.portal.oral-history.localhost:47001'
     @user = User.find_by!(email: 'john@example.com')
     @old_email = @user.email
@@ -89,9 +93,23 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :unprocessable_entity
     payload = JSON.parse(response.body)
-    assert payload.fetch('error').present?
-    assert payload.fetch('errors').fetch('email').present?
+    message = 'Diese E-Mail-Adresse kann nicht verwendet werden. Bitte geben Sie eine andere E-Mail-Adresse ein.'
+    assert_equal message, payload.fetch('error')
+    assert_equal [message], payload.fetch('errors').fetch('email')
     assert_equal original_attributes, @user.reload.attributes.slice(*original_attributes.keys)
+  end
+
+  test 'invalid and registered email addresses receive the same neutral response' do
+    sign_in @user
+    responses = ['alice@example.com', 'not-an-email'].map do |email|
+      put '/en/users/current.json', params: { user: { email: email } }
+      assert_response :unprocessable_entity
+      JSON.parse(response.body)
+    end
+    message = 'This email address cannot be used. Please enter a different email address.'
+    assert_equal message, responses.first.fetch('error')
+    assert_equal [message], responses.first.fetch('errors').fetch('email')
+    assert_equal responses.first, responses.last
   end
 
   test 'successful email update returns a pending change and sends confirmation' do
