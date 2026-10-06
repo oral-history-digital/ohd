@@ -9,6 +9,15 @@ class SearchesController < ApplicationController
       current_project.updated_search_facets(search) :
       {}
 
+    # Remove any subfacets for collections that the user does not have access to
+    if (subfacets = facets.dig(:collection_id, :subfacets))
+      visible_ids = policy_scope(Collection)
+        .where(id: subfacets.keys)
+        .pluck(:id)
+        .to_h { |id| [id.to_s, true] }
+      subfacets.delete_if { |id, _| !visible_ids.key?(id.to_s) }
+    end
+
     respond_to do |format|
       format.json do
         render json: { facets: facets }
