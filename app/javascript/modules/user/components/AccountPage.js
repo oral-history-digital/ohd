@@ -18,7 +18,7 @@ import PasskeyPopup from './PasskeyPopup';
 import PendingEmailChange from './PendingEmailChange';
 import TwoFAPopup from './TwoFAPopup';
 import UserDetailsContainer from './UserDetailsContainer';
-import UserDetailsFormContainer from './UserDetailsFormContainer';
+import UserDetailsForm from './UserDetailsForm';
 import UserProjects from './UserProjects';
 
 export default function AccountPage() {
@@ -49,7 +49,7 @@ export default function AccountPage() {
                                     }
                                 >
                                     {(close) => (
-                                        <UserDetailsFormContainer
+                                        <UserDetailsForm
                                             onSubmit={close}
                                             onCancel={close}
                                             onEmailChange={() =>

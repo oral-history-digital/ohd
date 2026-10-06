@@ -33,7 +33,7 @@ jest.mock(
         }
 );
 jest.mock(
-    './UserDetailsFormContainer',
+    './UserDetailsForm',
     () =>
         // eslint-disable-next-line react/prop-types
         function MockUserDetailsForm({ onEmailChange }) {

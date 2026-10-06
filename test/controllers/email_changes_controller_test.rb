@@ -79,4 +79,40 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
     assert_equal @user.email, @user.login
     assert_nil @user.unconfirmed_email
   end
+
+  test 'duplicate email update returns validation errors without changing the account or sending mail' do
+    sign_in @user
+    original_attributes = @user.attributes.slice('email', 'unconfirmed_email', 'confirmation_token', 'confirmation_sent_at')
+
+    assert_no_difference 'ActionMailer::Base.deliveries.size' do
+      put '/ohd/de/users/current.json', params: { user: { email: 'alice@example.com' } }
+    end
+    assert_response :unprocessable_entity
+    payload = JSON.parse(response.body)
+    assert payload.fetch('error').present?
+    assert payload.fetch('errors').fetch('email').present?
+    assert_equal original_attributes, @user.reload.attributes.slice(*original_attributes.keys)
+  end
+
+  test 'successful email update returns a pending change and sends confirmation' do
+    sign_in @user
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      put '/en/users/current.json', params: { user: { email: 'new-address@example.com' } }
+    end
+    assert_response :success
+    payload = JSON.parse(response.body)
+    assert_equal 'current', payload.fetch('id')
+    assert_equal 'new-address@example.com', payload.fetch('data').fetch('unconfirmed_email')
+    assert_equal @old_email, @user.reload.email
+    assert_equal 'new-address@example.com', @user.unconfirmed_email
+  end
+
+  test 'another user cannot update the owners email' do
+    admin = User.find_by!(email: 'alice@example.com')
+    sign_in @user
+    put "/en/users/#{admin.id}.json", params: { user: { email: 'other-address@example.com' } }
+    assert_response :forbidden
+    assert_equal 'alice@example.com', admin.reload.email
+    assert_nil admin.unconfirmed_email
+  end
 end

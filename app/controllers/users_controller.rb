@@ -27,7 +27,12 @@ class UsersController < ApplicationController
   def update
     user = params[:id] == 'current' ? current_user : User.find(params[:id])
     authorize(user)
-    user.update(user_params)
+    unless user.update(user_params)
+      return render json: {
+        error: user.errors.full_messages.join(', '),
+        errors: user.errors.to_hash
+      }, status: :unprocessable_entity
+    end
 
     if params[:user][:workflow_state] == 'remove'
       render json: {
