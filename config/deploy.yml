@@ -13,7 +13,7 @@ env:
     - OIDC_SIGNING_KEY
     - SECRET_KEY_BASE
   clear:
-    WEB_CONCURRENCY: 2
+    WEB_CONCURRENCY: 1
     MYSQL_HOST_PRODUCTION: ohd-db
     SOLR_URL: http://ohd-solr:8983/solr/blacklight-core
     OHD_EXTRA_HOSTS_PRODUCTION: staging.audio-visual.digital,avd-test.ub.fu-berlin.de
