@@ -71,9 +71,9 @@ class ActiveSupport::TestCase
   end
 
   alias_method :devise_login_as, :login_as
-  def login_as(user_or_email, password = 'Password123!')
+  def login_as(user_or_email, password = 'Password123!', **options)
     unless system_test?
-      return devise_login_as user_or_email
+      return devise_login_as user_or_email, **options
     end
 
     # Ensure a clean browser session and open the sign-in page directly. This

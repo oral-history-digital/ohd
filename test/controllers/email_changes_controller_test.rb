@@ -2,6 +2,7 @@ require 'test_helper'
 
 class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   setup do
+    Rails.application.reload_routes! if Devise.mappings.empty?
     TranslationValue.create_or_update_for_key('user.email_cannot_be_used', {
       de: 'Diese E-Mail-Adresse kann nicht verwendet werden. Bitte geben Sie eine andere E-Mail-Adresse ein.',
       en: 'This email address cannot be used. Please enter a different email address.'
@@ -18,7 +19,7 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'owner can cancel a pending email change and keeps the current email' do
-    sign_in @user
+    sign_in @user, scope: :user
     delete '/en/users/current/cancel_email_change.json'
     assert_response :success
     payload = JSON.parse(response.body)
@@ -35,8 +36,11 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'cancelled confirmation links and missing tokens cannot sign users in' do
-    sign_in @user
+    sign_in @user, scope: :user
     delete '/en/users/current/cancel_email_change.json'
+    assert_response :success
+    assert_nil @user.reload.unconfirmed_email
+    assert_nil @user.confirmation_token
     delete '/en/users/sign_out'
 
     [@token, nil].each do |token|
@@ -51,7 +55,7 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   test 'numeric IDs cannot cancel either the owners or the callers pending change' do
     admin = User.find_by!(email: 'alice@example.com')
     admin.update_columns(unconfirmed_email: 'admin-changed@example.com', confirmation_token: 'admin-token')
-    sign_in admin
+    sign_in admin, scope: :user
 
     [@user.id, admin.id].each do |id|
       delete "/en/users/#{id}/cancel_email_change.json"
@@ -70,7 +74,7 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'owner can cancel through a project and locale aware route' do
-    sign_in @user
+    sign_in @user, scope: :user
     delete '/ohd/de/users/current/cancel_email_change.json'
     assert_response :success
     assert_nil @user.reload.unconfirmed_email
@@ -85,7 +89,7 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'duplicate email update returns validation errors without changing the account or sending mail' do
-    sign_in @user
+    sign_in @user, scope: :user
     original_attributes = @user.attributes.slice('email', 'unconfirmed_email', 'confirmation_token', 'confirmation_sent_at')
 
     assert_no_difference 'ActionMailer::Base.deliveries.size' do
@@ -100,7 +104,7 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'invalid and registered email addresses receive the same neutral response' do
-    sign_in @user
+    sign_in @user, scope: :user
     responses = ['alice@example.com', 'not-an-email'].map do |email|
       put '/en/users/current.json', params: { user: { email: email } }
       assert_response :unprocessable_entity
@@ -113,7 +117,7 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'successful email update returns a pending change and sends confirmation' do
-    sign_in @user
+    sign_in @user, scope: :user
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       put '/en/users/current.json', params: { user: { email: 'new-address@example.com' } }
     end
@@ -127,7 +131,7 @@ class EmailChangesControllerTest < ActionDispatch::IntegrationTest
 
   test 'another user cannot update the owners email' do
     admin = User.find_by!(email: 'alice@example.com')
-    sign_in @user
+    sign_in @user, scope: :user
     put "/en/users/#{admin.id}.json", params: { user: { email: 'other-address@example.com' } }
     assert_response :forbidden
     assert_equal 'alice@example.com', admin.reload.email
