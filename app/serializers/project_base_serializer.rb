@@ -52,6 +52,12 @@ class ProjectBaseSerializer < ActiveModel::Serializer
     object.localized_hash(:display_name)
   end
 
+  def collection_ids
+    instance_options.fetch(:visible_collection_ids) do
+      CollectionPolicy::Scope.new(ProjectContext.new(nil, object), object.collections).resolve.pluck(:id)
+    end
+  end
+
   def name
     object.localized_hash(:name)
   end

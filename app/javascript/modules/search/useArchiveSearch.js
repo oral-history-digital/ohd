@@ -3,7 +3,7 @@ import { fetcher } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
 import { useSearchParams } from 'modules/query-string';
 import { usePathBase } from 'modules/routes';
-import { getIsLoggedIn } from 'modules/user';
+import { getIsLoggedIn, getLoggedInAt } from 'modules/user';
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
 import useSWRInfinite from 'swr/infinite';
@@ -25,6 +25,7 @@ function transformData(data) {
 export default function useArchiveSearch() {
     const project = useSelector(getCurrentProject);
     const isLoggedIn = useSelector(getIsLoggedIn);
+    const loggedInAt = useSelector(getLoggedInAt);
     const {
         sortBy,
         sortOrder,
@@ -47,6 +48,7 @@ export default function useArchiveSearch() {
             order: sortOrder,
             page: pageIndex + 1,
             'logged-in': isLoggedIn, // just to build different keys
+            'logged-in-at': isLoggedIn ? loggedInAt : undefined,
         };
 
         // Set defaults if sort options are not set.
@@ -64,7 +66,7 @@ export default function useArchiveSearch() {
 
     const { data, error, isValidating, isLoading, size, setSize } =
         useSWRInfinite(getKey, fetcher, {
-            keepPreviousData: true,
+            keepPreviousData: false,
             revalidateFirstPage: false,
             revalidateOnFocus: false,
         });

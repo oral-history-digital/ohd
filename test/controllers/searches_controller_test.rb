@@ -4,6 +4,33 @@ require 'minitest/mock'
 class SearchesControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
+  test 'public interviews in unshared collections remain search results without collection identity' do
+    project = DataHelper.test_project(shortname: "vis#{SecureRandom.hex(3)}a", workflow_state: 'public')
+    collection = Collection.create!(project: project, name: 'Hidden collection', workflow_state: 'unshared')
+    interview = Interview.create!(
+      project: project, collection: collection, archive_id: "#{project.shortname}001",
+      workflow_state: 'public', media_type: 'audio',
+      interview_languages: [InterviewLanguage.new(language: Language.find_by!(code: 'eng'), spec: 'primary')]
+    )
+    results = [interview]
+    results.define_singleton_method(:total_pages) { 1 }
+    search = Struct.new(:results, :total).new(results, 1)
+
+    Interview.stub(:archive_search, search) do
+      @controller.stub(:current_project, project) do
+        [nil, User.find_by!(email: 'john@example.com')].each do |user|
+          sign_in user if user
+          get :archive, params: { locale: 'en', format: :json }
+          assert_response :success
+          payload = JSON.parse(response.body)
+          assert_equal 1, payload['results_count']
+          assert_equal interview.archive_id, payload['interviews'].first['archive_id']
+          assert_nil payload['interviews'].first['collection_id']
+        end
+      end
+    end
+  end
+
   test 'collection facets respect collection visibility' do
     umbrella = DataHelper.test_project(shortname: "fac#{SecureRandom.hex(4)}a")
     public_project = DataHelper.test_project(
@@ -30,6 +57,12 @@ class SearchesControllerTest < ActionController::TestCase
           anonymous_facets = JSON.parse(response.body).fetch('facets')
           assert_equal [visible.id.to_s], anonymous_facets.dig('collection_id', 'subfacets').keys
           assert anonymous_facets.key?('media_type')
+
+          sign_in User.find_by!(email: 'john@example.com')
+          get :facets, params: { locale: 'en', format: :json }
+          assert_response :success
+          reader_facets = JSON.parse(response.body).fetch('facets')
+          assert_equal [visible.id.to_s], reader_facets.dig('collection_id', 'subfacets').keys
 
           sign_in User.find_by!(email: 'alice@example.com')
           get :facets, params: { locale: 'en', format: :json }

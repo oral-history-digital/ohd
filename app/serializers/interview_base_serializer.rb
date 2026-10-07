@@ -74,6 +74,14 @@ class InterviewBaseSerializer < ApplicationSerializer
     object.interview_year.join(", ")
   end
 
+  def collection_id
+    visible = instance_options.fetch(:collection_visible) do
+      CollectionPolicy::Scope.new(ProjectContext.new(nil, object.project), Collection)
+        .resolve.where(id: object.collection_id, project_id: object.project_id).exists?
+    end
+    object.collection_id if visible
+  end
+
   def publication_date
     object.publication_date ||
       object.collection&.publication_date ||

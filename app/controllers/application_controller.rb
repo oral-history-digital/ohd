@@ -405,6 +405,20 @@ class ApplicationController < ActionController::Base
   # serialized compiled cache of an instance
   #
   def cache_single(data, opts={})
+    if data.is_a?(Project)
+      collection_ids = policy_scope(Collection).where(project_id: data.id).order(:id).pluck(:id)
+      opts = opts.merge(
+        visible_collection_ids: collection_ids,
+        cache_key_suffix: "#{opts[:cache_key_suffix]}-collections-v1-#{Digest::SHA256.hexdigest(collection_ids.join(','))}"
+      )
+    elsif data.is_a?(Interview)
+      collection_visible = policy_scope(Collection).where(id: data.collection_id, project_id: data.project_id).exists?
+      opts = opts.merge(
+        collection_visible: collection_visible,
+        cache_key_suffix: "#{opts[:cache_key_suffix]}-collection-visible-v1-#{collection_visible}"
+      )
+    end
+
     instance_setting_cache_key = data.is_a?(Project) ?
       "v2-#{InstanceSetting.current.cache_key_with_version}" : nil
     cache_key_prefix = current_project ?

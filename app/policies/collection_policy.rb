@@ -3,10 +3,8 @@ class CollectionPolicy < ApplicationPolicy
     return true if user&.admin?
     return false unless visible_project?(record.project_id)
 
-    # Anonymous users can never access unshared collections.
-    return record.workflow_state != 'unshared' unless user
-
-    true
+    # If the collection is unshared, only users with the 'update' role on the project can view it.
+    record.workflow_state != 'unshared' || user&.roles?(record.project, 'Collection', 'update')
   end
 
   def doi?
@@ -19,10 +17,14 @@ class CollectionPolicy < ApplicationPolicy
 
       visible = scope.where(project_id: visible_project_ids)
 
-      # Anonymous users can browse only public/restricted collections.
-      return visible.where.not(workflow_state: 'unshared') unless user
+      shared = visible.where.not(workflow_state: 'unshared')
+      return shared unless user
 
-      visible
+      editable_project_ids = user.roles.joins(:permissions)
+        .where(permissions: { klass: 'Collection', action_name: 'update' })
+        .select(:project_id)
+
+      shared.or(visible.where(project_id: editable_project_ids))
     end
 
     private

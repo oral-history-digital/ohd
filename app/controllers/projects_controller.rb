@@ -258,7 +258,10 @@ class ProjectsController < ApplicationController
           data = if cached
             cache_single(@project, serializer_name: 'ProjectFull')
           else
-            ProjectFullSerializer.new(@project).as_json
+            ProjectFullSerializer.new(
+              @project,
+              visible_collection_ids: policy_scope(Collection).where(project_id: @project.id).pluck(:id)
+            ).as_json
           end
 
           render json: {
@@ -295,7 +298,8 @@ class ProjectsController < ApplicationController
       return 'anonymous' unless current_user
       return 'admin' if current_user.admin?
 
-      "user-#{current_user.id}"
+      visible_ids = policy_scope(Collection).order(:id).pluck(:id)
+      "user-#{current_user.id}-collections-v1-#{Digest::SHA256.hexdigest(visible_ids.join(','))}"
     end
 
     def normalized_workflow_states
