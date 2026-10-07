@@ -18,6 +18,10 @@ proxy:
   ssl:
     certificate_pem: CERTIFICATE_PEM
     private_key_pem: PRIVATE_KEY_PEM
+  run:
+    docker_options:
+      sysctl: net.ipv4.ip_unprivileged_port_start=0
+
 
 volumes:
   - "/home/avd1/avd/storage/app-cache:/app/tmp/cache"
