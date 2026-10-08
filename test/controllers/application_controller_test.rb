@@ -3,12 +3,53 @@ require 'minitest/mock'
 require 'securerandom'
 
 class ApplicationControllerTest < ActiveSupport::TestCase
+  test 'cached project and interview responses hide unshared collection identity from readers' do
+    project = DataHelper.test_project(shortname: "vis#{SecureRandom.hex(3)}a", workflow_state: 'public')
+    collection = Collection.create!(project: project, name: 'Hidden collection', workflow_state: 'unshared')
+    interview = Interview.create!(
+      project: project, collection: collection, archive_id: "#{project.shortname}001",
+      workflow_state: 'public', media_type: 'audio',
+      interview_languages: [InterviewLanguage.new(language: Language.find_by!(code: 'eng'), spec: 'primary')]
+    )
+    shared = Collection.create!(project: project, name: 'Shared collection', workflow_state: 'public')
+    reader = User.find_by!(email: 'john@example.com')
+    permission = Permission.find_or_create_by!(klass: 'Collection', action_name: 'show')
+    role = Role.create!(project: project, name: 'Collection reader')
+    RolePermission.create!(role: role, permission: permission)
+    UserRole.create!(user: reader, role: role)
+    admin = User.find_by!(email: 'alice@example.com')
+    cache = ActiveSupport::Cache::MemoryStore.new
+
+    Rails.stub(:cache, cache) do
+      [admin, reader, nil, admin].each do |user|
+        controller = ApplicationController.new
+        controller.define_singleton_method(:current_project) { project }
+        controller.define_singleton_method(:current_user) { user }
+        payload = controller.send(:cache_single, project)
+        expected_ids = user == admin ? [collection.id, shared.id].sort : [shared.id]
+        assert_equal expected_ids, payload[:collection_ids].sort
+        assert_equal expected_ids, payload[:collections].keys.map(&:to_i).sort
+        base_payload = controller.send(:cache_single, project, serializer_name: 'ProjectBase')
+        assert_equal expected_ids, base_payload[:collection_ids].sort
+
+        interview_payload = controller.send(:cache_single, interview, serializer_name: 'InterviewBase')
+        assert_equal interview.archive_id, interview_payload[:archive_id]
+        if user == admin
+          assert_equal collection.id, interview_payload[:collection_id]
+        else
+          assert_nil interview_payload[:collection_id]
+        end
+      end
+    end
+  end
+
   test 'project serialization ignores cached legacy compatibility payloads' do
     project = DataHelper.test_project(shortname: "cch#{SecureRandom.hex(2)}a")
     setting = InstanceSetting.current
     setting.update!(umbrella_project: project)
     controller = ApplicationController.new
     controller.define_singleton_method(:current_project) { project }
+    controller.define_singleton_method(:current_user) { nil }
     cache = ActiveSupport::Cache::MemoryStore.new
     legacy_key = "#{project.shortname}-project_base-#{project.id}-#{project.updated_at}--#{setting.cache_key_with_version}--#{I18n.locale}"
     cache.write(legacy_key, { is_ohd: true })
@@ -49,6 +90,7 @@ class ApplicationControllerTest < ActiveSupport::TestCase
     setting.update!(umbrella_project: project)
     controller = ApplicationController.new
     controller.define_singleton_method(:current_project) { project }
+    controller.define_singleton_method(:current_user) { nil }
 
     first_payload = controller.send(:cache_single, project, serializer_name: 'ProjectBase')
     setting.update!(umbrella_project: Project.find_by!(shortname: 'ohd'))

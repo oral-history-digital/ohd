@@ -2,7 +2,9 @@ import range from 'lodash.range';
 import { fetcher } from 'modules/api';
 import { useSearchParams } from 'modules/query-string';
 import { usePathBase } from 'modules/routes';
+import { getIsLoggedIn, getLoggedInAt } from 'modules/user';
 import queryString from 'query-string';
+import { useSelector } from 'react-redux';
 import useSWRImmutable from 'swr/immutable';
 
 export default function useFacets() {
@@ -15,8 +17,12 @@ export default function useFacets() {
         interviewYearMax,
     } = useSearchParams();
     const pathBase = usePathBase();
+    const isLoggedIn = useSelector(getIsLoggedIn);
+    const loggedInAt = useSelector(getLoggedInAt);
 
     const params = {
+        'logged-in': isLoggedIn,
+        'logged-in-at': isLoggedIn ? loggedInAt : undefined,
         fulltext,
         ...facets,
         year_of_birth: range(yearOfBirthMin, yearOfBirthMax + 1),
@@ -29,7 +35,7 @@ export default function useFacets() {
         path,
         fetcher,
         {
-            keepPreviousData: true,
+            keepPreviousData: false,
         }
     );
 

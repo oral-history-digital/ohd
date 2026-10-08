@@ -162,6 +162,27 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
       data = JSON.parse(response.body).fetch('data')
       assert data.key?(public_collection.id.to_s)
       assert_not data.key?(unshared_collection.id.to_s)
+
+      reader = User.find_by!(email: 'john@example.com')
+      login_as reader
+      get collections_path(locale: 'en', format: :json), params: { all: true }
+      assert_response :success
+      assert_not JSON.parse(response.body).fetch('data').key?(unshared_collection.id.to_s)
+      get collection_path(unshared_collection, locale: 'en', format: :json), params: { lite: 1 }
+      assert_response :forbidden
+
+      permission = Permission.find_or_create_by!(klass: 'Collection', action_name: 'update')
+      role = Role.create!(project: project, name: 'Collection editor')
+      grant = RolePermission.create!(role: role, permission: permission)
+      UserRole.create!(user: reader, role: role)
+      get collections_path(locale: 'en', format: :json), params: { all: true }
+      assert_response :success
+      assert JSON.parse(response.body).fetch('data').key?(unshared_collection.id.to_s)
+
+      grant.destroy!
+      get collections_path(locale: 'en', format: :json), params: { all: true }
+      assert_response :success
+      assert_not JSON.parse(response.body).fetch('data').key?(unshared_collection.id.to_s)
     end
   end
 

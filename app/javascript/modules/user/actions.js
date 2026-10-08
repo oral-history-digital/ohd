@@ -1,4 +1,4 @@
-import { Loader } from 'modules/api';
+import { Loader, invalidateAuthDependentCache } from 'modules/api';
 
 import {
     AUTH_ERROR,
@@ -32,7 +32,14 @@ const loggedIn = (json) => ({
 export function submitLogin(url, params) {
     return (dispatch) => {
         dispatch(login());
-        Loader.post(url, params, dispatch, loggedIn, authError);
+        Loader.post(
+            url,
+            params,
+            dispatch,
+            loggedIn,
+            authError,
+            invalidateAuthDependentCache
+        );
     };
 }
 
@@ -49,8 +56,10 @@ const logout = () => ({
 
 export function submitLogout(url) {
     return (dispatch) => {
-        dispatch(logout());
-        Loader.delete(url, dispatch, null);
+        Loader.delete(url, dispatch, null, () => {
+            dispatch(logout());
+            return invalidateAuthDependentCache();
+        });
     };
 }
 

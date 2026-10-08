@@ -99,11 +99,18 @@ class ProjectSerializer < ApplicationSerializer
     media_streams
     map_sections
     institution_projects
-    collections
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
     end
+  end
+
+  def collections
+    visible_collections.inject({}) { |mem, collection| mem[collection.id] = ::CollectionSerializer.new(collection); mem }
+  end
+
+  def collection_ids
+    visible_collections.pluck(:id)
   end
 
   %w(
@@ -157,6 +164,16 @@ class ProjectSerializer < ApplicationSerializer
       '123'
     else
       Rails.configuration.datacite['prefix']
+    end
+  end
+
+  private
+
+  def visible_collections
+    @visible_collections ||= if instance_options.key?(:visible_collection_ids)
+      object.collections.where(id: instance_options[:visible_collection_ids])
+    else
+      CollectionPolicy::Scope.new(ProjectContext.new(nil, object), object.collections).resolve
     end
   end
 end

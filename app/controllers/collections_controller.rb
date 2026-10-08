@@ -221,7 +221,8 @@ class CollectionsController < ApplicationController
     return 'anonymous' unless current_user
     return 'admin' if current_user.admin?
 
-    "user-#{current_user.id}"
+    visible_ids = policy_scope(Collection).order(:id).pluck(:id)
+    "user-#{current_user.id}-collections-v1-#{Digest::SHA256.hexdigest(visible_ids.join(','))}"
   end
 
   def serialized_project_collections(collections, interview_counts, interview_languages_by_collection)
