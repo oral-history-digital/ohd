@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.11.0] - 2026-10-06
+
+### Added
+
+- feat: make collection workflow status configurable ([#158](https://github.com/oral-history-digital/ohd/pull/158))
+- feat:(solr): support collection-scoped reindexing ([a3bb89b10](https://github.com/oral-history-digital/ohd/commit/a3bb89b108368327361a84e1ec44f7ea40598862))
+
+### Fixed
+
+- fix: avoid recurring project-access and email-confirmation popups ([#163](https://github.com/oral-history-digital/ohd/pull/163))
+- fix:(catalog): use short project name in link titles ([2becc9313](https://github.com/oral-history-digital/ohd/commit/2becc9313fbbb1504bd5615cf8b0fbae8b18559a))
+- fix: enforce unshared collection visibility ([#165](https://github.com/oral-history-digital/ohd/pull/165))
+
+### Changed
+
+- chore: lib updates ([#162](https://github.com/oral-history-digital/ohd/pull/162))
+
+### Removed
+
+- chore: remove unused assets ([#161](https://github.com/oral-history-digital/ohd/pull/161))
+
 ## [2.10.1] - 2026-09-29
 
 ### Changed
@@ -812,6 +833,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.11.0]: https://github.com/oral-history-digital/ohd/compare/v2.10.1...v2.11.0
 [2.10.1]: https://github.com/oral-history-digital/ohd/compare/v2.10.0...v2.10.1
 [2.10.0]: https://github.com/oral-history-digital/ohd/compare/v2.9.1...v2.10.0
 [2.9.1]: https://github.com/oral-history-digital/ohd/compare/v2.9.0...v2.9.1
