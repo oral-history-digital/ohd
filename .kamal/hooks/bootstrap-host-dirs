@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Runs on remote host as deploy user (e.g. avd1)
+SSH_USER="${KAMAL_SSH_USER:-${USER}}"
+
+# ---- Paths ---------------------------------------------------------------
+APP_BASE="${KAMAL_STORAGE_BASE:-/home/${SSH_USER}/avd/storage}"
+
+DB_BASE="${DB_BASE:-/home/${SSH_USER}/ohd-db}"
+DB_DATA_DIR="${DB_DATA_DIR:-${DB_BASE}/data}"
+
+SOLR_BASE="${SOLR_BASE:-/home/${SSH_USER}/ohd-solr}"
+SOLR_DATA_DIR="${SOLR_DATA_DIR:-${SOLR_BASE}/solr_data}"
+
+# ---- Container UIDs/GIDs -------------------------------------------------
+# Official images:
+DB_UID="${DB_UID:-999}"
+DB_GID="${DB_GID:-999}"
+SOLR_UID="${SOLR_UID:-8983}"
+SOLR_GID="${SOLR_GID:-8983}"
+
+# Your app container user (check with: podman exec <app> id)
+APP_UID="${APP_UID:-1000}"
+APP_GID="${APP_GID:-1000}"
+
+echo "==> bootstrap-host-dirs start"
+
+# ---- Optional host prereqs (Debian/Ubuntu), if sudo is available ----------
+#if command -v sudo >/dev/null 2>&1; then
+  #if command -v apt-get >/dev/null 2>&1 && command -v dpkg >/dev/null 2>&1; then
+    #echo "==> Ensuring podman prereq packages"
+    #PKGS=""
+    #for p in podman uidmap slirp4netns passt dbus-user-session libpam-systemd systemd-container; do
+      #dpkg -s "$p" >/dev/null 2>&1 || PKGS="$PKGS $p"
+    #done
+    #if [ -n "$PKGS" ]; then
+      #sudo apt-get update -y
+      #sudo apt-get install -y $PKGS
+    #fi
+  #fi
+
+  ## Rootless mappings
+  #if ! grep -q "^${SSH_USER}:" /etc/subuid; then
+    #sudo usermod --add-subuids 100000-165535 "${SSH_USER}"
+  #fi
+  #if ! grep -q "^${SSH_USER}:" /etc/subgid; then
+    #sudo usermod --add-subgids 100000-165535 "${SSH_USER}"
+  #fi
+
+  ## Keep /run/user/<uid> available
+  #if command -v loginctl >/dev/null 2>&1; then
+    #sudo loginctl enable-linger "${SSH_USER}" || true
+  #fi
+
+  ## Allow rootless low ports on host (helpful for published :80/:443)
+  #current="$(cat /proc/sys/net/ipv4/ip_unprivileged_port_start || echo 1024)"
+  #if [ "${current}" -gt 80 ]; then
+    #echo "net.ipv4.ip_unprivileged_port_start=80" | sudo tee /etc/sysctl.d/99-rootless-ports.conf >/dev/null
+    #sudo sysctl -w net.ipv4.ip_unprivileged_port_start=80 >/dev/null || true
+  #fi
+#fi
+
+# ---- Ensure directory structure -------------------------------------------
+echo "==> Creating directories"
+mkdir -p \
+  "${APP_BASE}/app-cache" \
+  "${APP_BASE}/app-files" \
+  "${APP_BASE}/app-logs" \
+  "${DB_DATA_DIR}" \
+  "${SOLR_DATA_DIR}"
+
+# ---- Reclaim host ownership first (prevents 'operation not permitted') ----
+if command -v sudo >/dev/null 2>&1; then
+  echo "==> Reclaiming host ownership"
+  sudo chown -R "${SSH_USER}:${SSH_USER}" "${APP_BASE}" "${DB_DATA_DIR}" "${SOLR_DATA_DIR}" || true
+fi
+
+# ---- Set final ownership from rootless user namespace ----------------------
+echo "==> Setting namespace ownership for app/db/solr data"
+podman unshare chown -R "${APP_UID}:${APP_GID}" \
+  "${APP_BASE}/app-cache" \
+  "${APP_BASE}/app-files" \
+  "${APP_BASE}/app-logs"
+
+podman unshare chown -R "${DB_UID}:${DB_GID}" "${DB_DATA_DIR}"
+podman unshare chown -R "${SOLR_UID}:${SOLR_GID}" "${SOLR_DATA_DIR}"
+
+# Conservative perms
+chmod -R u+rwX,go-rwx \
+  "${APP_BASE}/app-cache" \
+  "${APP_BASE}/app-files" \
+  "${APP_BASE}/app-logs" \
+  "${DB_DATA_DIR}" \
+  "${SOLR_DATA_DIR}"
+
+echo "==> bootstrap-host-dirs done"

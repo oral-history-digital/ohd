@@ -1,3 +1,8 @@
+if ENV["SENTRY_DISABLED"].to_s == "true"
+  Rails.logger.info("Sentry disabled")
+  return
+end
+
 Sentry.init do |config|
   dsn_key = Rails.env.production? ? :dsn_production : :dsn_staging
   config.dsn = ENV['SENTRY_DSN'].presence ||
