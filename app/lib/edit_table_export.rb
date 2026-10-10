@@ -60,7 +60,7 @@ class EditTableExport
   end
 
   def annotations(segment)
-    segment.interview.alpha3s.map do |alpha3|
+    segment.interview.annotation_alpha3s.map do |alpha3|
       segment.annotations.map do |a|
         a.text(alpha3).blank? ? '' : a.text(alpha3).gsub(/[\t\n\r]+/, ' ')
       end.join('#')
