@@ -1,54 +1,54 @@
+<%#
+  Destination "avd-staging". Deep-merged over config/deploy.yml.
+
+  To add a server: copy this file to config/deploy.<name>.yml, change the values
+  in the block below, add .kamal/secrets.<name>, then see bin/server/README.md.
+%>
+<%
+  ssh_user = "avd1"                                     # deploy user on the server
+  home     = "/home/#{ssh_user}"                        # its home directory
+  storage  = "#{home}/avd/storage"                      # app volumes live here
+  host_ip  = "160.45.152.195"
+  domain   = "staging.audio-visual.digital"
+  arch     = "amd64"                                    # builder arch of the server
+%>
 servers:
   web:
-    - 160.45.152.195
+    - "<%= host_ip %>"
   job:
     hosts:
-      - 160.45.152.195
+      - "<%= host_ip %>"
     cmd: bundle exec rake jobs:work
 
 env:
   clear:
     SENTRY_DISABLED: "true"
-    OHD_DOMAIN_PRODUCTION: "https://staging.audio-visual.digital"
-    OHD_DOMAIN: "https://staging.audio-visual.digital"
+    OHD_DOMAIN_PRODUCTION: "https://<%= domain %>"
+    OHD_DOMAIN: "https://<%= domain %>"
+    OHD_EXTRA_HOSTS_PRODUCTION: "<%= domain %>,avd-test.ub.fu-berlin.de"
 
 proxy:
-  host: staging.audio-visual.digital
+  host: <%= domain %>
   app_port: 3000
   ssl:
     certificate_pem: CERTIFICATE_PEM
     private_key_pem: PRIVATE_KEY_PEM
 
-
 volumes:
-  - "/home/avd1/avd/storage/app-cache:/app/tmp/cache"
-  - "/home/avd1/avd/storage/app-files:/app/tmp/files"
-  - "/home/avd1/avd/storage/app-logs:/app/log"
+  - "<%= storage %>/app-cache:/app/tmp/cache"
+  - "<%= storage %>/app-files:/app/tmp/files"
+  - "<%= storage %>/app-logs:/app/log"
 
 ssh:
-  user: avd1
+  user: <%= ssh_user %>
+
+builder:
+  arch: <%= arch %>
 
 accessories:
   db:
-    image: docker.io/mariadb:10.5
     hosts:
-      - 160.45.152.195
-    env:
-      clear:
-        MARIADB_DATABASE: ohd_production
-        MARIADB_USER: ohd
-      secret:
-        - MARIADB_ROOT_PASSWORD
-        - MARIADB_PASSWORD
-    directories:
-      - data:/var/lib/mysql
-
+      - "<%= host_ip %>"
   solr:
-    image: ghcr.io/oral-history-digital/ohd-solr:5.5-sunspot
     hosts:
-      - 160.45.152.195
-    env:
-      clear:
-        SOLR_CORE: blacklight-core
-    directories:
-      - solr_data:/opt/solr/server/solr/mycores
+      - "<%= host_ip %>"

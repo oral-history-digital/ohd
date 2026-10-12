@@ -5,9 +5,13 @@
 # =============================================================================
 # System dependencies, Node.js, Yarn, and JAVA_HOME are all provided by the
 # shared base image. See Dockerfile.base and .github/workflows/publish-base-image.yml.
-FROM ghcr.io/oral-history-digital/ohd-base:latest AS base
+# BASE_IMAGE can be overridden per build (e.g. to pin a tag) without editing this file.
+ARG BASE_IMAGE=ghcr.io/oral-history-digital/ohd-base:latest
+FROM ${BASE_IMAGE} AS base
 
-# Create app user (non-root for security; production-only concern)
+# Create app user (non-root for security; production-only concern).
+# UID/GID 1000 must match CONTAINER_UIDS in bin/server/layout.rb ("/app"): the host
+# directories for /app volumes are chowned to it on every server.
 RUN groupadd --gid 1000 appuser \
   && useradd --uid 1000 --gid appuser --shell /bin/bash --create-home appuser
 
@@ -119,5 +123,4 @@ EXPOSE 3000
   #CMD curl -f http://localhost:3000/health || exit 1
 
 # Default command (can be overridden in docker-compose or Capistrano)
-LABEL service="ohd"
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
