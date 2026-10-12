@@ -1,3 +1,6 @@
+# Shared Kamal configuration. config/deploy.<destination>.yml is deep-merged over
+# this file and holds everything that differs per server: hosts, ssh user, host
+# paths, domain, builder arch. See bin/server/README.md.
 service: ohd
 image: oral-history-digital/ohd
 
@@ -16,7 +19,6 @@ env:
     WEB_CONCURRENCY: 1
     MYSQL_HOST_PRODUCTION: ohd-db
     SOLR_URL: http://ohd-solr:8983/solr/blacklight-core
-    OHD_EXTRA_HOSTS_PRODUCTION: staging.audio-visual.digital,avd-test.ub.fu-berlin.de
     ALLOW_LOCALHOST_IN_PRODUCTION: "true"
     TZ: Europe/Berlin
 
@@ -29,9 +31,28 @@ aliases:
 
 asset_path: /app/public/packs
 
-builder:
-  arch: amd64
+# Accessories run as ohd-db / ohd-solr. Their hosts are set per destination.
+# Relative directories are created in the remote home (~/ohd-db/data, ...).
+accessories:
+  db:
+    image: docker.io/mariadb:10.5
+    env:
+      clear:
+        MARIADB_DATABASE: ohd_production
+        MARIADB_USER: ohd
+      secret:
+        - MARIADB_ROOT_PASSWORD
+        - MARIADB_PASSWORD
+    directories:
+      - data:/var/lib/mysql
+
+  solr:
+    image: ghcr.io/oral-history-digital/ohd-solr:5.5-sunspot
+    env:
+      clear:
+        SOLR_CORE: blacklight-core
+    directories:
+      - solr_data:/opt/solr/server/solr/mycores
 
 deploy_timeout: 120
 drain_timeout: 60
-

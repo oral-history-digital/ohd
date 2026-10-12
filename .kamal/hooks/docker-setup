@@ -1,0 +1,9 @@
+#!/bin/sh
+# kamal-podman runs this hook during `kamal-podman setup` (after it has checked that
+# podman is installed on each host). It runs on the machine that runs kamal and
+# bootstraps the destination's servers over ssh.
+set -eu
+
+cd "$(dirname "$0")/../.."
+: "${KAMAL_DESTINATION:?run kamal-podman with -d <destination>}"
+exec bin/server/bootstrap "$KAMAL_DESTINATION"
