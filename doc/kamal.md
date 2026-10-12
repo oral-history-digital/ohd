@@ -1,74 +1,86 @@
 # Kamal deployment guide (OHD)
 
-This guide documents how to run and operate OHD with Kamal, including:
+OHD is deployed with **kamal-podman**, the Podman fork of Kamal (gem `kamal_podman`
+on top of Kamal 2.12). Always run it through Bundler:
 
-- initial setup
-- deploys
-- console/logs
-- accessory lifecycle (DB/Solr)
-- required environment variables/secrets
-- what to change when creating another instance
-- how to deploy a prebuilt image tag
+```bash
+bundle exec kamal-podman <command> -d <destination>
+```
+
+Do not use plain `kamal`. It targets Docker, and the servers only run Podman.
+
+This guide covers:
+
+- files and structure
+- prerequisites and secrets
+- setting up a new server (bootstrap)
+- deploys, console and logs
+- accessories (DB, Solr)
+- reboots and autostart
+- adding another server
+- troubleshooting
 
 ---
 
 ## 1) Files and structure
 
-- `config/deploy.yml`  
-  Shared/base Kamal config across environments.
-- `config/deploy.avd-staging.yml`  
-  Instance-specific overrides (host/IP/domain/volumes/accessories).
-- `.kamal/secrets.avd-staging`  
-  Instance-specific secrets loaded by Kamal.
-- `.kamal/hooks/pre-setup/01-bootstrap-host-dirs.sh`  
-  Host directory bootstrap (permissions + required directories).
-- `Dockerfile`  
-  App image build (runtime user UID/GID 1000).
-- `Dockerfile.solr` + `docker/solr/init-core.sh`  
-  Custom Solr image and idempotent core init.
+| File | Purpose |
+|---|---|
+| `config/deploy.yml` | Shared base config: image, env, aliases, accessory images, env and directories. Contains no hosts, paths or domains. |
+| `config/deploy.avd-staging.yml` | Destination config. Top block sets `ssh_user`, `host_ip`, `domain`, `arch`. Also sets roles, proxy, volumes and accessory hosts. |
+| `.kamal/secrets-common` | Optional. Secrets shared by all destinations. |
+| `.kamal/secrets.avd-staging` | Secrets for this destination. Keep out of git. |
+| `.kamal/hooks/docker-setup` | Runs during `kamal-podman setup` and calls `bin/server/bootstrap`. |
+| `bin/server/bootstrap` | Sets up the server(s) of a destination over SSH. Safe to re-run. |
+| `bin/server/remote-bootstrap.sh` | The part that runs on the server. Called by `bin/server/bootstrap`. |
+| `bin/server/podman-autostart.sh` | Installed on the server as `~/bin/podman-autostart.sh`. Starts the containers after a reboot. |
+| `bin/server/layout.rb` | Renders the config and prints the hosts and host directories. Use it to check what the bootstrap will do. |
+| `bin/server/README.md` | Short version of this section for new servers. |
+| `Dockerfile` | App image. Runtime user `appuser` has UID/GID 1000. |
+| `Dockerfile.base` | Shared base image (system packages, Node, Yarn). |
+| `Dockerfile.solr`, `docker/solr/init-core.sh` | Solr image with the Sunspot configset and idempotent core init. |
+
+Remove `.kamal/hooks/pre-setup/*` and any `docker`-based setup scripts from older
+versions of this guide. They are no longer used.
 
 ---
 
-## 2) One-time prerequisites
+## 2) Prerequisites
 
-On your local machine:
+**Local machine**
 
-- Docker available
-- Kamal installed (`bundle exec kamal` or `kamal`)
-- SSH access to server
-- GitHub Container Registry credentials (`GITHUB_ACTOR`, `GITHUB_TOKEN`)
+- Ruby and Bundler, with the repo's gems installed (`bundle install`)
+- Podman. The builder runs `podman build` and `podman push`.
+- SSH access to the server, for example via `~/.ssh/config` (the `avd-stag` alias)
+- GitHub Container Registry credentials (see section 3)
 
-On target server:
+**Server**
 
-- SSH user has sudo rights (needed by pre-setup hook)
-- Kamal setup will install/configure Docker if needed
-
----
-
-## 3) Required environment variables (local, before running Kamal)
-
-These are read from your shell/.env when Kamal renders ERB and authenticates registry:
-
-- `GITHUB_ACTOR` (GH username/org automation user)
-- `GITHUB_TOKEN` (GHCR read token; write token if pushing)
-
-Recommended (to avoid hardcoding paths/users):
-
-- `KAMAL_SSH_USER` (e.g. `avd1`)
-- `KAMAL_STORAGE_BASE` (e.g. `/home/avd1/avd/storage`)
-
-Optional UID/GID overrides for hooks:
-
-- `APP_UID` (default `1000`)
-- `APP_GID` (default `1000`)
-- `SOLR_UID` (default `8983`)
-- `SOLR_GID` (default `8983`)
+- Debian or Ubuntu with `apt`
+- A deploy user (e.g. `avd1`) with passwordless `sudo`
+- Nothing else. `bin/server/bootstrap` installs Podman and everything it needs.
+  Docker is not used.
 
 ---
 
-## 4) Secrets file (`.kamal/secrets.avd-staging`)
+## 3) Environment variables (local)
 
-Must include all secrets referenced in `deploy.yml` and accessory env:
+Read from your shell (or `.env`) when Kamal renders the ERB config and logs in to the
+registry:
+
+- `GITHUB_ACTOR`: GitHub user for GHCR
+- `GITHUB_TOKEN`: token with `read:packages` (`write:packages` if you push images)
+
+No other variables are needed. Server-specific values are in the destination file.
+
+---
+
+## 4) Secrets
+
+Kamal reads `.kamal/secrets-common` and `.kamal/secrets.<destination>`. It does **not**
+read a plain `.kamal/secrets` file.
+
+`.kamal/secrets.avd-staging` must define every secret referenced in the config:
 
 - `RAILS_MASTER_KEY`
 - `MYSQL_PASSWORD_PRODUCTION`
@@ -76,231 +88,278 @@ Must include all secrets referenced in `deploy.yml` and accessory env:
 - `SECRET_KEY_BASE`
 - `MARIADB_ROOT_PASSWORD`
 - `MARIADB_PASSWORD`
-- `CERTIFICATE_PEM` (if using inline proxy ssl)
-- `PRIVATE_KEY_PEM` (if using inline proxy ssl)
+- `CERTIFICATE_PEM` and `PRIVATE_KEY_PEM` (inline TLS for the proxy)
 
-> Keep this file out of git if it contains plaintext secrets.
-
----
-
-## 5) First setup on a new instance
-
-Run:
-
-```bash
-kamal setup -d avd-staging
-```
-
-What this does:
-
-- runs pre-setup hooks (`.kamal/hooks/pre-setup/*`)
-- prepares proxy/network
-- starts accessories
-- prepares app runtime
-
-Then deploy app:
-
-```bash
-kamal deploy -d avd-staging
-```
+> Do not commit files that contain plaintext secrets.
 
 ---
 
-## 6) Day-2 commands (operations)
-
-### Deploy latest commit (normal flow)
+## 5) Set up a server (bootstrap)
 
 ```bash
-kamal deploy -d avd-staging
+bin/server/bootstrap avd-staging
 ```
 
-### Open Rails console
+The bootstrap reads the destination config, then connects to each host over SSH and:
+
+- installs `podman uidmap slirp4netns cron` (and `passt` if available)
+- adds the subuid/subgid range for the deploy user if it is missing
+- allows rootless ports from 80 (sysctl)
+- creates `/run/user/<uid>` at every boot and makes `/` shared (root's crontab)
+- creates the host directories for volumes and accessories, and sets the owner the
+  container expects inside its user namespace:
+
+  | Container path | Container user | Used by |
+  |---|---|---|
+  | `/var/lib/mysql` | 999 (mysql) | DB accessory |
+  | `/opt/solr/...` | 8983 (solr) | Solr accessory |
+  | `/app/...` | 1000 (appuser) | web and job containers |
+
+- installs `~/bin/podman-autostart.sh` and starts it at boot (user's crontab)
+- clears Podman state left over from a reboot
+
+The bootstrap is idempotent. Run it again after changing volumes, accessory
+directories or the autostart script. It only changes what is missing or wrong.
+
+To see what it will do without touching a server:
 
 ```bash
-kamal console -d avd-staging
+ruby bin/server/layout.rb avd-staging
 ```
 
-### Open shell in app container
+> `bin/server/bootstrap` replaces Kamal's own `kamal-podman server bootstrap`, which
+> only checks that Podman is installed.
+
+---
+
+## 6) Setup and deploy
 
 ```bash
-kamal shell -d avd-staging
+bin/server/bootstrap avd-staging               # once per server
+bundle exec kamal-podman setup -d avd-staging  # accessories, proxy, app
+bundle exec kamal-podman deploy -d avd-staging
 ```
 
-### Tail web logs
+`kamal-podman setup` first checks that Podman is installed on each host, then runs the
+`docker-setup` hook. The hook runs the bootstrap again. That is harmless, and it makes
+sure a server that was set up by hand also gets the current autostart script.
+
+---
+
+## 7) Day-2 commands
 
 ```bash
-kamal logs -d avd-staging -f
+# deploy the current commit
+bundle exec kamal-podman deploy -d avd-staging
+
+# Rails console and shell in the app container (aliases from deploy.yml)
+bundle exec kamal-podman console -d avd-staging
+bundle exec kamal-podman shell -d avd-staging
+
+# web and job logs
+bundle exec kamal-podman logs -d avd-staging          # alias for app logs -f
+bundle exec kamal-podman joblogs -d avd-staging       # alias for app logs -r job -f
+
+# status
+bundle exec kamal-podman app containers -d avd-staging
+bundle exec kamal-podman app details -d avd-staging
+bundle exec kamal-podman app version -d avd-staging
 ```
 
-### Tail job logs
+Use the current container names from `app containers`. App containers are versioned.
+
+---
+
+## 8) Accessories (DB, Solr)
 
 ```bash
-kamal joblogs -d avd-staging
-# or:
-kamal app logs -d avd-staging -r job -f
+bundle exec kamal-podman accessory details -d avd-staging solr
+bundle exec kamal-podman accessory logs -d avd-staging db
+bundle exec kamal-podman accessory reboot -d avd-staging solr   # stop, remove, start
+bundle exec kamal-podman accessory restart -d avd-staging db
 ```
 
-### Show running app containers/details
+Accessory data lives in the remote home, not in the repo:
+
+- DB: `~/ohd-db/data`
+- Solr: `~/ohd-solr/solr_data`
+
+> **Destructive:** `accessory remove` deletes the accessory's container and image and
+> runs `rm -rf ~/<service>-<accessory>`. That includes the data. Dump the database
+> first (e.g. `mysqldump`) and make sure you have a copy before you run it.
 
 ```bash
-kamal app details -d avd-staging
+bundle exec kamal-podman accessory remove -d avd-staging solr
+bundle exec kamal-podman accessory boot -d avd-staging solr
 ```
 
 ---
 
-## 7) Rebooting/recreating accessories
+## 9) Reboots and autostart
 
-### Restart only Solr accessory
+The servers have no systemd. Autostart uses cron:
+
+- **Root's crontab** (set up by the bootstrap) runs at every boot:
+  - `mkdir -p /run/user/<uid>` with owner and mode, because `/run` is cleared on boot
+  - `mount --make-rshared /`, which Podman needs for mounts
+- **The deploy user's crontab** runs at every boot after 30 s:
+  `~/bin/podman-autostart.sh`
+
+The autostart script:
+
+1. Waits for `/run/user/<uid>`.
+2. If Podman refuses to run because of the previous boot (`boot ID differs`), deletes
+   the Podman runtime state it names and runs `podman system migrate`.
+3. Removes overlay leftovers (`work/work`) of stopped containers.
+4. Starts the accessories (DB, Solr), waits 15 s.
+5. Starts `kamal-proxy`.
+6. Starts the app and job containers (not the `*_replaced_*` leftovers).
+
+Logs:
+
+- `~/log/podman-autostart.log`: what the script did
+- `~/log/podman-autostart.cron.log`: cron output
+
+The script can be run by hand while containers are running. It only starts containers
+that are stopped and does not stop anything:
 
 ```bash
-kamal accessory boot -d avd-staging solr
+ssh avd-stag 'bash ~/bin/podman-autostart.sh; tail -20 ~/log/podman-autostart.log'
 ```
 
-### Restart only DB accessory
+> Do not run `podman system migrate` by hand while containers are running. It stops
+> them all. The autostart script only runs it right after a reboot.
+
+After a reboot, check the state:
 
 ```bash
-kamal accessory boot -d avd-staging db
+ssh avd-stag 'podman ps -a --format "{{.Names}} {{.Status}}"'
 ```
-
-### Remove + recreate an accessory (destructive for that accessory data dir)
-
-```bash
-kamal accessory remove -d avd-staging solr
-kamal accessory boot -d avd-staging solr
-```
-
-> `accessory remove` removes container/image and attempts to remove accessory data dirs.
 
 ---
 
-## 8) Delayed Job role
+## 10) Job role
 
-Define a `job` server role in `config/deploy.avd-staging.yml`:
+The job worker is a separate role in the destination file:
 
 ```yaml
 servers:
   web:
-    - 160.45.152.195
+    - "<%= host_ip %>"
   job:
     hosts:
-      - 160.45.152.195
-    cmd: bundle exec bin/delayed_job run
-```
-
-Then deploy:
-
-```bash
-kamal deploy -d avd-staging
+      - "<%= host_ip %>"
+    cmd: bundle exec rake jobs:work
 ```
 
 Check job logs:
 
 ```bash
-kamal app logs -d avd-staging -r job -f
+bundle exec kamal-podman app logs -d avd-staging -r job -f
 ```
 
 ---
 
-## 9) Deploy an already built image tag
+## 11) Deploy an existing image tag
 
-If image is already in GHCR, deploy without rebuilding:
-
-Example:
+If the image is already in GHCR, deploy it without rebuilding:
 
 ```bash
-kamal deploy -d avd-staging --version 9f309618fb6335e01c530b27c9c24d5d44181016 --skip-push
-kamal deploy -d avd-staging --version latest -P
+bundle exec kamal-podman deploy -d avd-staging --version 9f309618fb6335e01c530b27c9c24d5d44181016 --skip-push
+bundle exec kamal-podman deploy -d avd-staging --version latest -P
 ```
 
----
-
-## 10) What to change for another instance
-
-When cloning staging config to a new instance, update these fields.
-
-### In `config/deploy.<instance>.yml`
-
-- `servers.web` IP(s)
-- `servers.job.hosts` IP(s) (if used)
-- `proxy.host` domain
-- `env.clear.OHD_DOMAIN_PRODUCTION`
-- `env.clear.OHD_DOMAIN`
-- `env.clear.OHD_EXTRA_HOSTS_PRODUCTION` (if needed)
-- `ssh.user`
-- `volumes` host paths (or set via `KAMAL_STORAGE_BASE`)
-- accessory hosts under `accessories.db.hosts`, `accessories.solr.hosts`
-- any instance-specific flags (`SENTRY_DISABLED`, timezone if needed)
-
-### In `.kamal/secrets.<instance>`
-
-- all environment-specific secret values:
-  - Rails master key
-  - DB passwords
-  - OIDC key
-  - secret_key_base
-  - TLS cert/private key (if inline)
-  - any external API credentials
+To redeploy the running version without running the bootstrap again, use
+`kamal-podman redeploy`.
 
 ---
 
-## 11) Solr notes (important)
+## 12) Another server (instance)
 
-- App must use:
-  - `SOLR_URL=http://ohd-solr:8983/solr/blacklight-core`
-- Solr accessory should be on custom image that contains Sunspot configset.
-- Solr data dir ownership must allow UID `8983`.
-- If Solr crash-loops, first check:
+1. Copy the destination file:
+
+   ```bash
+   cp config/deploy.avd-staging.yml config/deploy.<name>.yml
+   ```
+
+2. Change the top block of `config/deploy.<name>.yml`:
+
+   ```erb
+   <%
+     ssh_user = "avd1"                    # deploy user on the server
+     home     = "/home/#{ssh_user}"       # its home directory
+     storage  = "#{home}/avd/storage"     # app volumes live here
+     host_ip  = "160.45.152.195"
+     domain   = "staging.audio-visual.digital"
+     arch     = "amd64"                   # builder arch of the server
+   %>
+   ```
+
+   The rest of the file uses these values. Check the other values in the file too:
+   `env.clear.OHD_EXTRA_HOSTS_PRODUCTION`, the `proxy` block, and the `job` command.
+
+3. Create `.kamal/secrets.<name>` with all secrets from section 4.
+4. Make sure the deploy user can log in over SSH and has passwordless `sudo`.
+5. Run:
+
+   ```bash
+   bin/server/bootstrap <name>
+   bundle exec kamal-podman setup -d <name>
+   bundle exec kamal-podman deploy -d <name>
+   ```
+
+---
+
+## 13) Solr notes
+
+- The app must use `SOLR_URL=http://ohd-solr:8983/solr/blacklight-core`. This is set in
+  `config/deploy.yml`.
+- The Solr accessory uses the custom image `ghcr.io/oral-history-digital/ohd-solr` with
+  the Sunspot configset.
+- The Solr data directory must be owned by UID 8983 in the container's user namespace.
+  The bootstrap sets this.
+- If Solr crash-loops, check its logs:
+
   ```bash
-  docker logs --tail=200 ohd-solr
+  bundle exec kamal-podman accessory logs -d avd-staging solr
+  # or on the server:
+  ssh avd-stag 'podman logs --tail 200 ohd-solr'
   ```
 
 ---
 
-## 12) Troubleshooting quick checks
+## 14) Troubleshooting
 
-### App cannot reach Solr (`getaddrinfo` / connection refused)
-
-1. Check Solr running:
-   ```bash
-   docker ps --format '{{.Names}} {{.Status}}' | grep '^ohd-solr'
-   ```
-2. If down/restarting, inspect logs:
-   ```bash
-   docker logs --tail=200 ohd-solr
-   ```
-3. Reboot accessory:
-   ```bash
-   kamal accessory boot -d <instance> solr
-   ```
-
-### Permission denied on bind mounts
-
-Run setup hook path logic again via:
-
-```bash
-kamal setup -d <instance>
-```
-
-(or fix manually with `sudo chown/chmod` on host paths)
-
-### Wrong container name during `docker exec`
-
-Always use current name from `docker ps` (Kamal app containers are versioned).
+| Symptom | Cause | Fix |
+|---|---|---|
+| `current system boot ID differs from cached boot ID` | Podman state from before a reboot | Run `bin/server/bootstrap <dest>`. The autostart script also clears this after a reboot. |
+| `unable to start container ... work/work/incompat: permission denied` | Overlay leftovers from an unclean shutdown | The autostart script removes them for stopped containers. Start the container again after the script has run, or run it by hand (section 9). |
+| `Operating system error number 13` / `Permission denied` in the MariaDB log | Data directory owned by the wrong UID in the namespace | Run `bin/server/bootstrap <dest>`. Check with `podman unshare stat -c '%u:%g' ~/ohd-db/data` (expect `999:999`). |
+| Solr cannot write its data | Wrong owner on `~/ohd-solr/solr_data` | As above, expect `8983:8983`. |
+| App cannot write to `tmp/` or `log/` | Wrong owner on app volumes | As above, expect `1000:1000` on `app-cache`, `app-files` and `app-logs`. |
+| `rootlessport listen tcp 0.0.0.0:80: address already in use` | Something else listens on port 80 | `ss -ltnp` on the server. Stop the other service, or check that the sysctl is set (bootstrap). |
+| `"/" is not a shared mount` | Mount propagation of `/` | The root crontab fixes it at boot. Apply it now: `sudo mount --make-rshared /`. |
+| `XDG_RUNTIME_DIR is ... not /run/user/<uid>` (bootstrap warning) | SSH sessions do not export the runtime dir, so Podman uses a different one | Export `XDG_RUNTIME_DIR=/run/user/<uid>` for non-interactive sessions, e.g. in `~/.pam_environment`. Then re-run the bootstrap. |
+| Containers are down after a reboot | Autostart did not finish or failed | `~/log/podman-autostart.log` and `~/log/podman-autostart.cron.log` on the server. Then run `bash ~/bin/podman-autostart.sh`. |
+| `kamal-podman setup` says Podman is not installed | Bootstrap has not run on this server | Run `bin/server/bootstrap <dest>` first. |
+| `docker: command not found` or Docker errors | Plain `kamal` was used | Use `bundle exec kamal-podman`. |
+| `docker exec` / `docker logs` fail | Old commands | Use `podman` on the server, or `bundle exec kamal-podman ... logs`. |
+| Wrong container name in `exec` | App containers are versioned | Use `bundle exec kamal-podman app containers -d <dest>`. |
 
 ---
 
-## 13) Recommended instance template workflow
+## 15) Recommended workflow for a new instance
 
-For each new instance:
+1. Copy `deploy.avd-staging.yml` to `deploy.<name>.yml` and change the top block (section 12).
+2. Create `.kamal/secrets.<name>`.
+3. Export `GITHUB_ACTOR` and `GITHUB_TOKEN`.
+4. Run:
 
-1. copy `deploy.avd-staging.yml` -> `deploy.<new>.yml`
-2. edit instance-specific values listed above
-3. create `.kamal/secrets.<new>`
-4. export required env vars (`GITHUB_*`, optional `KAMAL_*`)
-5. run:
    ```bash
-   kamal setup -d <new>
-   kamal deploy -d <new>
+   bin/server/bootstrap <name>
+   bundle exec kamal-podman setup -d <name>
+   bundle exec kamal-podman deploy -d <name>
    ```
 
-This yields repeatable, low-manual deployment with app + accessories.
+5. Reboot the server in a maintenance window and check
+   `~/log/podman-autostart.log` and `podman ps -a`.
