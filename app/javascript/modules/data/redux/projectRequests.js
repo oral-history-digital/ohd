@@ -1,12 +1,22 @@
-import { Loader } from 'modules/api';
+import Loader from 'modules/api/Loader';
+import pathBase from 'modules/routes/pathBase';
 
 // Remember running requests so another caller can wait for the same result.
 // Keep stores separate: a request for one store must not supply data to another.
 const projectRequestsByStore = new WeakMap();
 
+/** Builds the URL used for a single-project request. */
+function projectRequestUrl(props, id, extraParams) {
+    const url = `${props.pathBase || pathBase(props)}/projects/${id}.json`;
+    return extraParams ? `${url}?${extraParams}` : url;
+}
+
 /** Matches requests by URL, project, language, and signed-in account. */
-function projectRequestKey(props, url, state) {
-    const requestUrl = new URL(url, window.location.origin);
+export function projectRequestKey(props, id, state, extraParams) {
+    const requestUrl = new URL(
+        projectRequestUrl(props, id, extraParams),
+        window.location.origin
+    );
     requestUrl.searchParams.sort();
     return JSON.stringify([
         requestUrl.href,
@@ -22,7 +32,7 @@ function projectRequestKey(props, url, state) {
  * Loads one project, sharing the request when another caller is already loading it.
  * Returns a promise with { response, error }. Failures are returned rather than thrown.
  */
-export function fetchProject(props, url, id, extraParams, actions) {
+export function fetchProject(props, id, extraParams, actions) {
     return (dispatch, getState) => {
         // Keep track of pending requests for this store
         let requests = projectRequestsByStore.get(getState);
@@ -32,7 +42,8 @@ export function fetchProject(props, url, id, extraParams, actions) {
         }
 
         // In case of a race condition, return the same promise for duplicate requests.
-        const key = projectRequestKey(props, url, getState());
+        const url = projectRequestUrl(props, id, extraParams);
+        const key = projectRequestKey(props, id, getState(), extraParams);
         if (requests.pending.has(key)) return requests.pending.get(key);
 
         // Else, start a new request and return a promise that resolves when it finishes.
@@ -80,12 +91,33 @@ export function fetchProject(props, url, id, extraParams, actions) {
                 url,
                 null,
                 dispatch,
-                (json) =>
-                    finish(
-                        actions.receiveData(json),
+                (json) => {
+                    const project = json.data;
+                    if (
+                        json.data_type !== 'projects' ||
+                        !project?.id ||
+                        String(json.id) !== String(project.id) ||
+                        (String(id) !== String(project.id) &&
+                            String(id) !== project.shortname)
+                    )
+                        return fail({
+                            message:
+                                'The response did not match the requested project.',
+                        });
+
+                    return finish(
+                        {
+                            ...actions.receiveData(json),
+                            projectRepresentation: new URLSearchParams(
+                                extraParams
+                            ).has('lite')
+                                ? null
+                                : 'detail',
+                        },
                         { response: json, error: null },
                         'succeeded'
-                    ),
+                    );
+                },
                 fail
             );
         } catch (error) {
