@@ -53,18 +53,18 @@ export function SiteFooter() {
                         </a>
                     </li>
                 }
-                {
-                    <li>
+                {['privacy_protection', 'accessibility'].map((key) => (
+                    <li key={'external-link-' + key}>
                         <a
-                            href={`${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`}
+                            href={`${OHD_DOMAINS[railsMode]}/${locale}/${key}`}
                             target="_blank"
                             rel="noreferrer"
-                            title={t('privacy_protection')}
+                            title={t(key)}
                         >
-                            {t('privacy_protection')}
+                            {t(key)}
                         </a>
                     </li>
-                }
+                ))}
                 {['legal_info', 'contact'].map((key) => (
                     <li key={'external-link-' + key}>
                         <Link

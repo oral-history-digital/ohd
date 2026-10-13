@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     get "random_featured_interviews", to: "interviews#random_featured"
     get "restricted_interviews", to: "interviews#restricted"
     resources :texts
-    %w(conditions ohd_conditions privacy_protection contact legal_info).each do |page|
+    %w(conditions ohd_conditions privacy_protection contact legal_info accessibility).each do |page|
       get page, to: "texts#show"
     end
 

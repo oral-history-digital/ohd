@@ -141,23 +141,20 @@ export default function ProjectRoutes() {
                     path="translation_values"
                     element={<TranslationValuesAdminPage />}
                 />
-                <Route
-                    path="conditions"
-                    element={<TextPage code="conditions" />}
-                />
-                <Route
-                    path="ohd_conditions"
-                    element={<TextPage code="ohd_conditions" />}
-                />
-                <Route
-                    path="privacy_protection"
-                    element={<TextPage code="privacy_protection" />}
-                />
-                <Route path="contact" element={<TextPage code="contact" />} />
-                <Route
-                    path="legal_info"
-                    element={<TextPage code="legal_info" />}
-                />
+                {[
+                    'conditions',
+                    'ohd_conditions',
+                    'privacy_protection',
+                    'accessibility',
+                    'contact',
+                    'legal_info',
+                ].map((key) => (
+                    <Route
+                        key={key}
+                        path={key}
+                        element={<TextPage code={key} />}
+                    />
+                ))}
                 <Route path="collections" element={<CollectionsAdminPage />} />
                 <Route path="roles" element={<RolesAdminPage />} />
                 <Route path="permissions" element={<PermissionsAdminPage />} />
