@@ -21,6 +21,10 @@ export const getPermissions = (state) => getData(state).permissions;
 
 export const getProjects = (state) => getData(state).projects;
 
+/** Returns project request progress, or an empty map before the first request. */
+export const getProjectRequests = (state) =>
+    getData(state).projectRequests || {};
+
 export const getRandomFeaturedInterviews = (state) =>
     getData(state).random_featured_interviews;
 

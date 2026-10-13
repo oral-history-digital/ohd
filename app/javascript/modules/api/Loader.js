@@ -6,8 +6,8 @@ import { parseResponseJson } from './utils';
 
 const Loader = {
     /**
-     * Starts a JSON GET and returns its request handle for optional cancellation.
-     * Callbacks create dispatched actions; error handling is opt-in for legacy callers.
+     * Loads JSON and returns the request so callers can cancel it.
+     * Callbacks return Redux actions. A separate error callback is optional.
      */
     getJson: function (url, queryParams, dispatch, callback, errorCallback) {
         const dispatchCallback =
