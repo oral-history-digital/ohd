@@ -13,6 +13,7 @@ const initialState = {
         current: null,
     },
     projects: {},
+    projectRequests: {},
     instance_settings: null,
     statuses: {
         users: { resultPagesCount: 1 },
@@ -43,6 +44,14 @@ const initialState = {
 };
 
 export const dataReducer = (state = initialState, action) => {
+    // Save project request progress alongside the usual data and loading updates.
+    if (action.projectRequest) {
+        const { key, ...request } = action.projectRequest;
+        state = {
+            ...state,
+            projectRequests: { ...state.projectRequests, [key]: request },
+        };
+    }
     switch (action.type) {
         case REPLACE_INSTANCE_SETTINGS:
             return { ...state, instance_settings: action.data };

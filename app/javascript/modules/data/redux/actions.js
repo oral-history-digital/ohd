@@ -11,6 +11,7 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
+import { fetchProject } from './projectRequests';
 
 function receiveError(dataType, id, error) {
     return {
@@ -67,6 +68,7 @@ export const replaceInstanceSettings = (data) => ({
     data,
 });
 
+/** Loads data. Single-project requests also share pending requests and track errors. */
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
     let url = `${pathBase(props)}/${dataType}`;
     if (id) {
@@ -78,6 +80,17 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
     url += '.json';
     if (extraParams) {
         url += `?${extraParams}`;
+    }
+
+    // Share duplicate requests and track errors for single-project reads.
+    // Apply these changes to projects first; keep other data loading unchanged.
+    // TODO: Consider moving this logic into Loader.getJson() to share across all data types.
+    if (dataType === 'projects' && id && !nestedDataType) {
+        return fetchProject(props, url, id, extraParams, {
+            requestData,
+            receiveData,
+            receiveError,
+        });
     }
 
     return (dispatch) => {
