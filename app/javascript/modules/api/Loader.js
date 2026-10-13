@@ -5,13 +5,21 @@ import { flattenNestedObject } from './flattenNestedObject';
 import { parseResponseJson } from './utils';
 
 const Loader = {
-    getJson: function (url, queryParams, dispatch, callback) {
+    /**
+     * Starts a JSON GET and returns its request handle for optional cancellation.
+     * Callbacks create dispatched actions; error handling is opt-in for legacy callers.
+     */
+    getJson: function (url, queryParams, dispatch, callback, errorCallback) {
         const dispatchCallback =
             typeof callback === 'function'
                 ? (payload) => dispatch(callback(payload))
                 : null;
+        const dispatchError =
+            typeof errorCallback === 'function'
+                ? (error) => dispatch(errorCallback(error))
+                : null;
 
-        request
+        return request
             .get(url)
             .use(noCache)
             .set('Accept', 'application/json')
@@ -22,20 +30,32 @@ const Loader = {
                         'Loading JSON from ' + url + ' failed: ' + error
                     );
                     console.error('Original error: ' + error.original);
-                    dispatchCallback?.(error);
+                    // Existing callers receive errors through their original callback.
+                    (dispatchError || dispatchCallback)?.(error);
                 } else if (res) {
                     // Check HTTP status code - 4xx and 5xx are errors
                     if (res.status >= 400) {
                         console.error(
                             `Loading JSON from ${url} failed with status ${res.status}`
                         );
-                        dispatchCallback?.(res);
+                        (dispatchError || dispatchCallback)?.(res);
                     } else if (res.error) {
                         console.error(
                             `Loading JSON from ${url} failed: ${res.error}`
                         );
+                        dispatchError?.(res);
                     } else {
-                        dispatchCallback?.(JSON.parse(res.text));
+                        if (!dispatchCallback && !dispatchError) return;
+
+                        let json;
+                        try {
+                            json = JSON.parse(res.text);
+                        } catch (parseError) {
+                            if (!dispatchError) throw parseError;
+                            dispatchError(parseError);
+                            return;
+                        }
+                        dispatchCallback?.(json);
                     }
                 }
             });
