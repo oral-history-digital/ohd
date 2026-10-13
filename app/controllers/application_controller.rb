@@ -147,16 +147,12 @@ class ApplicationController < ActionController::Base
 
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   def initial_redux_state
-    umbrella_project = InstanceSetting.current.umbrella_project
-    on_umbrella_portal = current_project&.umbrella?
-
     # Keep initial projects payload intentionally small.
     # We preload only the entries that are required for cross-domain routing
     # and immediate page rendering; all other project records are loaded on demand.
     initial_projects_payload = build_initial_projects_payload(
       current_project: current_project,
-      umbrella_project: umbrella_project,
-      on_umbrella_portal: on_umbrella_portal
+      umbrella_project: InstanceSetting.current.umbrella_project
     )
     project_statuses = initial_projects_payload[:project_statuses]
     projects_data = initial_projects_payload[:projects_data]
@@ -230,6 +226,7 @@ class ApplicationController < ActionController::Base
           contribution_types: {},
         },
         projects: projects_data,
+        projectRepresentations: initial_projects_payload[:project_representations],
         instance_settings: cache_single(InstanceSetting.current),
         institutions: {},
         collections: {},
@@ -338,8 +335,8 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # Builds the minimal bootstrap slice for data.projects and data.statuses.projects.
-  def build_initial_projects_payload(current_project:, umbrella_project:, on_umbrella_portal:)
+  # Start with base project data. Pages request details when they need them.
+  def build_initial_projects_payload(current_project:, umbrella_project:)
     project_statuses = {}
     projects_data = {}
 
@@ -354,21 +351,17 @@ class ApplicationController < ActionController::Base
       )
     end
 
-    # Also include the current project when it differs from the umbrella project.
-    # On the umbrella portal we can keep ProjectBase for parity with lightweight usage.
-    # On project portals we keep the richer serializer currently expected by
-    # legacy Redux consumers on initial render.
+    # Include the active project's identity and routing settings as well.
     if current_project && (!umbrella_project || current_project.id != umbrella_project.id)
       current_project_id = current_project.id.to_s
       project_statuses[current_project_id] = 'fetched'
-      projects_data[current_project_id] = on_umbrella_portal ?
-        cache_single(current_project, serializer_name: 'ProjectBase') :
-        cache_single(current_project)
+      projects_data[current_project_id] = cache_single(current_project, serializer_name: 'ProjectBase')
     end
 
     {
       project_statuses: project_statuses,
       projects_data: projects_data,
+      project_representations: projects_data.keys.to_h { |id| [id, 'base'] }, # default representation is 'base' for all projects
     }
   end
 

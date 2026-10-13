@@ -7,6 +7,7 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
+import { reduceProjectRecords } from './projectReducer';
 
 const initialState = {
     users: {
@@ -14,6 +15,7 @@ const initialState = {
     },
     projects: {},
     projectRequests: {},
+    projectRepresentations: {},
     instance_settings: null,
     statuses: {
         users: { resultPagesCount: 1 },
@@ -385,6 +387,7 @@ export const dataReducer = (state = initialState, action) => {
                                 : action.data,
                         }
                     ),
+                    ...reduceProjectRecords(state, action),
                 });
             } else if (action.extraParams) {
                 let statuses = updateStatus(state.statuses, action.dataType, {
@@ -406,6 +409,7 @@ export const dataReducer = (state = initialState, action) => {
                                   state[action.dataType],
                                   action.data
                               ),
+                    ...reduceProjectRecords(state, action),
                 });
             } else if (action.dataType) {
                 let statuses = updateStatus(state.statuses, action.dataType, {
