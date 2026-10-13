@@ -1,0 +1,7 @@
+FROM solr:5.5
+USER root
+COPY solr/configsets/sunspot/conf /opt/solr-configsets/sunspot/conf
+COPY docker/solr/init-core.sh /usr/local/bin/init-core.sh
+RUN chmod +x /usr/local/bin/init-core.sh && chown -R solr:solr /opt/solr-configsets
+USER solr
+CMD ["/usr/local/bin/init-core.sh"]
