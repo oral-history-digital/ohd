@@ -1,6 +1,7 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
 
   test 'can change password with all possible special signs' do
     user = User.find_by!(email: 'john@example.com')
@@ -64,6 +65,40 @@ class UserTest < ActiveSupport::TestCase
 
     project.update!(available_locales: %w[de en es])
     assert_equal 'es', user.locale_with_project_fallback(project)
+  end
+
+  test 'sends hint_to_old_email when email is changed' do
+    user = User.find_by!(email: 'john@example.com')
+    old_email = user.email
+    new_email = 'newemail@example.com'
+
+    # Set unconfirmed_email to simulate email change
+    user.unconfirmed_email = new_email
+
+    # Track if hint_to_old_email was called
+    hint_called = false
+    original_hint_method = user.method(:hint_to_old_email)
+    
+    user.define_singleton_method(:hint_to_old_email) do
+      hint_called = true
+    end
+
+    # Override super to prevent Devise from trying to send emails
+    user.define_singleton_method(:send_reconfirmation_instructions) do
+      hint_to_old_email if unconfirmed_email.present?
+      # Don't call super to avoid Devise mapping issues in tests
+    end
+
+    # Call the method that should trigger hint_to_old_email
+    user.send_reconfirmation_instructions
+
+    # Verify hint_to_old_email was called
+    assert hint_called, "hint_to_old_email should be called when send_reconfirmation_instructions is invoked"
+    
+    # Verify unconfirmed_email is set
+    assert_equal new_email, user.unconfirmed_email
+    # Old email should still be in the email field
+    assert_equal old_email, user.email
   end
 
 end

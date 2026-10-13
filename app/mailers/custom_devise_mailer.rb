@@ -18,6 +18,19 @@ class CustomDeviseMailer < Devise::Mailer
     devise_mail(record, :access_mail, devise_opts)
   end
 
+  def hint_to_old_email(record)
+    locale = record.default_locale || 'de'
+    @project_name = InstanceSetting.current.umbrella_project_brand_name(locale)
+    subject = TranslationValue.for('devise.mailer.hint_to_old_email.subject', locale, umbrella_project_name: @project_name)
+    contact_email = Project.umbrella.contact_email
+    opts = {
+      subject: subject,
+      from: contact_email,
+      reply_to: contact_email
+    }
+    devise_mail(record, :hint_to_old_email, opts)
+  end
+
   def confirmation_instructions(record, token, opts={})
     return if ['removed', 'blocked'].include?(record.workflow_state)
     @token = token
@@ -59,6 +72,7 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def email_changed(record, opts={})
+    binding.pry
     devise_mail(record, :email_changed, opts)
   end
 
