@@ -74,14 +74,15 @@ class ApplicationControllerTest < ActiveSupport::TestCase
     payload = controller.send(
       :build_initial_projects_payload,
       current_project: current_project,
-      umbrella_project: InstanceSetting.current.umbrella_project,
-      on_umbrella_portal: false
+      umbrella_project: InstanceSetting.current.umbrella_project
     )
 
     assert_equal 'fetched', payload[:project_statuses][umbrella_project.id.to_s]
     assert_equal umbrella_project.id, payload[:projects_data][umbrella_project.id.to_s][:id]
     assert_equal 'ProjectBase', payload[:projects_data][umbrella_project.id.to_s][:serializer_name]
     assert_equal current_project.id, payload[:projects_data][current_project.id.to_s][:id]
+    assert_equal 'ProjectBase', payload[:projects_data][current_project.id.to_s][:serializer_name]
+    assert_equal({ umbrella_project.id.to_s => 'base', current_project.id.to_s => 'base' }, payload[:project_representations])
   end
 
   test 'project serialization cache changes with umbrella setting' do

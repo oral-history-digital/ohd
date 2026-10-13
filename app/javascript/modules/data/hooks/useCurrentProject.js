@@ -1,21 +1,27 @@
-import { getProjects } from 'modules/data';
+import { useEffect, useMemo } from 'react';
+
 import isLocaleValid from 'modules/routes/isLocaleValid';
-import { useSelector } from 'react-redux';
+import usePathBase from 'modules/routes/usePathBase';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
-import { normalizeProjectDbId, resolveCurrentProject } from '../utils';
-import { useGetProject } from './useGetProject';
+import { fetchData } from '../redux/actions';
+import {
+    getProjectRepresentations,
+    getProjectRequest,
+    getProjects,
+} from '../redux/selectors/baseSelectors';
+import { resolveCurrentProject } from '../utils';
 
 /**
- * Central current-project resolver for frontend consumers.
+ * Returns the current project from Redux. Set lite to false when details are needed.
  */
-export function useCurrentProject({
-    lite = true,
-    enableSWRFallback = true,
-} = {}) {
-    // Get projects from Redux store
+export function useCurrentProject({ lite = true } = {}) {
+    const dispatch = useDispatch();
     const projects = useSelector(getProjects);
+    const representations = useSelector(getProjectRepresentations);
     const matchWithProject = useMatch('/:projectId/:locale/*');
+    const pathBase = usePathBase();
     const routeProjectShortname =
         matchWithProject && isLocaleValid(matchWithProject.params.locale)
             ? matchWithProject.params.projectId
@@ -28,48 +34,49 @@ export function useCurrentProject({
         routeProjectShortname,
         domainOrigin,
     });
+    const identifier = routeProjectShortname || cacheResolution.projectDbId;
+    const props = useMemo(
+        () => ({
+            pathBase,
+            locale: pathBase.split('/').pop(),
+            project: {
+                shortname:
+                    routeProjectShortname || cacheResolution.projectShortname,
+            },
+        }),
+        [pathBase, routeProjectShortname, cacheResolution.projectShortname]
+    );
+    const request = useSelector((state) =>
+        getProjectRequest(state, props, identifier)
+    );
+    const hasDetails =
+        representations[cacheResolution.projectDbId] === 'detail' &&
+        request?.status === 'succeeded';
+    const needsData =
+        Boolean(identifier) &&
+        (!cacheResolution.project || (!lite && !hasDetails));
 
-    // If not resolved from cache, and SWR fallback enabled, fetch project by shortname
-    const shouldFetchByShortname =
-        enableSWRFallback &&
-        Boolean(routeProjectShortname) &&
-        !cacheResolution.project;
+    useEffect(() => {
+        if (
+            !needsData ||
+            request?.status === 'pending' ||
+            request?.status === 'failed'
+        )
+            return;
+        dispatch(fetchData(props, 'projects', identifier));
+    }, [dispatch, needsData, request?.status, identifier, props]);
 
-    const {
-        project: swrProject,
-        loading,
-        error,
-    } = useGetProject({
-        shortname: shouldFetchByShortname ? routeProjectShortname : null,
-        lite,
-    });
-
-    const resolvedSWRProject = swrProject
-        ? {
-              project: swrProject,
-              projectShortname:
-                  swrProject.shortname || routeProjectShortname || null,
-              projectDbId: normalizeProjectDbId(swrProject.id),
-              source: 'swr',
-          }
-        : null;
-
-    const resolved = cacheResolution.project
-        ? cacheResolution
-        : resolvedSWRProject
-          ? resolvedSWRProject
-          : cacheResolution;
-
-    const isResolved =
-        Boolean(resolved.project) &&
-        Boolean(resolved.projectShortname) &&
-        Boolean(resolved.projectDbId);
-
+    const isResolved = Boolean(
+        cacheResolution.project &&
+            cacheResolution.projectDbId &&
+            cacheResolution.projectShortname
+    );
     return {
-        ...resolved,
+        ...cacheResolution,
+        project: !lite && !hasDetails ? null : cacheResolution.project,
         isResolved,
-        isLoading: Boolean(loading) && !isResolved,
-        error: error || null,
+        isLoading: Boolean(needsData && !request?.error),
+        error: request?.error || null,
     };
 }
 

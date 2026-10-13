@@ -256,6 +256,100 @@ describe('project detail requests', () => {
         expect(request.get).toHaveBeenCalledTimes(2);
     });
 
+    test('detail placeholders preserve separately loaded records', async () => {
+        const bootstrap = dataReducer(undefined, {});
+        const people = { 20: { id: 20 } };
+        const taskTypes = { 30: { id: 30 } };
+        const store = makeStore({
+            ...bootstrap,
+            projects: { 7: { id: 7, people, task_types: taskTypes } },
+        });
+        const result = store.dispatch(fetchData(props, 'projects', 7));
+        pending[0](null, {
+            status: 200,
+            text: JSON.stringify({
+                id: 7,
+                data_type: 'projects',
+                data: {
+                    id: 7,
+                    shortname: 'archive',
+                    people: {},
+                    task_types: {},
+                },
+            }),
+        });
+        await result;
+        expect(store.getState().data.projects[7].people).toBe(people);
+        expect(store.getState().data.projects[7].task_types).toBe(taskTypes);
+        expect(store.getState().data.projectRepresentations[7]).toBe('detail');
+    });
+
+    test('a mismatched envelope is rejected without updating project records', async () => {
+        const store = makeStore();
+        const result = store.dispatch(fetchData(props, 'projects', 7));
+        pending[0](null, {
+            status: 200,
+            text: JSON.stringify({
+                id: 8,
+                data_type: 'projects',
+                data: { id: 7, shortname: 'archive' },
+            }),
+        });
+        const response = await result;
+        expect(response.error.message).toContain('did not match');
+        expect(store.getState().data.projects).toEqual({});
+        expect(store.getState().data.projectRepresentations).toEqual({});
+    });
+
+    test('a base list does not replace loaded detail or unrelated project records', async () => {
+        const bootstrap = dataReducer(undefined, {});
+        const unrelated = { id: 8, shortname: 'unrelated' };
+        const store = makeStore({ ...bootstrap, projects: { 8: unrelated } });
+        const loading = store.dispatch(fetchData(props, 'projects', 7));
+        succeed();
+        await loading;
+        const detail = store.getState().data.projects[7];
+        const firstPage = receiveData({
+            data_type: 'projects',
+            extra_params: 'page_1',
+            page: '1',
+            result_pages_count: 2,
+            data: {
+                7: { id: 7, name: { de: 'Base' } },
+                9: { id: 9, shortname: 'new' },
+            },
+        });
+        store.dispatch(Object.freeze(firstPage));
+        expect(store.getState().data.projects[7]).toBe(detail);
+        expect(store.getState().data.projects[8]).toBe(unrelated);
+        expect(store.getState().data.projects[9].shortname).toBe('new');
+        expect(store.getState().data.projectRepresentations[7]).toBe('detail');
+        expect(store.getState().data.projectRepresentations[9]).toBe('base');
+        expect(firstPage.page).toBe('1');
+        expect(Object.keys(firstPage.data)).toEqual(['7', '9']);
+        expect(store.getState().data.statuses.projects.resultPagesCount).toBe(
+            2
+        );
+        expect(store.getState().data.statuses.projects.page_1).toMatch(
+            /^fetched/
+        );
+
+        store.dispatch(
+            receiveData({
+                data_type: 'projects',
+                extra_params: 'page_2',
+                page: '2',
+                result_pages_count: 2,
+                data: { 10: { id: 10, shortname: 'next' } },
+            })
+        );
+        expect(store.getState().data.projects[7]).toBe(detail);
+        expect(store.getState().data.projects[8]).toBe(unrelated);
+        expect(store.getState().data.projects[9].shortname).toBe('new');
+        expect(store.getState().data.projects[10].shortname).toBe('next');
+        expect(store.getState().data.projectRepresentations[10]).toBe('base');
+    });
+
     test.each([
         [
             'denied access',

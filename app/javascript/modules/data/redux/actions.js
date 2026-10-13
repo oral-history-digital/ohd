@@ -70,7 +70,18 @@ export const replaceInstanceSettings = (data) => ({
 
 /** Loads data. Single-project requests also share pending requests and track errors. */
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
-    let url = `${pathBase(props)}/${dataType}`;
+    // Share duplicate requests and track errors for single-project reads.
+    // Apply these changes to projects first; keep other data loading unchanged.
+    // TODO: Consider moving this logic into Loader.getJson() to share across all data types.
+    if (dataType === 'projects' && id && !nestedDataType) {
+        return fetchProject(props, id, extraParams, {
+            requestData,
+            receiveData,
+            receiveError,
+        });
+    }
+
+    let url = `${props.pathBase || pathBase(props)}/${dataType}`;
     if (id) {
         url += `/${id}`;
     }
@@ -80,17 +91,6 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
     url += '.json';
     if (extraParams) {
         url += `?${extraParams}`;
-    }
-
-    // Share duplicate requests and track errors for single-project reads.
-    // Apply these changes to projects first; keep other data loading unchanged.
-    // TODO: Consider moving this logic into Loader.getJson() to share across all data types.
-    if (dataType === 'projects' && id && !nestedDataType) {
-        return fetchProject(props, url, id, extraParams, {
-            requestData,
-            receiveData,
-            receiveError,
-        });
     }
 
     return (dispatch) => {

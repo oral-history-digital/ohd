@@ -14,15 +14,10 @@ import {
     getProjectBrandName,
     getUmbrellaProject,
     useCurrentProject,
-    useHydrateProjectsByIds,
 } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import {
-    useCurrentPage,
-    useProject,
-    useSyncLegacyProjectId,
-} from 'modules/routes';
+import { useCurrentPage, useSyncLegacyProjectId } from 'modules/routes';
 import { Sidebar, getSidebarVisible, toggleSidebar } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
 import {
@@ -61,14 +56,10 @@ export default function Layout({ children }) {
     const { locale } = useI18n();
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { project, projectDbId, projectShortname, isLoading } =
-        useCurrentProject();
-    // `useCurrentProject` resolves via SWR, but most children read the project
-    // from the Redux store via `useProject`. The store is seeded server-side
-    // with only the umbrella and current projects, so a client-side navigation into
-    // any other project leaves Redux one `useHydrateProjectsByIds` round-trip
-    // behind SWR. Children that render in that window see `project: undefined`.
-    const { project: hydratedProject } = useProject();
+    // Page content currently needs details; routing only needs the base project data.
+    const { project, projectShortname, isLoading } = useCurrentProject({
+        lite: false,
+    });
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
     const isEditviewActive = useIsEditor();
 
@@ -89,25 +80,9 @@ export default function Layout({ children }) {
             currentViewMode === VIEWMODE_WORKFLOW) ||
         isPeopleAdminPage;
 
-    // Temporary workaround to ensure we have all necessary project data
-    // TODO: Refactor data fetching to use SWR here, too.
-    const projectIdsToHydrate = [projectDbId, umbrellaProject?.id].filter(
-        Boolean
-    );
-    const needsFullProjectHydration = (candidateProject) =>
-        !candidateProject ||
-        !Array.isArray(candidateProject.translations_attributes) ||
-        !Object.prototype.hasOwnProperty.call(
-            candidateProject,
-            'cooperation_partner'
-        );
-
     useCheckLocaleAgainstProject();
     useFetchAccount();
     useSyncLegacyProjectId(projectShortname);
-    useHydrateProjectsByIds(projectIdsToHydrate, {
-        needsHydration: needsFullProjectHydration,
-    });
 
     // Clean up any access_token from URL after initial load
     useEffect(() => {
@@ -129,11 +104,7 @@ export default function Layout({ children }) {
 
     const faviconUrl = getFaviconUrl(project);
 
-    // Hold the children until Redux has caught up with SWR, so that `useProject`
-    // returns a project for every child that renders below this point.
-    const awaitingHydration = Boolean(project) && !hydratedProject;
-
-    if (isLoading || awaitingHydration) {
+    if (isLoading) {
         return (
             <div className="Layout Layout--loading">
                 <main className="Site-content Layout-loadingContent">
