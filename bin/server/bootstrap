@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Bootstraps the server(s) of one Kamal destination for rootless Podman.
+#
+#   bin/server/bootstrap <destination>      e.g. bin/server/bootstrap avd-staging
+#
+# Runs on your machine. Hosts, ssh user and host directories come from
+# config/deploy.yml + config/deploy.<destination>.yml (see layout.rb). For each
+# host it copies remote-bootstrap.sh, podman-autostart.sh and the layout to a temp
+# dir on the server and runs remote-bootstrap.sh there. Safe to re-run.
+#
+# Also run by .kamal/hooks/docker-setup during `kamal-podman setup`.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$HERE/../.." && pwd)"
+cd "$ROOT"
+
+DEST="${1:-}"
+if [ -z "$DEST" ]; then
+  echo "usage: bin/server/bootstrap <destination>" >&2
+  exit 2
+fi
+[ -f "config/deploy.$DEST.yml" ] || { echo "no config/deploy.$DEST.yml" >&2; exit 2; }
+
+LAYOUT="$(ruby "$HERE/layout.rb" "$DEST")"
+SSH_USER="$(awk '$1 == "SSH_USER" { print $2 }' <<<"$LAYOUT")"
+HOSTS="$(awk '$1 == "HOST" { print $2 }' <<<"$LAYOUT")"
+DIRS="$(grep '^DIR ' <<<"$LAYOUT" || true)"
+
+for host in $HOSTS; do
+  target="$SSH_USER@$host"
+  echo "### $target (destination: $DEST)"
+  stage="$(ssh "$target" 'mktemp -d /tmp/ohd-bootstrap.XXXXXX')"
+  scp -q "$HERE/remote-bootstrap.sh" "$HERE/podman-autostart.sh" "$target:$stage/"
+  printf '%s\n' "$DIRS" | ssh "$target" "cat > '$stage/layout.txt'"
+  rc=0
+  ssh "$target" "bash '$stage/remote-bootstrap.sh' '$stage'" || rc=$?
+  ssh "$target" "rm -rf '$stage'" || true
+  if [ "$rc" -ne 0 ]; then
+    echo "bootstrap failed on $host (exit $rc)" >&2
+    exit "$rc"
+  fi
+done
+
+echo "### done: $DEST"
