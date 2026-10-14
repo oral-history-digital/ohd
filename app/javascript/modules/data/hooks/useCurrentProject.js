@@ -14,9 +14,9 @@ import {
 import { resolveCurrentProject } from '../utils';
 
 /**
- * Returns the current project from Redux. Set lite to false when details are needed.
+ * Returns the current project from Redux. Set requireDetails to true when details are needed.
  */
-export function useCurrentProject({ lite = true } = {}) {
+export function useCurrentProject({ requireDetails = false } = {}) {
     const dispatch = useDispatch();
     const projects = useSelector(getProjects);
     const representations = useSelector(getProjectRepresentations);
@@ -54,7 +54,7 @@ export function useCurrentProject({ lite = true } = {}) {
         request?.status === 'succeeded';
     const needsData =
         Boolean(identifier) &&
-        (!cacheResolution.project || (!lite && !hasDetails));
+        (!cacheResolution.project || (requireDetails && !hasDetails));
 
     useEffect(() => {
         if (
@@ -73,7 +73,7 @@ export function useCurrentProject({ lite = true } = {}) {
     );
     return {
         ...cacheResolution,
-        project: !lite && !hasDetails ? null : cacheResolution.project,
+        project: requireDetails && !hasDetails ? null : cacheResolution.project,
         isResolved,
         isLoading: Boolean(needsData && !request?.error),
         error: request?.error || null,

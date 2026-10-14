@@ -113,11 +113,11 @@ describe('current project loading through Redux', () => {
 
     test('uses base bootstrap without a request until details are needed', async () => {
         const store = makeStore();
-        let lite = true;
-        const view = mount(store, () => useCurrentProject({ lite }));
+        let requireDetails = false;
+        const view = mount(store, () => useCurrentProject({ requireDetails }));
         expect(view.result.current.project).toEqual(base);
         expect(request.get).not.toHaveBeenCalled();
-        lite = false;
+        requireDetails = true;
         view.rerender();
         expect(view.result.current.isLoading).toBe(true);
         expect(view.result.current.project).toBeNull();
@@ -134,8 +134,8 @@ describe('current project loading through Redux', () => {
     test('concurrent detail consumers share one request and reuse loaded details', async () => {
         const store = makeStore();
         const view = mount(store, () => [
-            useCurrentProject({ lite: false }),
-            useCurrentProject({ lite: false }),
+            useCurrentProject({ requireDetails: true }),
+            useCurrentProject({ requireDetails: true }),
         ]);
         expect(request.get).toHaveBeenCalledTimes(1);
         await succeed();
@@ -143,7 +143,7 @@ describe('current project loading through Redux', () => {
             view.result.current[1].project
         );
         view.unmount();
-        mount(store, () => useCurrentProject({ lite: false }));
+        mount(store, () => useCurrentProject({ requireDetails: true }));
         expect(request.get).toHaveBeenCalledTimes(1);
     });
 
@@ -151,7 +151,10 @@ describe('current project loading through Redux', () => {
         const store = makeStore();
         const view = mount(
             store,
-            () => [useCurrentProject(), useCurrentProject({ lite: false })],
+            () => [
+                useCurrentProject(),
+                useCurrentProject({ requireDetails: true }),
+            ],
             '/other/de/search'
         );
         expect(request.get).toHaveBeenCalledWith(
@@ -171,7 +174,9 @@ describe('current project loading through Redux', () => {
             8: { ...base, id: 8, shortname: 'other' },
             1: umbrella,
         });
-        const view = mount(store, () => useCurrentProject({ lite: false }));
+        const view = mount(store, () =>
+            useCurrentProject({ requireDetails: true })
+        );
         await succeed();
         view.navigate('/other/en/search');
         expect(request.get).toHaveBeenLastCalledWith(
@@ -193,7 +198,7 @@ describe('current project loading through Redux', () => {
         const store = makeStore({ 7: project, 1: umbrella });
         const view = mount(
             store,
-            () => useCurrentProject({ lite: false }),
+            () => useCurrentProject({ requireDetails: true }),
             '/en/search'
         );
         expect(request.get).toHaveBeenCalledWith('/en/projects/7.json');
@@ -217,7 +222,9 @@ describe('current project loading through Redux', () => {
 
     test('reports denied access without treating base data as detail or retrying forever', async () => {
         const store = makeStore();
-        const view = mount(store, () => useCurrentProject({ lite: false }));
+        const view = mount(store, () =>
+            useCurrentProject({ requireDetails: true })
+        );
         const consoleError = jest.spyOn(console, 'error').mockImplementation();
         await act(async () => {
             pending[0](

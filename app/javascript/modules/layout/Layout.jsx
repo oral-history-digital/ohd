@@ -58,7 +58,7 @@ export default function Layout({ children }) {
     const [searchParams, setSearchParams] = useSearchParams();
     // Page content currently needs details; routing only needs the base project data.
     const { project, projectShortname, isLoading } = useCurrentProject({
-        lite: false,
+        requireDetails: true,
     });
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
     const isEditviewActive = useIsEditor();

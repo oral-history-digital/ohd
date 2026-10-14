@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { registerDoi } from 'modules/archive';
-import { deleteData } from 'modules/data';
+import { deleteData, useGetProject } from 'modules/data';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
@@ -233,4 +233,65 @@ test('renders custom record and joined-data components', () => {
 
     expect(screen.getByText('custom-7')).toBeInTheDocument();
     expect(screen.getByTestId('joined-data')).toHaveTextContent('interviews');
+});
+
+test('project editing waits for details instead of opening a form with summary data', () => {
+    useGetProject.mockReturnValue({
+        project: undefined,
+        loading: true,
+        error: null,
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        data: { id: 7, type: 'Project', name: 'Archive' },
+        form,
+    });
+    expect(screen.getByText('loading')).toBeInTheDocument();
+    expect(form).not.toHaveBeenCalled();
+});
+
+test('project editing shows a loading error without falling back to summary data', () => {
+    useGetProject.mockReturnValue({
+        project: undefined,
+        loading: false,
+        error: { status: 403, message: 'Forbidden' },
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        data: { id: 7, type: 'Project', name: 'Archive' },
+        form,
+    });
+    expect(screen.getByRole('alert')).toHaveTextContent('Forbidden');
+    expect(form).not.toHaveBeenCalled();
+});
+
+test('project editing uses loaded translations and refreshes details after submission', () => {
+    const project = {
+        id: 7,
+        type: 'Project',
+        name: { en: 'Archive' },
+        translations_attributes: [{ locale: 'en', name: 'Archive' }],
+    };
+    const mutate = jest.fn();
+    useGetProject.mockReturnValue({
+        project,
+        loading: false,
+        error: null,
+        mutate,
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        data: { id: 7, type: 'Project', name: 'Summary' },
+        form,
+    });
+    expect(form).toHaveBeenCalledWith(
+        project,
+        expect.any(Function),
+        expect.any(Function)
+    );
+    form.mock.calls[0][1]();
+    expect(mutate).toHaveBeenCalledTimes(1);
 });
