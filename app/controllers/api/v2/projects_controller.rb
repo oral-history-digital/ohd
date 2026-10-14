@@ -5,7 +5,7 @@ module Api
       MAX_PER_PAGE = 100
       LIST_INCLUDES = %w[counts institutions interview_languages collection_preview].freeze
 
-      skip_before_action :authenticate_user!, only: :index
+      skip_before_action :authenticate_user!, only: [:index, :show]
       before_action :use_global_project_context, only: :index
 
       def index
@@ -43,10 +43,7 @@ module Api
             # Out-of-range pages are empty, including numbers too large for a SQL offset.
             projects = page > total_pages ? projects.none : projects.limit(per_page).offset((page - 1) * per_page)
           end
-          projects = projects.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob)
-          if includes.include?('institutions')
-            projects = projects.includes(:institution_projects, institutions: [:translations, { parent: :translations }])
-          end
+          projects = preload_projects(projects, includes)
           serializer_options = included_data(projects, includes, collections_scope: collections_scope).merge(umbrella_project_id: umbrella_id)
 
           {
@@ -62,7 +59,47 @@ module Api
         render json: payload
       end
 
+      def show
+        profile = params.fetch(:profile, 'display')
+        invalid_parameter!(:profile) unless profile == 'display' # Will support edit profile in future
+        includes = requested_includes
+        identifier = params[:id]
+        @project = if identifier.match?(/\A[0-9]+\z/) # Numeric ID
+          Project.find_by(id: identifier)
+        else
+          Project.by_identifier(identifier)
+        end
+        raise ActiveRecord::RecordNotFound unless @project
+
+        # Use the requested project for authorization, regardless of the request's domain.
+        @current_project = @project
+        pundit_reset!
+        authorize @project, :show?
+        umbrella_id = InstanceSetting.current.umbrella_project_id
+        collections_scope = policy_scope(Collection) if includes.include?('collection_preview')
+        cache = ProjectDisplayCache.new(
+          projects: Project.where(id: @project.id), user: current_user, collections_scope: collections_scope,
+          parameters: { project_id: @project.id, locale: I18n.locale.to_s, profile: profile,
+            includes: includes, umbrella_id: umbrella_id }
+        )
+        payload = cache.fetch do |projects, visible_collections|
+          projects = preload_projects(projects, includes)
+          options = included_data(projects, includes, collections_scope: visible_collections).merge(umbrella_project_id: umbrella_id)
+          project = projects.take!
+          { data: ProjectDisplaySerializer.new(project, options).as_json }
+        end
+        render json: payload
+      end
+
       private
+
+      def preload_projects(projects, includes)
+        projects = projects.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob)
+        if includes.include?('institutions')
+          projects = projects.includes(:institution_projects, institutions: [:translations, { parent: :translations }])
+        end
+        projects
+      end
 
       def requested_includes
         return [] unless params.key?(:include)
