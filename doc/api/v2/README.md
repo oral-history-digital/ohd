@@ -10,6 +10,37 @@ The YAML is generated output. Edit the Ruby definitions, then regenerate it:
 - [Reusable response schemas](../../../test/openapi/v2/schemas.rb)
 - [Project list parameters and responses](../../../test/openapi/v2/projects.rb)
 
+## Request catalog additions
+
+Add optional catalog fields with the comma-separated `include` parameter:
+
+```text
+/api/v2/projects?all=true&workflow_state=public&include=counts,institutions,interview_languages,collection_preview
+```
+
+| Include | Fields added to each summary |
+| --- | --- |
+| `counts` | `interview_counts`, `collection_counts`: state breakdowns and totals |
+| `institutions` | IDs, localized names, parent ID/name, and primary flag |
+| `interview_languages` | Sorted, unique language codes such as `eng` |
+| `collection_preview` | Collection IDs, localized names and notes for search |
+
+Omitted includes add no fields or associated queries. Requested includes return
+zero counts or empty arrays when there is no data. Unknown names, empty values,
+and non-string values return `400`. Whitespace, duplicates, and any ordering are
+accepted. Optional queries cover only projects on the returned page.
+
+Counts and interview languages preserve the existing catalog aggregate rules:
+interview counts include public, restricted, and unshared interviews in public
+projects; other project states return zero interview counts and no languages.
+Collection counts include public and restricted states, excluding unshared
+collections. Collection previews follow collection policy scope, so unshared
+preview records require permission even when an aggregate includes hidden data.
+
+Nested translations follow the project summary fallback: requested locale,
+project default, then the first nonblank translation by translation ID. Optional
+record arrays are ordered by ID. Full collection records remain a separate read.
+
 ## Validate a contract change
 
 Run the following commands inside the development container.

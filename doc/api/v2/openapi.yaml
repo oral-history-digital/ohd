@@ -18,9 +18,24 @@ paths:
         Both extensionless requests and the .json suffix are supported.
         Translated display values use the requested locale, then the project's
         default locale, then the first nonblank translation by translation ID.
-        Optional includes and profiles are not supported by this operation;
-        supplying either parameter returns 400. Other unrecognized query parameters are ignored.
+        Optional includes add catalog data to each returned summary. Profile is
+        unsupported and returns 400. Other unrecognized query parameters are ignored.
       parameters:
+      - name: include
+        in: query
+        schema:
+          type: string
+          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview)\\s*)*$"
+        example: counts,institutions,interview_languages,collection_preview
+        description: |
+          Comma-separated optional additions. Counts adds interview_counts and
+          collection_counts; the other names add fields with the same name.
+          Whitespace, duplicate names, and any ordering are accepted. Empty,
+          unknown, and non-string values return 400. Omit for base summaries.
+          Counts and interview languages retain catalog aggregate rules, including
+          unshared interview statistics. Collection previews include only collections
+          visible through policy scope, including unshared collections for authorized editors.
+          Optional queries are limited to projects on the returned page.
       - name: sort
         in: query
         schema:
@@ -146,6 +161,48 @@ paths:
                 "$ref": "#/components/schemas/FormatErrorResponse"
 components:
   schemas:
+    CollectionCounts:
+      type: object
+      additionalProperties: false
+      description: Catalog aggregates include public and restricted states, not unshared
+        collections. Independent of preview visibility.
+      required:
+      - public
+      - restricted
+      - total
+      properties:
+        public:
+          type: integer
+          minimum: 0
+        restricted:
+          type: integer
+          minimum: 0
+        total:
+          type: integer
+          minimum: 0
+      title: CollectionCounts
+    CollectionPreview:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - notes
+      description: Search metadata for a policy-visible collection; not a complete
+        collection record
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      title: CollectionPreview
     FormatErrorResponse:
       type: object
       additionalProperties: false
@@ -165,6 +222,30 @@ components:
               type: string
               minLength: 1
       title: FormatErrorResponse
+    InterviewCounts:
+      type: object
+      additionalProperties: false
+      description: Catalog aggregates for public projects, including unshared interview
+        counts. Other project states return zeros.
+      required:
+      - public
+      - restricted
+      - unshared
+      - total
+      properties:
+        public:
+          type: integer
+          minimum: 0
+        restricted:
+          type: integer
+          minimum: 0
+        unshared:
+          type: integer
+          minimum: 0
+        total:
+          type: integer
+          minimum: 0
+      title: InterviewCounts
     InvalidParameterResponse:
       type: object
       additionalProperties: false
@@ -214,6 +295,43 @@ components:
           type: integer
           minimum: 0
       title: Pagination
+    ProjectInstitution:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - parent
+      - is_primary
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type:
+          - string
+          - 'null'
+        is_primary:
+          type: boolean
+          description: First primary institution by link ID, or lowest institution
+            ID if none is primary
+        parent:
+          type:
+          - object
+          - 'null'
+          additionalProperties: false
+          required:
+          - id
+          - name
+          properties:
+            id:
+              type: integer
+              minimum: 1
+            name:
+              type:
+              - string
+              - 'null'
+      title: ProjectInstitution
     ProjectListResponse:
       type: object
       additionalProperties: false
@@ -232,10 +350,13 @@ components:
       type: object
       additionalProperties: false
       description: |
-        All listed keys are present. Nullable fields remain null when no value is
+        All required keys are present. Nullable fields remain null when no value is
         configured. Names and introduction contain localized strings, not translation
         maps. Records without any nonblank name translation can have name=null.
-        Editor fields, full translations, counts, and related records are excluded.
+        Editor fields and full translations are excluded. Optional include fields
+        are omitted unless requested; requested fields use zero counts or empty
+        arrays when no data is available. Nested names and notes use the same
+        translation fallback as project fields. Arrays of records are ordered by ID.
       required:
       - id
       - shortname
@@ -338,5 +459,24 @@ components:
           type: boolean
           description: Whether logged-in users receive project access immediately;
             unset means false
+        interview_counts:
+          "$ref": "#/components/schemas/InterviewCounts"
+        collection_counts:
+          "$ref": "#/components/schemas/CollectionCounts"
+        institutions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectInstitution"
+        interview_languages:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+          description: Sorted language codes such as eng, from public/restricted/unshared
+            interviews in public projects; other project states return an empty array
+        collection_preview:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CollectionPreview"
       title: ProjectSummary
 security: []

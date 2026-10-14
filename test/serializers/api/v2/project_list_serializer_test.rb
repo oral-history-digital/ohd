@@ -75,6 +75,22 @@ class Api::V2::ProjectListSerializerTest < ActiveSupport::TestCase
     end
   end
 
+  test 'institution primary flag uses the explicit link or falls back to the lowest institution ID' do
+    @project.institution_projects.delete_all
+    first = Institution.create!(name: 'First', shortname: "first#{SecureRandom.hex(3)}")
+    second = Institution.create!(name: 'Second', shortname: "second#{SecureRandom.hex(3)}")
+    second_link = InstitutionProject.create!(project: @project, institution: second)
+    InstitutionProject.create!(project: @project, institution: first)
+    options = { umbrella_project_id: nil, requested_includes: ['institutions'] }
+    institutions = Api::V2::ProjectListSerializer.new(@project.reload, options).as_json[:institutions]
+    assert_equal [first.id, second.id], institutions.map { |record| record[:id] }
+    assert_equal [true, false], institutions.map { |record| record[:is_primary] }
+
+    second_link.update!(primary: true)
+    institutions = Api::V2::ProjectListSerializer.new(@project.reload, options).as_json[:institutions]
+    assert_equal [false, true], institutions.map { |record| record[:is_primary] }
+  end
+
   private
 
   def serialize

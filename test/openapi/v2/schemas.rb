@@ -1,5 +1,58 @@
 module ApiContract
   module V2
+    class InterviewCounts
+      include OpenapiRuby::Components::Base
+
+      schema(
+        type: :object, additionalProperties: false,
+        description: 'Catalog aggregates for public projects, including unshared interview counts. Other project states return zeros.',
+        required: %w[public restricted unshared total],
+        properties: %w[public restricted unshared total].to_h { |key| [key, { type: :integer, minimum: 0 }] },
+      )
+    end
+
+    class CollectionCounts
+      include OpenapiRuby::Components::Base
+
+      schema(
+        type: :object, additionalProperties: false,
+        description: 'Catalog aggregates include public and restricted states, not unshared collections. Independent of preview visibility.',
+        required: %w[public restricted total],
+        properties: %w[public restricted total].to_h { |key| [key, { type: :integer, minimum: 0 }] },
+      )
+    end
+
+    class ProjectInstitution
+      include OpenapiRuby::Components::Base
+
+      schema(
+        type: :object, additionalProperties: false, required: %w[id name parent is_primary],
+        properties: {
+          id: { type: :integer, minimum: 1 },
+          name: { type: %w[string null] },
+          is_primary: { type: :boolean, description: 'First primary institution by link ID, or lowest institution ID if none is primary' },
+          parent: {
+            type: %w[object null], additionalProperties: false, required: %w[id name],
+            properties: { id: { type: :integer, minimum: 1 }, name: { type: %w[string null] } },
+          },
+        },
+      )
+    end
+
+    class CollectionPreview
+      include OpenapiRuby::Components::Base
+
+      schema(
+        type: :object, additionalProperties: false, required: %w[id name notes],
+        description: 'Search metadata for a policy-visible collection; not a complete collection record',
+        properties: {
+          id: { type: :integer, minimum: 1 },
+          name: { type: %w[string null] },
+          notes: { type: %w[string null] },
+        },
+      )
+    end
+
     class ProjectSummary
       include OpenapiRuby::Components::Base
 
@@ -7,10 +60,13 @@ module ApiContract
         type: :object,
         additionalProperties: false,
         description: <<~TEXT,
-          All listed keys are present. Nullable fields remain null when no value is
+          All required keys are present. Nullable fields remain null when no value is
           configured. Names and introduction contain localized strings, not translation
           maps. Records without any nonblank name translation can have name=null.
-          Editor fields, full translations, counts, and related records are excluded.
+          Editor fields and full translations are excluded. Optional include fields
+          are omitted unless requested; requested fields use zero counts or empty
+          arrays when no data is available. Nested names and notes use the same
+          translation fallback as project fields. Arrays of records are ordered by ID.
         TEXT
         required: %w[id shortname is_umbrella name display_name display_shortname
           archive_domain workflow_state publication_date available_locales default_locale
@@ -44,6 +100,14 @@ module ApiContract
           favicon_url: { type: %w[string null], description: 'Relative attachment URL, or null when no favicon is attached' },
           grant_access_without_login: { type: :boolean, description: 'Whether project access is granted without login; unset means false' },
           grant_project_access_instantly: { type: :boolean, description: 'Whether logged-in users receive project access immediately; unset means false' },
+          interview_counts: InterviewCounts,
+          collection_counts: CollectionCounts,
+          institutions: { type: :array, items: ProjectInstitution },
+          interview_languages: {
+            type: :array, uniqueItems: true, items: { type: :string },
+            description: 'Sorted language codes such as eng, from public/restricted/unshared interviews in public projects; other project states return an empty array',
+          },
+          collection_preview: { type: :array, items: CollectionPreview },
         },
       )
     end
