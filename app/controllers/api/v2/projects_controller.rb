@@ -61,8 +61,8 @@ module Api
 
       def show
         profile = params.fetch(:profile, 'display')
-        invalid_parameter!(:profile) unless profile == 'display' # Will support edit profile in future
-        includes = requested_includes
+        invalid_parameter!(:profile) unless %w[display edit].include?(profile)
+        includes = requested_includes(allowed: profile == 'edit' ? LIST_INCLUDES + ['translations'] : LIST_INCLUDES)
         identifier = params[:id]
         @project = if identifier.match?(/\A[0-9]+\z/) # Numeric ID
           Project.find_by(id: identifier)
@@ -74,10 +74,12 @@ module Api
         # Use the requested project for authorization, regardless of the request's domain.
         @current_project = @project
         pundit_reset!
-        authorize @project, :show?
+        authorize @project, profile == 'edit' ? :update? : :show?
         umbrella_id = InstanceSetting.current.umbrella_project_id
         collections_scope = policy_scope(Collection) if includes.include?('collection_preview')
-        cache = ProjectDisplayCache.new(
+        cache_class = profile == 'edit' ? ProjectEditCache : ProjectDisplayCache
+        serializer_class = profile == 'edit' ? ProjectEditSerializer : ProjectDisplaySerializer
+        cache = cache_class.new(
           projects: Project.where(id: @project.id), user: current_user, collections_scope: collections_scope,
           parameters: { project_id: @project.id, locale: I18n.locale.to_s, profile: profile,
             includes: includes, umbrella_id: umbrella_id }
@@ -86,7 +88,7 @@ module Api
           projects = preload_projects(projects, includes)
           options = included_data(projects, includes, collections_scope: visible_collections).merge(umbrella_project_id: umbrella_id)
           project = projects.take!
-          { data: ProjectDisplaySerializer.new(project, options).as_json }
+          { data: serializer_class.new(project, options).as_json }
         end
         render json: payload
       end
@@ -101,13 +103,13 @@ module Api
         projects
       end
 
-      def requested_includes
+      def requested_includes(allowed: LIST_INCLUDES)
         return [] unless params.key?(:include)
 
         value = params[:include]
         invalid_parameter!(:include) unless value.is_a?(String)
         includes = value.split(',', -1).map(&:strip).uniq.sort
-        invalid_parameter!(:include) if includes.empty? || (includes - LIST_INCLUDES).any?
+        invalid_parameter!(:include) if includes.empty? || (includes - allowed).any?
         includes
       end
 
