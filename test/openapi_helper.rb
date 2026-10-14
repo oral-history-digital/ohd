@@ -21,6 +21,7 @@ end
 
 require_relative 'openapi/v2/schemas'
 require_relative 'openapi/v2/projects'
+require_relative 'openapi/v2/project_detail'
 
 module ApiContract
   def self.definition

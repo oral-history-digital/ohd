@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v2 do
-      resources :projects, only: :index
+      resources :projects, only: [:index, :show]
     end
   end
 

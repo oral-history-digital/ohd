@@ -35,7 +35,9 @@ module ApiSchemaAssertions
     # inside the document and lets the validator resolve its shared references.
     segments = ['paths', path, method, 'responses', status, 'content', media_type, 'schema']
     pointer = '#/' + segments.map { |segment| segment.gsub('~', '~0').gsub('/', '~1') }.join('/')
-    errors = api_schema.ref(pointer).validate(JSON.parse(response.body)).to_a
+    # URI fragments also need escaping for path parameters such as {identifier}.
+    reference = '#' + URI::DEFAULT_PARSER.escape(pointer.delete_prefix('#'))
+    errors = api_schema.ref(reference).validate(JSON.parse(response.body)).to_a
     messages = errors.map { |error| "#{error['data_pointer']}: #{error['error']}" }
     assert_empty errors, "API response violates OpenAPI:\n#{messages.join("\n")}"
   end

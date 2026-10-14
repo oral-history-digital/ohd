@@ -159,6 +159,101 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FormatErrorResponse"
+  "/api/v2/projects/{identifier}":
+    parameters:
+    - name: identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+      description: Decimal values resolve to numeric project IDs; other values resolve
+        to exact shortnames. Independent of request host.
+    get:
+      summary: Read project display details
+      operationId: getProject
+      description: |
+        Returns public display details after show authorization for the target project.
+        Anonymous requests can read public projects. Project members with granted
+        access, project role holders, and admins can read authorized unshared projects.
+        Establishes target project context independently of the request host.
+        Localized values use requested locale, project default, then first nonblank
+        translation by translation ID. Editor fields and full translation maps are excluded.
+        Supports extensionless and .json requests. Unsupported profiles return 400.
+        Other unrecognized query parameters are ignored.
+      parameters:
+      - name: locale
+        in: query
+        schema:
+          type: string
+          enum:
+          - en
+          - de
+          - ru
+          - el
+          - es
+          - uk
+          - ar
+          - tr
+        description: Defaults to the current request locale. Empty or unsupported
+          values return 400; independent of project available_locales.
+      - name: profile
+        in: query
+        schema:
+          type: string
+          enum:
+          - display
+          default: display
+        description: Only display is supported. Omitted and explicit display requests
+          share the same contract.
+      - name: include
+        in: query
+        schema:
+          type: string
+          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview)\\s*)*$"
+        description: |
+          Same optional fields as the list endpoint: counts adds interview_counts
+          and collection_counts; other names add their matching fields. Defaults
+          to no includes. Duplicate names, whitespace and any ordering are accepted.
+          Empty, unknown and non-string values return 400. Collection previews are
+          policy-scoped to the target project; aggregates retain catalog counting rules.
+          Use include=institutions for ProjectHome's institution names.
+      responses:
+        '200':
+          description: Authorized project display details
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProjectDetailResponse"
+          headers:
+            Content-Language:
+              description: Effective response locale
+              schema:
+                type: string
+        '400':
+          description: Invalid locale, profile or include parameter
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InvalidParameterResponse"
+        '403':
+          description: Existing project is not accessible
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProjectReadErrorResponse"
+        '404':
+          description: No project matches the identifier
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ProjectReadErrorResponse"
+        '406':
+          description: An explicit non-JSON format
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FormatErrorResponse"
 components:
   schemas:
     CollectionCounts:
@@ -295,6 +390,186 @@ components:
           type: integer
           minimum: 0
       title: Pagination
+    ProjectDetailResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - data
+      properties:
+        data:
+          "$ref": "#/components/schemas/ProjectDisplay"
+      title: ProjectDetailResponse
+    ProjectDisplay:
+      type: object
+      additionalProperties: false
+      description: Localized public display details, including the fields used by
+        ProjectHome. Institutions remain an optional include.
+      required:
+      - id
+      - shortname
+      - is_umbrella
+      - name
+      - display_name
+      - display_shortname
+      - archive_domain
+      - workflow_state
+      - publication_date
+      - available_locales
+      - default_locale
+      - introduction
+      - logo
+      - favicon_url
+      - grant_access_without_login
+      - grant_project_access_instantly
+      - domain
+      - more_text
+      - primary_color
+      - secondary_color
+      - editorial_color
+      - has_map
+      - is_catalog
+      - has_newsletter
+      - display_ohd_link
+      - oai_doi_identifier
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        shortname:
+          type: string
+          description: Project identifier used by UI routes
+        is_umbrella:
+          type: boolean
+        name:
+          type:
+          - string
+          - 'null'
+        display_name:
+          type:
+          - string
+          - 'null'
+        display_shortname:
+          type:
+          - string
+          - 'null'
+          description: Optional label, independent of the routing shortname
+        archive_domain:
+          type:
+          - string
+          - 'null'
+          description: Dedicated archive domain; blank stored values become null
+        workflow_state:
+          type: string
+          enum:
+          - public
+          - unshared
+        publication_date:
+          type:
+          - string
+          - 'null'
+          description: Stored publication label; not an ISO date value
+        available_locales:
+          type: array
+          items:
+            type: string
+          description: Locales available for the project (ISO 639-1 language codes)
+        default_locale:
+          type:
+          - string
+          - 'null'
+          description: Default locale for the project (ISO 639-1 language code); null
+            if no default is set
+        introduction:
+          type:
+          - string
+          - 'null'
+          description: Localized rich text; consumers must sanitize before rendering
+            HTML
+        logo:
+          type:
+          - object
+          - 'null'
+          additionalProperties: false
+          description: |
+            Logo for the requested locale, then the project default locale, then
+            the first logo by ID. Null if the selected logo has no attachment.
+          required:
+          - id
+          - url
+          properties:
+            id:
+              type: integer
+              minimum: 1
+            url:
+              type: string
+              description: Relative attachment URL
+        favicon_url:
+          type:
+          - string
+          - 'null'
+          description: Relative attachment URL, or null when no favicon is attached
+        grant_access_without_login:
+          type: boolean
+          description: Whether project access is granted without login; unset means
+            false
+        grant_project_access_instantly:
+          type: boolean
+          description: Whether logged-in users receive project access immediately;
+            unset means false
+        interview_counts:
+          "$ref": "#/components/schemas/InterviewCounts"
+        collection_counts:
+          "$ref": "#/components/schemas/CollectionCounts"
+        institutions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectInstitution"
+        interview_languages:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+          description: Sorted language codes such as eng, from public/restricted/unshared
+            interviews in public projects; other project states return an empty array
+        collection_preview:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CollectionPreview"
+        domain:
+          type:
+          - string
+          - 'null'
+        more_text:
+          type:
+          - string
+          - 'null'
+          description: Localized rich text; sanitize before rendering HTML
+        primary_color:
+          type:
+          - string
+          - 'null'
+        secondary_color:
+          type:
+          - string
+          - 'null'
+        editorial_color:
+          type:
+          - string
+          - 'null'
+        has_map:
+          type: boolean
+        is_catalog:
+          type: boolean
+        has_newsletter:
+          type: boolean
+        display_ohd_link:
+          type: boolean
+        oai_doi_identifier:
+          type:
+          - string
+          - 'null'
+          description: DOI URL only when doi_status is created; otherwise null
+      title: ProjectDisplay
     ProjectInstitution:
       type: object
       additionalProperties: false
@@ -346,6 +621,28 @@ components:
         pagination:
           "$ref": "#/components/schemas/Pagination"
       title: ProjectListResponse
+    ProjectReadErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              enum:
+              - forbidden
+              - not_found
+            message:
+              type: string
+              minLength: 1
+      title: ProjectReadErrorResponse
     ProjectSummary:
       type: object
       additionalProperties: false

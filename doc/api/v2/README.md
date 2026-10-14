@@ -11,6 +11,7 @@ The YAML is generated output. Edit the Ruby definitions, then regenerate it:
 - [Global API information and generator configuration](../../../test/openapi_helper.rb)
 - [Reusable response schemas](../../../test/openapi/v2/schemas.rb)
 - [Project list parameters and responses](../../../test/openapi/v2/projects.rb)
+- [Project detail parameters and responses](../../../test/openapi/v2/project_detail.rb)
 
 ## Request catalog additions
 
@@ -52,9 +53,9 @@ data dependencies. Hash key order does not matter. Callers normalize set-like
 parameters such as includes and workflow states; array order otherwise matters.
 Use validated values rather than raw request parameters.
 
-[ProjectListCache](../../../app/services/api/v2/project_list_cache.rb) declares
-the dependencies for project lists. It checks current policy scopes on every
-request and fixes the allowed project and collection IDs for both the key and
+[ProjectReadCache](../../../app/services/api/v2/project_read_cache.rb) shares
+dependencies across lists and details. Lists use current policy scopes on every
+request and fix the allowed project and collection IDs for both the key and
 the response. Entries are separate for anonymous requests and individual
 accounts. Changed visibility changes the key without waiting for expiry.
 
@@ -75,9 +76,15 @@ Only successful response data is cached, using the existing Rails cache store.
 This does not enable shared browser or proxy caching.
 
 When adding a response field, update its dependency fingerprint. When changing
-serialization or fallback rules, increment `ProjectListCache::REVISION` so data
+serialization or fallback rules, increment the affected `ProjectListCache::REVISION`
+or `ProjectDisplayCache::REVISION` so data
 from the previous contract cannot be reused. Future endpoints should use
 `ResponseCache.key`/`fetch` and declare their own dependencies and revision.
+
+Details authorize before every lookup and use a separate cache identity with
+extra display-field dependencies. Numeric ID and shortname aliases resolve to
+the same identity. An administrator requesting `display` receives the same field
+allowlist; authorization does not implicitly add editor data.
 
 Run cache-specific tests inside the development container:
 
