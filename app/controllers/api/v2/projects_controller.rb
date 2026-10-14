@@ -25,28 +25,41 @@ module Api
         projects = projects.where(workflow_state: states) if states
         umbrella_id = InstanceSetting.current.umbrella_project_id
         projects = projects.where.not(id: umbrella_id) unless include_umbrella || umbrella_id.nil?
-        total_count = projects.count
-        total_pages = (total_count + per_page - 1) / per_page
-        projects = ProjectListRepository.new(projects, locale: I18n.locale).ordered(field: sort_field, direction: sort_direction)
-        unless all
-          # Out-of-range pages are empty, including numbers too large for a SQL offset.
-          projects = page > total_pages ? projects.none : projects.limit(per_page).offset((page - 1) * per_page)
-        end
-        projects = projects.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob)
-        if includes.include?('institutions')
-          projects = projects.includes(:institution_projects, institutions: [:translations, { parent: :translations }])
-        end
-        serializer_options = included_data(projects, includes).merge(umbrella_project_id: umbrella_id)
+        collections_scope = policy_scope(Collection) if includes.include?('collection_preview')
+        cache = ProjectListCache.new(
+          projects: projects, user: current_user, collections_scope: collections_scope,
+          parameters: {
+            locale: I18n.locale.to_s, includes: includes, workflow_states: states&.sort,
+            all: all, page: all ? nil : page, per_page: all ? nil : per_page,
+            sort: [sort_field, sort_direction], include_umbrella: include_umbrella, umbrella_id: umbrella_id,
+          }
+        )
 
-        render json: {
-          data: projects.map { |project| ProjectListSerializer.new(project, serializer_options).as_json },
-          pagination: {
-            page: all ? 1 : page,
-            per_page: all ? total_count : per_page,
-            total_pages: all ? 1 : total_pages,
-            total_count: total_count,
-          },
-        }
+        payload = cache.fetch do |projects, collections_scope|
+          total_count = projects.count
+          total_pages = (total_count + per_page - 1) / per_page
+          projects = ProjectListRepository.new(projects, locale: I18n.locale).ordered(field: sort_field, direction: sort_direction)
+          unless all
+            # Out-of-range pages are empty, including numbers too large for a SQL offset.
+            projects = page > total_pages ? projects.none : projects.limit(per_page).offset((page - 1) * per_page)
+          end
+          projects = projects.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob)
+          if includes.include?('institutions')
+            projects = projects.includes(:institution_projects, institutions: [:translations, { parent: :translations }])
+          end
+          serializer_options = included_data(projects, includes, collections_scope: collections_scope).merge(umbrella_project_id: umbrella_id)
+
+          {
+            data: projects.map { |project| ProjectListSerializer.new(project, serializer_options).as_json },
+            pagination: {
+              page: all ? 1 : page,
+              per_page: all ? total_count : per_page,
+              total_pages: all ? 1 : total_pages,
+              total_count: total_count,
+            },
+          }
+        end
+        render json: payload
       end
 
       private
@@ -62,7 +75,7 @@ module Api
       end
 
       # Batch optional queries for this page only; omitted includes do no extra work.
-      def included_data(projects, includes)
+      def included_data(projects, includes, collections_scope: nil)
         options = { requested_includes: includes }
         return options if includes.empty?
 
@@ -75,7 +88,7 @@ module Api
         options[:interview_languages] = metrics.interview_languages_by_project if includes.include?('interview_languages')
         if includes.include?('collection_preview')
           options[:collections_by_project] = CollectionContentRepository.new(
-            project_ids: project_ids, collections_scope: policy_scope(Collection)
+            project_ids: project_ids, collections_scope: collections_scope
           ).collections_by_project
         end
         options
