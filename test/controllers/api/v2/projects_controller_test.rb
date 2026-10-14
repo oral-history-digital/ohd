@@ -396,7 +396,8 @@ class Api::V2::ProjectsControllerTest < ActionDispatch::IntegrationTest
       { all: 'yes' }, { all: '' }, { include_umbrella: '1' },
       { workflow_state: 'private' }, { workflow_state: 'public,private' },
       { workflow_state: ['public'] }, { workflow_state: '' },
-      { include: 'counts' }, { profile: 'edit' },
+      { include: '' }, { include: 'unknown' }, { include: 'counts,' },
+      { include: 'counts,unknown' }, { include: ['counts'] }, { profile: 'edit' },
       { sort: '' }, { sort: 'contact_email' }, { sort: 'name,-id' },
       { sort: ['name'] }, { sort: 'shortname; DROP TABLE projects' },
     ]
@@ -428,7 +429,184 @@ class Api::V2::ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'not_acceptable', body.dig('error', 'code')
   end
 
+  test 'each include adds only its fields and omitted includes do not query catalog data' do
+    project = new_project
+    catalog_records(project)
+    show_only(project)
+    fields = {
+      'counts' => %w[interview_counts collection_counts],
+      'institutions' => %w[institutions],
+      'interview_languages' => %w[interview_languages],
+      'collection_preview' => %w[collection_preview],
+    }
+    base_queries = list_queries(all: true)
+    base_keys = body['data'].first.keys
+    assert_empty base_keys & fields.values.flatten
+    assert_empty base_queries.grep(/FROM [`"]?(?:interviews|collections|institutions|institution_projects|interview_languages)[`"]?\s/i)
+
+    fields.each do |include_name, added|
+      queries = list_queries(all: true, include: include_name)
+      summary = body['data'].first
+      assert_equal added.sort, (summary.keys - base_keys).sort
+      case include_name
+      when 'counts'
+        assert_equal({ 'public' => 1, 'restricted' => 1, 'unshared' => 1, 'total' => 3 }, summary['interview_counts'])
+        assert_equal({ 'public' => 1, 'restricted' => 0, 'total' => 1 }, summary['collection_counts'])
+        assert_empty queries.grep(/FROM [`"]?(?:institutions|interview_languages)[`"]?\s/i)
+      when 'interview_languages'
+        assert_equal ['eng'], summary['interview_languages']
+        assert_empty queries.grep(/FROM [`"]?(?:institutions|collections)[`"]?\s/i)
+      when 'collection_preview'
+        assert_equal ['Public collection'], summary['collection_preview'].map { |record| record['name'] }
+      end
+    end
+  end
+
+  test 'include combinations ignore duplicates and order and return empty values for projects without catalog data' do
+    project = new_project
+    show_only(project)
+    get '/api/v2/projects', params: { all: true, include: 'counts,institutions,interview_languages,collection_preview' }
+    assert_response :success
+    assert_api_response_schema('/api/v2/projects')
+    expected = body
+    summary = body['data'].first
+    assert_equal({ 'public' => 0, 'restricted' => 0, 'unshared' => 0, 'total' => 0 }, summary['interview_counts'])
+    assert_equal({ 'public' => 0, 'restricted' => 0, 'total' => 0 }, summary['collection_counts'])
+    %w[institutions interview_languages collection_preview].each { |field| assert_equal [], summary[field] }
+
+    get '/api/v2/projects', params: { all: true, include: ' collection_preview, counts, institutions, counts, interview_languages ' }
+    assert_response :success
+    assert_api_response_schema('/api/v2/projects')
+    assert_equal expected, body
+
+    get '/api/v2/projects', params: { page: 2, per_page: 1, include: 'counts,institutions,interview_languages,collection_preview' }
+    assert_response :success
+    assert_api_response_schema('/api/v2/projects')
+    assert_empty body['data']
+    assert_equal 1, body['pagination']['total_count']
+  end
+
+  test 'nested names and preview notes use explicit locale and project default fallback' do
+    project = new_project(default_locale: 'de')
+    records = catalog_records(project)
+    show_only(project)
+    [records[:institution], records[:parent], records[:collection]].each do |record|
+      record.translations.delete_all
+      record.translations.create!(locale: 'ru', name: 'Russian fallback')
+      record.translations.create!(locale: 'de', name: 'German fallback')
+      record.translations.create!(locale: 'en', name: 'English name')
+    end
+    records[:collection].translations.find_by!(locale: 'de').update!(notes: 'Deutsche Beschreibung')
+    records[:collection].translations.find_by!(locale: 'en').update!(notes: '   ')
+
+    [['en', 'English name'], ['ar', 'German fallback']].each do |locale, expected_name|
+      get '/api/v2/projects', params: { all: true, locale: locale, include: 'institutions,collection_preview' }
+      assert_response :success
+      assert_api_response_schema('/api/v2/projects')
+      summary = body['data'].first
+      institution = summary['institutions'].first
+      assert_equal expected_name, institution['name']
+      assert_equal expected_name, institution['parent']['name']
+      assert_equal true, institution['is_primary']
+      assert_equal expected_name, summary['collection_preview'].first['name']
+      assert_equal 'Deutsche Beschreibung', summary['collection_preview'].first['notes']
+    end
+  end
+
+  test 'collection previews follow target project permissions without exposing other projects' do
+    project = new_project
+    records = catalog_records(project)
+    denied_project = new_project(workflow_state: 'unshared')
+    catalog_records(denied_project)
+    user = User.find_by!(email: 'john@example.com')
+    permission = Permission.find_or_create_by!(klass: 'Collection', action_name: 'update')
+    other_project = new_project
+    role = Role.create!(project: other_project, name: 'Collection editor')
+    RolePermission.create!(role: role, permission: permission)
+    UserRole.create!(user: user, role: role)
+    host! "#{other_project.shortname}.oral-history.localhost:47001"
+
+    [nil, user].each do |account|
+      login_as(account) if account
+      get '/api/v2/projects', params: { all: true, include: 'counts,collection_preview' }
+      assert_response :success
+      assert_api_response_schema('/api/v2/projects')
+      assert_not_includes ids, denied_project.id
+      summary = body['data'].find { |record| record['id'] == project.id }
+      assert_equal [records[:collection].id], summary['collection_preview'].map { |record| record['id'] }
+      assert_equal 1, summary['interview_counts']['unshared']
+      assert_not_includes response.body, 'Secret notes'
+    end
+
+    role.update!(project: project)
+    [user, User.find_by!(email: 'alice@example.com')].each do |account|
+      login_as(account)
+      get '/api/v2/projects', params: { all: true, include: 'collection_preview' }
+      assert_response :success
+      assert_api_response_schema('/api/v2/projects')
+      summary = body['data'].find { |record| record['id'] == project.id }
+      assert_equal [records[:collection].id, records[:hidden].id].sort, summary['collection_preview'].map { |record| record['id'] }
+    end
+  end
+
+  test 'included aggregates retain catalog rules for authorized unshared projects' do
+    project = new_project(workflow_state: 'unshared')
+    records = catalog_records(project)
+    member = User.find_by!(email: 'john@example.com')
+    membership = UserProject.create!(user: member, project: project)
+    membership.update_column(:workflow_state, 'project_access_granted')
+
+    [member, User.find_by!(email: 'alice@example.com')].each do |account|
+      login_as(account)
+      get '/api/v2/projects', params: { all: true, include: 'counts,interview_languages,collection_preview' }
+      assert_response :success
+      assert_api_response_schema('/api/v2/projects')
+      summary = body['data'].find { |record| record['id'] == project.id }
+      assert_equal 0, summary['interview_counts']['total']
+      assert_equal 1, summary['collection_counts']['total']
+      assert_equal [], summary['interview_languages']
+      expected = account.admin? ? [records[:collection].id, records[:hidden].id].sort : [records[:collection].id]
+      assert_equal expected, summary['collection_preview'].map { |record| record['id'] }
+    end
+  end
+
+  test 'included data is batched and restricted to the returned page' do
+    projects = 4.times.map { new_project }
+    projects.each { |project| catalog_records(project) }
+    show_only(*projects)
+    includes = 'counts,institutions,interview_languages,collection_preview'
+    list_queries(per_page: 1, include: includes, sort: 'id')
+    small = list_queries(per_page: 1, include: includes, sort: 'id')
+    assert_equal [projects.first.id], ids
+    first_summary = body['data'].first
+    large = list_queries(per_page: 100, include: includes, sort: 'id')
+    assert_equal projects.map(&:id), ids
+    assert_equal first_summary, body['data'].first
+    assert_operator large.length, :<=, small.length + 2,
+      "Queries grew from #{small.length} to #{large.length} with catalog includes"
+
+    metric_queries = small.grep(/FROM [`"]?(?:interviews|interview_languages|collections)[`"]?\s/i)
+    assert_equal 4, metric_queries.length
+    metric_queries.each do |sql|
+      assert_match(/project_id[`"]? = #{projects.first.id}\b/, sql)
+    end
+  end
+
   private
+
+  def catalog_records(project)
+    parent = Institution.create!(name: 'Parent institute', shortname: "parent#{SecureRandom.hex(3)}")
+    institution = Institution.create!(name: 'Research institute', parent: parent, shortname: "inst#{SecureRandom.hex(3)}")
+    InstitutionProject.create!(project: project, institution: institution, primary: true)
+    collection = Collection.create!(project: project, institution: institution, name: 'Public collection', notes: 'Public notes', workflow_state: 'public')
+    hidden = Collection.create!(project: project, institution: institution, name: 'Hidden collection', notes: 'Secret notes', workflow_state: 'unshared')
+    %w[public restricted unshared].each_with_index do |state, index|
+      interview = Interview.create!(project: project, collection: collection,
+        archive_id: "#{project.shortname}#{format('%03d', index + 1)}", media_type: 'audio', workflow_state: state)
+      InterviewLanguage.create!(interview: interview, language: Language.find_by!(code: 'eng'), spec: 'primary')
+    end
+    { institution: institution, parent: parent, collection: collection, hidden: hidden }
+  end
 
   def new_project(**attributes)
     DataHelper.test_project(shortname: "v2#{SecureRandom.hex(3)}a", **attributes)

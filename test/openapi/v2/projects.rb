@@ -16,9 +16,23 @@ module ApiContract
             Both extensionless requests and the .json suffix are supported.
             Translated display values use the requested locale, then the project's
             default locale, then the first nonblank translation by translation ID.
-            Optional includes and profiles are not supported by this operation;
-            supplying either parameter returns 400. Other unrecognized query parameters are ignored.
+            Optional includes add catalog data to each returned summary. Profile is
+            unsupported and returns 400. Other unrecognized query parameters are ignored.
           TEXT
+
+          parameter name: :include, in: :query,
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview)\s*(,\s*(counts|institutions|interview_languages|collection_preview)\s*)*$' },
+            example: 'counts,institutions,interview_languages,collection_preview',
+            description: <<~TEXT
+              Comma-separated optional additions. Counts adds interview_counts and
+              collection_counts; the other names add fields with the same name.
+              Whitespace, duplicate names, and any ordering are accepted. Empty,
+              unknown, and non-string values return 400. Omit for base summaries.
+              Counts and interview languages retain catalog aggregate rules, including
+              unshared interview statistics. Collection previews include only collections
+              visible through policy scope, including unshared collections for authorized editors.
+              Optional queries are limited to projects on the returned page.
+            TEXT
 
           parameter name: :sort, in: :query,
             schema: { type: :string, enum: %w[name -name shortname -shortname created_at -created_at publication_date -publication_date id -id], default: '-created_at' },
