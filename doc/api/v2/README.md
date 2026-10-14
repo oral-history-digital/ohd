@@ -76,9 +76,9 @@ Only successful response data is cached, using the existing Rails cache store.
 This does not enable shared browser or proxy caching.
 
 When adding a response field, update its dependency fingerprint. When changing
-serialization or fallback rules, increment the affected `ProjectListCache::REVISION`
-or `ProjectDisplayCache::REVISION` so data
-from the previous contract cannot be reused. Future endpoints should use
+serialization or fallback rules, increment `REVISION` in the affected list,
+display, or edit cache class so data from the previous contract cannot be reused.
+Future endpoints should use
 `ResponseCache.key`/`fetch` and declare their own dependencies and revision.
 
 Details authorize before every lookup and use a separate cache identity with
