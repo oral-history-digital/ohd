@@ -41,6 +41,48 @@ Nested translations follow the project summary fallback: requested locale,
 project default, then the first nonblank translation by translation ID. Optional
 record arrays are ordered by ID. Full collection records remain a separate read.
 
+## Server-side response caching
+
+[ResponseCache](../../../app/services/api/v2/response_cache.rb) defines the shared
+v2 key format and 15-minute expiry. Keys contain the API namespace, endpoint,
+contract revision, and a digest of normalized parameters, access context, and
+data dependencies. Hash key order does not matter. Callers normalize set-like
+parameters such as includes and workflow states; array order otherwise matters.
+Use validated values rather than raw request parameters.
+
+[ProjectListCache](../../../app/services/api/v2/project_list_cache.rb) declares
+the dependencies for project lists. It checks current policy scopes on every
+request and fixes the allowed project and collection IDs for both the key and
+the response. Entries are separate for anonymous requests and individual
+accounts. Changed visibility changes the key without waiting for expiry.
+
+Dependency fingerprints cover the stored values that affect the response,
+including translations, branding attachments, and requested catalog additions.
+SQL hashes avoid transferring full text fields or loading model objects during
+these checks. Timestamps alone are insufficient because some legacy tables
+store only whole seconds and Active Storage records have no `updated_at`.
+Insertions, deletions, reassignment, and rapid edits also change fingerprints.
+
+Cache hits still perform authorization and fingerprint queries. They skip list
+sorting, pagination totals, metrics calculation, association loading, and
+serialization. Dependencies cover all matching projects, so a change elsewhere
+in the same filtered list can invalidate a cached page. Omitted includes have
+no associated dependency queries. A null cache store skips fingerprinting.
+
+Only successful response data is cached, using the existing Rails cache store.
+This does not enable shared browser or proxy caching.
+
+When adding a response field, update its dependency fingerprint. When changing
+serialization or fallback rules, increment `ProjectListCache::REVISION` so data
+from the previous contract cannot be reused. Future endpoints should use
+`ResponseCache.key`/`fetch` and declare their own dependencies and revision.
+
+Run cache-specific tests inside the development container:
+
+```sh
+bundle exec rails test test/services/api/v2/response_cache_test.rb test/controllers/api/v2/project_list_caching_test.rb
+```
+
 ## Validate a contract change
 
 Run the following commands inside the development container.

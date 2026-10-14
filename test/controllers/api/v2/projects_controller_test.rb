@@ -5,9 +5,16 @@ class Api::V2::ProjectsControllerTest < ActionDispatch::IntegrationTest
   include ApiSchemaAssertions
 
   setup do
+    # These tests measure uncached endpoint behavior. Cache reuse has its own tests.
+    @previous_cache = Rails.cache
+    Rails.cache = ActiveSupport::Cache::NullStore.new
     host! 'test.portal.oral-history.localhost:47001'
     @project = Project.find_by!(shortname: 'test')
     @umbrella = InstanceSetting.current.umbrella_project
+  end
+
+  teardown do
+    Rails.cache = @previous_cache
   end
 
   test 'OpenAPI document is valid and lists all supported request locales' do
