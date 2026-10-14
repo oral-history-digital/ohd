@@ -3,6 +3,7 @@ module Api
     class ProjectsController < BaseController
       DEFAULT_PER_PAGE = 25
       MAX_PER_PAGE = 100
+      LIST_INCLUDES = %w[counts institutions interview_languages collection_preview].freeze
 
       skip_before_action :authenticate_user!, only: :index
       before_action :use_global_project_context, only: :index
@@ -12,7 +13,7 @@ module Api
         include_umbrella = boolean_parameter(:include_umbrella)
         invalid_parameter!(:page) if all && params.key?(:page)
         invalid_parameter!(:per_page) if all && params.key?(:per_page)
-        invalid_parameter!(:include) if params.key?(:include) # TODO: will be supported in the future, but not yet
+        includes = requested_includes
         invalid_parameter!(:profile) if params.key?(:profile) # Only supported in detailed project endpoints like /projects/:id
         page = positive_integer_parameter(:page, default: 1)
         per_page = positive_integer_parameter(:per_page, default: DEFAULT_PER_PAGE)
@@ -32,9 +33,13 @@ module Api
           projects = page > total_pages ? projects.none : projects.limit(per_page).offset((page - 1) * per_page)
         end
         projects = projects.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob)
+        if includes.include?('institutions')
+          projects = projects.includes(:institution_projects, institutions: [:translations, { parent: :translations }])
+        end
+        serializer_options = included_data(projects, includes).merge(umbrella_project_id: umbrella_id)
 
         render json: {
-          data: projects.map { |project| ProjectListSerializer.new(project, umbrella_project_id: umbrella_id).as_json },
+          data: projects.map { |project| ProjectListSerializer.new(project, serializer_options).as_json },
           pagination: {
             page: all ? 1 : page,
             per_page: all ? total_count : per_page,
@@ -45,6 +50,36 @@ module Api
       end
 
       private
+
+      def requested_includes
+        return [] unless params.key?(:include)
+
+        value = params[:include]
+        invalid_parameter!(:include) unless value.is_a?(String)
+        includes = value.split(',', -1).map(&:strip).uniq.sort
+        invalid_parameter!(:include) if includes.empty? || (includes - LIST_INCLUDES).any?
+        includes
+      end
+
+      # Batch optional queries for this page only; omitted includes do no extra work.
+      def included_data(projects, includes)
+        options = { requested_includes: includes }
+        return options if includes.empty?
+
+        project_ids = projects.map(&:id)
+        metrics = ProjectMetricsRepository.new(project_ids)
+        if includes.include?('counts')
+          options[:interview_counts] = metrics.interview_counts_by_project
+          options[:collection_counts] = metrics.collection_counts_by_project
+        end
+        options[:interview_languages] = metrics.interview_languages_by_project if includes.include?('interview_languages')
+        if includes.include?('collection_preview')
+          options[:collections_by_project] = CollectionContentRepository.new(
+            project_ids: project_ids, collections_scope: policy_scope(Collection)
+          ).collections_by_project
+        end
+        options
+      end
 
       def use_global_project_context
         @current_project = nil

@@ -7,16 +7,19 @@ class CollectionContentRepository
   end
 
   def preview_by_project
+    collections_by_project.transform_values do |collections|
+      collections.map { |collection| preview_entry(collection) }
+    end
+  end
+
+  # Return records too so versioned serializers can apply their own locale contract.
+  def collections_by_project
     return {} if @project_ids.blank?
 
-    collections = @collections_scope
+    @collections_scope
       .where(project_id: @project_ids)
       .includes(:translations, :project)
-
-    collections.each_with_object({}) do |collection, result|
-      result[collection.project_id] ||= []
-      result[collection.project_id] << preview_entry(collection)
-    end
+      .group_by(&:project_id)
   end
 
   private
