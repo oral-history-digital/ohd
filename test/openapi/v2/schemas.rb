@@ -112,6 +112,43 @@ module ApiContract
       )
     end
 
+    class ProjectDisplay < ProjectSummary
+      schema(
+        description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
+        required: %w[domain more_text primary_color secondary_color editorial_color has_map is_catalog has_newsletter display_ohd_link oai_doi_identifier],
+        properties: {
+          domain: { type: %w[string null] },
+          more_text: { type: %w[string null], description: 'Localized rich text; sanitize before rendering HTML' },
+          primary_color: { type: %w[string null] },
+          secondary_color: { type: %w[string null] },
+          editorial_color: { type: %w[string null] },
+          has_map: { type: :boolean },
+          is_catalog: { type: :boolean },
+          has_newsletter: { type: :boolean },
+          display_ohd_link: { type: :boolean },
+          oai_doi_identifier: { type: %w[string null], description: 'DOI URL only when doi_status is created; otherwise null' },
+        },
+      )
+    end
+
+    class ProjectDetailResponse
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[data], properties: { data: ProjectDisplay })
+    end
+
+    class ProjectReadErrorResponse
+      include OpenapiRuby::Components::Base
+      schema(
+        type: :object, additionalProperties: false, required: %w[error],
+        properties: {
+          error: {
+            type: :object, additionalProperties: false, required: %w[code message],
+            properties: { code: { type: :string, enum: %w[forbidden not_found] }, message: { type: :string, minLength: 1 } },
+          },
+        },
+      )
+    end
+
     class Pagination
       include OpenapiRuby::Components::Base
 
