@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // Bridge for the legacy Redux-based admin list:
 // load lightweight project data via SWR and backfill missing Redux entries.
 // Full project payload is fetched on demand when editing a single project.
-// TODO: Remove this bridge when the project admin list uses SWR exclusively.
+// TODO: Remove this bridge when standardized API contracts allow unified Redux loading.
 export default function useHydrateProjectsForAdmin() {
     const dispatch = useDispatch();
     const existingProjects = useSelector(getProjects);
