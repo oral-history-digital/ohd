@@ -8,25 +8,29 @@ module ApiContract
         parameter name: :identifier, in: :path, required: true, schema: { type: :string, minLength: 1 },
           description: 'Decimal values resolve to numeric project IDs; other values resolve to exact shortnames. Independent of request host.'
 
-        get 'Read project display details' do
+        get 'Read project details' do
           operationId :getProject
           produces 'application/json'
           description <<~TEXT
-            Returns public display details after show authorization for the target project.
+            The default display profile requires show authorization for the target project.
             Anonymous requests can read public projects. Project members with granted
             access, project role holders, and admins can read authorized unshared projects.
             Establishes target project context independently of the request host.
             Localized values use requested locale, project default, then first nonblank
-            translation by translation ID. Editor fields and full translation maps are excluded.
+            translation by translation ID. The edit profile requires update permission
+            and adds project settings. Shared field types remain unchanged. Only edit
+            supports include=translations, returning stored translation records with IDs,
+            all seven translated fields, and no locale fallback. Rich text must be sanitized
+            before rendering. Related-record editors and mutation endpoints are separate.
             Supports extensionless and .json requests. Unsupported profiles return 400.
             Other unrecognized query parameters are ignored.
           TEXT
           parameter name: :locale, in: :query, schema: { type: :string, enum: %w[en de ru el es uk ar tr] },
             description: 'Defaults to the current request locale. Empty or unsupported values return 400; independent of project available_locales.'
-          parameter name: :profile, in: :query, schema: { type: :string, enum: ['display'], default: 'display' },
-            description: 'Only display is supported. Omitted and explicit display requests share the same contract.'
+          parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
+            description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview)\s*(,\s*(counts|institutions|interview_languages|collection_preview)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -34,9 +38,10 @@ module ApiContract
               Empty, unknown and non-string values return 400. Collection previews are
               policy-scoped to the target project; aggregates retain catalog counting rules.
               Use include=institutions for ProjectHome's institution names.
+              Translations is accepted only with profile=edit; display requests return 400.
             TEXT
 
-          response 200, 'Authorized project display details' do
+          response 200, 'Authorized project details for the requested profile' do
             header 'Content-Language', description: 'Effective response locale', schema: { type: :string }
             schema ProjectDetailResponse
           end

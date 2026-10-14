@@ -153,8 +153,10 @@ class Api::V2::ProjectDetailTest < ActionDispatch::IntegrationTest
     login_as user
     assert_equal [@collection.id], read_detail(include: 'collection_preview')['data']['collection_preview'].map { |record| record['id'] }
     role.update!(project: @project)
+    login_as user
     assert_equal [@collection.id, @hidden.id].sort, read_detail(include: 'collection_preview')['data']['collection_preview'].map { |record| record['id'] }
     role.role_permissions.destroy_all
+    login_as user
     assert_equal [@collection.id], read_detail(include: 'collection_preview')['data']['collection_preview'].map { |record| record['id'] }
   end
 
@@ -174,7 +176,7 @@ class Api::V2::ProjectDetailTest < ActionDispatch::IntegrationTest
     response = read_detail(identifier: 'missing-project', expected: :not_found)
     assert_equal 'not_found', response['error']['code']
     read_detail(identifier: '9' * 40, expected: :not_found)
-    [ { profile: 'edit' }, { profile: '' }, { profile: ['display'] },
+    [ { profile: 'unknown' }, { profile: '' }, { profile: ['display'] },
       { locale: '' }, { locale: 'unknown' }, { locale: ['en'] },
       { include: '' }, { include: 'unknown' }, { include: ['institutions'] } ].each do |parameters|
       error = read_detail(expected: :bad_request, **parameters)['error']

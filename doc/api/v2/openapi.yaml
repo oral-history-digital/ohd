@@ -170,15 +170,19 @@ paths:
       description: Decimal values resolve to numeric project IDs; other values resolve
         to exact shortnames. Independent of request host.
     get:
-      summary: Read project display details
+      summary: Read project details
       operationId: getProject
       description: |
-        Returns public display details after show authorization for the target project.
+        The default display profile requires show authorization for the target project.
         Anonymous requests can read public projects. Project members with granted
         access, project role holders, and admins can read authorized unshared projects.
         Establishes target project context independently of the request host.
         Localized values use requested locale, project default, then first nonblank
-        translation by translation ID. Editor fields and full translation maps are excluded.
+        translation by translation ID. The edit profile requires update permission
+        and adds project settings. Shared field types remain unchanged. Only edit
+        supports include=translations, returning stored translation records with IDs,
+        all seven translated fields, and no locale fallback. Rich text must be sanitized
+        before rendering. Related-record editors and mutation endpoints are separate.
         Supports extensionless and .json requests. Unsupported profiles return 400.
         Other unrecognized query parameters are ignored.
       parameters:
@@ -203,14 +207,15 @@ paths:
           type: string
           enum:
           - display
+          - edit
           default: display
-        description: Only display is supported. Omitted and explicit display requests
-          share the same contract.
+        description: Display requires show permission; edit requires update permission,
+          including for public projects. Omitted profile means display.
       - name: include
         in: query
         schema:
           type: string
-          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview)\\s*)*$"
+          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|translations)\\s*)*$"
         description: |
           Same optional fields as the list endpoint: counts adds interview_counts
           and collection_counts; other names add their matching fields. Defaults
@@ -218,9 +223,10 @@ paths:
           Empty, unknown and non-string values return 400. Collection previews are
           policy-scoped to the target project; aggregates retain catalog counting rules.
           Use include=institutions for ProjectHome's institution names.
+          Translations is accepted only with profile=edit; display requests return 400.
       responses:
         '200':
-          description: Authorized project display details
+          description: Authorized project details for the requested profile
           content:
             application/json:
               schema:
@@ -397,7 +403,9 @@ components:
       - data
       properties:
         data:
-          "$ref": "#/components/schemas/ProjectDisplay"
+          oneOf:
+          - "$ref": "#/components/schemas/ProjectDisplay"
+          - "$ref": "#/components/schemas/ProjectEdit"
       title: ProjectDetailResponse
     ProjectDisplay:
       type: object
@@ -570,6 +578,240 @@ components:
           - 'null'
           description: DOI URL only when doi_status is created; otherwise null
       title: ProjectDisplay
+    ProjectEdit:
+      type: object
+      additionalProperties: false
+      description: Project settings requiring update permission. Display fields retain
+        their types; stored translations are an optional edit-only include.
+      required:
+      - id
+      - shortname
+      - is_umbrella
+      - name
+      - display_name
+      - display_shortname
+      - archive_domain
+      - workflow_state
+      - publication_date
+      - available_locales
+      - default_locale
+      - introduction
+      - logo
+      - favicon_url
+      - grant_access_without_login
+      - grant_project_access_instantly
+      - domain
+      - more_text
+      - primary_color
+      - secondary_color
+      - editorial_color
+      - has_map
+      - is_catalog
+      - has_newsletter
+      - display_ohd_link
+      - oai_doi_identifier
+      - contact_email
+      - aspect_x
+      - aspect_y
+      - archive_id_number_length
+      - fullname_on_landing_page
+      - show_preview_img
+      - show_legend
+      - view_modes
+      - upload_types
+      - logged_out_visible_registry_entry_ids
+      - hidden_registry_entry_ids
+      - hidden_transcript_registry_entry_ids
+      - pdf_registry_entry_ids
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        shortname:
+          type: string
+          description: Project identifier used by UI routes
+        is_umbrella:
+          type: boolean
+        name:
+          type:
+          - string
+          - 'null'
+        display_name:
+          type:
+          - string
+          - 'null'
+        display_shortname:
+          type:
+          - string
+          - 'null'
+          description: Optional label, independent of the routing shortname
+        archive_domain:
+          type:
+          - string
+          - 'null'
+          description: Dedicated archive domain; blank stored values become null
+        workflow_state:
+          type: string
+          enum:
+          - public
+          - unshared
+        publication_date:
+          type:
+          - string
+          - 'null'
+          description: Stored publication label; not an ISO date value
+        available_locales:
+          type: array
+          items:
+            type: string
+          description: Locales available for the project (ISO 639-1 language codes)
+        default_locale:
+          type:
+          - string
+          - 'null'
+          description: Default locale for the project (ISO 639-1 language code); null
+            if no default is set
+        introduction:
+          type:
+          - string
+          - 'null'
+          description: Localized rich text; consumers must sanitize before rendering
+            HTML
+        logo:
+          type:
+          - object
+          - 'null'
+          additionalProperties: false
+          description: |
+            Logo for the requested locale, then the project default locale, then
+            the first logo by ID. Null if the selected logo has no attachment.
+          required:
+          - id
+          - url
+          properties:
+            id:
+              type: integer
+              minimum: 1
+            url:
+              type: string
+              description: Relative attachment URL
+        favicon_url:
+          type:
+          - string
+          - 'null'
+          description: Relative attachment URL, or null when no favicon is attached
+        grant_access_without_login:
+          type: boolean
+          description: Whether project access is granted without login; unset means
+            false
+        grant_project_access_instantly:
+          type: boolean
+          description: Whether logged-in users receive project access immediately;
+            unset means false
+        interview_counts:
+          "$ref": "#/components/schemas/InterviewCounts"
+        collection_counts:
+          "$ref": "#/components/schemas/CollectionCounts"
+        institutions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectInstitution"
+        interview_languages:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+          description: Sorted language codes such as eng, from public/restricted/unshared
+            interviews in public projects; other project states return an empty array
+        collection_preview:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CollectionPreview"
+        domain:
+          type:
+          - string
+          - 'null'
+        more_text:
+          type:
+          - string
+          - 'null'
+          description: Localized rich text; sanitize before rendering HTML
+        primary_color:
+          type:
+          - string
+          - 'null'
+        secondary_color:
+          type:
+          - string
+          - 'null'
+        editorial_color:
+          type:
+          - string
+          - 'null'
+        has_map:
+          type: boolean
+        is_catalog:
+          type: boolean
+        has_newsletter:
+          type: boolean
+        display_ohd_link:
+          type: boolean
+        oai_doi_identifier:
+          type:
+          - string
+          - 'null'
+          description: DOI URL only when doi_status is created; otherwise null
+        contact_email:
+          type:
+          - string
+          - 'null'
+        aspect_x:
+          type:
+          - integer
+          - 'null'
+        aspect_y:
+          type:
+          - integer
+          - 'null'
+        archive_id_number_length:
+          type:
+          - integer
+          - 'null'
+        fullname_on_landing_page:
+          type: boolean
+        show_preview_img:
+          type: boolean
+        show_legend:
+          type: boolean
+        view_modes:
+          type: array
+          items:
+            type: string
+        upload_types:
+          type: array
+          items:
+            type: string
+        logged_out_visible_registry_entry_ids:
+          type: array
+          items:
+            type: string
+        hidden_registry_entry_ids:
+          type: array
+          items:
+            type: string
+        hidden_transcript_registry_entry_ids:
+          type: array
+          items:
+            type: string
+        pdf_registry_entry_ids:
+          type: array
+          items:
+            type: string
+        translations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectTranslation"
+      title: ProjectEdit
     ProjectInstitution:
       type: object
       additionalProperties: false
@@ -776,4 +1018,54 @@ components:
           items:
             "$ref": "#/components/schemas/CollectionPreview"
       title: ProjectSummary
+    ProjectTranslation:
+      type: object
+      additionalProperties: false
+      description: Stored translation values without fallback or HTML sanitization;
+        sanitize rich text before rendering.
+      required:
+      - id
+      - locale
+      - name
+      - display_name
+      - introduction
+      - more_text
+      - landing_page_text
+      - restricted_landing_page_text
+      - media_missing_text
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        locale:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        display_name:
+          type:
+          - string
+          - 'null'
+        introduction:
+          type:
+          - string
+          - 'null'
+        more_text:
+          type:
+          - string
+          - 'null'
+        landing_page_text:
+          type:
+          - string
+          - 'null'
+        restricted_landing_page_text:
+          type:
+          - string
+          - 'null'
+        media_missing_text:
+          type:
+          - string
+          - 'null'
+      title: ProjectTranslation
 security: []

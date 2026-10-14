@@ -131,9 +131,45 @@ module ApiContract
       )
     end
 
+    class ProjectTranslation
+      include OpenapiRuby::Components::Base
+      schema(
+        type: :object, additionalProperties: false,
+        description: 'Stored translation values without fallback or HTML sanitization; sanitize rich text before rendering.',
+        required: %w[id locale name display_name introduction more_text landing_page_text restricted_landing_page_text media_missing_text],
+        properties: {
+          id: { type: :integer, minimum: 1 },
+          locale: { type: :string },
+          **%i[name display_name introduction more_text landing_page_text restricted_landing_page_text media_missing_text]
+            .to_h { |field| [field, { type: %w[string null] }] },
+        },
+      )
+    end
+
+    class ProjectEdit < ProjectDisplay
+      schema(
+        description: 'Project settings requiring update permission. Display fields retain their types; stored translations are an optional edit-only include.',
+        required: %w[contact_email aspect_x aspect_y archive_id_number_length fullname_on_landing_page show_preview_img show_legend
+          view_modes upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids],
+        properties: {
+          contact_email: { type: %w[string null] },
+          aspect_x: { type: %w[integer null] },
+          aspect_y: { type: %w[integer null] },
+          archive_id_number_length: { type: %w[integer null] },
+          fullname_on_landing_page: { type: :boolean },
+          show_preview_img: { type: :boolean },
+          show_legend: { type: :boolean },
+          **%i[view_modes upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids]
+            .to_h { |field| [field, { type: :array, items: { type: :string } }] },
+          translations: { type: :array, items: ProjectTranslation },
+        },
+      )
+    end
+
     class ProjectDetailResponse
       include OpenapiRuby::Components::Base
-      schema(type: :object, additionalProperties: false, required: %w[data], properties: { data: ProjectDisplay })
+      schema(type: :object, additionalProperties: false, required: %w[data],
+        properties: { data: { oneOf: [ProjectDisplay, ProjectEdit] } })
     end
 
     class ProjectReadErrorResponse
