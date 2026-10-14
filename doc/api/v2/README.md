@@ -4,6 +4,8 @@ For backend and frontend development, use [openapi.yaml](openapi.yaml) to look u
 the v2 API contract: parameters, defaults, response fields, nullability, pagination,
 and JSON errors. Existing UI routes and legacy API responses have separate contracts.
 
+To extend the API, follow [Add a v2 API endpoint](adding-endpoints.md).
+
 The YAML is generated output. Edit the Ruby definitions, then regenerate it:
 
 - [Global API information and generator configuration](../../../test/openapi_helper.rb)
