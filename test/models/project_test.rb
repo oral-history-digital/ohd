@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ProjectTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def setup
     @project = DataHelper.test_project(shortname: "prj#{SecureRandom.hex(2)}a")
 
@@ -50,6 +52,20 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal 0, @parent_institution.reload.interviews_count
     assert_operator @child_institution.updated_at, :>, 1.day.ago
     assert_operator @parent_institution.updated_at, :>, 1.day.ago
+  end
+
+  test "workflow_state changes enqueue reindexing only for this project" do
+    %w(unshared public).each do |state|
+      assert_enqueued_with(job: ReindexJob, args: [{ project_id: @project.id }]) do
+        @project.update!(workflow_state: state)
+      end
+    end
+  end
+
+  test "unrelated project updates do not enqueue reindexing" do
+    assert_no_enqueued_jobs(only: ReindexJob) do
+      @project.update!(display_shortname: 'Updated archive')
+    end
   end
 
   test "limits display shortname to the database column length" do
