@@ -104,6 +104,8 @@ class RegistrationTest < ApplicationSystemTestCase
 
   test "registration confirmation email uses UI locale" do
     email = "locale-check-#{SecureRandom.hex(4)}@example.com"
+    Project.find_by!(shortname: 'test').update!(available_locales: ['en', 'de'])
+    Rails.cache.clear
 
     fill_registration_form(
       first_name: 'Mario',

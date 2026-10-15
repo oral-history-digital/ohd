@@ -15,6 +15,9 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require "#{Rails.root}/test/data_helper.rb"
 
+# Initialize authentication mappings before a test's first request can be a sign-in POST.
+Rails.application.reload_routes! if Devise.mappings.empty?
+
 if ENV['RETRY'] == 'true'
   require 'minitest/retry'
   Minitest::Retry.use!
@@ -103,22 +106,23 @@ class ActiveSupport::TestCase
     self.is_a?(::ApplicationSystemTestCase)
   end
 
+  # Registers through locale-independent field IDs and checks the localized confirmation.
   def fill_registration_form(first_name:, last_name:, email:, password: 'Password123!', passkey_required: false, otp_required: false, locale: 'en')
     visit "/#{locale}/register"
-    fill_in 'First Name', with: first_name
-    fill_in 'Last Name', with: last_name
-    select 'Germany'
-    fill_in 'Street', with: 'Am Dornbusch 13'
-    fill_in 'City', with: 'Frankfurt am Main'
-    fill_in 'Email', with: email
-    fill_in 'Password', name: 'password', with: password
-    fill_in 'Password confirmation', with: password
+    fill_in 'user_first_name', with: first_name
+    fill_in 'user_last_name', with: last_name
+    find('#user_country option[value="DE"]').select_option
+    fill_in 'user_street', with: 'Am Dornbusch 13'
+    fill_in 'user_city', with: 'Frankfurt am Main'
+    fill_in 'user_email', with: email
+    fill_in 'user_password', with: password
+    fill_in 'user_password_confirmation', with: password
     check "user_passkey_required_for_login", visible: :all if passkey_required
     check "user_otp_required_for_login", visible: :all if otp_required
-    check 'Terms of Use', visible: :all
-    check 'Privacy Policy', visible: :all
-    click_on 'Submit registration'
-    assert_text 'Your registration has been successfully submitted!'
+    check 'user_tos_agreement', visible: :all
+    check 'user_priv_agreement', visible: :all
+    click_on TranslationValue.for('user.register', locale)
+    assert_text TranslationValue.for('devise.registrations.signed_up', locale)
   end
 
   def confirm_registration_email
