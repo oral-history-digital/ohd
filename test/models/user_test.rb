@@ -2,6 +2,22 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
 
+  test 'email OTP is stored as a hash and only accepts the matching unexpired code' do
+    user = User.find_by!(email: 'john@example.com')
+    code = user.generate_email_otp!
+    user.reload
+
+    assert_match(/\A\d{6}\z/, code)
+    assert_not_equal code, user.email_otp_secret
+    assert user.verify_email_otp(code)
+    wrong_code = ((code.to_i + 1) % 1_000_000).to_s.rjust(6, '0')
+    assert_not user.verify_email_otp(wrong_code)
+
+    travel_to(user.email_otp_sent_at + User::EMAIL_OTP_VALID_FOR + 1.second) do
+      assert_not user.verify_email_otp(code)
+    end
+  end
+
   test 'can change password with all possible special signs' do
     user = User.find_by!(email: 'john@example.com')
     assert user.valid?

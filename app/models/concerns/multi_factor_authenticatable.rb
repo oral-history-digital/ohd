@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 module MultiFactorAuthenticatable
   extend ActiveSupport::Concern
 
