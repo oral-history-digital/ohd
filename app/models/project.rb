@@ -87,6 +87,10 @@ class Project < ApplicationRecord
   after_commit :refresh_related_institutions_on_workflow_state_change,
     if: :saved_change_to_workflow_state?
 
+  after_update_commit if: :saved_change_to_workflow_state? do
+    ReindexJob.perform_later(project_id: id)
+  end
+
   #
   # define pseudo-methods for serialized attributes
   #
