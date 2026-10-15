@@ -111,7 +111,7 @@ class SessionsController < Devise::SessionsController
     user = User.find_by(id: session[:otp_user_id])
     if user
       user.send_new_otp_code(@locale)
-      flash.now[:notice] = tv("sent_otp_per_mail")
+      flash.now[:success] = tv("sent_otp_per_mail")
       render :otp
     else
       redirect_to new_user_session_path, alert: tv("devise.failure.unauthenticated")
