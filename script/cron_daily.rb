@@ -13,7 +13,10 @@ class SimpleScriptLogger
   end
 
   def log(msg)
-    system "echo '[#{Time.now.strftime('%d.%m.%Y %H:%M')}]#{msg.gsub("'","")}' >> #{LOG_FILE}"
+    # Use File.open instead of shell command to prevent injection
+    File.open(LOG_FILE, 'a') do |f|
+      f.puts "[#{Time.now.strftime('%d.%m.%Y %H:%M')}]#{msg}"
+    end
     puts msg
   end
 

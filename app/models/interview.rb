@@ -565,7 +565,7 @@ class Interview < ApplicationRecord
     heading_count = segments
       .with_heading
       .joins(:translations)
-      .where("segment_translations.locale = '#{locale}-public' OR segment_translations.locale = '#{locale}'")
+      .where("segment_translations.locale = ? OR segment_translations.locale = ?", "#{locale}-public", locale)
       .count
     heading_count > 0
   end
@@ -865,11 +865,11 @@ class Interview < ApplicationRecord
         end
 
         {
-          all_interviews_titles: search.hits.map{|hit| eval hit.stored(:title)},
+          all_interviews_titles: search.hits.map{|hit| JSON.parse(hit.stored(:title).gsub('=>', ':'))},
           # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
           #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
           #    ...]
-          all_interviews_pseudonyms: search.hits.map{|hit| eval hit.stored(:alias_names)}
+          all_interviews_pseudonyms: search.hits.map{|hit| JSON.parse(hit.stored(:alias_names).gsub('=>', ':'))}
         }
       end
     end

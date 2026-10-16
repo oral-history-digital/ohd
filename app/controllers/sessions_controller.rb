@@ -33,7 +33,10 @@ class SessionsController < Devise::SessionsController
         super
       else
         project = Project.by_domain(request.base_url)
-        redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{project.shortname}&path=#{path}"
+        # Sanitize project shortname to prevent injection
+        safe_shortname = ERB::Util.url_encode(project.shortname) if project
+        safe_path = ERB::Util.url_encode(path.to_s)
+        redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{safe_shortname}&path=#{safe_path}"
       end
     end
   end
