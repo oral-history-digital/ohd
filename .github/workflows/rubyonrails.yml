@@ -30,6 +30,52 @@ jobs:
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
 
+  secret_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so the base commit of the range exists
+
+      - name: Install gitleaks (pinned, checksum verified)
+        env:
+          GITLEAKS_VERSION: 8.28.0
+        run: |
+          archive="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
+          curl -sSfL -o "$archive" "$base/$archive"
+          curl -sSfL -o checksums.txt "$base/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          grep " $archive\$" checksums.txt | sha256sum -c -
+          tar -xzf "$archive" gitleaks
+          sudo install gitleaks /usr/local/bin/gitleaks
+
+      - name: Scan commits in this push or pull request
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_HEAD: ${{ github.sha }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            base="$PR_BASE"; head="$PR_HEAD"
+          else
+            base="$PUSH_BEFORE"; head="$PUSH_HEAD"
+          fi
+          # New branches report an all-zero "before" sha. Scan everything the branch
+          # adds on top of the default branch, not just the tip commit.
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+            git cat-file -e "origin/$DEFAULT_BRANCH^{commit}" || { echo "origin/$DEFAULT_BRANCH not found"; exit 1; }
+            range="$head --not origin/$DEFAULT_BRANCH"
+          else
+            # Fail rather than silently scan nothing if the base commit is unavailable.
+            git cat-file -e "$base^{commit}" || { echo "base commit $base not found"; exit 1; }
+            range="$base..$head"
+          fi
+          gitleaks git --log-opts="$range" --redact --exit-code 1 --config .gitleaks.toml
+
   test:
     runs-on: ubuntu-latest
     env:
