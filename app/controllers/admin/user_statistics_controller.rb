@@ -34,21 +34,31 @@ class Admin::UserStatisticsController < Admin::BaseController
     filename = params['filename']
     
     # Validate filename to prevent directory traversal
-    unless filename =~ /\A[a-zA-Z0-9_\-]+\.csv\z/
+    unless filename.present? && filename =~ /\A[a-zA-Z0-9_\-]+\.csv\z/
       head :bad_request
       return
     end
     
     response.headers['Cache-Control'] = 'no-store'
-    @file = File.join(UsageReport.report_file_path, filename)
+    
+    # Use the validated report_file_path method
+    begin
+      @file = UsageReport.report_file_path(filename)
+    rescue ArgumentError
+      head :bad_request
+      return
+    end
     
     # Ensure the file exists and is within the expected directory
-    unless File.exist?(@file) && File.expand_path(@file).start_with?(File.expand_path(UsageReport.report_file_path))
+    base_dir = File.expand_path(UsageReport.report_file_path)
+    file_path = File.expand_path(@file)
+    
+    unless File.exist?(file_path) && file_path.start_with?(base_dir) && File.file?(file_path)
       head :not_found
       return
     end
     
-    send_file @file, :disposition => 'inline', :type => 'text/csv'
+    send_file file_path, :disposition => 'inline', :type => 'text/csv'
   end
 
   private

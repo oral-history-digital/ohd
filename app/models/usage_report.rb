@@ -403,9 +403,21 @@ class UsageReport < ApplicationRecord
 
   def self.save_report_file(name, data)
     require 'fileutils'
+    
+    # Validate filename to prevent directory traversal
+    unless name =~ /\A[a-zA-Z0-9_\-]+\.csv\z/
+      raise ArgumentError, "Invalid filename format"
+    end
+    
     dir = UsageReport.report_file_path
     FileUtils.mkdir(dir) unless File.directory?(dir)
     filename = File.join(dir, name)
+    
+    # Ensure the file is within the expected directory
+    unless File.expand_path(filename).start_with?(File.expand_path(dir))
+      raise ArgumentError, "Invalid file path"
+    end
+    
     FileUtils.rm(filename) if File.exist?(filename)
     File.open(filename, 'w') do |file|
       data.each do |rec|
@@ -415,6 +427,11 @@ class UsageReport < ApplicationRecord
   end
 
   def self.report_file_path(name=nil)
+    # Validate name if provided to prevent directory traversal
+    if name.present? && name !~ /\A[a-zA-Z0-9_\-]+\.csv\z/
+      raise ArgumentError, "Invalid filename format"
+    end
+    
     File.join([Rails.root, 'assets', 'reports', name].compact)
   end
 
