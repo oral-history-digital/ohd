@@ -14,12 +14,19 @@ class ConfirmationsController < Devise::ConfirmationsController
 
   protected
 
+  # Returns a trusted confirmation destination, preserving only search sorting.
+  # Authentication tokens, redirect parameters, and fragments are not forwarded.
+  #
+  # @param resource_name [Symbol, String] Devise resource scope
+  # @param resource [User] Confirmed account with its originating URL and locale
+  # @return [String] Sanitized destination or the account locale's homepage
   def after_confirmation_path_for(resource_name, resource)
     fallback_path = "/#{resource.default_locale || I18n.default_locale}"
     return fallback_path if resource.pre_register_location.blank?
 
     uri = URI.parse(resource.pre_register_location)
-    return fallback_path if uri.scheme.present? && !%w[http https].include?(uri.scheme)
+    return fallback_path if uri.scheme && (!%w[http https].include?(uri.scheme) || uri.host.blank?)
+    return fallback_path if uri.userinfo.present?
 
     # Allow absolute redirects only for trusted tenant hosts.
     if uri.host.present? && !trusted_redirect_host?(uri.host)
@@ -28,6 +35,9 @@ class ConfirmationsController < Devise::ConfirmationsController
 
     # Require an absolute-path component to block malformed or scheme-only URLs.
     return fallback_path if uri.path.blank? || !uri.path.start_with?('/')
+
+    # Reject malformed nested parameters before selecting scalar sorting values.
+    Rack::Utils.parse_nested_query(uri.query)
 
     # Preserve search sorting without forwarding tokens or redirect parameters.
     query = if uri.path.end_with?('/searches/archive')
@@ -41,7 +51,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     uri.fragment = nil
 
     uri.host.present? ? uri.to_s : [uri.path, uri.query].compact.join('?')
-  rescue URI::InvalidURIError, ArgumentError
+  rescue URI::InvalidURIError, Rack::QueryParser::ParameterTypeError, Rack::QueryParser::QueryLimitError, ArgumentError
     fallback_path
   end 
 
