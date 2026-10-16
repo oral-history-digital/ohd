@@ -1,0 +1,22 @@
+title = "ohd gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Vendored third-party code, build output, generated files, and documented placeholders"
+paths = [
+  '''(^|/)vendor/''',
+  '''(^|/)node_modules/''',
+  '''^storage/''',
+  '''^coverage/''',
+  '''^tmp/''',
+  '''^log/''',
+  '''^solr/''',
+  '''^public/(packs|packs-test|assets)/''',
+  '''^\.aider''',
+  '''\.(textile|lock)$''',
+]
+regexes = [
+  '''YOUR_(USERNAME|PASSWORD)''',
+]
