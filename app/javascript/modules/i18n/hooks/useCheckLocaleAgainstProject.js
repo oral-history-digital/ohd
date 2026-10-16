@@ -34,7 +34,8 @@ export function useCheckLocaleAgainstProject() {
         // Allow account and legal pages independently of the current project's locales.
         // TODO: Remove this exception when all locales are present
         const password = location.pathname.match(/\/password\//);
-        const confirmation = location.pathname.match(/\/confirmation\?/);
+        const confirmation = location.pathname.match(/\/confirmation\/?$/);
+        const registration = location.pathname.match(/\/register\/?$/);
         const conditions = location.pathname.match(/\/conditions$/);
         const privacy_protection = location.pathname.match(
             /\/privacy_protection$/
@@ -45,7 +46,8 @@ export function useCheckLocaleAgainstProject() {
             password ||
             conditions ||
             privacy_protection ||
-            confirmation
+            confirmation ||
+            registration
         ) {
             setStateLocaleIfNecessary(localeFromPath);
         } else {

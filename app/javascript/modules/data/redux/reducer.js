@@ -7,12 +7,15 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
+import { reduceProjectRecords } from './projectReducer';
 
 const initialState = {
     users: {
         current: null,
     },
     projects: {},
+    projectRequests: {},
+    projectRepresentations: {},
     instance_settings: null,
     statuses: {
         users: { resultPagesCount: 1 },
@@ -43,6 +46,14 @@ const initialState = {
 };
 
 export const dataReducer = (state = initialState, action) => {
+    // Save project request progress alongside the usual data and loading updates.
+    if (action.projectRequest) {
+        const { key, ...request } = action.projectRequest;
+        state = {
+            ...state,
+            projectRequests: { ...state.projectRequests, [key]: request },
+        };
+    }
     switch (action.type) {
         case REPLACE_INSTANCE_SETTINGS:
             return { ...state, instance_settings: action.data };
@@ -376,6 +387,7 @@ export const dataReducer = (state = initialState, action) => {
                                 : action.data,
                         }
                     ),
+                    ...reduceProjectRecords(state, action),
                 });
             } else if (action.extraParams) {
                 let statuses = updateStatus(state.statuses, action.dataType, {
@@ -397,6 +409,7 @@ export const dataReducer = (state = initialState, action) => {
                                   state[action.dataType],
                                   action.data
                               ),
+                    ...reduceProjectRecords(state, action),
                 });
             } else if (action.dataType) {
                 let statuses = updateStatus(state.statuses, action.dataType, {

@@ -22,14 +22,21 @@ const Item = AdminMenu.Item;
 // Project rows in archive admin come from lightweight list payload.
 // When editing a project, fetch the full payload for that single project only.
 function ProjectEditContent({ data, form }) {
+    const { t } = useI18n();
     const {
         project: fullProject,
-        loading,
+        error,
         mutate: mutateProject,
     } = useGetProject({ id: data?.id });
 
-    if (loading && !fullProject) {
-        return <Spinner withPadding />;
+    if (!fullProject) {
+        return error ? (
+            <p role="alert">
+                {t('error')}: {error.message}
+            </p>
+        ) : (
+            <Spinner withPadding />
+        );
     }
 
     // Callback to refresh project data after successful form submission
@@ -37,7 +44,7 @@ function ProjectEditContent({ data, form }) {
         mutateProject();
     };
 
-    return form(fullProject || data, onSubmit);
+    return form(fullProject, onSubmit);
 }
 
 export default function AdminRecord({

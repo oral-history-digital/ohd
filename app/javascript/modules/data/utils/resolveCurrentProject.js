@@ -1,3 +1,5 @@
+import { findProjectByDomain } from 'modules/routes/domainUtils';
+
 import { normalizeProjectDbId, normalizeShortname } from './normalizeIds';
 
 /**
@@ -35,9 +37,7 @@ export function resolveCurrentProject({
 
     // Then try to resolve from domain
     if (!normalizedRouteShortname && domainOrigin) {
-        const domainProject = projectList.find(
-            (project) => project.archive_domain === domainOrigin
-        );
+        const domainProject = findProjectByDomain(projects, domainOrigin);
 
         if (domainProject) {
             return {
