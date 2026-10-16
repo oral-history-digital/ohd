@@ -6,6 +6,11 @@ class Api::V2::ProjectListCachingTest < ActionDispatch::IntegrationTest
   include ApiSchemaAssertions
 
   setup do
+    # These fixtures and translation edits use English, regardless of test order.
+    @previous_locale = I18n.locale
+    @previous_globalize_locale = Globalize.locale
+    I18n.locale = :en
+    Globalize.locale = :en
     @previous_cache = Rails.cache
     Rails.cache = ActiveSupport::Cache::MemoryStore.new
     host! 'test.portal.oral-history.localhost:47001'
@@ -23,6 +28,8 @@ class Api::V2::ProjectListCachingTest < ActionDispatch::IntegrationTest
 
   teardown do
     Rails.cache = @previous_cache
+    I18n.locale = @previous_locale
+    Globalize.locale = @previous_globalize_locale
   end
 
   test 'normalized requests share cache entries and hits skip metrics and serialization' do
