@@ -14,6 +14,18 @@ module Archive
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.load_defaults "8.1"
+    # 8.1 defaults drop the implicit YAML coder for `serialize`. Existing columns
+    # are stored as YAML, so keep that explicitly to avoid changing their format.
+    config.active_record.default_column_serializer = ActiveRecord::Coders::YAMLColumn
+    # The app keeps optional `belongs_to` associations (see the initializer). Set
+    # here rather than in an initializer: the 8.1 defaults above would otherwise win.
+    config.active_record.belongs_to_required_by_default = false
+    # Sign-in intentionally redirects to archive domains on other hosts. Log instead
+    # of raising (the 7.0 default) so those flows keep working; the redirect sites
+    # should get explicit `allow_other_host: true` in a follow-up.
+    config.action_controller.action_on_open_redirect = :log
+
     config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']
     config.active_storage.variant_processor = :mini_magick
 
@@ -55,7 +67,6 @@ module Archive
 
     config.action_dispatch.cookies_serializer = :hybrid
     config.active_support.cache_format_version = 7.0
-    config.active_support.to_time_preserves_timezone = :zone
 
     # Remove default X-Frame-Options
     config.action_dispatch.default_headers.delete('X-Frame-Options')
