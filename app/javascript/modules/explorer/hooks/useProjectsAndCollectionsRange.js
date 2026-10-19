@@ -1,7 +1,21 @@
 import { useMemo } from 'react';
 
-const defaultGetCount = (item) => item.collections?.total ?? 0;
+/**
+ * Reads a project's total collection count, treating an omitted count as zero.
+ *
+ * @param {Object} item - Project summary.
+ * @returns {number} Total number of collections.
+ */
+const defaultGetCount = (item) => item.collection_counts?.total ?? 0;
 
+/**
+ * Finds the collection-count range for the project list and its sidebar filter.
+ *
+ * @param {Object} options - Items and optional custom count reader.
+ * @param {Object[]} options.items - Project summaries.
+ * @param {function(Object): number} [options.getCount=defaultGetCount] - Reads a count from each item.
+ * @returns {{globalCollectionMin: number, globalCollectionMax: number}} Range, or zeros for an empty list.
+ */
 export function useProjectsAndCollectionsRange({
     items,
     getCount = defaultGetCount,
