@@ -108,6 +108,13 @@ class Api::V2::ProjectDetailTest < ActionDispatch::IntegrationTest
     assert_nil read_detail['data']['more_text']
   end
 
+  test 'public preview image settings refresh cached details and normalize legacy null values' do
+    [true, false, nil].each do |stored_value|
+      @project.update_column(:show_preview_img, stored_value)
+      assert_equal stored_value == true, read_detail['data']['show_preview_img']
+    end
+  end
+
   test 'detail-only fields refresh cached responses and boolean fields never return null' do
     assert_nil read_detail['data']['oai_doi_identifier']
     @project.update_columns(primary_color: '#654321', doi_status: 'created', has_map: nil,

@@ -135,7 +135,7 @@ module ApiContract
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
-        required: %w[domain more_text primary_color secondary_color editorial_color has_map is_catalog has_newsletter display_ohd_link oai_doi_identifier],
+        required: %w[domain more_text primary_color secondary_color editorial_color has_map is_catalog has_newsletter display_ohd_link show_preview_img oai_doi_identifier],
         properties: {
           domain: { type: %w[string null] },
           more_text: { type: %w[string null], description: 'Localized rich text; sanitize before rendering HTML' },
@@ -146,6 +146,7 @@ module ApiContract
           is_catalog: { type: :boolean },
           has_newsletter: { type: :boolean },
           display_ohd_link: { type: :boolean },
+          show_preview_img: { type: :boolean, description: 'Show interview preview images even without project access' },
           oai_doi_identifier: { type: %w[string null], description: 'DOI URL only when doi_status is created; otherwise null' },
           media_types: {
             type: :object, additionalProperties: false, required: %w[audio video],
@@ -183,7 +184,7 @@ module ApiContract
     class ProjectEdit < ProjectDisplay
       schema(
         description: 'Project settings requiring update permission. Display fields retain their types; stored translations are an optional edit-only include.',
-        required: %w[contact_email aspect_x aspect_y archive_id_number_length fullname_on_landing_page show_preview_img show_legend
+        required: %w[contact_email aspect_x aspect_y archive_id_number_length fullname_on_landing_page show_legend
           view_modes upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids],
         properties: {
           contact_email: { type: %w[string null] },
@@ -191,7 +192,6 @@ module ApiContract
           aspect_y: { type: %w[integer null] },
           archive_id_number_length: { type: %w[integer null] },
           fullname_on_landing_page: { type: :boolean },
-          show_preview_img: { type: :boolean },
           show_legend: { type: :boolean },
           **%i[view_modes upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids]
             .to_h { |field| [field, { type: :array, items: { type: :string } }] },

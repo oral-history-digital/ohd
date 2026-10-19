@@ -3,7 +3,7 @@ module Api
     # Display details extend the summary contract and share its optional includes.
     class ProjectDisplaySerializer < ProjectListSerializer
       attributes :domain, :more_text, :primary_color, :secondary_color, :editorial_color,
-        :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :oai_doi_identifier
+        :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :show_preview_img, :oai_doi_identifier
 
       attribute :media_types, if: :include_media_types?
       attribute :interview_year_range, if: :include_year_ranges?
@@ -62,7 +62,7 @@ module Api
         localized_value(object, :more_text)
       end
 
-      %i[has_map is_catalog has_newsletter display_ohd_link].each do |attribute|
+      %i[has_map is_catalog has_newsletter display_ohd_link show_preview_img].each do |attribute|
         define_method(attribute) { object.public_send("#{attribute}?") }
       end
 
