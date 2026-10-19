@@ -8,6 +8,7 @@ import {
     UPDATE_DATA,
 } from './action-types';
 import { reduceProjectRecords } from './projectReducer';
+import { reduceV2Projects } from './v2ProjectReducer';
 
 const initialState = {
     users: {
@@ -45,7 +46,19 @@ const initialState = {
     },
 };
 
+/**
+ * Updates cached entities and request status. Routes v2 project actions to their
+ * own state branch while preserving the existing legacy data flow.
+ *
+ * @param {Object} [state=initialState] - Data branch of the Redux store.
+ * @param {Object} action - Request, response, mutation, or access-change action.
+ * @returns {Object} Updated data state, or the same object for ignored actions.
+ */
 export const dataReducer = (state = initialState, action) => {
+    const v2Projects = reduceV2Projects(state.v2?.projects, action);
+    if (v2Projects !== state.v2?.projects)
+        state = { ...state, v2: { ...state.v2, projects: v2Projects } };
+    if (action.apiVersion === 2) return state;
     // Save project request progress alongside the usual data and loading updates.
     if (action.projectRequest) {
         const { key, ...request } = action.projectRequest;

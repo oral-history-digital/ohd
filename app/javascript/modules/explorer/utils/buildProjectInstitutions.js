@@ -1,8 +1,9 @@
 /**
- * Extracts a deduplicated, sorted list of institutions from all projects.
+ * Extracts institutions and parents from project summaries, keeping the first
+ * name for each ID. Missing names are retained and sorted as empty strings.
  *
- * @param {Array} projects
- * @returns {Array<{ id: number, name: string }>}
+ * @param {Object[]} projects - Project summaries with optional institution arrays.
+ * @returns {Array<{id: number, name: ?string}>} Unique institutions sorted by name.
  */
 export const buildProjectInstitutions = (projects) => {
     const seen = new Map();
@@ -23,5 +24,5 @@ export const buildProjectInstitutions = (projects) => {
 
     return Array.from(seen.entries())
         .map(([id, name]) => ({ id, name }))
-        .sort((a, b) => a.name.localeCompare(b.name));
+        .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 };
