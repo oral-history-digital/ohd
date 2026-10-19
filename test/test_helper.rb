@@ -12,6 +12,13 @@ if ENV['COVERAGE'] == 'true'
 end
 
 require File.expand_path('../../config/environment', __FILE__)
+
+# Routes are lazy-loaded in the test environment, and Devise only registers its
+# Warden default strategies for :user when routes are loaded. Without this, the
+# first sign-in POST of a process can be rejected with no strategy to run, and
+# which test hits it depends on random order. Load routes before any test runs.
+Rails.application.reload_routes_unless_loaded
+
 require 'rails/test_help'
 require "#{Rails.root}/test/data_helper.rb"
 
