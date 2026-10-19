@@ -485,6 +485,7 @@ components:
       - is_catalog
       - has_newsletter
       - display_ohd_link
+      - show_preview_img
       - oai_doi_identifier
       properties:
         id:
@@ -619,6 +620,9 @@ components:
           type: boolean
         display_ohd_link:
           type: boolean
+        show_preview_img:
+          type: boolean
+          description: Show interview preview images even without project access
         oai_doi_identifier:
           type:
           - string
@@ -709,13 +713,13 @@ components:
       - is_catalog
       - has_newsletter
       - display_ohd_link
+      - show_preview_img
       - oai_doi_identifier
       - contact_email
       - aspect_x
       - aspect_y
       - archive_id_number_length
       - fullname_on_landing_page
-      - show_preview_img
       - show_legend
       - view_modes
       - upload_types
@@ -856,6 +860,9 @@ components:
           type: boolean
         display_ohd_link:
           type: boolean
+        show_preview_img:
+          type: boolean
+          description: Show interview preview images even without project access
         oai_doi_identifier:
           type:
           - string
@@ -931,8 +938,6 @@ components:
           - integer
           - 'null'
         fullname_on_landing_page:
-          type: boolean
-        show_preview_img:
           type: boolean
         show_legend:
           type: boolean
