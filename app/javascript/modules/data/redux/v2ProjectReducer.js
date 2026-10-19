@@ -13,9 +13,16 @@ const localizedFields = [
     'name',
     'display_name',
     'introduction',
+    'more_text',
     'logo',
     'institutions',
     'collection_preview',
+    'subjects',
+    'levels_of_indexing',
+    'cooperation_partners',
+    'leaders',
+    'managers',
+    'funders',
 ];
 const relatedResources = [
     'projects',
@@ -32,6 +39,19 @@ const relatedResources = [
     'user_projects',
     'role_permissions',
     'instance_settings',
+    'affiliates',
+    'cooperation_partners',
+    'leaders',
+    'managers',
+    'funders',
+    'people',
+    'contributions',
+    'contribution_types',
+    'registry_entries',
+    'registry_names',
+    'registry_name_types',
+    'registry_hierarchies',
+    'registry_references',
 ];
 
 /**
@@ -40,7 +60,7 @@ const relatedResources = [
  * @property {Object} translations - Display values by project ID and requested locale (may use
  * fallback locale); stored translation records are reserved for a later editor migration.
  * @property {Object<string, Object>} lists - Ordered IDs and pagination by request key.
- * @property {Object<string, Object>} requests - Status and error by request key.
+ * @property {Object<string, Object>} requests - Status/error by request key; detail results also retain the returned project ID.
  * @property {number} generation - Counter used to reject responses from before invalidation.
  * @property {?string} context - Access settings shared by the cached project data.
  */
@@ -64,7 +84,7 @@ function emptyProjects(generation = 0, context = null) {
 }
 
 /**
- * Stores v2 project lists without changing legacy project records.
+ * Stores project lists and details without changing legacy project records.
  * Merges received fields while preserving omitted fields and other locales.
  * Access changes and relevant mutations clear the cache and invalidate in-flight
  * responses. State is created only when the first v2 project request starts.
@@ -106,7 +126,11 @@ export function reduceV2Projects(state, action) {
             ...state,
             requests: {
                 ...state.requests,
-                [action.key]: { status: 'pending', error: null },
+                [action.key]: {
+                    ...state.requests[action.key],
+                    status: 'pending',
+                    error: null,
+                },
             },
         };
     }
@@ -128,7 +152,8 @@ export function reduceV2Projects(state, action) {
 
     const records = { ...state.records };
     const display = { ...state.translations.display };
-    for (const project of action.data.data) {
+    const received = action.single ? [action.data.data] : action.data.data;
+    for (const project of received) {
         const stable = {};
         const localized = {};
         for (const [field, value] of Object.entries(project))
@@ -147,16 +172,22 @@ export function reduceV2Projects(state, action) {
         ...state,
         records,
         translations: { ...state.translations, display },
-        lists: {
-            ...state.lists,
-            [action.key]: {
-                ids: action.data.data.map(({ id }) => id),
-                pagination: action.data.pagination,
-            },
-        },
+        lists: action.single
+            ? state.lists
+            : {
+                  ...state.lists,
+                  [action.key]: {
+                      ids: action.data.data.map(({ id }) => id),
+                      pagination: action.data.pagination,
+                  },
+              },
         requests: {
             ...state.requests,
-            [action.key]: { status: 'succeeded', error: null },
+            [action.key]: {
+                status: 'succeeded',
+                error: null,
+                ...(action.single ? { id: action.data.data.id } : {}),
+            },
         },
     };
 }

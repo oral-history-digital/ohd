@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { v2AccessContext, v2ListKey } from './v2Requests';
+import { v2AccessContext, v2RequestKey } from './v2Requests';
 
 /**
  * @typedef {Object} ProjectListOptions
@@ -79,7 +79,7 @@ export const makeProjectListSelector = () =>
             (_state, _url, locale) => locale,
         ],
         (projects, context, url, locale) => {
-            const key = v2ListKey(url, context, projects?.generation || 0);
+            const key = v2RequestKey(url, context, projects?.generation || 0);
             const matchesContext = projects?.context === context;
             const list = matchesContext ? projects.lists[key] : null;
             const request = matchesContext ? projects.requests[key] : null;
