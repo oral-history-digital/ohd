@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 6
+      REVISION = 7
 
       private
 
@@ -32,6 +32,10 @@ module Api
         if @includes.include?('registry_configuration')
           result[:registry_visibility] = fingerprint(@projects, :logged_out_visible_registry_entry_ids, :hidden_registry_entry_ids)
           result[:registry_roots] = fingerprint(RegistryEntry.where(project_id: @project_ids, code: 'root'), :project_id, :code)
+        end
+        if @includes.include?('playback')
+          result[:media_streams] = fingerprint(MediaStream.where(project_id: @project_ids), :project_id, :media_type, :resolution, :path)
+          result[:media_missing_text] = fingerprint(Project.translation_class.where(project_id: @project_ids), :project_id, :locale, :media_missing_text)
         end
         interviews = Interview.where(project_id: @project_ids)
         if (@includes & %w[media_types year_ranges]).any?

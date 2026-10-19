@@ -215,7 +215,7 @@ paths:
         in: query
         schema:
           type: string
-          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|translations)\\s*)*$"
+          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|translations)\\s*)*$"
         description: |
           Same optional fields as the list endpoint: counts adds interview_counts
           and collection_counts; other names add their matching fields. Defaults
@@ -241,6 +241,14 @@ paths:
           IDs in visibility arrays remain strings. These are UI settings, not
           authorization for registry records. Transcript visibility settings remain
           edit-only; existing edit settings are returned even without this include.
+          Playback adds media_streams ordered by ID (including still images) and
+          localized media_missing_text. Display streams contain id, media_type,
+          resolution and suffix only. Clients build URLs through the existing
+          media route; stream descriptors do not grant media or HLS-key access.
+          Edit adds path templates and additionally requires MediaStream update
+          permission. Missing streams return []; absent custom text returns null
+          so clients can use their standard message. Full stored message translations
+          remain available through the edit-only translations include.
           Media and year aggregates retain existing catalog rules: public projects
           include unshared interviews; other project states return zeros or null bounds.
           Requested empty data uses empty arrays, zero counts or null year bounds.
@@ -830,6 +838,16 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ProjectMetadataField"
+        media_streams:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectMediaStream"
+        media_missing_text:
+          type:
+          - string
+          - 'null'
+          description: Localized custom rich text; sanitize before rendering. Null
+            means use the standard UI message.
         root_registry_entry_id:
           type:
           - integer
@@ -1111,6 +1129,16 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ProjectEditableMetadataField"
+        media_streams:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectEditableMediaStream"
+        media_missing_text:
+          type:
+          - string
+          - 'null'
+          description: Localized custom rich text; sanitize before rendering. Null
+            means use the standard UI message.
         root_registry_entry_id:
           type:
           - integer
@@ -1350,6 +1378,37 @@ components:
           type: integer
           minimum: 1
       title: ProjectEditableAccessConfig
+    ProjectEditableMediaStream:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - media_type
+      - resolution
+      - suffix
+      - path
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        media_type:
+          type:
+          - string
+          - 'null'
+        resolution:
+          type:
+          - string
+          - 'null'
+        suffix:
+          type:
+          - string
+          - 'null'
+          description: File extension without a dot or query string; null if absent
+        path:
+          type:
+          - string
+          - 'null'
+      title: ProjectEditableMediaStream
     ProjectEditableMetadataField:
       type: object
       additionalProperties: false
@@ -1493,6 +1552,32 @@ components:
         pagination:
           "$ref": "#/components/schemas/Pagination"
       title: ProjectListResponse
+    ProjectMediaStream:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - media_type
+      - resolution
+      - suffix
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        media_type:
+          type:
+          - string
+          - 'null'
+        resolution:
+          type:
+          - string
+          - 'null'
+        suffix:
+          type:
+          - string
+          - 'null'
+          description: File extension without a dot or query string; null if absent
+      title: ProjectMediaStream
     ProjectMetadataField:
       type: object
       additionalProperties: false

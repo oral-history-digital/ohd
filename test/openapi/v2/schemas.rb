@@ -191,6 +191,23 @@ module ApiContract
       })
     end
 
+    # Playback descriptors contain no storage paths or media authorization tokens.
+    class ProjectMediaStream
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id media_type resolution suffix],
+        properties: {
+          id: { type: :integer, minimum: 1 },
+          media_type: { type: %w[string null] },
+          resolution: { type: %w[string null] },
+          suffix: { type: %w[string null], description: 'File extension without a dot or query string; null if absent' },
+        })
+    end
+
+    # Full path templates additionally require stream-update permission.
+    class ProjectEditableMediaStream < ProjectMediaStream
+      schema(required: %w[path], properties: { path: { type: %w[string null] } })
+    end
+
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
@@ -213,6 +230,8 @@ module ApiContract
           aspect_y: { type: %w[integer null] },
           access_config: ProjectAccessConfig,
           metadata_fields: { type: :array, items: ProjectMetadataField },
+          media_streams: { type: :array, items: ProjectMediaStream },
+          media_missing_text: { type: %w[string null], description: 'Localized custom rich text; sanitize before rendering. Null means use the standard UI message.' },
           root_registry_entry_id: { type: %w[integer null], description: 'Target project root entry, or null when absent' },
           **%i[logged_out_visible_registry_entry_ids hidden_registry_entry_ids]
             .to_h { |field| [field, { type: :array, items: { type: :string } }] },
@@ -264,6 +283,7 @@ module ApiContract
           translations: { type: :array, items: ProjectTranslation },
           access_config: ProjectEditableAccessConfig,
           metadata_fields: { type: :array, items: ProjectEditableMetadataField },
+          media_streams: { type: :array, items: ProjectEditableMediaStream },
         },
       )
     end
