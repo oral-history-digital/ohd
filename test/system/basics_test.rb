@@ -200,8 +200,7 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    sleep 1
-    click_on 'R., Mario'
+    click_on 'R., Mario', wait: 10
     assert_current_path %r{/interviews/#{interview.archive_id}}
     click_on 'About the interview'
 
@@ -254,10 +253,9 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    sleep 1
-    click_on 'R., Mario'
+    click_on 'R., Mario', wait: 10
 
-    row = find('.Segment', text: /My name is Mario Rossi/)
+    row = find('.Segment', text: /My name is Mario Rossi/, wait: 10)
     button = row.find("button[title='Bookmark segment']", visible: false)
     button.hover
     button.click
@@ -274,7 +272,6 @@ class BasicsTest < ApplicationSystemTestCase
     click_on 'Segments'
     assert_text 'interesting part'
     click_on 'Show segment'
-    sleep 1
     assert_text 'My name is Mario Rossi'
   end
 
@@ -292,7 +289,6 @@ class BasicsTest < ApplicationSystemTestCase
 
     within '.Sidebar' do
       click_on 'About the Person'
-      sleep 1
       click_on 'Edit'
     end
 
@@ -344,8 +340,7 @@ class BasicsTest < ApplicationSystemTestCase
     visit '/'
     login_as 'alice@example.com'
     click_on 'Search the archive'
-    sleep 1
-    click_on 'R., Mario'
+    click_on 'R., Mario', wait: 10
 
     click_test_id('toggle-edit-view-button')
     click_test_id('interview-tab-transcript')

@@ -81,6 +81,16 @@ class ActiveSupport::TestCase
     Capybara.reset_sessions!
     visit '/en/users/sign_in'
 
+    # A session still signed in on the server makes Devise redirect the sign-in
+    # page to the archive. Log out through the UI, then open the form again.
+    if page.has_no_selector?('input[name="user[email]"]', wait: 1)
+      visit '/'
+      click_on 'Account'
+      click_on 'Logout'
+      visit '/en/users/sign_in'
+    end
+
+    assert_selector 'input[name="user[email]"]', wait: 10
     fill_in 'user[email]', with: user_or_email
     fill_in 'user[password]', with: password
     click_on 'Login'

@@ -9,7 +9,6 @@ class RegistryTest < ApplicationSystemTestCase
 
   setup do
     login_as 'alice@example.com'
-    sleep 5
     click_on 'Editing interface'
     visit '/en/registry_entries'
   end
@@ -31,7 +30,6 @@ class RegistryTest < ApplicationSystemTestCase
 
     begin
       click_on 'Add new subentry'
-      sleep 2
       click_on 'Add index name'
 
       find('#registry_name', wait: 3)
@@ -106,7 +104,6 @@ class RegistryTest < ApplicationSystemTestCase
 
   test 'reopening a saved registry name should not add a new registry name' do
     click_on 'Add new subentry'
-    sleep 2
     click_on 'Add index name'
 
     find('#registry_name', wait: 3)
