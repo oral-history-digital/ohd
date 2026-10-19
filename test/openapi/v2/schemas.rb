@@ -305,6 +305,17 @@ module ApiContract
       })
     end
 
+    # Optional map configuration contains localized labels and JSON numeric bounds.
+    class ProjectMapSection
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false,
+        required: %w[id name order label corner1_lat corner1_lon corner2_lat corner2_lon], properties: {
+          id: { type: :integer, minimum: 1 }, name: { type: :string }, order: { type: :integer },
+          label: { type: %w[string null] },
+          **%i[corner1_lat corner1_lon corner2_lat corner2_lon].to_h { |field| [field, { type: :number }] },
+        })
+    end
+
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
@@ -330,6 +341,7 @@ module ApiContract
           media_streams: { type: :array, items: ProjectMediaStream },
           external_links: { type: :array, items: ProjectExternalLink },
           texts: { type: :array, items: ProjectText },
+          map_sections: { type: :array, items: ProjectMapSection },
           sponsor_logos: { type: :array, items: ProjectSponsorLogo },
           media_missing_text: { type: %w[string null], description: 'Localized custom rich text; sanitize before rendering. Null means use the standard UI message.' },
           root_registry_entry_id: { type: %w[integer null], description: 'Target project root entry, or null when absent' },

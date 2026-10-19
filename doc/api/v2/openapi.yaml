@@ -215,7 +215,7 @@ paths:
         in: query
         schema:
           type: string
-          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|branding|external_links|institution_projects|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|branding|external_links|institution_projects|translations)\\s*)*$"
+          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\\s*)*$"
         description: |
           Same optional fields as the list endpoint: counts adds interview_counts
           and collection_counts; other names add their matching fields. Defaults
@@ -284,6 +284,12 @@ paths:
           translations (id, locale, text), ordered by ID and preserving blanks and
           nulls without fallback. Project update permission authorizes page editing,
           matching existing text mutations. Sanitize rich text before rendering HTML.
+          Map_sections adds id, name, order, localized label, and numeric corner1_lat,
+          corner1_lon, corner2_lat and corner2_lon. Sections are ordered by configured
+          order ascending, then ID ascending. Labels use the standard display locale
+          fallback. Both profiles use the same display projection. No sections returns
+          []; clients apply their default bounds after the request finishes, rather
+          than interpreting omitted or still-loading data as empty configuration.
           Media and year aggregates retain existing catalog rules: public projects
           include unshared interviews; other project states return zeros or null bounds.
           Requested empty data uses empty arrays, zero counts or null year bounds.
@@ -913,6 +919,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ProjectText"
+        map_sections:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectMapSection"
         sponsor_logos:
           type: array
           items:
@@ -1216,6 +1226,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ProjectEditableText"
+        map_sections:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectMapSection"
         sponsor_logos:
           type: array
           items:
@@ -1858,6 +1872,39 @@ components:
         pagination:
           "$ref": "#/components/schemas/Pagination"
       title: ProjectListResponse
+    ProjectMapSection:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - order
+      - label
+      - corner1_lat
+      - corner1_lon
+      - corner2_lat
+      - corner2_lon
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+        order:
+          type: integer
+        label:
+          type:
+          - string
+          - 'null'
+        corner1_lat:
+          type: number
+        corner1_lon:
+          type: number
+        corner2_lat:
+          type: number
+        corner2_lon:
+          type: number
+      title: ProjectMapSection
     ProjectMediaStream:
       type: object
       additionalProperties: false

@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|branding|external_links|institution_projects|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -99,6 +99,12 @@ module ApiContract
               translations (id, locale, text), ordered by ID and preserving blanks and
               nulls without fallback. Project update permission authorizes page editing,
               matching existing text mutations. Sanitize rich text before rendering HTML.
+              Map_sections adds id, name, order, localized label, and numeric corner1_lat,
+              corner1_lon, corner2_lat and corner2_lon. Sections are ordered by configured
+              order ascending, then ID ascending. Labels use the standard display locale
+              fallback. Both profiles use the same display projection. No sections returns
+              []; clients apply their default bounds after the request finishes, rather
+              than interpreting omitted or still-loading data as empty configuration.
               Media and year aggregates retain existing catalog rules: public projects
               include unshared interviews; other project states return zeros or null bounds.
               Requested empty data uses empty arrays, zero counts or null year bounds.
