@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -64,6 +64,11 @@ module ApiContract
               permission. Missing streams return []; absent custom text returns null
               so clients can use their standard message. Full stored message translations
               remain available through the edit-only translations include.
+              Footer adds external_links (id, localized name and url) and sponsor_logos
+              (id, locale, href, title and relative image url), each ordered by ID.
+              Sponsor logos match the requested locale exactly; unattached logos are
+              omitted. Missing data returns empty arrays. Both profiles use this display
+              projection; stored editing names and translations are not included.
               Media and year aggregates retain existing catalog rules: public projects
               include unshared interviews; other project states return zeros or null bounds.
               Requested empty data uses empty arrays, zero counts or null year bounds.

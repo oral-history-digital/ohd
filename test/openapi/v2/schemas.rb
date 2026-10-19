@@ -208,6 +208,24 @@ module ApiContract
       schema(required: %w[path], properties: { path: { type: %w[string null] } })
     end
 
+    # Public footer links contain localized display text and targets only.
+    class ProjectExternalLink
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id name url], properties: {
+        id: { type: :integer, minimum: 1 }, name: { type: %w[string null] }, url: { type: %w[string null] },
+      })
+    end
+
+    # Footer images are restricted to the requested locale and attached files.
+    class ProjectSponsorLogo
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id locale href title url], properties: {
+        id: { type: :integer, minimum: 1 }, locale: { type: :string },
+        href: { type: %w[string null] }, title: { type: %w[string null] },
+        url: { type: :string, description: 'Relative attachment URL' },
+      })
+    end
+
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
@@ -231,6 +249,8 @@ module ApiContract
           access_config: ProjectAccessConfig,
           metadata_fields: { type: :array, items: ProjectMetadataField },
           media_streams: { type: :array, items: ProjectMediaStream },
+          external_links: { type: :array, items: ProjectExternalLink },
+          sponsor_logos: { type: :array, items: ProjectSponsorLogo },
           media_missing_text: { type: %w[string null], description: 'Localized custom rich text; sanitize before rendering. Null means use the standard UI message.' },
           root_registry_entry_id: { type: %w[integer null], description: 'Target project root entry, or null when absent' },
           **%i[logged_out_visible_registry_entry_ids hidden_registry_entry_ids]
