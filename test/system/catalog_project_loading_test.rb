@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-# Checks catalog list and detail loading through the application UI.
+# Checks catalog lists and project/collection details through the application UI.
 class CatalogProjectLoadingTest < ApplicationSystemTestCase
   setup do
     umbrella = Project.find_by!(shortname: 'test')
@@ -13,8 +13,9 @@ class CatalogProjectLoadingTest < ApplicationSystemTestCase
         name: 'Catalog migration unpublished', workflow_state: 'unshared')
       institution = Institution.create!(name: 'Catalog institute', shortname: "inst#{SecureRandom.hex(3)}")
       InstitutionProject.create!(project: @project, institution: institution, primary: true)
-      Collection.create!(project: @project, institution: institution,
+      @collection = Collection.create!(project: @project, institution: institution,
         name: 'Catalog collection', notes: 'Catalog search needle', workflow_state: 'public')
+      @collection.translations.find_or_initialize_by(locale: 'de').update!(name: 'Katalogsammlung')
       Leader.create!(project: @project, name_type: 'Personal', first_name: 'Ada', last_name: 'Lovelace')
       @project.translations.find_or_initialize_by(locale: 'de').update!(name: 'Katalogprojekt', introduction: 'Deutsche Beschreibung')
     end
@@ -58,5 +59,18 @@ class CatalogProjectLoadingTest < ApplicationSystemTestCase
     visit "/en/catalog/archives/#{@private_project.id}?checked_ohd_session=true"
     assert_selector '[role=alert]'
     assert_no_selector '.ProjectDetails-title'
+  end
+
+  test 'collection details show localized parent project data and navigate to project details' do
+    visit "/en/catalog/collections/#{@collection.id}?checked_ohd_session=true"
+    assert_selector '.CollectionDetails-title', text: 'Catalog collection'
+    assert_selector '.DescriptionList-group--project a', text: 'Catalog migration public'
+    assert_text 'Catalog institute'
+    find('.DescriptionList-group--project a').click
+    assert_selector '.ProjectDetails-title', text: 'Catalog migration public'
+
+    visit "/de/catalog/collections/#{@collection.id}?checked_ohd_session=true"
+    assert_selector '.CollectionDetails-title', text: 'Katalogsammlung'
+    assert_selector '.DescriptionList-group--project a', text: 'Katalogprojekt'
   end
 end

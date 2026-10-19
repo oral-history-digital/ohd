@@ -1,5 +1,5 @@
 import { useTrackPageView } from 'modules/analytics';
-import { useGetCollection, useGetProject } from 'modules/data';
+import { useGetCollection, useProjectDetail } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { LinkButton } from 'modules/ui';
@@ -27,17 +27,31 @@ import {
     YearRange,
 } from './details';
 
+/**
+ * Displays collection details with their parent project's names, institutions, and links.
+ * Fetches the collection separately and reads project details through Redux.
+ *
+ * @returns {import('react').ReactElement} Collection details or their loading/error state.
+ */
 export function CollectionPage() {
     const { t, locale } = useI18n();
     const { id } = useParams();
     const { collection, error, isLoading } = useGetCollection(id);
-    const { project } = useGetProject({
-        id: collection?.project_id,
-        lite: true,
-    });
+    const { project, error: projectError } = useProjectDetail(
+        collection?.project_id,
+        {
+            include: ['institutions'],
+        }
+    );
 
     useTrackPageView();
 
+    /**
+     * Reads a collection display string from its existing localized response shape.
+     *
+     * @param {string|Object|null|undefined} value - Display string or translations by locale.
+     * @returns {string|null} Current display value, or null when absent.
+     */
     const localizedValue = (value) => {
         if (!value) return null;
         if (typeof value === 'string') return value;
@@ -64,12 +78,16 @@ export function CollectionPage() {
         />
     );
 
-    if (error && !collection) {
+    const displayError = projectError || (!collection && error);
+    if (displayError) {
         return (
             <ScrollToTop>
                 <ErrorBoundary>
-                    <p className="wrapper-content CollectionDetails">
-                        {t('error')}: {error.message}
+                    <p
+                        className="wrapper-content CollectionDetails"
+                        role="alert"
+                    >
+                        {t('error')}: {displayError.message}
                     </p>
                 </ErrorBoundary>
             </ScrollToTop>
@@ -112,7 +130,7 @@ export function CollectionPage() {
                     <dl className="DescriptionList">
                         <ProjectLink
                             projectId={collection.project_id}
-                            projectName={collection.project_name}
+                            projectName={project.display_name || project.name}
                         />
                         <Institutions institutions={project.institutions} />
                         <RichtextDetail richtext={collectionNotes} />
@@ -141,7 +159,11 @@ export function CollectionPage() {
                         <Citation
                             type="collection"
                             institutions={project.institutions}
-                            primary_institution={project.primary_institution}
+                            primary_institution={
+                                project.institutions?.find(
+                                    (institution) => institution.is_primary
+                                )?.id
+                            }
                             projectName={project?.display_name || project?.name}
                             collectionName={collection?.name}
                             collectionId={collection?.id}
