@@ -30,9 +30,11 @@ module Api
       attribute :root_registry_entry_id, if: :include_registry_configuration?
       attribute :logged_out_visible_registry_entry_ids, if: :include_registry_configuration?
       attribute :hidden_registry_entry_ids, if: :include_registry_configuration?
+      attribute :media_streams, if: :include_playback?
+      attribute :media_missing_text, if: :include_playback?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 
@@ -115,6 +117,23 @@ module Api
       # @return [Integer, nil] Root entry ID, or nil when none is configured
       def root_registry_entry_id
         object.root_registry_entry&.id
+      end
+
+      # Describes sources for the authorized media route without exposing path templates.
+      #
+      # @return [Array<Hash>] Stream descriptors in ID order, including still-image streams
+      def media_streams
+        instance_options.fetch(:media_streams).fetch(object.id, []).map do |stream|
+          { id: stream.id, media_type: stream.media_type, resolution: stream.resolution,
+            suffix: File.extname(stream.path.to_s.split(/[?#]/, 2).first.to_s).delete_prefix('.').presence }
+        end
+      end
+
+      # Uses the same locale fallback as other project display text.
+      #
+      # @return [String, nil] Custom missing-media message; nil lets clients use the standard message
+      def media_missing_text
+        localized_value(object, :media_missing_text)
       end
 
       def more_text

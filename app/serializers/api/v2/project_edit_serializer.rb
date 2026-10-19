@@ -31,6 +31,14 @@ module Api
         end
       end
 
+      # Adds path templates after the controller verifies stream-update permission.
+      #
+      # @return [Array<Hash>] Editable streams with their existing mutation IDs
+      def media_streams
+        streams = instance_options.fetch(:media_streams).fetch(object.id, []).index_by(&:id)
+        super.map { |data| data.merge(path: streams.fetch(data.fetch(:id)).path) }
+      end
+
       %i[fullname_on_landing_page show_legend].each do |attribute|
         define_method(attribute) { object.public_send("#{attribute}?") }
       end
