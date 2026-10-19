@@ -63,7 +63,7 @@ module Api
       def show
         profile = params.fetch(:profile, 'display')
         invalid_parameter!(:profile) unless %w[display edit].include?(profile)
-        includes = requested_includes(allowed: profile == 'edit' ? DETAIL_INCLUDES + %w[translations branding] : DETAIL_INCLUDES)
+        includes = requested_includes(allowed: profile == 'edit' ? DETAIL_INCLUDES + %w[translations branding external_links] : DETAIL_INCLUDES)
         identifier = params[:id]
         @project = if identifier.match?(/\A[0-9]+\z/) # Numeric ID
           Project.find_by(id: identifier)
@@ -77,6 +77,7 @@ module Api
         pundit_reset!
         authorize @project, profile == 'edit' ? :update? : :show?
         authorize MediaStream.new(project: @project), :update? if profile == 'edit' && includes.include?('playback')
+        authorize ExternalLink.new(project: @project), :update? if includes.include?('external_links')
         if profile == 'edit' && includes.include?('affiliates')
           [CooperationPartner, Leader, Manager, Funder].each do |type|
             authorize type.new(project: @project), :update?
@@ -145,7 +146,7 @@ module Api
         if includes.include?('playback')
           options[:media_streams] = policy_scope(MediaStream).where(project_id: project_ids).order(:id).group_by(&:project_id)
         end
-        if includes.include?('footer')
+        if (includes & %w[footer external_links]).any?
           options[:external_links] = policy_scope(ExternalLink).where(project_id: project_ids)
             .includes(:translations).order(:id).group_by(&:project_id)
         end

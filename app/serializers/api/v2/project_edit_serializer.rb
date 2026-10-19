@@ -8,6 +8,7 @@ module Api
         :hidden_registry_entry_ids, :hidden_transcript_registry_entry_ids, :pdf_registry_entry_ids
 
       attribute :translations, if: :include_translations?
+      attribute :external_links, if: :include_external_links?
       attribute :logos, if: :include_branding?
       attribute :sponsor_logos, if: :include_sponsor_logos?
 
@@ -56,6 +57,21 @@ module Api
         super.map { |data| data.merge(path: streams.fetch(data.fetch(:id)).path) }
       end
 
+      # Editable link data takes precedence when requested alongside the footer.
+      #
+      # @return [Array<Hash>] Localized links with internal names and stored translations for editing
+      def external_links
+        return super unless include_editable_external_links?
+
+        links = instance_options.fetch(:external_links).fetch(object.id, []).index_by(&:id)
+        super.map do |data|
+          link = links.fetch(data.fetch(:id))
+          data.merge(internal_name: link.internal_name, translations: link.translations.sort_by(&:id).map do |translation|
+            translation.attributes.slice('id', 'locale', 'name', 'url')
+          end)
+        end
+      end
+
       # Uses the logo records and attachments already loaded for the selected display logo.
       #
       # @return [Array<Hash>] Editable logos across all locales, including unattached records
@@ -70,6 +86,16 @@ module Api
         return super unless include_branding?
 
         instance_options.fetch(:sponsor_logos).fetch(object.id, []).map { |logo| editable_image(logo) }
+      end
+
+      # @return [Boolean] Whether complete editable links were requested
+      def include_editable_external_links?
+        instance_options.fetch(:requested_includes, []).include?('external_links')
+      end
+
+      # @return [Boolean] Whether either include needs external links
+      def include_external_links?
+        include_editable_external_links? || include_footer?
       end
 
       # @return [Boolean] Whether complete editable asset lists were requested
