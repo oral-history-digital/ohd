@@ -1,47 +1,47 @@
-import { getProjects } from 'modules/data';
-import { ProjectTile, getProjectsStatus, getStatuses } from 'modules/data';
-import { useSelector } from 'react-redux';
+import { ProjectTile, useProjectList } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
+/**
+ * Lists editable project summaries; full admin data is fetched when a dialog opens.
+ *
+ * @returns {React.ReactElement} Project list with creation and editing controls.
+ */
 export default function ProjectsAdminList() {
-    const projectsById = useSelector(getProjects);
-    const dataStatus = useSelector(getProjectsStatus);
-    const statuses = useSelector(getStatuses);
+    const { t } = useI18n();
+    const { projects, isLoading, error } = useProjectList({
+        all: true,
+        include: ['institutions'],
+    });
 
-    // Filter out non-project entries and ensure we have an array of project objects.
-    const projects = Object.values(projectsById || {}).filter(
-        (project) =>
-            project &&
-            typeof project === 'object' &&
-            !Array.isArray(project) &&
-            project.id !== undefined &&
-            project.id !== null &&
-            !project.is_umbrella
-    );
+    // The shared admin controls use type to check permissions; the API omits it.
+    const data = projects.map((project) => ({ ...project, type: 'Project' }));
 
     const { fetchData, deleteData, submitData, setQueryParams } =
         useAdminDataActions();
 
+    if (error)
+        return (
+            <p role="alert">
+                {t('error')}: {error.message}
+            </p>
+        );
+    if (isLoading) return <Spinner withPadding />;
+
     return (
         <PaginatedAdminRecordList
-            data={projects}
-            dataStatus={dataStatus}
-            statuses={statuses}
-            otherDataToLoad={['institution', 'collection']}
-            resultPagesCount={dataStatus.resultPagesCount}
+            data={data}
             fetchData={fetchData}
             deleteData={deleteData}
             submitData={submitData}
             setQueryParams={setQueryParams}
-            // Projects are hydrated via the SWR list in ProjectsAdminPage bridge.
-            // Keep query null so PaginatedAdminRecordList does not trigger legacy
-            // paginated /projects fetch that can replace Redux projects state.
+            // useProjectList handles fetching, so the shared list needs no legacy query.
             query={null}
             scope="project"
-            // Keep archive list lightweight. Contact email is loaded as part of
-            // single-project full payload when opening the edit form.
+            // Contact email is fetched with the full project when opening the edit form.
             sensitiveAttributes={[]}
             detailsAttributes={['title', 'workflow_state', 'doi_status']}
             initialFormValues={{

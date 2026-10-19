@@ -19,9 +19,16 @@ import JoinedData from './JoinedData';
 
 const Item = AdminMenu.Item;
 
-// Project rows in archive admin come from lightweight list payload.
-// When editing a project, fetch the full payload for that single project only.
-function ProjectEditContent({ data, form }) {
+/**
+ * Loads full project data for admin dialogs that need more than a list summary.
+ * TODO: Use the edit profile when project forms support the standardized contract.
+ *
+ * @param {Object} props - Dialog properties.
+ * @param {Object} props.data - Project summary with its ID.
+ * @param {Function} props.children - Renders full data and receives a refresh callback.
+ * @returns {React.ReactElement} Dialog content, loading indicator, or error.
+ */
+function ProjectAdminContent({ data, children }) {
     const { t } = useI18n();
     const {
         project: fullProject,
@@ -39,12 +46,7 @@ function ProjectEditContent({ data, form }) {
         );
     }
 
-    // Callback to refresh project data after successful form submission
-    const onSubmit = () => {
-        mutateProject();
-    };
-
-    return form(fullProject, onSubmit);
+    return children(fullProject, mutateProject);
 }
 
 export default function AdminRecord({
@@ -145,6 +147,19 @@ export default function AdminRecord({
                         >
                             {scope === 'person' ? (
                                 <PersonDetails data={data} />
+                            ) : scope === 'project' ? (
+                                <ProjectAdminContent data={data}>
+                                    {(fullProject) => (
+                                        <DataDetails
+                                            detailsAttributes={
+                                                detailsAttributes
+                                            }
+                                            data={fullProject}
+                                            scope={scope}
+                                            optionsScope={optionsScope}
+                                        />
+                                    )}
+                                </ProjectAdminContent>
                             ) : (
                                 <DataDetails
                                     detailsAttributes={detailsAttributes}
@@ -174,9 +189,8 @@ export default function AdminRecord({
                                         />
                                     )}
                                     {scope === 'project' ? (
-                                        <ProjectEditContent
-                                            data={data}
-                                            form={(resolvedProject, onSubmit) =>
+                                        <ProjectAdminContent data={data}>
+                                            {(resolvedProject, onSubmit) =>
                                                 form(
                                                     resolvedProject,
                                                     () => {
@@ -191,7 +205,7 @@ export default function AdminRecord({
                                                     close
                                                 )
                                             }
-                                        />
+                                        </ProjectAdminContent>
                                     ) : (
                                         form(data, close, close)
                                     )}
@@ -258,7 +272,7 @@ AdminRecord.propTypes = {
     handleDelete: PropTypes.func,
 };
 
-ProjectEditContent.propTypes = {
+ProjectAdminContent.propTypes = {
     data: PropTypes.object,
-    form: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired,
 };
