@@ -215,7 +215,7 @@ paths:
         in: query
         schema:
           type: string
-          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|translations)\\s*)*$"
+          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|translations)\\s*)*$"
         description: |
           Same optional fields as the list endpoint: counts adds interview_counts
           and collection_counts; other names add their matching fields. Defaults
@@ -228,6 +228,8 @@ paths:
           levels_of_indexing add localized umbrella registry labels linked to this
           project's interviews. Affiliates adds cooperation_partners, leaders,
           managers and funders with localized display names, ordered by ID.
+          Access_config adds boolean registration field settings without user answers;
+          edit additionally includes the save identifier. Missing configuration is null.
           Media and year aggregates retain existing catalog rules: public projects
           include unshared interviews; other project states return zeros or null bounds.
           Requested empty data uses empty arrays, zero counts or null year bounds.
@@ -404,6 +406,146 @@ components:
           type: integer
           minimum: 0
       title: Pagination
+    ProjectAccessConfig:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      required:
+      - organization
+      - job_description
+      - research_intentions
+      - specification
+      - tos_agreement
+      properties:
+        organization:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+        job_description:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          - values
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+            values:
+              type: object
+              additionalProperties: false
+              required:
+              - researcher
+              - filmmaker
+              - journalist
+              - teacher
+              - memorial_staff
+              - pupil
+              - student
+              - other
+              properties:
+                researcher:
+                  type: boolean
+                filmmaker:
+                  type: boolean
+                journalist:
+                  type: boolean
+                teacher:
+                  type: boolean
+                memorial_staff:
+                  type: boolean
+                pupil:
+                  type: boolean
+                student:
+                  type: boolean
+                other:
+                  type: boolean
+        research_intentions:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          - values
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+            values:
+              type: object
+              additionalProperties: false
+              required:
+              - exhibition
+              - education
+              - film
+              - memorial_culture_project
+              - genealogy
+              - art
+              - personal_interest
+              - press_publishing
+              - school_project
+              - university_teaching
+              - scientific_paper
+              - other
+              properties:
+                exhibition:
+                  type: boolean
+                education:
+                  type: boolean
+                film:
+                  type: boolean
+                memorial_culture_project:
+                  type: boolean
+                genealogy:
+                  type: boolean
+                art:
+                  type: boolean
+                personal_interest:
+                  type: boolean
+                press_publishing:
+                  type: boolean
+                school_project:
+                  type: boolean
+                university_teaching:
+                  type: boolean
+                scientific_paper:
+                  type: boolean
+                other:
+                  type: boolean
+        specification:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+        tos_agreement:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+      title: ProjectAccessConfig
     ProjectAffiliate:
       type: object
       additionalProperties: false
@@ -487,6 +629,10 @@ components:
       - display_ohd_link
       - show_preview_img
       - oai_doi_identifier
+      - view_modes
+      - default_search_order
+      - aspect_x
+      - aspect_y
       properties:
         id:
           type: integer
@@ -628,6 +774,29 @@ components:
           - string
           - 'null'
           description: DOI URL only when doi_status is created; otherwise null
+        view_modes:
+          type: array
+          items:
+            type: string
+        default_search_order:
+          type:
+          - string
+          - 'null'
+          enum:
+          - title
+          - random
+          - archive_id
+          -
+        aspect_x:
+          type:
+          - integer
+          - 'null'
+        aspect_y:
+          type:
+          - integer
+          - 'null'
+        access_config:
+          "$ref": "#/components/schemas/ProjectAccessConfig"
         media_types:
           type: object
           additionalProperties: false
@@ -715,13 +884,14 @@ components:
       - display_ohd_link
       - show_preview_img
       - oai_doi_identifier
-      - contact_email
+      - view_modes
+      - default_search_order
       - aspect_x
       - aspect_y
+      - contact_email
       - archive_id_number_length
       - fullname_on_landing_page
       - show_legend
-      - view_modes
       - upload_types
       - logged_out_visible_registry_entry_ids
       - hidden_registry_entry_ids
@@ -868,6 +1038,29 @@ components:
           - string
           - 'null'
           description: DOI URL only when doi_status is created; otherwise null
+        view_modes:
+          type: array
+          items:
+            type: string
+        default_search_order:
+          type:
+          - string
+          - 'null'
+          enum:
+          - title
+          - random
+          - archive_id
+          -
+        aspect_x:
+          type:
+          - integer
+          - 'null'
+        aspect_y:
+          type:
+          - integer
+          - 'null'
+        access_config:
+          "$ref": "#/components/schemas/ProjectEditableAccessConfig"
         media_types:
           type: object
           additionalProperties: false
@@ -925,14 +1118,6 @@ components:
           type:
           - string
           - 'null'
-        aspect_x:
-          type:
-          - integer
-          - 'null'
-        aspect_y:
-          type:
-          - integer
-          - 'null'
         archive_id_number_length:
           type:
           - integer
@@ -941,10 +1126,6 @@ components:
           type: boolean
         show_legend:
           type: boolean
-        view_modes:
-          type: array
-          items:
-            type: string
         upload_types:
           type: array
           items:
@@ -970,6 +1151,150 @@ components:
           items:
             "$ref": "#/components/schemas/ProjectTranslation"
       title: ProjectEdit
+    ProjectEditableAccessConfig:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      required:
+      - organization
+      - job_description
+      - research_intentions
+      - specification
+      - tos_agreement
+      - id
+      properties:
+        organization:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+        job_description:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          - values
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+            values:
+              type: object
+              additionalProperties: false
+              required:
+              - researcher
+              - filmmaker
+              - journalist
+              - teacher
+              - memorial_staff
+              - pupil
+              - student
+              - other
+              properties:
+                researcher:
+                  type: boolean
+                filmmaker:
+                  type: boolean
+                journalist:
+                  type: boolean
+                teacher:
+                  type: boolean
+                memorial_staff:
+                  type: boolean
+                pupil:
+                  type: boolean
+                student:
+                  type: boolean
+                other:
+                  type: boolean
+        research_intentions:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          - values
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+            values:
+              type: object
+              additionalProperties: false
+              required:
+              - exhibition
+              - education
+              - film
+              - memorial_culture_project
+              - genealogy
+              - art
+              - personal_interest
+              - press_publishing
+              - school_project
+              - university_teaching
+              - scientific_paper
+              - other
+              properties:
+                exhibition:
+                  type: boolean
+                education:
+                  type: boolean
+                film:
+                  type: boolean
+                memorial_culture_project:
+                  type: boolean
+                genealogy:
+                  type: boolean
+                art:
+                  type: boolean
+                personal_interest:
+                  type: boolean
+                press_publishing:
+                  type: boolean
+                school_project:
+                  type: boolean
+                university_teaching:
+                  type: boolean
+                scientific_paper:
+                  type: boolean
+                other:
+                  type: boolean
+        specification:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+        tos_agreement:
+          type: object
+          additionalProperties: false
+          required:
+          - display
+          - obligatory
+          properties:
+            display:
+              type: boolean
+            obligatory:
+              type: boolean
+        id:
+          type: integer
+          minimum: 1
+      title: ProjectEditableAccessConfig
     ProjectInstitution:
       type: object
       additionalProperties: false

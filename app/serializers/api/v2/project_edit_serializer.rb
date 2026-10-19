@@ -2,12 +2,20 @@ module Api
   module V2
     # Keep localized display fields unchanged; complete translations are optional.
     class ProjectEditSerializer < ProjectDisplaySerializer
-      attributes :contact_email, :aspect_x, :aspect_y, :archive_id_number_length,
+      attributes :contact_email, :archive_id_number_length,
         :fullname_on_landing_page, :show_legend,
-        :view_modes, :upload_types, :logged_out_visible_registry_entry_ids,
+        :upload_types, :logged_out_visible_registry_entry_ids,
         :hidden_registry_entry_ids, :hidden_transcript_registry_entry_ids, :pdf_registry_entry_ids
 
       attribute :translations, if: :include_translations?
+
+      # Adds the configuration ID needed by the existing access-settings save endpoint.
+      #
+      # @return [Hash, nil] Editable registration settings, or nil if no configuration exists
+      def access_config
+        settings = super
+        settings&.merge(id: object.access_config.id)
+      end
 
       %i[fullname_on_landing_page show_legend].each do |attribute|
         define_method(attribute) { object.public_send("#{attribute}?") }

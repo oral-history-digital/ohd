@@ -2,17 +2,22 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 3
+      REVISION = 4
 
       private
 
       def dependencies
         result = super.merge(
           display_fields: fingerprint(@projects, :domain, :primary_color, :secondary_color,
-            :editorial_color, :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :show_preview_img, :doi_status),
+            :editorial_color, :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :show_preview_img, :doi_status,
+            :view_modes, :default_search_order, :aspect_x, :aspect_y),
           more_text: fingerprint(Project.translation_class.where(project_id: @project_ids), :project_id, :locale, :more_text),
           doi_prefix: Rails.configuration.datacite['prefix']
         )
+        if @includes.include?('access_config')
+          result[:access_config] = fingerprint(AccessConfig.where(project_id: @project_ids),
+            :project_id, :organization, :job_description, :research_intentions, :specification, :tos_agreement)
+        end
         interviews = Interview.where(project_id: @project_ids)
         if (@includes & %w[media_types year_ranges]).any?
           result[:catalog_interviews] = fingerprint(interviews, :project_id, :workflow_state, :media_type, :interview_date)

@@ -2,14 +2,14 @@ module Api
   module V2
     class ProjectEditCache < ProjectDisplayCache
       ENDPOINT = 'projects/edit'
-      REVISION = 2
+      REVISION = 3
 
       private
 
       def dependencies
         result = super.merge(
-          edit_fields: fingerprint(@projects, :contact_email, :aspect_x, :aspect_y, :archive_id_number_length,
-            :fullname_on_landing_page, :show_legend, :view_modes, :upload_types,
+          edit_fields: fingerprint(@projects, :contact_email, :archive_id_number_length,
+            :fullname_on_landing_page, :show_legend, :upload_types,
             :logged_out_visible_registry_entry_ids, :hidden_registry_entry_ids,
             :hidden_transcript_registry_entry_ids, :pdf_registry_entry_ids)
         )
