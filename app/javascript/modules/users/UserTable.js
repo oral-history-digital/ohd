@@ -6,7 +6,7 @@ import {
     getCurrentUser,
     getRolesForCurrentProject,
     getRolesForCurrentProjectFetched,
-    useGetProjects,
+    useProjectList,
 } from 'modules/data';
 import { SelectField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -21,11 +21,16 @@ import UserRowActions from './UserRowActions';
 import UserRowInterviewPermissions from './UserRowInterviewPermissions';
 import useUsers from './useUsers';
 
+/**
+ * Displays users with account and project access filters.
+ *
+ * @returns {React.ReactElement} User table and filter controls.
+ */
 export default function UserTable() {
     const { t, locale } = useI18n();
     const project = useSelector(getCurrentProject);
     const currentUser = useSelector(getCurrentUser);
-    const { projects } = useGetProjects({ all: true });
+    const { projects } = useProjectList({ all: true });
     const projectRoles = useSelector(getRolesForCurrentProject);
 
     const [page, setPage] = useState(1);
