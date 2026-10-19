@@ -9,9 +9,11 @@ import { LOGGED_IN, LOGOUT } from '../../user/action-types';
 import userReducer from '../../user/reducer';
 import { RECEIVE_DATA } from '../redux/action-types';
 import { deleteData, receiveData, submitData } from '../redux/actions';
+import { projectDetailUrl } from '../redux/projectDetails';
 import { makeProjectListSelector, projectListUrl } from '../redux/projectLists';
 import { dataReducer } from '../redux/reducer';
-import { fetchV2List } from '../redux/v2Requests';
+import { fetchV2Data } from '../redux/v2Requests';
+import { useProjectDetail } from './useProjectDetail';
 import { useProjectList } from './useProjectList';
 
 let mockLocale = 'de';
@@ -100,13 +102,24 @@ function complete(data, index = Loader.getJson.mock.calls.length - 1) {
 }
 
 /**
+ * Completes a detail request with one record instead of a list envelope.
+ *
+ * @param {Object} data - Project display details.
+ * @param {number} [index] - Captured request index; defaults to the latest request.
+ */
+function completeDetail(data, index = Loader.getJson.mock.calls.length - 1) {
+    const [, , dispatch, success] = Loader.getJson.mock.calls[index];
+    dispatch(success({ data }));
+}
+
+/**
  * Dispatches a list request directly for request-sharing and reducer tests.
  *
  * @param {import('redux').Store} store - Store receiving request actions.
  * @param {string} [language='de'] - Requested display locale.
  * @param {import('../redux/projectLists').ProjectListOptions} [options={all: true}] - List query.
  * @param {boolean} [refresh=false] - Force a new fetch for a completed list.
- * @returns {Promise<import('../redux/v2Requests').V2ListResult>} Shared request result.
+ * @returns {Promise<import('../redux/v2Requests').V2ReadResult>} Shared request result.
  */
 function load(
     store,
@@ -116,7 +129,7 @@ function load(
 ) {
     const url = projectListUrl(language, options);
     return store.dispatch(
-        fetchV2List('projects', url, { locale: language, refresh })
+        fetchV2Data('projects', url, { locale: language, refresh })
     );
 }
 
@@ -294,7 +307,7 @@ test('switches locale, keeps results during refresh, and reuses a completed requ
     const before = Loader.getJson.mock.calls.length;
     await act(async () => {
         await store.dispatch(
-            fetchV2List('projects', projectListUrl('de'), { locale: 'de' })
+            fetchV2Data('projects', projectListUrl('de'), { locale: 'de' })
         );
     });
     expect(Loader.getJson).toHaveBeenCalledTimes(before);
@@ -398,3 +411,211 @@ test('account and mutation changes clear data, refetch mounted lists, and reject
     act(() => complete([project(7, { name: 'Fresh' })]));
     expect(result.current.projects[0].name).toBe('Fresh');
 });
+
+test('detail callers share a normalized request and keep query results out of list membership', () => {
+    const store = makeStore();
+    const { result } = mount(store, () => [
+        useProjectDetail(7, { include: ['subjects', 'counts', 'subjects'] }),
+        useProjectDetail('7', { include: ['counts', 'subjects'] }),
+    ]);
+    expect(Loader.getJson).toHaveBeenCalledTimes(1);
+    expect(Loader.getJson.mock.calls[0][0]).toBe(
+        projectDetailUrl(7, 'de', { include: ['subjects', 'counts'] })
+    );
+    expect(result.current[0].isLoading).toBe(true);
+    act(() =>
+        completeDetail(
+            project(7, { more_text: 'Details', subjects: ['Geschichte'] })
+        )
+    );
+    expect(result.current[0].project).toEqual(result.current[1].project);
+    expect(result.current[0].project.more_text).toBe('Details');
+    expect(store.getState().data.v2.projects.lists).toEqual({});
+    expect(store.getState().data.projects[7].name).toEqual({
+        en: 'Legacy name',
+    });
+});
+
+test('loads details after a summary and preserves localized details when later summaries arrive', () => {
+    const store = makeStore();
+    load(store);
+    complete([project(7), project(8)]);
+    const { result, rerender } = mount(store, () => useProjectDetail(7));
+    expect(result.current.project).toBeUndefined();
+    act(() =>
+        completeDetail(
+            project(7, {
+                more_text: 'Mehr',
+                subjects: ['Erinnerung'],
+                levels_of_indexing: [{ descriptor: 'Transkript', count: 1 }],
+                cooperation_partners: [{ name: 'Partner DE' }],
+                leaders: [{ name: 'Leitung' }],
+                managers: [],
+                funders: [],
+                domain: 'https://archive.test',
+            })
+        )
+    );
+    mockLocale = 'en';
+    rerender();
+    expect(result.current.project).toBeUndefined();
+    act(() =>
+        completeDetail(
+            project(7, {
+                more_text: 'More',
+                subjects: ['Memory'],
+                leaders: [{ name: 'Leader' }],
+            })
+        )
+    );
+    mockLocale = 'de';
+    rerender();
+    expect(result.current.project).toMatchObject({
+        more_text: 'Mehr',
+        subjects: ['Erinnerung'],
+        leaders: [{ name: 'Leitung' }],
+    });
+    act(() => {
+        load(store, 'de', { all: true }, true);
+        complete([project(7, { name: 'Neuer Name' })]);
+    });
+    expect(result.current.project).toMatchObject({
+        name: 'Neuer Name',
+        more_text: 'Mehr',
+        domain: 'https://archive.test',
+    });
+    const saved = store.getState().data.v2.projects;
+    expect(saved.records[8]).toBeDefined();
+    for (const field of [
+        'more_text',
+        'subjects',
+        'levels_of_indexing',
+        'cooperation_partners',
+        'leaders',
+        'managers',
+        'funders',
+    ])
+        expect(saved.records[7]).not.toHaveProperty(field);
+});
+
+test('detail identifier and include changes require their own response and refresh keeps loaded details visible', () => {
+    const store = makeStore();
+    let id = null;
+    let include = [];
+    const { result, rerender } = mount(store, () =>
+        useProjectDetail(id, { include })
+    );
+    expect(Loader.getJson).not.toHaveBeenCalled();
+    expect(result.current.isLoading).toBe(false);
+    id = 7;
+    rerender();
+    act(() => completeDetail(project()));
+    include = ['institutions'];
+    rerender();
+    expect(result.current.project).toBeUndefined();
+    act(() =>
+        completeDetail(
+            project(7, { institutions: [{ id: 5, name: 'Institute' }] })
+        )
+    );
+    act(() => {
+        result.current.mutate();
+    });
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isValidating).toBe(true);
+    expect(result.current.project.id).toBe(7);
+    act(() => completeDetail(project(7, { name: 'Updated' })));
+    id = 8;
+    rerender();
+    expect(result.current.project).toBeUndefined();
+    act(() => completeDetail(project(8)));
+    id = 7;
+    const requests = Loader.getJson.mock.calls.length;
+    rerender();
+    expect(result.current.project.name).toBe('Updated');
+    expect(Loader.getJson).toHaveBeenCalledTimes(requests);
+});
+
+test('denied detail refresh hides cached details without retry loops and supports explicit retry', () => {
+    const store = makeStore();
+    const { result } = mount(store, () => useProjectDetail(7));
+    act(() => completeDetail(project()));
+    act(() => {
+        result.current.mutate();
+    });
+    const [, , dispatch, , fail] = Loader.getJson.mock.calls[1];
+    act(() => dispatch(fail({ status: 403, message: 'Denied' })));
+    expect(result.current).toMatchObject({
+        project: undefined,
+        isLoading: false,
+        error: { status: 403 },
+    });
+    expect(Loader.getJson).toHaveBeenCalledTimes(2);
+    act(() => {
+        result.current.mutate();
+    });
+    act(() => completeDetail(project(7, { name: 'Accessible again' })));
+    expect(result.current.project.name).toBe('Accessible again');
+    expect(result.current.error).toBeNull();
+});
+
+test.each([
+    LOGOUT,
+    LOGGED_IN,
+    'affiliate mutation',
+    'person mutation',
+    'registry mutation',
+])(
+    'detail invalidation refetches and rejects stale responses after %s',
+    async (change) => {
+        const store = makeStore();
+        const { result } = mount(store, () => useProjectDetail(7));
+        const old = Loader.getJson.mock.calls[0];
+        const resource = {
+            'affiliate mutation': 'leaders',
+            'person mutation': 'people',
+            'registry mutation': 'registry_names',
+        }[change];
+        act(() =>
+            store.dispatch(
+                resource
+                    ? {
+                          type: RECEIVE_DATA,
+                          mutation: true,
+                          dataType: resource,
+                          data: {},
+                      }
+                    : { type: change }
+            )
+        );
+        expect(Loader.getJson).toHaveBeenCalledTimes(2);
+        act(() =>
+            old[2](
+                old[3]({
+                    data: project(7, { more_text: 'Stale protected text' }),
+                })
+            )
+        );
+        expect(result.current.project).toBeUndefined();
+        act(() => completeDetail(project(7, { more_text: 'Fresh' })));
+        expect(result.current.project.more_text).toBe('Fresh');
+    }
+);
+
+test.each([null, [], { id: '7' }, { id: -1 }])(
+    'rejects invalid detail record %p',
+    async (data) => {
+        const store = makeStore();
+        const promise = store.dispatch(
+            fetchV2Data('projects', projectDetailUrl(7, 'de'), {
+                locale: 'de',
+                single: true,
+            })
+        );
+        completeDetail(data);
+        await expect(promise).resolves.toMatchObject({
+            error: { message: 'Invalid record response.' },
+        });
+        expect(store.getState().data.v2.projects.records).toEqual({});
+    }
+);

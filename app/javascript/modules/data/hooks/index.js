@@ -10,6 +10,7 @@ export * from './useGetProjectCollections';
 export * from './useGetProjects';
 export * from './useHydrateProjectsByIds';
 export * from './useProjectList';
+export * from './useProjectDetail';
 export * from './useHumanReadable';
 export * from './useMutateData';
 export * from './useMutateDatum';

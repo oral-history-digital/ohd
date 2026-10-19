@@ -4,13 +4,13 @@ import { useI18n } from 'modules/i18n';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { makeProjectListSelector, projectListUrl } from '../redux/projectLists';
-import { fetchV2List, v2AccessContext } from '../redux/v2Requests';
+import { fetchV2Data, v2AccessContext } from '../redux/v2Requests';
 
 /**
  * @typedef {import('../redux/projectLists').ProjectListOptions} ProjectListOptions
  * @typedef {import('../redux/projectLists').ProjectListSelection} ProjectListSelection
- * @typedef {import('../redux/v2Requests').V2ListResult} V2ListResult
- * @typedef {ProjectListSelection & {mutate: function(): Promise<V2ListResult>}} ProjectListResult
+ * @typedef {import('../redux/v2Requests').V2ReadResult} V2ReadResult
+ * @typedef {ProjectListSelection & {mutate: function(): Promise<V2ReadResult>}} ProjectListResult
  */
 
 /**
@@ -39,10 +39,10 @@ export function useProjectList(options = {}) {
     );
     useEffect(() => {
         if (enabled && !result.status)
-            dispatch(fetchV2List('projects', url, { locale }));
+            dispatch(fetchV2Data('projects', url, { locale }));
     }, [dispatch, url, locale, context, generation, result.status, enabled]);
     const mutate = useCallback(
-        () => dispatch(fetchV2List('projects', url, { locale, refresh: true })),
+        () => dispatch(fetchV2Data('projects', url, { locale, refresh: true })),
         [dispatch, url, locale]
     );
     return {

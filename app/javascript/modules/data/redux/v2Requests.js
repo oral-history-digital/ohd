@@ -32,26 +32,26 @@ export function v2AccessContext(state) {
 }
 
 /**
- * Identifies a list request within an account and cache generation.
+ * Identifies a read request within an account and cache generation.
  *
  * @param {string} url - Request URL with normalized query parameters.
  * @param {string} context - Serialized access settings from v2AccessContext.
  * @param {number} generation - Counter increased when cached data is invalidated.
- * @returns {string} Key used for the list, its request status, and pending promise.
+ * @returns {string} Key used for the query result, request status, and pending promise.
  */
-export function v2ListKey(url, context, generation) {
+export function v2RequestKey(url, context, generation) {
     return JSON.stringify([url, context, generation]);
 }
 
 /**
- * @typedef {Object} V2ListResult
- * @property {?Object} response - API list envelope, or null for a skipped request.
+ * @typedef {Object} V2ReadResult
+ * @property {?Object} response - API response envelope, or null for a skipped request.
  * @property {?{status: ?number, message: string}} error - Failure, or null on success.
  */
 
 /**
- * Fetches a v2 list and dispatches its data and request status to Redux.
- * Concurrent callers in the same store share a promise. Completed lists are
+ * Fetches API data and dispatches its records and request status to Redux.
+ * Concurrent callers in the same store share a promise. Completed requests are
  * reused unless refreshed; responses invalidated by access changes or mutations
  * are discarded. Failures resolve with an error rather than rejecting.
  *
@@ -59,16 +59,21 @@ export function v2ListKey(url, context, generation) {
  * @param {string} url - Request URL with normalized query parameters.
  * @param {Object} [options={}] - Response locale and refresh settings.
  * @param {string} options.locale - Requested locale used to store display values.
- * @param {boolean} [options.refresh=false] - Refetch a completed list; still shares pending requests.
- * @returns {function(Function, Function): Promise<V2ListResult>} Redux thunk. Cached
+ * @param {boolean} [options.refresh=false] - Refetch completed data; still shares pending requests.
+ * @param {boolean} [options.single=false] - Expect one record instead of a paginated list.
+ * @returns {function(Function, Function): Promise<V2ReadResult>} Redux thunk. Cached
  * or obsolete requests resolve with both response and error set to null.
  */
-export function fetchV2List(resource, url, { locale, refresh = false } = {}) {
+export function fetchV2Data(
+    resource,
+    url,
+    { locale, refresh = false, single = false } = {}
+) {
     return (dispatch, getState) => {
         const state = getState();
         const context = v2AccessContext(state);
         const generation = state.data.v2?.[resource]?.generation || 0;
-        const key = v2ListKey(url, context, generation);
+        const key = v2RequestKey(url, context, generation);
         let pending = pendingByStore.get(getState);
         if (!pending) {
             pending = new Map();
@@ -95,13 +100,14 @@ export function fetchV2List(resource, url, { locale, refresh = false } = {}) {
             context,
             generation,
             locale,
+            single,
         };
         dispatch({ ...metadata, type: REQUEST_DATA });
         /**
          * Settles the shared promise and builds the action for the reducer.
          *
          * @param {string} type - Success or failure action type.
-         * @param {V2ListResult} result - Response or structured error.
+         * @param {V2ReadResult} result - Response or structured error.
          * @returns {Object} Redux action; obsolete payloads are removed.
          */
         const finish = (type, result) => {
@@ -139,23 +145,29 @@ export function fetchV2List(resource, url, { locale, refresh = false } = {}) {
                 null,
                 dispatch,
                 (response) => {
+                    const records = single ? [response?.data] : response?.data;
                     if (
-                        !Array.isArray(response?.data) ||
-                        !response.data.every(
+                        !Array.isArray(records) ||
+                        !records.every(
                             (record) =>
                                 Number.isInteger(record?.id) && record.id > 0
                         ) ||
-                        !response.pagination ||
-                        ![
-                            'page',
-                            'per_page',
-                            'total_pages',
-                            'total_count',
-                        ].every((field) =>
-                            Number.isInteger(response.pagination[field])
-                        )
+                        (!single &&
+                            (!response.pagination ||
+                                ![
+                                    'page',
+                                    'per_page',
+                                    'total_pages',
+                                    'total_count',
+                                ].every((field) =>
+                                    Number.isInteger(response.pagination[field])
+                                )))
                     )
-                        return fail({ message: 'Invalid list response.' });
+                        return fail({
+                            message: single
+                                ? 'Invalid record response.'
+                                : 'Invalid list response.',
+                        });
                     return finish(RECEIVE_DATA, { response, error: null });
                 },
                 fail
