@@ -139,10 +139,14 @@
   "resolutions": {
     "@xmldom/xmldom": "0.8.15",
     "form-data": "3.0.5",
-    "shell-quote": "1.10.0",
+    "shell-quote": "1.12.0",
     "websocket-driver": "0.7.5",
     "react-rte-18support/**/immutable": "3.8.4",
-    "sass/immutable": "4.3.9"
+    "sass/immutable": "4.3.9",
+    "postcss": "8.5.31",
+    "underscore": "1.13.8",
+    "proxy-addr": "2.0.8",
+    "styled-components/postcss": "8.5.31"
   },
   "scripts": {
     "lint": "eslint app/javascript",
