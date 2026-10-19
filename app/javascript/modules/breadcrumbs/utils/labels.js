@@ -89,25 +89,25 @@ export function getInterviewCollectionLabel(interview, collection, locale) {
  * Returns a localized catalog item label from loaded domain data.
  */
 export function getCatalogItemLabel(catalogType, itemId, context) {
-    const { locale, collection, institution, archiveProject } = context;
+    const { locale, collection, institution, catalogProject } = context;
 
     if (!itemId) {
         return null;
     }
 
     if (catalogType === 'archives') {
-        const archive =
-            String(archiveProject?.id) === String(itemId)
-                ? archiveProject
+        const project =
+            String(catalogProject?.id) === String(itemId)
+                ? catalogProject
                 : null;
         return (
             getLocalizedValue(
-                archive?.display_name,
+                project?.display_name,
                 locale,
-                archive?.default_locale
+                project?.default_locale
             ) ||
-            getLocalizedValue(archive?.name, locale, archive?.default_locale) ||
-            archive?.shortname ||
+            getLocalizedValue(project?.name, locale, project?.default_locale) ||
+            project?.shortname ||
             null
         );
     }

@@ -35,6 +35,30 @@ export function projectDetailUrl(identifier, locale, { include = [] } = {}) {
 }
 
 /**
+ * Creates a selector that reads a cached project without fetching it.
+ * Returns no project until display values exist for the requested locale and access context.
+ *
+ * @returns {function(Object, number|string|null, string): (Object|undefined)} Selector
+ * accepting root state, project ID, and display locale.
+ */
+export const makeProjectSelector = () =>
+    createSelector(
+        [
+            (state) => state.data.v2?.projects,
+            v2AccessContext,
+            (_state, id) => id,
+            (_state, _id, locale) => locale,
+        ],
+        (projects, context, id, locale) => {
+            const record = projects?.records[id];
+            const display = projects?.translations.display[id]?.[locale];
+            if (projects?.context !== context || !record || !display)
+                return undefined;
+            return { ...record, ...display };
+        }
+    );
+
+/**
  * Creates a selector for details confirmed by this query, rather than a cached summary.
  * Keeps details visible during refresh but hides failed or obsolete-access results.
  *

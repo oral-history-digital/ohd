@@ -5,9 +5,9 @@ import {
     getCurrentInterview,
     getCurrentUser,
     getUsersStatus,
+    makeProjectSelector,
     useGetCollection,
     useGetInstitution,
-    useGetProject,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { canShowFullInterviewTitle } from 'modules/interview-helpers';
@@ -22,7 +22,14 @@ import {
 } from '../utils';
 
 /**
- * Returns a breadcrumb model based on the current page classification.
+ * Builds breadcrumbs for the current route.
+ * On catalog project detail pages, reads the project name from Redux;
+ * the detail page loads missing project data.
+ *
+ * @param {Object} [options={}] - Label overrides.
+ * @param {Object} [options.entityLabels={}] - Labels for individual records.
+ * @param {Object} [options.labels={}] - Overrides for standard breadcrumb labels.
+ * @returns {{currentPage: Object, items: Object[]}} Route context and breadcrumb items.
  */
 export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
     const currentPage = useCurrentPage();
@@ -43,12 +50,12 @@ export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
         interview?.collection_id ||
         null;
     const institutionId = catalogType === 'institutions' ? catalogItemId : null;
-    const archiveProjectId = catalogType === 'archives' ? catalogItemId : null;
+    const catalogProjectId = catalogType === 'archives' ? catalogItemId : null;
 
-    const { project: archiveProject } = useGetProject({
-        id: archiveProjectId,
-        lite: true,
-    });
+    const selectCatalogProject = useMemo(makeProjectSelector, []);
+    const catalogProject = useSelector((state) =>
+        selectCatalogProject(state, catalogProjectId, locale)
+    );
     const { collection } = useGetCollection(collectionId);
     const { institution } = useGetInstitution(institutionId);
 
@@ -77,7 +84,7 @@ export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
             interview,
             collection,
             institution,
-            archiveProject,
+            catalogProject,
             locale,
             canShowFullTitle,
         };
@@ -94,7 +101,7 @@ export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
             items: buildKnownItems(currentPage, context),
         };
     }, [
-        archiveProject,
+        catalogProject,
         collection,
         currentPage,
         currentUser,

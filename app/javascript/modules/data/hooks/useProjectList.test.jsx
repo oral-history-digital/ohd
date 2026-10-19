@@ -9,7 +9,7 @@ import { LOGGED_IN, LOGOUT } from '../../user/action-types';
 import userReducer from '../../user/reducer';
 import { RECEIVE_DATA } from '../redux/action-types';
 import { deleteData, receiveData, submitData } from '../redux/actions';
-import { projectDetailUrl } from '../redux/projectDetails';
+import { makeProjectSelector, projectDetailUrl } from '../redux/projectDetails';
 import { makeProjectListSelector, projectListUrl } from '../redux/projectLists';
 import { dataReducer } from '../redux/reducer';
 import { fetchV2Data } from '../redux/v2Requests';
@@ -619,3 +619,43 @@ test.each([null, [], { id: '7' }, { id: -1 }])(
         expect(store.getState().data.v2.projects.records).toEqual({});
     }
 );
+
+test('cached project selection updates from list and detail responses without starting requests', () => {
+    const store = makeStore();
+    const select = makeProjectSelector();
+    expect(select(store.getState(), '7', 'de')).toBeUndefined();
+    expect(Loader.getJson).not.toHaveBeenCalled();
+    load(store);
+    complete([project(7, { name: 'Zusammenfassung' })]);
+    const summary = select(store.getState(), '7', 'de');
+    expect(summary.name).toBe('Zusammenfassung');
+    expect(select(store.getState(), '7', 'de')).toBe(summary);
+    expect(select(store.getState(), '8', 'de')).toBeUndefined();
+    expect(select(store.getState(), '7', 'en')).toBeUndefined();
+    expect(Loader.getJson).toHaveBeenCalledTimes(1);
+
+    store.dispatch(
+        fetchV2Data('projects', projectDetailUrl(7, 'de'), {
+            locale: 'de',
+            single: true,
+        })
+    );
+    completeDetail(project(7, { name: 'Details' }));
+    expect(select(store.getState(), '7', 'de').name).toBe('Details');
+    expect(Loader.getJson).toHaveBeenCalledTimes(2);
+});
+
+test('cached project selection hides names after access changes or logout', () => {
+    const store = makeStore();
+    load(store);
+    complete([project()]);
+    const select = makeProjectSelector();
+    const state = store.getState();
+    expect(select(state, 7, 'de').name).toBe('Projekt');
+    expect(
+        select({ ...state, user: { isLoggedIn: true } }, 7, 'de')
+    ).toBeUndefined();
+    store.dispatch({ type: LOGOUT });
+    expect(select(store.getState(), 7, 'de')).toBeUndefined();
+    expect(Loader.getJson).toHaveBeenCalledTimes(1);
+});
