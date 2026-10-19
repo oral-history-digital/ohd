@@ -58,6 +58,7 @@ export function ExplorerSidebarSearch() {
     });
     const { globalMin, globalMax } = useExplorerInterviewRange({
         items: isProjectsList ? projects : (institutionsList ?? []),
+        countField: isProjectsList ? 'interview_counts' : 'interviews',
     });
     const { globalCollectionMin, globalCollectionMax } =
         useProjectsAndCollectionsRange({ items: projects });

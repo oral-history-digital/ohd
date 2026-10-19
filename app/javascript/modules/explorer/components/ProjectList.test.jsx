@@ -29,8 +29,8 @@ const projects = [
     {
         id: 1,
         name: 'First',
-        interviews: { total: 1 },
-        collections: { total: 1 },
+        interview_counts: { total: 1 },
+        collection_counts: { total: 1 },
         institutions: [
             { id: 2, name: 'Institute', parent: { id: 3, name: 'Parent' } },
         ],
@@ -40,8 +40,8 @@ const projects = [
         id: 2,
         name: 'Unpublished',
         workflow_state: 'unshared',
-        interviews: { total: 5 },
-        collections: { total: 2 },
+        interview_counts: { total: 5 },
+        collection_counts: { total: 2 },
     },
 ];
 

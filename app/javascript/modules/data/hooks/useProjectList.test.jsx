@@ -256,7 +256,7 @@ test('keeps locales, list order, and unrelated records separate while merging op
     expect(state.data.v2.projects.translations.stored).toEqual({});
 });
 
-test('catalog callers share one request and retain compatibility names without filtering unpublished records', async () => {
+test('catalog callers share v2 records without aliases or filtering unpublished projects', async () => {
     const store = makeStore();
     const { result } = mount(store, () => [
         useCatalogProjects(),
@@ -276,10 +276,15 @@ test('catalog callers share one request and retain compatibility names without f
     expect(result.current[0].projects).toEqual(result.current[1].projects);
     expect(result.current[0].projects[0]).toMatchObject({
         workflow_state: 'unshared',
-        interviews: { total: 3 },
-        collections: { total: 1 },
-        languages_interviews: ['eng'],
+        interview_counts: { total: 3 },
+        collection_counts: { total: 1 },
+        interview_languages: ['eng'],
     });
+    expect(result.current[0].projects[0]).not.toHaveProperty('interviews');
+    expect(result.current[0].projects[0]).not.toHaveProperty('collections');
+    expect(result.current[0].projects[0]).not.toHaveProperty(
+        'languages_interviews'
+    );
 });
 
 test('switches locale, keeps results during refresh, and reuses a completed request', async () => {
