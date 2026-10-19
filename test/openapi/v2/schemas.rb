@@ -281,6 +281,30 @@ module ApiContract
       schema(anyOf: [ProjectSponsorLogo, ProjectEditableImage])
     end
 
+    # Optional page content uses the same locale fallback as project display fields.
+    class ProjectText
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id code text], properties: {
+        id: { type: :integer, minimum: 1 }, code: { type: :string },
+        text: { type: %w[string null], description: 'Localized rich text; sanitize before rendering HTML' },
+      })
+    end
+
+    # Stored page translations preserve IDs, blanks, and nulls for existing mutation routes.
+    class ProjectTextTranslation
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id locale text], properties: {
+        id: { type: :integer, minimum: 1 }, locale: { type: :string }, text: { type: %w[string null] },
+      })
+    end
+
+    # Page editing requires the project's update permission, matching existing text mutations.
+    class ProjectEditableText < ProjectText
+      schema(required: %w[translations], properties: {
+        translations: { type: :array, items: ProjectTextTranslation },
+      })
+    end
+
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
@@ -305,6 +329,7 @@ module ApiContract
           metadata_fields: { type: :array, items: ProjectMetadataField },
           media_streams: { type: :array, items: ProjectMediaStream },
           external_links: { type: :array, items: ProjectExternalLink },
+          texts: { type: :array, items: ProjectText },
           sponsor_logos: { type: :array, items: ProjectSponsorLogo },
           media_missing_text: { type: %w[string null], description: 'Localized custom rich text; sanitize before rendering. Null means use the standard UI message.' },
           root_registry_entry_id: { type: %w[integer null], description: 'Target project root entry, or null when absent' },
@@ -369,6 +394,7 @@ module ApiContract
           metadata_fields: { type: :array, items: ProjectEditableMetadataField },
           media_streams: { type: :array, items: ProjectEditableMediaStream },
           external_links: { type: :array, items: ProjectEditExternalLink },
+          texts: { type: :array, items: ProjectEditableText },
           institution_projects: { type: :array, items: ProjectInstitutionAssignment },
           logos: { type: :array, items: ProjectEditableImage },
           **%i[cooperation_partners leaders managers funders].to_h { |field| [field, { type: :array, items: ProjectEditableAffiliate }] },

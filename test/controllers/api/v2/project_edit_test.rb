@@ -298,6 +298,55 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'text display uses locale fallback while editing preserves stored translations under project permission' do
+    page = Text.create!(project_id: @project.id, code: 'contact')
+    english = page.translations.create!(locale: 'en', text: '')
+    page.translations.create!(locale: 'de', text: '<p>Kontakt</p>')
+    other = Text.create!(project_id: Project.find_by!(shortname: 'test').id, code: "other-#{SecureRandom.hex(2)}")
+    read_project(user: nil, include: 'texts', expected: :forbidden)
+    display = read_project(user: nil, profile: 'display', include: 'texts', locale: 'ar')['texts']
+    assert_equal [{ 'id' => page.id, 'code' => 'contact', 'text' => '<p>Kontakt</p>' }], display
+    assert_not_includes display.map { |item| item['id'] }, other.id
+    edit = read_project(include: 'texts')['texts'].sole
+    assert_equal display.sole, edit.except('translations')
+    assert_equal page.translations.order(:id).pluck(:id), edit['translations'].map { |item| item['id'] }
+    assert_equal '', edit['translations'].find { |item| item['id'] == english.id }['text']
+    @grant.destroy!
+    read_project(include: 'texts', expected: :forbidden)
+    assert_equal display, read_project(profile: 'display', include: 'texts', locale: 'ar')['texts']
+  end
+
+  test 'page creation edits movement and deletion refresh only requested text data' do
+    queries = []
+    subscriber = ->(*event) { queries << event.last[:sql] if event.last[:sql].match?(/FROM [`"]?(texts|text_translations)[`"]?/i) }
+    default = nil
+    ActiveSupport::Notifications.subscribed(subscriber, 'sql.active_record') do
+      default = read_project
+      assert_not default.key?('texts')
+      read_project
+    end
+    assert_empty queries
+    assert_empty read_project(include: 'texts')['texts']
+    page = Text.create!(project_id: @project.id, code: 'contact')
+    translation = page.translations.create!(locale: 'en', text: 'Original')
+    assert_equal 'Original', read_project(include: 'texts')['texts'].sole['text']
+    page.update_column(:code, 'legal_info')
+    assert_equal 'legal_info', read_project(include: 'texts')['texts'].sole['code']
+    translation.update_column(:text, nil)
+    data = read_project(include: 'texts')['texts'].sole
+    assert_nil data['text']
+    assert_nil data['translations'].sole['text']
+    page.update_column(:project_id, Project.find_by!(shortname: 'test').id)
+    assert_empty read_project(include: 'texts')['texts']
+    page.update_column(:project_id, @project.id)
+    assert_equal page.id, read_project(include: 'texts')['texts'].sole['id']
+    page.destroy!
+    assert_empty read_project(include: 'texts')['texts']
+    Api::V2::ProjectEditSerializer.stub(:new, ->(*) { flunk 'Omitted texts must keep their cached response' }) do
+      assert_equal default, read_project
+    end
+  end
+
   private
 
   def read_project(identifier: @project.id, expected: :success, user: @user, **parameters)
