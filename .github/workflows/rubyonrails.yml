@@ -28,7 +28,7 @@ jobs:
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
+        run: bundle exec brakeman --no-pager
 
   secret_scan:
     runs-on: ubuntu-latest
@@ -75,6 +75,75 @@ jobs:
             range="$base..$head"
           fi
           gitleaks git --log-opts="$range" --redact --exit-code 1 --config .gitleaks.toml
+
+  # Report only: records dependency advisories and never fails the build.
+  # To gate later, drop the `|| true` guards and ignore accepted findings.
+  dependency_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Audit Ruby gems (bundler-audit)
+        run: |
+          bin/bundler-audit update
+          bin/bundler-audit check --gemfile-lock Gemfile.lock > bundler-audit.txt 2>&1 || true
+
+      - name: Audit JavaScript dependencies (production group)
+        run: yarn audit --groups dependencies --json > yarn-audit.json 2>/dev/null || true
+
+      - name: Summarise findings
+        if: always()
+        run: |
+          python3 - >> "$GITHUB_STEP_SUMMARY" <<'PY'
+          import collections, json, os, re
+
+          print("## Dependency scan (report only)")
+
+          txt = open("bundler-audit.txt").read() if os.path.exists("bundler-audit.txt") else ""
+          blocks = [dict(re.findall(r"^(\w+): (.*)$", b, re.M)) for b in txt.split("\n\n")]
+          ruby = [b for b in blocks if "Name" in b]
+          print(f"\n**Ruby (bundler-audit):** {len(ruby)} advisories\n")
+          for b in ruby:
+              print(f"- `{b.get('Name')} {b.get('Version')}` {b.get('CVE', b.get('GHSA', ''))}: {b.get('Title', '')}")
+
+          js = []
+          summary = {}
+          if os.path.exists("yarn-audit.json"):
+              for line in open("yarn-audit.json"):
+                  row = json.loads(line) if line.strip() else {}
+                  if row.get("type") == "auditAdvisory":
+                      js.append(row["data"]["advisory"])
+                  elif row.get("type") == "auditSummary":
+                      summary = row["data"]["vulnerabilities"]
+          totals = ", ".join(f"{k} {v}" for k, v in summary.items() if v) or "no data"
+          print(f"\n**JavaScript production deps (yarn audit):** {totals}\n")
+          counts = collections.Counter(a["severity"] for a in js)
+          for sev in ["critical", "high", "moderate", "low"]:
+              if counts.get(sev):
+                  print(f"- {sev}: {counts[sev]} advisories across {len({a['module_name'] for a in js if a['severity'] == sev})} packages")
+          PY
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-scan-reports
+          path: |
+            bundler-audit.txt
+            yarn-audit.json
+          if-no-files-found: ignore
 
   test:
     runs-on: ubuntu-latest
