@@ -18,9 +18,9 @@ class Api::V2::ProjectDetailTest < ActionDispatch::IntegrationTest
     InstitutionProject.create!(project: @project, institution: @institution, primary: true)
     @collection = Collection.create!(project: @project, institution: @institution, name: 'Public collection', workflow_state: 'public')
     @hidden = Collection.create!(project: @project, institution: @institution, name: 'Hidden collection', workflow_state: 'unshared')
-    interview = Interview.create!(project: @project, collection: @collection,
+    @interview = Interview.create!(project: @project, collection: @collection,
       archive_id: "#{@project.shortname}001", media_type: 'audio', workflow_state: 'public')
-    InterviewLanguage.create!(interview: interview, language: Language.find_by!(code: 'eng'), spec: 'primary')
+    InterviewLanguage.create!(interview: @interview, language: Language.find_by!(code: 'eng'), spec: 'primary')
   end
 
   teardown do
@@ -73,7 +73,10 @@ class Api::V2::ProjectDetailTest < ActionDispatch::IntegrationTest
   end
 
   test 'includes keep the list field shapes and exclude other projects and unshared previews' do
-    base = read_detail['data']
+    base = nil
+    ProjectMetricsRepository.stub(:new, ->(*) { flunk 'Base details must not calculate catalog metrics' }) do
+      base = read_detail['data']
+    end
     %w[interview_counts collection_counts institutions interview_languages collection_preview].each do |field|
       assert_not base.key?(field)
     end
@@ -184,6 +187,117 @@ class Api::V2::ProjectDetailTest < ActionDispatch::IntegrationTest
       assert_equal parameters.keys.first.to_s, error['parameter']
     end
     read_detail(suffix: '.html', expected: :not_acceptable)
+  end
+
+  test 'catalog additions are opt-in detail fields with documented empty values' do
+    fields = %w[media_types interview_year_range birth_year_range subjects levels_of_indexing cooperation_partners leaders managers funders]
+    base = read_detail['data']
+    fields.each { |field| assert_not base.key?(field) }
+    params = { include: 'media_types,year_ranges,subjects,levels_of_indexing,affiliates' }
+    detail = read_detail(**params)['data']
+    assert_equal({ 'audio' => 1, 'video' => 0 }, detail['media_types'])
+    %w[interview_year_range birth_year_range].each do |field|
+      assert_equal({ 'min' => nil, 'max' => nil }, detail[field])
+    end
+    (fields - %w[media_types interview_year_range birth_year_range]).each { |field| assert_equal [], detail[field] }
+    assert_equal 0, generations { read_detail(include: ' affiliates,subjects,levels_of_indexing,year_ranges,media_types,affiliates ') }
+    get '/api/v2/projects', params: params
+    assert_response :bad_request
+    assert_api_response_schema('/api/v2/projects')
+    login_as User.find_by!(email: 'alice@example.com')
+    edit = read_detail(profile: 'edit', **params)['data']
+    fields.each { |field| assert_equal detail[field], edit[field] }
+  end
+
+  test 'catalog media and year aggregates refresh after edits deletions and reassignment' do
+    type = ContributionType.create!(project: @project, code: 'interviewee', label: 'Interviewee')
+    person = Person.create!(project: @project, first_name: 'Ada', last_name: 'Example', date_of_birth: '1922-02-01')
+    contribution = Contribution.create!(interview: @interview, person: person, contribution_type: type)
+    @interview.update_columns(interview_date: '1979-1981', media_type: 'video', workflow_state: 'unshared')
+    other = DataHelper.test_project(shortname: "other#{SecureRandom.hex(3)}a")
+    Interview.create!(project: other, archive_id: "#{other.shortname}001", media_type: 'audio', interview_date: '2000')
+    options = { include: 'media_types,year_ranges' }
+    detail = read_detail(**options)['data']
+    assert_equal({ 'audio' => 0, 'video' => 1 }, detail['media_types'])
+    assert_equal({ 'min' => 1979, 'max' => 1981 }, detail['interview_year_range'])
+    assert_equal({ 'min' => 1922, 'max' => 1922 }, detail['birth_year_range'])
+    assert_equal 0, generations { read_detail(**options) }
+    person.update_column(:date_of_birth, '1930')
+    assert_equal 1930, read_detail(**options)['data']['birth_year_range']['min']
+    type.update_column(:code, 'interviewer')
+    assert_nil read_detail(**options)['data']['birth_year_range']['min']
+    type.update_column(:code, 'interviewee')
+    assert_equal 1930, read_detail(**options)['data']['birth_year_range']['min']
+    contribution.destroy!
+    assert_nil read_detail(**options)['data']['birth_year_range']['min']
+    @project.update_column(:workflow_state, 'unshared')
+    read_detail(expected: :forbidden, **options)
+    login_as User.find_by!(email: 'alice@example.com')
+    assert_equal({ 'audio' => 0, 'video' => 0 }, read_detail(**options)['data']['media_types'])
+    @project.update_column(:workflow_state, 'public')
+    @interview.update_columns(project_id: other.id, interview_date: '1999')
+    assert_nil read_detail(**options)['data']['interview_year_range']['min']
+    assert_equal({ 'audio' => 0, 'video' => 0 }, read_detail(**options)['data']['media_types'])
+  end
+
+  test 'affiliate includes localize names preserve personal name rules and refresh independently of base details' do
+    leader = Leader.create!(project: @project, name_type: 'Personal')
+    leader.translations.find_or_initialize_by(locale: 'en').update!(name: 'Ignored organization', first_name: 'Ada', last_name: 'Lovelace')
+    leader.translations.find_or_initialize_by(locale: 'de').update!(first_name: 'Augusta', last_name: 'Deutsch')
+    partner = CooperationPartner.create!(project: @project, name_type: 'Organizational')
+    partner.translations.find_or_initialize_by(locale: 'en').update!(name: 'Museum', first_name: 'Ignored')
+    manager = Manager.create!(project: @project, name_type: 'Organizational', name: 'Archive manager')
+    funder = Funder.create!(project: @project, name_type: 'Organizational', name: 'Foundation')
+    Funder.create!(project: Project.find_by!(shortname: 'test'), name_type: 'Organizational', name: 'Other project')
+    options = { include: 'affiliates' }
+    detail = read_detail(**options)['data']
+    assert_equal ['Ada Lovelace'], detail['leaders'].map { |record| record['name'] }
+    assert_equal ['Museum'], detail['cooperation_partners'].map { |record| record['name'] }
+    assert_equal [manager.id], detail['managers'].map { |record| record['id'] }
+    assert_equal [funder.id], detail['funders'].map { |record| record['id'] }
+    assert_equal 'Augusta Deutsch', read_detail(locale: 'de', **options)['data']['leaders'].first['name']
+    read_detail
+    leader.translations.find_by!(locale: 'en').update_column(:first_name, '  ')
+    assert_equal 'Augusta Lovelace', read_detail(**options)['data']['leaders'].first['name']
+    assert_equal 0, generations { read_detail }
+    leader.update_column(:project_id, Project.find_by!(shortname: 'test').id)
+    assert_empty read_detail(**options)['data']['leaders']
+    partner.destroy!
+    assert_empty read_detail(**options)['data']['cooperation_partners']
+  end
+
+  test 'catalog registry includes follow umbrella hierarchy and refresh after label and reference changes' do
+    umbrella = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(3)}a")
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+    subjects = umbrella.root_registry_entry.create_child('Subjects', :en)
+    subjects.update!(code: 'subjects')
+    subject = subjects.create_child('Memory', :en)
+    subject.registry_names.first.translations.find_or_initialize_by(locale: 'de').update!(descriptor: 'Erinnerung')
+    levels = umbrella.root_registry_entry.create_child('Indexing', :en)
+    levels.update!(code: 'level_of_indexing')
+    level = levels.create_child('Transcript', :en)
+    reference = RegistryReference.create!(interview: @interview, ref_object: @interview, registry_entry: subject,
+      workflow_state: 'checked', ref_position: 0)
+    RegistryReference.create!(interview: @interview, ref_object: @interview, registry_entry: level,
+      workflow_state: 'checked', ref_position: 0)
+    other_interview = Interview.create!(project: umbrella, archive_id: "#{umbrella.shortname}001", media_type: 'audio')
+    RegistryReference.create!(interview: other_interview, ref_object: other_interview, registry_entry: level,
+      workflow_state: 'checked', ref_position: 0)
+    options = { include: 'subjects,levels_of_indexing' }
+    assert_equal ['Memory'], read_detail(**options)['data']['subjects']
+    assert_equal ['Erinnerung'], read_detail(locale: 'de', **options)['data']['subjects']
+    assert_equal [{ 'descriptor' => 'Transcript', 'count' => 1 }], read_detail(**options)['data']['levels_of_indexing']
+    assert_equal 0, generations { read_detail(**options) }
+    read_detail
+    subject.registry_names.first.translations.find_by!(locale: 'en').update_column(:descriptor, '  ')
+    assert_equal ['Erinnerung'], read_detail(**options)['data']['subjects']
+    assert_equal 0, generations { read_detail }
+    reference.destroy!
+    assert_empty read_detail(**options)['data']['subjects']
+    RegistryHierarchy.where(ancestor_id: levels.id, descendant_id: level.id).delete_all
+    assert_empty read_detail(**options)['data']['levels_of_indexing']
+    InstanceSetting.current.update!(umbrella_project_id: @project.id)
+    assert_empty read_detail(**options)['data']['levels_of_indexing']
   end
 
   private
