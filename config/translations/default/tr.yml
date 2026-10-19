@@ -338,6 +338,7 @@ tr:
   devise.registrations.signed_up_title: "Kaydınız başarıyla gönderildi!"
   devise.sessions.invalid: "Geçersiz giriş bilgileri."
   edit.default.edit: "Düzenlemek"
+  edit.default.new: "Add"
   edit.registry_entry.show_children: "[Sayı] alt girdileri göster"
   edit.segment.annotations.edit: "Notlar"
   edit.segment.references.edit: "bağlantılı kayıt girişleri"
