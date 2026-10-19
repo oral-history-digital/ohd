@@ -233,6 +233,29 @@ module ApiContract
       })
     end
 
+    # Stored link translations preserve mutation IDs and values without locale fallback.
+    class ProjectExternalLinkTranslation
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id locale name url], properties: {
+        id: { type: :integer, minimum: 1 }, locale: { type: :string },
+        name: { type: %w[string null] }, url: { type: %w[string null] },
+      })
+    end
+
+    # Complete links extend the footer projection with explicit editing fields.
+    class ProjectEditableExternalLink < ProjectExternalLink
+      schema(required: %w[internal_name translations], properties: {
+        internal_name: { type: %w[string null] },
+        translations: { type: :array, items: ProjectExternalLinkTranslation },
+      })
+    end
+
+    # Footer-only edit reads retain the display contract.
+    class ProjectEditExternalLink
+      include OpenapiRuby::Components::Base
+      schema(anyOf: [ProjectExternalLink, ProjectEditableExternalLink])
+    end
+
     # Footer images are restricted to the requested locale and attached files.
     class ProjectSponsorLogo
       include OpenapiRuby::Components::Base
@@ -336,6 +359,7 @@ module ApiContract
           access_config: ProjectEditableAccessConfig,
           metadata_fields: { type: :array, items: ProjectEditableMetadataField },
           media_streams: { type: :array, items: ProjectEditableMediaStream },
+          external_links: { type: :array, items: ProjectEditExternalLink },
           logos: { type: :array, items: ProjectEditableImage },
           **%i[cooperation_partners leaders managers funders].to_h { |field| [field, { type: :array, items: ProjectEditableAffiliate }] },
           sponsor_logos: { type: :array, items: ProjectEditSponsorLogo },

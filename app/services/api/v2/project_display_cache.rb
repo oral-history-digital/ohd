@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 9
+      REVISION = 10
 
       private
 
@@ -37,7 +37,7 @@ module Api
           result[:media_streams] = fingerprint(MediaStream.where(project_id: @project_ids), :project_id, :media_type, :resolution, :path)
           result[:media_missing_text] = fingerprint(Project.translation_class.where(project_id: @project_ids), :project_id, :locale, :media_missing_text)
         end
-        add_footer(result) if @includes.include?('footer')
+        add_external_links(result) if (@includes & %w[footer external_links]).any?
         interviews = Interview.where(project_id: @project_ids)
         if (@includes & %w[media_types year_ranges]).any?
           result[:catalog_interviews] = fingerprint(interviews, :project_id, :workflow_state, :media_type, :interview_date)
@@ -53,13 +53,15 @@ module Api
         result
       end
 
-      # Tracks footer link records and translations; shared branding dependencies cover images.
+      # Tracks display and editable links once, including their stored translations.
       #
       # @param result [Hash] Response dependencies to extend
       # @return [void]
-      def add_footer(result)
+      def add_external_links(result)
         links = ExternalLink.where(project_id: @project_ids)
-        result[:external_links] = fingerprint(links, :project_id)
+        columns = [:project_id]
+        columns << :internal_name if @includes.include?('external_links')
+        result[:external_links] = fingerprint(links, *columns)
         result[:external_link_translations] = fingerprint(ExternalLink.translation_class.where(external_link_id: links.select(:id)),
           :external_link_id, :locale, :name, :url)
       end

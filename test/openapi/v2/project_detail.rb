@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -81,10 +81,16 @@ module ApiContract
               use null url and filename. Empty lists return []. When combined with
               footer, sponsor_logos appears once using the complete editable projection;
               footer-only reads retain the existing locale-filtered display projection.
+              External_links is edit-only and additionally requires ExternalLink update
+              permission. It adds links ordered by ID with localized name/url fields,
+              internal_name and stored translations (id, locale, name, url), preserving
+              blanks and nulls without fallback. Missing links return []. Combined
+              footer,external_links requests emit links once using the edit projection;
+              footer-only reads keep their display fields in both profiles.
               Media and year aggregates retain existing catalog rules: public projects
               include unshared interviews; other project states return zeros or null bounds.
               Requested empty data uses empty arrays, zero counts or null year bounds.
-              Translations and branding are accepted only with profile=edit; display requests return 400.
+              Translations, branding and external_links are accepted only with profile=edit; display requests return 400.
             TEXT
 
           response 200, 'Authorized project details for the requested profile' do

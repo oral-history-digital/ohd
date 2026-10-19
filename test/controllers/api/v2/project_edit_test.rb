@@ -206,6 +206,50 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'editable external links preserve footer fields and stored translations behind resource permission' do
+    link = ExternalLink.create!(project_id: @project.id, internal_name: 'Editor label')
+    english = link.translations.create!(locale: 'en', name: '', url: nil)
+    link.translations.create!(locale: 'de', name: 'German link', url: 'https://example.org/de')
+    read_project(include: 'external_links', expected: :forbidden)
+    read_project(profile: 'display', include: 'external_links', expected: :bad_request)
+    permission = Permission.find_or_create_by!(klass: 'ExternalLink', action_name: 'update')
+    grant = RolePermission.create!(role: @role, permission: permission)
+    edit = read_project(include: 'external_links')['external_links'].sole
+    footer = read_project(include: 'footer')['external_links'].sole
+    assert_equal footer, edit.except('internal_name', 'translations')
+    assert_equal 'Editor label', edit['internal_name']
+    assert_equal link.translations.order(:id).pluck(:id), edit['translations'].map { |item| item['id'] }
+    assert_equal ['', nil], edit['translations'].find { |item| item['id'] == english.id }.values_at('name', 'url')
+    assert_not footer.key?('translations')
+    assert_equal [edit], read_project(include: 'footer,external_links')['external_links']
+    assert_not read_project.key?('external_links')
+    grant.destroy!
+    read_project(include: 'external_links', expected: :forbidden)
+    assert_equal footer, read_project(include: 'footer')['external_links'].sole
+  end
+
+  test 'editable external links cache follows internal fields translations ownership and deletion' do
+    permission = Permission.find_or_create_by!(klass: 'ExternalLink', action_name: 'update')
+    RolePermission.create!(role: @role, permission: permission)
+    link = ExternalLink.create!(project_id: @project.id, internal_name: 'Before')
+    translation = link.translations.create!(locale: 'en', name: 'Link', url: 'https://example.org')
+    default = read_project
+    assert_equal 'Before', read_project(include: 'external_links')['external_links'].sole['internal_name']
+    link.update_column(:internal_name, 'After')
+    assert_equal 'After', read_project(include: 'external_links')['external_links'].sole['internal_name']
+    translation.update_columns(name: '', url: nil)
+    assert_equal ['', nil], read_project(include: 'external_links')['external_links'].sole['translations'].sole.values_at('name', 'url')
+    link.update_column(:project_id, Project.find_by!(shortname: 'test').id)
+    assert_empty read_project(include: 'external_links')['external_links']
+    link.update_column(:project_id, @project.id)
+    assert_equal link.id, read_project(include: 'external_links')['external_links'].sole['id']
+    link.destroy!
+    assert_empty read_project(include: 'external_links')['external_links']
+    Api::V2::ProjectEditSerializer.stub(:new, ->(*) { flunk 'Omitted links must keep their cached response' }) do
+      assert_equal default, read_project
+    end
+  end
+
   private
 
   def read_project(identifier: @project.id, expected: :success, user: @user, **parameters)
