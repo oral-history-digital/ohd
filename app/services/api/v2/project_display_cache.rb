@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 5
+      REVISION = 6
 
       private
 
@@ -28,6 +28,10 @@ module Api
             :metadata_field_id, :locale, :label)
           result[:metadata_reference_types] = fingerprint(RegistryReferenceType.where(id: fields.select(:registry_reference_type_id)),
             :registry_entry_id)
+        end
+        if @includes.include?('registry_configuration')
+          result[:registry_visibility] = fingerprint(@projects, :logged_out_visible_registry_entry_ids, :hidden_registry_entry_ids)
+          result[:registry_roots] = fingerprint(RegistryEntry.where(project_id: @project_ids, code: 'root'), :project_id, :code)
         end
         interviews = Interview.where(project_id: @project_ids)
         if (@includes & %w[media_types year_ranges]).any?
