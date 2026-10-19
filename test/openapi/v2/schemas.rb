@@ -159,6 +159,38 @@ module ApiContract
       schema(required: %w[id], properties: { id: { type: :integer, minimum: 1 } })
     end
 
+    # Read-safe field definitions; registry references contain IDs rather than trees.
+    class ProjectMetadataField
+      include OpenapiRuby::Components::Base
+      properties = {
+        id: { type: :integer, minimum: 1 },
+        name: { type: :string },
+        source: { type: :string, enum: %w[Person Interview RegistryReferenceType EventType] },
+        label: { type: %w[string null] },
+        **%i[ref_object_type eventable_type map_color].to_h { |key| [key, { type: %w[string null] }] },
+        **%i[registry_reference_type_id registry_entry_id event_type_id].to_h { |key| [key, { type: %w[integer null] }] },
+        **%i[facet_order list_columns_order].to_h { |key| [key, { type: %w[number null] }] },
+        **%i[use_as_facet use_in_results_table use_in_results_list use_in_map_search
+          use_in_details_view display_on_landing_page].to_h { |key| [key, { type: :boolean }] },
+      }
+      schema(type: :object, additionalProperties: false, required: properties.keys.map(&:to_s), properties: properties)
+    end
+
+    # Stored labels preserve blank values and IDs for metadata-field mutations.
+    class MetadataFieldTranslation
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id locale label],
+        properties: { id: { type: :integer, minimum: 1 }, locale: { type: :string }, label: { type: %w[string null] } })
+    end
+
+    # Import configuration and stored translations require project update permission.
+    class ProjectEditableMetadataField < ProjectMetadataField
+      schema(required: %w[use_in_metadata_import translations], properties: {
+        use_in_metadata_import: { type: :boolean },
+        translations: { type: :array, items: MetadataFieldTranslation },
+      })
+    end
+
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
@@ -180,6 +212,7 @@ module ApiContract
           aspect_x: { type: %w[integer null] },
           aspect_y: { type: %w[integer null] },
           access_config: ProjectAccessConfig,
+          metadata_fields: { type: :array, items: ProjectMetadataField },
           media_types: {
             type: :object, additionalProperties: false, required: %w[audio video],
             properties: { audio: { type: :integer, minimum: 0 }, video: { type: :integer, minimum: 0 } },
@@ -227,6 +260,7 @@ module ApiContract
             .to_h { |field| [field, { type: :array, items: { type: :string } }] },
           translations: { type: :array, items: ProjectTranslation },
           access_config: ProjectEditableAccessConfig,
+          metadata_fields: { type: :array, items: ProjectEditableMetadataField },
         },
       )
     end

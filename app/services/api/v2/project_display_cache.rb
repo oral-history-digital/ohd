@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 4
+      REVISION = 5
 
       private
 
@@ -17,6 +17,17 @@ module Api
         if @includes.include?('access_config')
           result[:access_config] = fingerprint(AccessConfig.where(project_id: @project_ids),
             :project_id, :organization, :job_description, :research_intentions, :specification, :tos_agreement)
+        end
+        if @includes.include?('metadata_fields')
+          fields = MetadataField.where(project_id: @project_ids)
+          result[:metadata_fields] = fingerprint(fields, :project_id, :name, :source, :ref_object_type,
+            :registry_reference_type_id, :event_type_id, :eventable_type, :facet_order, :list_columns_order,
+            :map_color, :use_as_facet, :use_in_results_table, :use_in_results_list, :use_in_map_search,
+            :use_in_details_view, :display_on_landing_page)
+          result[:metadata_labels] = fingerprint(MetadataField.translation_class.where(metadata_field_id: fields.select(:id)),
+            :metadata_field_id, :locale, :label)
+          result[:metadata_reference_types] = fingerprint(RegistryReferenceType.where(id: fields.select(:registry_reference_type_id)),
+            :registry_entry_id)
         end
         interviews = Interview.where(project_id: @project_ids)
         if (@includes & %w[media_types year_ranges]).any?

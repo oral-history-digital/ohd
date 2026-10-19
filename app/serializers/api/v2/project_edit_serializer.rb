@@ -17,6 +17,20 @@ module Api
         settings&.merge(id: object.access_config.id)
       end
 
+      # Adds import settings and stored labels for existing metadata-field editors.
+      #
+      # @return [Array<Hash>] Definitions with localized labels and stored translations without fallback
+      def metadata_fields
+        fields = instance_options.fetch(:metadata_fields).fetch(object.id, []).index_by(&:id)
+        super.map do |data|
+          field = fields.fetch(data.fetch('id'))
+          data.merge('use_in_metadata_import' => field.use_in_metadata_import?,
+            'translations' => field.translations.sort_by(&:id).map do |translation|
+              translation.attributes.slice('id', 'locale', 'label')
+            end)
+        end
+      end
+
       %i[fullname_on_landing_page show_legend].each do |attribute|
         define_method(attribute) { object.public_send("#{attribute}?") }
       end

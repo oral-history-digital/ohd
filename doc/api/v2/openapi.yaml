@@ -215,7 +215,7 @@ paths:
         in: query
         schema:
           type: string
-          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|translations)\\s*)*$"
+          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|translations)\\s*)*$"
         description: |
           Same optional fields as the list endpoint: counts adds interview_counts
           and collection_counts; other names add their matching fields. Defaults
@@ -230,6 +230,12 @@ paths:
           managers and funders with localized display names, ordered by ID.
           Access_config adds boolean registration field settings without user answers;
           edit additionally includes the save identifier. Missing configuration is null.
+          Metadata_fields adds field definitions ordered by ID, localized labels,
+          reference IDs, display flags and ordering. Derive grid fields using
+          use_in_results_table and list columns using use_in_results_list, sorted
+          by list_columns_order. No registry trees or interview values are included.
+          Edit additionally returns use_in_metadata_import and stored label
+          translations with IDs, preserving blanks and nulls without fallback.
           Media and year aggregates retain existing catalog rules: public projects
           include unshared interviews; other project states return zeros or null bounds.
           Requested empty data uses empty arrays, zero counts or null year bounds.
@@ -380,6 +386,24 @@ components:
               type: string
               minLength: 1
       title: InvalidParameterResponse
+    MetadataFieldTranslation:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - locale
+      - label
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        locale:
+          type: string
+        label:
+          type:
+          - string
+          - 'null'
+      title: MetadataFieldTranslation
     Pagination:
       type: object
       additionalProperties: false
@@ -797,6 +821,10 @@ components:
           - 'null'
         access_config:
           "$ref": "#/components/schemas/ProjectAccessConfig"
+        metadata_fields:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectMetadataField"
         media_types:
           type: object
           additionalProperties: false
@@ -1061,6 +1089,10 @@ components:
           - 'null'
         access_config:
           "$ref": "#/components/schemas/ProjectEditableAccessConfig"
+        metadata_fields:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectEditableMetadataField"
         media_types:
           type: object
           additionalProperties: false
@@ -1295,6 +1327,98 @@ components:
           type: integer
           minimum: 1
       title: ProjectEditableAccessConfig
+    ProjectEditableMetadataField:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - source
+      - label
+      - ref_object_type
+      - eventable_type
+      - map_color
+      - registry_reference_type_id
+      - registry_entry_id
+      - event_type_id
+      - facet_order
+      - list_columns_order
+      - use_as_facet
+      - use_in_results_table
+      - use_in_results_list
+      - use_in_map_search
+      - use_in_details_view
+      - display_on_landing_page
+      - use_in_metadata_import
+      - translations
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+        source:
+          type: string
+          enum:
+          - Person
+          - Interview
+          - RegistryReferenceType
+          - EventType
+        label:
+          type:
+          - string
+          - 'null'
+        ref_object_type:
+          type:
+          - string
+          - 'null'
+        eventable_type:
+          type:
+          - string
+          - 'null'
+        map_color:
+          type:
+          - string
+          - 'null'
+        registry_reference_type_id:
+          type:
+          - integer
+          - 'null'
+        registry_entry_id:
+          type:
+          - integer
+          - 'null'
+        event_type_id:
+          type:
+          - integer
+          - 'null'
+        facet_order:
+          type:
+          - number
+          - 'null'
+        list_columns_order:
+          type:
+          - number
+          - 'null'
+        use_as_facet:
+          type: boolean
+        use_in_results_table:
+          type: boolean
+        use_in_results_list:
+          type: boolean
+        use_in_map_search:
+          type: boolean
+        use_in_details_view:
+          type: boolean
+        display_on_landing_page:
+          type: boolean
+        use_in_metadata_import:
+          type: boolean
+        translations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MetadataFieldTranslation"
+      title: ProjectEditableMetadataField
     ProjectInstitution:
       type: object
       additionalProperties: false
@@ -1346,6 +1470,90 @@ components:
         pagination:
           "$ref": "#/components/schemas/Pagination"
       title: ProjectListResponse
+    ProjectMetadataField:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - source
+      - label
+      - ref_object_type
+      - eventable_type
+      - map_color
+      - registry_reference_type_id
+      - registry_entry_id
+      - event_type_id
+      - facet_order
+      - list_columns_order
+      - use_as_facet
+      - use_in_results_table
+      - use_in_results_list
+      - use_in_map_search
+      - use_in_details_view
+      - display_on_landing_page
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+        source:
+          type: string
+          enum:
+          - Person
+          - Interview
+          - RegistryReferenceType
+          - EventType
+        label:
+          type:
+          - string
+          - 'null'
+        ref_object_type:
+          type:
+          - string
+          - 'null'
+        eventable_type:
+          type:
+          - string
+          - 'null'
+        map_color:
+          type:
+          - string
+          - 'null'
+        registry_reference_type_id:
+          type:
+          - integer
+          - 'null'
+        registry_entry_id:
+          type:
+          - integer
+          - 'null'
+        event_type_id:
+          type:
+          - integer
+          - 'null'
+        facet_order:
+          type:
+          - number
+          - 'null'
+        list_columns_order:
+          type:
+          - number
+          - 'null'
+        use_as_facet:
+          type: boolean
+        use_in_results_table:
+          type: boolean
+        use_in_results_list:
+          type: boolean
+        use_in_map_search:
+          type: boolean
+        use_in_details_view:
+          type: boolean
+        display_on_landing_page:
+          type: boolean
+      title: ProjectMetadataField
     ProjectReadErrorResponse:
       type: object
       additionalProperties: false
