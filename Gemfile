@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rdoc'
-gem 'rails', '~> 8.0.2'
+gem 'rails', '~> 8.1.4'
 gem 'puma'
 gem 'mysql2', '~> 0.5.6'
 gem "redis", "~> 4.0"
@@ -14,7 +14,7 @@ gem 'mini_magick'
 gem 'mini_exiftool'
 gem 'image_processing', '~> 1.2'
 gem 'mime-types'
-gem 'globalize', '~> 7.0.0'
+gem 'globalize', '~> 7.1.3'
 gem 'activemodel-serializers-xml'
 gem 'nokogiri'
 gem 'fastercsv'
@@ -103,3 +103,5 @@ gem 'mini_racer', '~> 0.16.0', platforms: :ruby
 # TODO: ruby 2.7 fixes
 gem 'net-http'
 gem 'uri', '>= 0.13.1'
+
+gem "brakeman", "~> 8.1", :groups => [:development, :test], :require => false
