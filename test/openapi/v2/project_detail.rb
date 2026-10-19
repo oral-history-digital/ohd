@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -69,10 +69,17 @@ module ApiContract
               Sponsor logos match the requested locale exactly; unattached logos are
               omitted. Missing data returns empty arrays. Both profiles use this display
               projection; stored editing names and translations are not included.
+              Branding is edit-only and additionally requires Logo and SponsorLogo
+              update permission. It adds logos and sponsor_logos across all locales,
+              including null locales and unattached records, ordered by ID. Records
+              contain id, type, locale, href, title, url and filename; missing attachments
+              use null url and filename. Empty lists return []. When combined with
+              footer, sponsor_logos appears once using the complete editable projection;
+              footer-only reads retain the existing locale-filtered display projection.
               Media and year aggregates retain existing catalog rules: public projects
               include unshared interviews; other project states return zeros or null bounds.
               Requested empty data uses empty arrays, zero counts or null year bounds.
-              Translations is accepted only with profile=edit; display requests return 400.
+              Translations and branding are accepted only with profile=edit; display requests return 400.
             TEXT
 
           response 200, 'Authorized project details for the requested profile' do

@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 8
+      REVISION = 9
 
       private
 
@@ -53,7 +53,7 @@ module Api
         result
       end
 
-      # Tracks footer records, locale selection, and image replacement without loading files.
+      # Tracks footer link records and translations; shared branding dependencies cover images.
       #
       # @param result [Hash] Response dependencies to extend
       # @return [void]
@@ -62,11 +62,6 @@ module Api
         result[:external_links] = fingerprint(links, :project_id)
         result[:external_link_translations] = fingerprint(ExternalLink.translation_class.where(external_link_id: links.select(:id)),
           :external_link_id, :locale, :name, :url)
-        logos = SponsorLogo.where(ref_type: 'Project', ref_id: @project_ids, locale: @parameters.fetch(:locale))
-        result[:sponsor_logos] = fingerprint(logos, :ref_type, :ref_id, :locale, :href, :title)
-        attachments = ActiveStorage::Attachment.where(record_type: 'UploadedFile', record_id: logos.select(:id), name: 'file')
-        result[:sponsor_attachments] = fingerprint(attachments, :record_id, :blob_id)
-        result[:sponsor_blobs] = fingerprint(ActiveStorage::Blob.where(id: attachments.select(:blob_id)), :key, :filename)
       end
 
       def add_year_ranges(result, interviews)
