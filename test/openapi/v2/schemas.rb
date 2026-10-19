@@ -343,6 +343,15 @@ module ApiContract
       )
     end
 
+    # Editable assignment fields; institution details retain their own read contract.
+    class ProjectInstitutionAssignment
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id institution_id primary], properties: {
+        id: { type: :integer, minimum: 1 }, institution_id: { type: %w[integer null] },
+        primary: { type: :boolean, description: 'Unset legacy values mean false' },
+      })
+    end
+
     class ProjectEdit < ProjectDisplay
       schema(
         description: 'Project settings requiring update permission. Display fields retain their types; stored translations are an optional edit-only include.',
@@ -360,6 +369,7 @@ module ApiContract
           metadata_fields: { type: :array, items: ProjectEditableMetadataField },
           media_streams: { type: :array, items: ProjectEditableMediaStream },
           external_links: { type: :array, items: ProjectEditExternalLink },
+          institution_projects: { type: :array, items: ProjectInstitutionAssignment },
           logos: { type: :array, items: ProjectEditableImage },
           **%i[cooperation_partners leaders managers funders].to_h { |field| [field, { type: :array, items: ProjectEditableAffiliate }] },
           sponsor_logos: { type: :array, items: ProjectEditSponsorLogo },

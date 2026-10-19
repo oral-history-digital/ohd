@@ -250,6 +250,54 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'institution assignments are edit only and keep institution display data separate' do
+    institution = Institution.create!(name: 'Institute', shortname: "inst#{SecureRandom.hex(2)}")
+    assignment = InstitutionProject.create!(project_id: @project.id, institution: institution, primary: true)
+    InstitutionProject.create!(project_id: Project.find_by!(shortname: 'test').id, institution: institution)
+    read_project(include: 'institution_projects', expected: :forbidden)
+    read_project(profile: 'display', include: 'institution_projects', expected: :bad_request)
+    permission = Permission.find_or_create_by!(klass: 'InstitutionProject', action_name: 'update')
+    grant = RolePermission.create!(role: @role, permission: permission)
+    data = read_project(include: 'institution_projects')
+    assert_equal [{ 'id' => assignment.id, 'institution_id' => institution.id, 'primary' => true }], data['institution_projects']
+    assert_not data.key?('institutions')
+    display = read_project(profile: 'display', include: 'institutions')
+    combined = read_project(include: 'institutions,institution_projects')
+    assert_equal display['institutions'], combined['institutions']
+    assert_equal data['institution_projects'], combined['institution_projects']
+    assert_not display.key?('institution_projects')
+    assert_not read_project.key?('institution_projects')
+    grant.destroy!
+    read_project(include: 'institution_projects', expected: :forbidden)
+    assert_equal display['institutions'], read_project(profile: 'display', include: 'institutions')['institutions']
+  end
+
+  test 'assignment cache follows institution primary ownership and deletion without affecting defaults' do
+    permission = Permission.find_or_create_by!(klass: 'InstitutionProject', action_name: 'update')
+    RolePermission.create!(role: @role, permission: permission)
+    institution = Institution.create!(name: 'Institute', shortname: "inst#{SecureRandom.hex(2)}")
+    assignment = InstitutionProject.create!(project_id: @project.id, institution: institution)
+    default = read_project
+    assert_equal false, read_project(include: 'institution_projects')['institution_projects'].sole['primary']
+    assignment.update_columns(primary: true, institution_id: nil)
+    data = read_project(include: 'institution_projects')['institution_projects'].sole
+    assert_equal true, data['primary']
+    assert_nil data['institution_id']
+    assignment.update_columns(primary: nil, institution_id: institution.id)
+    data = read_project(include: 'institution_projects')['institution_projects'].sole
+    assert_equal false, data['primary']
+    assert_equal institution.id, data['institution_id']
+    assignment.update_column(:project_id, Project.find_by!(shortname: 'test').id)
+    assert_empty read_project(include: 'institution_projects')['institution_projects']
+    assignment.update_column(:project_id, @project.id)
+    assert_equal assignment.id, read_project(include: 'institution_projects')['institution_projects'].sole['id']
+    assignment.destroy!
+    assert_empty read_project(include: 'institution_projects')['institution_projects']
+    Api::V2::ProjectEditSerializer.stub(:new, ->(*) { flunk 'Omitted assignments must keep their cached response' }) do
+      assert_equal default, read_project
+    end
+  end
+
   private
 
   def read_project(identifier: @project.id, expected: :success, user: @user, **parameters)

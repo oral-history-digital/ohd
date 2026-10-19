@@ -9,6 +9,7 @@ module Api
 
       attribute :translations, if: :include_translations?
       attribute :external_links, if: :include_external_links?
+      attribute :institution_projects, if: :include_institution_projects?
       attribute :logos, if: :include_branding?
       attribute :sponsor_logos, if: :include_sponsor_logos?
 
@@ -72,6 +73,15 @@ module Api
         end
       end
 
+      # Institution names and choices remain owned by the separate institution reader.
+      #
+      # @return [Array<Hash>] Editable assignments in ID order, with unset primary flags normalized to false
+      def institution_projects
+        object.institution_projects.sort_by(&:id).map do |assignment|
+          { id: assignment.id, institution_id: assignment.institution_id, primary: assignment.primary? }
+        end
+      end
+
       # Uses the logo records and attachments already loaded for the selected display logo.
       #
       # @return [Array<Hash>] Editable logos across all locales, including unattached records
@@ -96,6 +106,11 @@ module Api
       # @return [Boolean] Whether either include needs external links
       def include_external_links?
         include_editable_external_links? || include_footer?
+      end
+
+      # @return [Boolean] Whether editable institution assignments were requested
+      def include_institution_projects?
+        instance_options.fetch(:requested_includes, []).include?('institution_projects')
       end
 
       # @return [Boolean] Whether complete editable asset lists were requested
