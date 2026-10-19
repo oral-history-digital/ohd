@@ -865,13 +865,35 @@ class Interview < ApplicationRecord
         end
 
         {
-          all_interviews_titles: search.hits.map{|hit| JSON.parse(hit.stored(:title).gsub('=>', ':'))},
+          all_interviews_titles: search.hits.map{|hit| parse_stored_locale_hash(hit.stored(:title))},
           # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
           #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
           #    ...]
-          all_interviews_pseudonyms: search.hits.map{|hit| JSON.parse(hit.stored(:alias_names).gsub('=>', ':'))}
+          all_interviews_pseudonyms: search.hits.map{|hit| parse_stored_locale_hash(hit.stored(:alias_names))}
         }
       end
+    end
+
+    # Solr stores locale hashes as Ruby's Hash#to_s, e.g. {:en=>"Name", :de=>nil}.
+    # Parse only that literal shape (symbol keys, string/nil values); never eval.
+    def parse_stored_locale_hash(stored)
+      return {} if stored.blank?
+
+      inner = stored.strip[/\A\{(.*)\}\z/m, 1]
+      raise ArgumentError, "unexpected stored locale hash: #{stored.truncate(80)}" if inner.nil?
+
+      pair = /\s*:(\w+)\s*=>\s*(nil|"((?:[^"\\]|\\.)*)")\s*(?:,|\z)/
+      result = {}
+      rest = inner
+      until rest.strip.empty?
+        match = rest.match(/\A#{pair}/)
+        raise ArgumentError, "unexpected stored locale hash: #{stored.truncate(80)}" unless match
+
+        value = match[2] == 'nil' ? nil : match[3].gsub(/\\(.)/) { Regexp.last_match(1) }
+        result[match[1].to_sym] = value
+        rest = match.post_match
+      end
+      result
     end
 
     def archive_search(user, project, locale, params, per_page = 12)
