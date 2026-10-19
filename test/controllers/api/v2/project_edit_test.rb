@@ -347,7 +347,67 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'map sections return scoped numeric bounds localized labels and stable configured order' do
+    west = create_map_section(name: 'west', order: 2)
+    west.translations.create!(locale: 'en', label: 'West')
+    east = create_map_section(name: 'east', order: 1)
+    east.translations.create!(locale: 'en', label: 'East')
+    east.translations.create!(locale: 'de', label: 'Osten')
+    tied = create_map_section(name: 'tied', order: 2)
+    other = create_map_section(name: 'other', order: 0)
+    other.update_column(:project_id, Project.find_by!(shortname: 'test').id)
+    sections = read_project(user: nil, profile: 'display', include: 'map_sections')['map_sections']
+    assert_equal [east.id, west.id, tied.id], sections.map { |section| section['id'] }
+    assert_equal [51.50939, -0.11832, 44.433333, 26.1], sections.first.values_at('corner1_lat', 'corner1_lon', 'corner2_lat', 'corner2_lon')
+    assert_equal 'East', sections.first['label']
+    assert_nil sections.last['label']
+    assert_equal sections, read_project(include: 'map_sections')['map_sections']
+    assert_equal 'Osten', read_project(profile: 'display', locale: 'ar', include: 'map_sections')['map_sections'].first['label']
+    @project.update_column(:workflow_state, 'unshared')
+    @grant.destroy!
+    read_project(profile: 'display', include: 'map_sections', expected: :forbidden)
+  end
+
+  test 'map changes refresh requested configuration while omitted sections perform no queries' do
+    queries = []
+    subscriber = ->(*event) { queries << event.last[:sql] if event.last[:sql].match?(/FROM [`"]?(map_sections|map_section_translations)[`"]?/i) }
+    default = nil
+    ActiveSupport::Notifications.subscribed(subscriber, 'sql.active_record') do
+      default = read_project
+      assert_not default.key?('map_sections')
+      read_project
+    end
+    assert_empty queries
+    assert_empty read_project(include: 'map_sections')['map_sections']
+    section = create_map_section(name: 'initial', order: 1)
+    translation = section.translations.create!(locale: 'en', label: 'Initial label')
+    assert_equal section.id, read_project(include: 'map_sections')['map_sections'].sole['id']
+    section.update_columns(name: 'changed', order: -1, corner1_lat: 52.123456, corner1_lon: 1.5, corner2_lat: 45.2, corner2_lon: 27.3)
+    data = read_project(include: 'map_sections')['map_sections'].sole
+    assert_equal ['changed', -1, 52.123456, 1.5, 45.2, 27.3], data.values_at('name', 'order', 'corner1_lat', 'corner1_lon', 'corner2_lat', 'corner2_lon')
+    translation.update_column(:label, 'Changed label')
+    assert_equal 'Changed label', read_project(include: 'map_sections')['map_sections'].sole['label']
+    section.update_column(:project_id, Project.find_by!(shortname: 'test').id)
+    assert_empty read_project(include: 'map_sections')['map_sections']
+    section.update_column(:project_id, @project.id)
+    section.destroy!
+    assert_empty read_project(include: 'map_sections')['map_sections']
+    Api::V2::ProjectEditSerializer.stub(:new, ->(*) { flunk 'Omitted sections must keep their cached response' }) do
+      assert_equal default, read_project
+    end
+  end
+
   private
+
+  # Creates valid bounds shared by the map configuration checks.
+  #
+  # @param name [String] Section selection key
+  # @param order [Integer] Configured display order
+  # @return [MapSection] Persisted project section
+  def create_map_section(name:, order:)
+    MapSection.create!(project_id: @project.id, name: name, order: order,
+      corner1_lat: 51.50939, corner1_lon: -0.11832, corner2_lat: 44.433333, corner2_lon: 26.1)
+  end
 
   def read_project(identifier: @project.id, expected: :success, user: @user, **parameters)
     login_as user if user

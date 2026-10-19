@@ -4,7 +4,7 @@ module Api
       DEFAULT_PER_PAGE = 25
       MAX_PER_PAGE = 100
       LIST_INCLUDES = %w[counts institutions interview_languages collection_preview].freeze
-      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer texts]).freeze
+      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer texts map_sections]).freeze
 
       skip_before_action :authenticate_user!, only: [:index, :show]
       before_action :use_global_project_context, only: :index
@@ -117,6 +117,7 @@ module Api
         projects = projects.includes(affiliates: :translations) if includes.include?('affiliates')
         projects = projects.includes(:access_config) if includes.include?('access_config')
         projects = projects.includes(texts: :translations) if includes.include?('texts')
+        projects = projects.includes(map_sections: :translations) if includes.include?('map_sections')
         projects
       end
 

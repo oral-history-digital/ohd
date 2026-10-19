@@ -35,9 +35,10 @@ module Api
       attribute :external_links, if: :include_footer?
       attribute :sponsor_logos, if: :include_footer?
       attribute :texts, if: :include_texts?
+      attribute :map_sections, if: :include_map_sections?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer texts].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer texts map_sections].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 
@@ -166,6 +167,17 @@ module Api
       def texts
         object.texts.sort_by(&:id).map do |text|
           { id: text.id, code: text.code, text: localized_value(text, :text) }
+        end
+      end
+
+      # Empty configuration leaves default bounds to the frontend after loading completes.
+      #
+      # @return [Array<Hash>] Localized sections ordered by configured order, then ID, with numeric bounds
+      def map_sections
+        object.map_sections.sort_by { |section| [section.order, section.id] }.map do |section|
+          { id: section.id, name: section.name, order: section.order, label: localized_value(section, :label),
+            corner1_lat: section.corner1_lat.to_f, corner1_lon: section.corner1_lon.to_f,
+            corner2_lat: section.corner2_lat.to_f, corner2_lon: section.corner2_lon.to_f }
         end
       end
 

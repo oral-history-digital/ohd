@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 11
+      REVISION = 12
 
       private
 
@@ -42,6 +42,11 @@ module Api
           texts = Text.where(project_id: @project_ids)
           result[:texts] = fingerprint(texts, :project_id, :code)
           result[:text_translations] = fingerprint(Text.translation_class.where(text_id: texts.select(:id)), :text_id, :locale, :text)
+        end
+        if @includes.include?('map_sections')
+          sections = MapSection.where(project_id: @project_ids)
+          result[:map_sections] = fingerprint(sections, :project_id, :name, :order, :corner1_lat, :corner1_lon, :corner2_lat, :corner2_lon)
+          result[:map_section_labels] = fingerprint(MapSection.translation_class.where(map_section_id: sections.select(:id)), :map_section_id, :locale, :label)
         end
         interviews = Interview.where(project_id: @project_ids)
         if (@includes & %w[media_types year_ranges]).any?
