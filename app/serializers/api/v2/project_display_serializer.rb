@@ -34,9 +34,10 @@ module Api
       attribute :media_missing_text, if: :include_playback?
       attribute :external_links, if: :include_footer?
       attribute :sponsor_logos, if: :include_footer?
+      attribute :texts, if: :include_texts?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer texts].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 
@@ -156,6 +157,15 @@ module Api
 
           { id: logo.id, locale: logo.locale, href: logo.href, title: logo.title,
             url: Rails.application.routes.url_helpers.rails_blob_path(logo.file, only_path: true) }
+        end
+      end
+
+      # Returns requested page content using the project's display locale fallback.
+      #
+      # @return [Array<Hash>] Page IDs, codes, and localized rich text in ID order
+      def texts
+        object.texts.sort_by(&:id).map do |text|
+          { id: text.id, code: text.code, text: localized_value(text, :text) }
         end
       end
 

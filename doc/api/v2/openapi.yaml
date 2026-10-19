@@ -215,7 +215,7 @@ paths:
         in: query
         schema:
           type: string
-          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|institution_projects|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|institution_projects|translations)\\s*)*$"
+          pattern: "^\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|branding|external_links|institution_projects|translations)\\s*(,\\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|branding|external_links|institution_projects|translations)\\s*)*$"
         description: |
           Same optional fields as the list endpoint: counts adds interview_counts
           and collection_counts; other names add their matching fields. Defaults
@@ -278,6 +278,12 @@ paths:
           false; no assignments returns []. Institution names and choices retain
           separate readers. Combining institutions,institution_projects preserves
           the existing institutions display projection and loads assignments once.
+          Texts adds project-owned pages ordered by ID, with id, code and localized
+          text using the standard display fallback. Missing pages return [] and
+          absent nonblank text returns null. Edit reads additionally return stored
+          translations (id, locale, text), ordered by ID and preserving blanks and
+          nulls without fallback. Project update permission authorizes page editing,
+          matching existing text mutations. Sanitize rich text before rendering HTML.
           Media and year aggregates retain existing catalog rules: public projects
           include unshared interviews; other project states return zeros or null bounds.
           Requested empty data uses empty arrays, zero counts or null year bounds.
@@ -903,6 +909,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ProjectExternalLink"
+        texts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectText"
         sponsor_logos:
           type: array
           items:
@@ -1202,6 +1212,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ProjectEditExternalLink"
+        texts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectEditableText"
         sponsor_logos:
           type: array
           items:
@@ -1707,6 +1721,30 @@ components:
           items:
             "$ref": "#/components/schemas/MetadataFieldTranslation"
       title: ProjectEditableMetadataField
+    ProjectEditableText:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - code
+      - text
+      - translations
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        code:
+          type: string
+        text:
+          type:
+          - string
+          - 'null'
+          description: Localized rich text; sanitize before rendering HTML
+        translations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectTextTranslation"
+      title: ProjectEditableText
     ProjectExternalLink:
       type: object
       additionalProperties: false
@@ -2112,6 +2150,43 @@ components:
           items:
             "$ref": "#/components/schemas/CollectionPreview"
       title: ProjectSummary
+    ProjectText:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - code
+      - text
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        code:
+          type: string
+        text:
+          type:
+          - string
+          - 'null'
+          description: Localized rich text; sanitize before rendering HTML
+      title: ProjectText
+    ProjectTextTranslation:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - locale
+      - text
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        locale:
+          type: string
+        text:
+          type:
+          - string
+          - 'null'
+      title: ProjectTextTranslation
     ProjectTranslation:
       type: object
       additionalProperties: false

@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|institution_projects|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|branding|external_links|institution_projects|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -93,6 +93,12 @@ module ApiContract
               false; no assignments returns []. Institution names and choices retain
               separate readers. Combining institutions,institution_projects preserves
               the existing institutions display projection and loads assignments once.
+              Texts adds project-owned pages ordered by ID, with id, code and localized
+              text using the standard display fallback. Missing pages return [] and
+              absent nonblank text returns null. Edit reads additionally return stored
+              translations (id, locale, text), ordered by ID and preserving blanks and
+              nulls without fallback. Project update permission authorizes page editing,
+              matching existing text mutations. Sanitize rich text before rendering HTML.
               Media and year aggregates retain existing catalog rules: public projects
               include unshared interviews; other project states return zeros or null bounds.
               Requested empty data uses empty arrays, zero counts or null year bounds.

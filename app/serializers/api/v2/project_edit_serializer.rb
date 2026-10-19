@@ -98,6 +98,19 @@ module Api
         instance_options.fetch(:sponsor_logos).fetch(object.id, []).map { |logo| editable_image(logo) }
       end
 
+      # Adds stored page translations without changing the localized display value.
+      #
+      # @return [Array<Hash>] Pages with translation IDs, preserving stored blanks and nulls
+      def texts
+        pages = object.texts.index_by(&:id)
+        super.map do |data|
+          translations = pages.fetch(data.fetch(:id)).translations.sort_by(&:id).map do |translation|
+            translation.attributes.slice('id', 'locale', 'text')
+          end
+          data.merge(translations: translations)
+        end
+      end
+
       # @return [Boolean] Whether complete editable links were requested
       def include_editable_external_links?
         instance_options.fetch(:requested_includes, []).include?('external_links')
