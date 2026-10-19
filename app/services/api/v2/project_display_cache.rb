@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 7
+      REVISION = 8
 
       private
 
@@ -37,6 +37,7 @@ module Api
           result[:media_streams] = fingerprint(MediaStream.where(project_id: @project_ids), :project_id, :media_type, :resolution, :path)
           result[:media_missing_text] = fingerprint(Project.translation_class.where(project_id: @project_ids), :project_id, :locale, :media_missing_text)
         end
+        add_footer(result) if @includes.include?('footer')
         interviews = Interview.where(project_id: @project_ids)
         if (@includes & %w[media_types year_ranges]).any?
           result[:catalog_interviews] = fingerprint(interviews, :project_id, :workflow_state, :media_type, :interview_date)
@@ -50,6 +51,22 @@ module Api
             :affiliate_id, :locale, :name, :first_name, :last_name)
         end
         result
+      end
+
+      # Tracks footer records, locale selection, and image replacement without loading files.
+      #
+      # @param result [Hash] Response dependencies to extend
+      # @return [void]
+      def add_footer(result)
+        links = ExternalLink.where(project_id: @project_ids)
+        result[:external_links] = fingerprint(links, :project_id)
+        result[:external_link_translations] = fingerprint(ExternalLink.translation_class.where(external_link_id: links.select(:id)),
+          :external_link_id, :locale, :name, :url)
+        logos = SponsorLogo.where(ref_type: 'Project', ref_id: @project_ids, locale: @parameters.fetch(:locale))
+        result[:sponsor_logos] = fingerprint(logos, :ref_type, :ref_id, :locale, :href, :title)
+        attachments = ActiveStorage::Attachment.where(record_type: 'UploadedFile', record_id: logos.select(:id), name: 'file')
+        result[:sponsor_attachments] = fingerprint(attachments, :record_id, :blob_id)
+        result[:sponsor_blobs] = fingerprint(ActiveStorage::Blob.where(id: attachments.select(:blob_id)), :key, :filename)
       end
 
       def add_year_ranges(result, interviews)

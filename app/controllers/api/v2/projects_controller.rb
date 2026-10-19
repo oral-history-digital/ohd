@@ -4,7 +4,7 @@ module Api
       DEFAULT_PER_PAGE = 25
       MAX_PER_PAGE = 100
       LIST_INCLUDES = %w[counts institutions interview_languages collection_preview].freeze
-      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback]).freeze
+      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer]).freeze
 
       skip_before_action :authenticate_user!, only: [:index, :show]
       before_action :use_global_project_context, only: :index
@@ -135,6 +135,12 @@ module Api
         end
         if includes.include?('playback')
           options[:media_streams] = policy_scope(MediaStream).where(project_id: project_ids).order(:id).group_by(&:project_id)
+        end
+        if includes.include?('footer')
+          options[:external_links] = policy_scope(ExternalLink).where(project_id: project_ids)
+            .includes(:translations).order(:id).group_by(&:project_id)
+          options[:sponsor_logos] = policy_scope(SponsorLogo).where(ref_type: 'Project', ref_id: project_ids, locale: I18n.locale.to_s)
+            .includes(file_attachment: :blob).order(:id).group_by(&:ref_id)
         end
         options[:interview_languages] = metrics.interview_languages_by_project if includes.include?('interview_languages')
         options[:media_types] = metrics.media_types_by_project if includes.include?('media_types')

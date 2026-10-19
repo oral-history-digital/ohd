@@ -32,9 +32,11 @@ module Api
       attribute :hidden_registry_entry_ids, if: :include_registry_configuration?
       attribute :media_streams, if: :include_playback?
       attribute :media_missing_text, if: :include_playback?
+      attribute :external_links, if: :include_footer?
+      attribute :sponsor_logos, if: :include_footer?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 
@@ -134,6 +136,27 @@ module Api
       # @return [String, nil] Custom missing-media message; nil lets clients use the standard message
       def media_missing_text
         localized_value(object, :media_missing_text)
+      end
+
+      # Returns localized footer links without internal editing names or stored translations.
+      #
+      # @return [Array<Hash>] Links in ID order using the project locale fallback
+      def external_links
+        instance_options.fetch(:external_links).fetch(object.id, []).map do |link|
+          { id: link.id, name: localized_value(link, :name), url: localized_value(link, :url) }
+        end
+      end
+
+      # The controller selects this locale's logos; missing attachments are not displayed.
+      #
+      # @return [Array<Hash>] Sponsor image URLs, link targets, and titles in ID order
+      def sponsor_logos
+        instance_options.fetch(:sponsor_logos).fetch(object.id, []).filter_map do |logo|
+          next unless logo.file.attached?
+
+          { id: logo.id, locale: logo.locale, href: logo.href, title: logo.title,
+            url: Rails.application.routes.url_helpers.rails_blob_path(logo.file, only_path: true) }
+        end
       end
 
       def more_text
