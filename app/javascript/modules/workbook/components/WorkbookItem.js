@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import classNames from 'classnames';
+import { useProjectDetail } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
 import { LinkOrA, useProject } from 'modules/routes';
@@ -13,10 +14,24 @@ import queryString from 'query-string';
 import queryToFacets from '../queryToFacets';
 import WorkbookActions from './WorkbookActions';
 
+/**
+ * Loads an entry's project through Redux and links to its saved interview or search.
+ * Entries remain visible when project details are unavailable.
+ *
+ * @param {Object} props - Entry properties and existing interview actions.
+ * @param {Object} props.data - Saved workbook entry, including its project ID.
+ * @param {string} [props.className] - Additional styling.
+ * @param {Object} props.statuses - Request statuses for related interviews.
+ * @param {Object} props.interviews - Loaded interviews by archive ID.
+ * @param {Function} props.setArchiveId - Selects the interview for navigation.
+ * @param {Function} props.sendTimeChangeRequest - Seeks to a saved segment.
+ * @param {Function} props.hideSidebar - Closes the mobile sidebar.
+ * @param {Function} props.fetchData - Loads a related interview when needed.
+ * @returns {React.ReactElement} Workbook entry and actions.
+ */
 export default function WorkbookItem({
     data,
     className,
-    project,
     statuses,
     interviews,
     setArchiveId,
@@ -25,6 +40,7 @@ export default function WorkbookItem({
     fetchData,
 }) {
     const { t, locale } = useI18n();
+    const { project } = useProjectDetail(data.project_id);
     const { facets } = useFacets();
     const { isUmbrella } = useProject();
     const projectId = project?.shortname;
@@ -33,7 +49,7 @@ export default function WorkbookItem({
     const fetchingInterview = !!statuses['interviews'][data.media_id];
 
     useEffect(() => {
-        if (project && !interview && !fetchingInterview) {
+        if (data.media_id && project && !interview && !fetchingInterview) {
             fetchData(
                 { projectId, locale, project },
                 'interviews',
@@ -172,7 +188,6 @@ export default function WorkbookItem({
 
 WorkbookItem.propTypes = {
     data: PropTypes.object.isRequired,
-    project: PropTypes.object,
     statuses: PropTypes.object.isRequired,
     interviews: PropTypes.object.isRequired,
     className: PropTypes.string,

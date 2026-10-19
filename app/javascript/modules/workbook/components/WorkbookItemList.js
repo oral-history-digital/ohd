@@ -1,20 +1,25 @@
 import { useMemo, useState } from 'react';
 
 import classNames from 'classnames';
-import { getProjects, useHydrateProjectsByIds } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 
 import WorkbookItemContainer from './WorkbookItemContainer';
 
+/**
+ * Groups workbook entries, filtering to the current project outside the umbrella.
+ *
+ * @param {Object} props - List properties.
+ * @param {string} props.type - Workbook section's translation key.
+ * @param {Object[]} [props.contents] - Entries in their saved order.
+ * @returns {React.ReactElement} Collapsible workbook section.
+ */
 export default function WorkbookItemList({ type, contents }) {
     const { t } = useI18n();
     const [open, setOpen] = useState(false);
     const { project, isUmbrella } = useProject();
-    const projects = useSelector(getProjects);
 
     const items = useMemo(() => {
         if (isUmbrella) {
@@ -25,15 +30,6 @@ export default function WorkbookItemList({ type, contents }) {
             contents?.filter((item) => item.project_id === project?.id) || []
         );
     }, [contents, isUmbrella, project?.id]);
-
-    const projectIds = useMemo(
-        () => items.map((item) => item.project_id),
-        [items]
-    );
-
-    // Hydrate projects for the items in the list
-    // TODO: This is a temporary solution that should be replaced once project loading is unified
-    useHydrateProjectsByIds(projectIds);
 
     function handleClick() {
         setOpen((prev) => !prev);
@@ -54,20 +50,13 @@ export default function WorkbookItemList({ type, contents }) {
                 )}
             </button>
             <div className={classNames('panel', { open: open })}>
-                {items.map((item, index, array) => {
-                    const itemProject =
-                        projects?.[item.project_id] ||
-                        (project?.id === item.project_id ? project : undefined);
-
-                    return (
-                        <WorkbookItemContainer
-                            key={item.id}
-                            data={item}
-                            project={itemProject}
-                            className={index < array.length - 1 ? 'u-mb' : null}
-                        />
-                    );
-                })}
+                {items.map((item, index, array) => (
+                    <WorkbookItemContainer
+                        key={item.id}
+                        data={item}
+                        className={index < array.length - 1 ? 'u-mb' : null}
+                    />
+                ))}
             </div>
         </div>
     );
