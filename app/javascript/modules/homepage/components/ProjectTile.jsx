@@ -7,6 +7,13 @@ import { SmartImage } from 'modules/ui';
 import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
 
+/**
+ * Displays a project's name, institutions, logo, interview count, and access status.
+ *
+ * @param {Object} props - Tile data.
+ * @param {Object} props.project - Project summary with optional counts and institutions.
+ * @returns {import('react').ReactElement} Tile linking to the project home page.
+ */
 export function ProjectTile({ project }) {
     const { t, locale } = useI18n();
     const { projectAccessGranted, projectAccessStatus } =
@@ -31,17 +38,17 @@ export function ProjectTile({ project }) {
             : t('modules.homepage.no_access');
 
     const numInterviews = formatNumber(
-        project.interviews?.total || 0,
+        project.interview_counts?.total || 0,
         0, // no decimal places
         locale
     );
 
     const interviewsStr = t(
-        project.interviews?.total === 1
+        project.interview_counts?.total === 1
             ? 'activerecord.models.interview.one'
             : 'activerecord.models.interview.other',
         {
-            count: project.interviews?.total || 0,
+            count: project.interview_counts?.total || 0,
         }
     );
 
