@@ -1,13 +1,15 @@
 import groupBy from 'lodash.groupby';
-import {
-    getCurrentProject,
-    getCurrentUser,
-    useHydrateProjectsByIds,
-} from 'modules/data';
+import { getCurrentProject, getCurrentUser } from 'modules/data';
 import { useSelector } from 'react-redux';
 
 import UserProject from './UserProject';
 
+/**
+ * Groups account access information by project, showing the current project first.
+ * Each row loads its own project display data through Redux.
+ *
+ * @returns {React.ReactElement} Account project rows.
+ */
 function UserProjects() {
     const user = useSelector(getCurrentUser);
     const currentProject = useSelector(getCurrentProject);
@@ -16,9 +18,6 @@ function UserProjects() {
     const currentUserProject = userProjects.find(
         (urp) => urp.project_id === currentProject?.id
     );
-
-    const projectsNeeded = userProjects.map(({ project_id }) => project_id);
-    useHydrateProjectsByIds(projectsNeeded);
 
     const roles = user?.user_roles && Object.values(user.user_roles);
     const groupedRoles = groupBy(roles, 'project_id');
