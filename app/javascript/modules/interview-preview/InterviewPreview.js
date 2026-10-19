@@ -3,7 +3,7 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import keyBy from 'lodash.keyby';
 import { AuthorizedContent } from 'modules/auth';
-import { useHydrateProjectsByIds } from 'modules/data';
+import { useProjectDetail } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { useInterviewSearch } from 'modules/interview-search';
@@ -18,10 +18,21 @@ import { FaRegStar, FaStar } from 'react-icons/fa';
 import InterviewPreviewInner from './InterviewPreviewInner';
 import ThumbnailBadge from './ThumbnailBadge';
 
+/**
+ * Shows an interview card using its project's display details from Redux.
+ *
+ * @param {Object} props - Preview properties.
+ * @param {Object} props.statuses - Interview request statuses by archive ID.
+ * @param {Object} props.interview - Interview summary.
+ * @param {boolean} props.isLoggedIn - Whether bookmarking is available.
+ * @param {Function} props.setArchiveId - Selects the interview for navigation.
+ * @param {string[]} props.selectedArchiveIds - Interviews selected for export.
+ * @param {Function} props.addRemoveArchiveId - Toggles export selection.
+ * @returns {?React.ReactElement} Preview card, or null for a deleted interview.
+ */
 export default function InterviewPreview({
     statuses,
     interview,
-    projects,
     isLoggedIn,
     setArchiveId,
     selectedArchiveIds,
@@ -29,8 +40,7 @@ export default function InterviewPreview({
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const { t, locale } = useI18n();
-    useHydrateProjectsByIds([interview.project_id]);
-    const project = projects[interview.project_id];
+    const { project } = useProjectDetail(interview.project_id);
     const { fulltext } = useArchiveSearch();
     const { savedInterviews } = useWorkbook();
 
@@ -140,7 +150,6 @@ export default function InterviewPreview({
 
 InterviewPreview.propTypes = {
     interview: PropTypes.object.isRequired,
-    projects: PropTypes.object.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     statuses: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array,

@@ -1,5 +1,5 @@
 import { OHD_LOCATION } from 'modules/constants';
-import { formatTimecode } from 'modules/utils';
+import { formatTimecode, localizedValue } from 'modules/utils';
 
 /**
  * Build a human-readable citation string for an interview.
@@ -8,7 +8,7 @@ import { formatTimecode } from 'modules/utils';
  * function and locale via the options parameter: { t, locale }.
  *
  * @param {Object} interview
- * @param {Object} project
+ * @param {Object} project - Project with a localized name or a legacy translation map.
  * @param {string} pathBase
  * @param {number} [tape]
  * @param {number} [time]
@@ -26,7 +26,7 @@ export default function interviewCitation(
     const { t = (k) => k, locale = 'en' } = options;
 
     const domain = project.archive_domain || OHD_LOCATION;
-    const projectName = project.name;
+    const projectName = localizedValue(project.name, locale);
     let selfLink;
     if (domain) {
         selfLink = `${domain}${pathBase}/interviews/${interview.archive_id}`;
@@ -51,7 +51,7 @@ export default function interviewCitation(
         citation += `${t('tape')}: ${tape} – ${formatTimecode(time)}, `;
     }
     if (projectName) {
-        citation += `${projectName[locale]}, `;
+        citation += `${projectName}, `;
     }
     if (selfLink) {
         citation += `${selfLink}, `;

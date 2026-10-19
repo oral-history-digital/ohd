@@ -6,7 +6,7 @@ import {
 import {
     getCurrentUser,
     useHumanReadable,
-    useHydrateProjectsByIds,
+    useProjectDetail,
 } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
@@ -21,18 +21,29 @@ import queryString from 'query-string';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
+/**
+ * Shows an interview row with project links and access settings loaded through Redux.
+ * Metadata columns still follow the current project's configuration.
+ *
+ * @param {Object} props - Row properties.
+ * @param {Object} props.interview - Interview summary.
+ * @param {string[]} props.selectedArchiveIds - Interviews selected for export.
+ * @param {Function} props.setArchiveId - Selects the interview for navigation.
+ * @param {Function} props.addRemoveArchiveId - Toggles export selection.
+ * @returns {React.ReactElement} Interview table row.
+ */
 export default function InterviewListRow({
     interview,
-    projects,
     selectedArchiveIds,
     setArchiveId,
     addRemoveArchiveId,
 }) {
     const { locale } = useI18n();
     const { humanReadable } = useHumanReadable();
-    useHydrateProjectsByIds([interview.project_id]);
     const { project } = useProject();
-    const projectOfInterview = projects[interview.project_id];
+    const { project: projectOfInterview } = useProjectDetail(
+        interview.project_id
+    );
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(projectOfInterview);
     const { fulltext } = useArchiveSearch();
@@ -172,7 +183,6 @@ export default function InterviewListRow({
 
 InterviewListRow.propTypes = {
     interview: PropTypes.object,
-    projects: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,
