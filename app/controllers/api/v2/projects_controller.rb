@@ -4,6 +4,7 @@ module Api
       DEFAULT_PER_PAGE = 25
       MAX_PER_PAGE = 100
       LIST_INCLUDES = %w[counts institutions interview_languages collection_preview].freeze
+      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates]).freeze
 
       skip_before_action :authenticate_user!, only: [:index, :show]
       before_action :use_global_project_context, only: :index
@@ -62,7 +63,7 @@ module Api
       def show
         profile = params.fetch(:profile, 'display')
         invalid_parameter!(:profile) unless %w[display edit].include?(profile)
-        includes = requested_includes(allowed: profile == 'edit' ? LIST_INCLUDES + ['translations'] : LIST_INCLUDES)
+        includes = requested_includes(allowed: profile == 'edit' ? DETAIL_INCLUDES + ['translations'] : DETAIL_INCLUDES)
         identifier = params[:id]
         @project = if identifier.match?(/\A[0-9]+\z/) # Numeric ID
           Project.find_by(id: identifier)
@@ -100,6 +101,7 @@ module Api
         if includes.include?('institutions')
           projects = projects.includes(:institution_projects, institutions: [:translations, { parent: :translations }])
         end
+        projects = projects.includes(affiliates: :translations) if includes.include?('affiliates')
         projects
       end
 
@@ -125,6 +127,11 @@ module Api
           options[:collection_counts] = metrics.collection_counts_by_project
         end
         options[:interview_languages] = metrics.interview_languages_by_project if includes.include?('interview_languages')
+        options[:media_types] = metrics.media_types_by_project if includes.include?('media_types')
+        if includes.include?('year_ranges')
+          options[:interview_year_ranges] = metrics.interview_year_ranges_by_project
+          options[:birth_year_ranges] = metrics.birth_year_ranges_by_project
+        end
         if includes.include?('collection_preview')
           options[:collections_by_project] = CollectionContentRepository.new(
             project_ids: project_ids, collections_scope: collections_scope

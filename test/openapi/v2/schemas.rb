@@ -112,6 +112,26 @@ module ApiContract
       )
     end
 
+    class YearRange
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[min max],
+        properties: { min: { type: %w[integer null] }, max: { type: %w[integer null] } })
+    end
+
+    class ProjectAffiliate
+      include OpenapiRuby::Components::Base
+      schema(
+        type: :object, additionalProperties: false, required: %w[id type name_type name first_name last_name],
+        properties: {
+          id: { type: :integer, minimum: 1 },
+          type: { type: :string, enum: %w[CooperationPartner Leader Manager Funder] },
+          name_type: { type: %w[string null] },
+          name: { type: %w[string null], description: 'Display name; personal names combine first_name and last_name' },
+          first_name: { type: %w[string null] }, last_name: { type: %w[string null] },
+        },
+      )
+    end
+
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
@@ -127,6 +147,20 @@ module ApiContract
           has_newsletter: { type: :boolean },
           display_ohd_link: { type: :boolean },
           oai_doi_identifier: { type: %w[string null], description: 'DOI URL only when doi_status is created; otherwise null' },
+          media_types: {
+            type: :object, additionalProperties: false, required: %w[audio video],
+            properties: { audio: { type: :integer, minimum: 0 }, video: { type: :integer, minimum: 0 } },
+          },
+          interview_year_range: YearRange,
+          birth_year_range: YearRange,
+          subjects: { type: :array, items: { type: :string } },
+          levels_of_indexing: {
+            type: :array, items: {
+              type: :object, additionalProperties: false, required: %w[descriptor count],
+              properties: { descriptor: { type: %w[string null] }, count: { type: :integer, minimum: 0 } },
+            },
+          },
+          **%i[cooperation_partners leaders managers funders].to_h { |field| [field, { type: :array, items: ProjectAffiliate }] },
         },
       )
     end

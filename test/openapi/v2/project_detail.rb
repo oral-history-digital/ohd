@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -38,6 +38,14 @@ module ApiContract
               Empty, unknown and non-string values return 400. Collection previews are
               policy-scoped to the target project; aggregates retain catalog counting rules.
               Use include=institutions for ProjectHome's institution names.
+              Detail-only includes: media_types adds audio/video counts; year_ranges
+              adds interview_year_range and birth_year_range; subjects and
+              levels_of_indexing add localized umbrella registry labels linked to this
+              project's interviews. Affiliates adds cooperation_partners, leaders,
+              managers and funders with localized display names, ordered by ID.
+              Media and year aggregates retain existing catalog rules: public projects
+              include unshared interviews; other project states return zeros or null bounds.
+              Requested empty data uses empty arrays, zero counts or null year bounds.
               Translations is accepted only with profile=edit; display requests return 400.
             TEXT
 
