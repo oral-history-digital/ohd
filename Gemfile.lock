@@ -194,7 +194,7 @@ GEM
       ostruct (>= 0.5)
     drb (2.2.3)
     ed25519 (1.4.0)
-    erb (5.0.1)
+    erb (6.0.7)
     erubi (1.13.1)
     execjs (2.10.0)
     faraday (2.14.3)
@@ -446,9 +446,12 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.4.4)
-    roo (2.10.1)
+    roo (3.0.0)
+      base64 (~> 0.2)
+      csv (~> 3)
+      logger (~> 1)
       nokogiri (~> 1)
-      rubyzip (>= 1.3.0, < 3.0.0)
+      rubyzip (>= 3.0.0, < 4.0.0)
     rotp (6.3.0)
     rqrcode (3.1.0)
       chunky_png (~> 1.0)
@@ -463,7 +466,7 @@ GEM
     ruby-vips (2.2.3)
       ffi (~> 1.12)
       logger
-    rubyzip (2.4.1)
+    rubyzip (3.7.0)
     safety_net_attestation (0.5.0)
       jwt (>= 2.0, < 4.0)
     securerandom (0.4.1)
@@ -601,6 +604,7 @@ DEPENDENCIES
   doorkeeper (~> 5.8.2)
   doorkeeper-openid_connect (~> 1.8.11)
   ed25519
+  erb (>= 6.0.4)
   execjs
   fastercsv
   font-awesome-rails
@@ -638,7 +642,7 @@ DEPENDENCIES
   react_on_rails (~> 14.0.4)
   redis (~> 4.0)
   rexml (~> 3.4)
-  roo (~> 2.10.1)
+  roo (~> 3.0)
   rotp
   rqrcode (~> 3.0)
   selenium-webdriver

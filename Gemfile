@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rdoc'
+gem 'erb', '>= 6.0.4'
 gem 'rails', '~> 8.1.4'
 gem 'puma'
 gem 'mysql2', '~> 0.5.6'
@@ -19,7 +20,7 @@ gem 'activemodel-serializers-xml'
 gem 'nokogiri'
 gem 'fastercsv'
 gem 'csv', '~> 3.2.0'
-gem 'roo', "~> 2.10.1"
+gem 'roo', "~> 3.0"
 gem 'henkei'
 gem 'webvtt-ruby'
 gem 'oai_repository', git: 'https://github.com/grgr/oai_repository'
