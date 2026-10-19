@@ -94,7 +94,8 @@ jest.mock('./DataDetails', () => {
     function DataDetails({ detailsAttributes, data }) {
         return (
             <div data-testid="data-details">
-                {detailsAttributes.join(',')}:{data.id}
+                {detailsAttributes.join(',')}:{data.id}:{data.title}:
+                {data.doi_status}
             </div>
         );
     }
@@ -244,6 +245,7 @@ test('project editing waits for details instead of opening a form with summary d
     const form = jest.fn();
     renderAdminRecord({
         scope: 'project',
+        hideShow: true,
         data: { id: 7, type: 'Project', name: 'Archive' },
         form,
     });
@@ -260,6 +262,7 @@ test('project editing shows a loading error without falling back to summary data
     const form = jest.fn();
     renderAdminRecord({
         scope: 'project',
+        hideShow: true,
         data: { id: 7, type: 'Project', name: 'Archive' },
         form,
     });
@@ -294,4 +297,20 @@ test('project editing uses loaded translations and refreshes details after submi
     );
     form.mock.calls[0][1]();
     expect(mutate).toHaveBeenCalledTimes(1);
+});
+
+test('project details load title and DOI status rather than relying on list fields', () => {
+    useGetProject.mockReturnValue({
+        project: { id: 7, title: 'project-shortname', doi_status: 'created' },
+    });
+    renderAdminRecord({
+        scope: 'project',
+        data: { id: 7, type: 'Project', name: 'Summary' },
+        detailsAttributes: ['title', 'doi_status'],
+        hideEdit: true,
+    });
+    expect(useGetProject).toHaveBeenCalledWith({ id: 7 });
+    expect(screen.getByTestId('data-details')).toHaveTextContent(
+        'project-shortname:created'
+    );
 });
