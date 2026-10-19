@@ -150,6 +150,62 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
     read_project(identifier: 'missing-project', expected: :not_found)
   end
 
+  test 'editable affiliates preserve display fields and stored translations behind subtype permissions' do
+    read_project(include: 'affiliates', expected: :forbidden)
+    records = [CooperationPartner, Leader, Manager, Funder].map do |type|
+      permission = Permission.find_or_create_by!(klass: type.name, action_name: 'update')
+      RolePermission.create!(role: @role, permission: permission)
+      affiliate = type.create!(project_id: @project.id, name_type: 'Organizational')
+      affiliate.translations.create!(locale: 'en', name: '', first_name: nil, last_name: ' ')
+      affiliate.translations.create!(locale: 'de', name: "German #{type.name}")
+      affiliate
+    end
+    other = Leader.create!(project_id: Project.find_by!(shortname: 'test').id)
+    edit = read_project(include: 'affiliates')
+    display = read_project(profile: 'display', include: 'affiliates')
+    records.each do |record|
+      field = record.type.underscore.pluralize
+      data = edit.fetch(field).sole
+      assert_equal record.id, data['id']
+      assert_equal display.fetch(field).sole, data.except('translations')
+      assert_not display.fetch(field).sole.key?('translations')
+      assert_equal record.translations.order(:id).pluck(:id), data['translations'].map { |translation| translation['id'] }
+      english = data['translations'].find { |translation| translation['locale'] == 'en' }
+      assert_equal ['', nil, ' '], english.values_at('name', 'first_name', 'last_name')
+      assert_not_equal other.id, data['id']
+    end
+    @role.role_permissions.joins(:permission).find_by!(permissions: { klass: 'Funder' }).destroy!
+    read_project(include: 'affiliates', expected: :forbidden)
+    assert_equal records[1].id, read_project(profile: 'display', include: 'affiliates')['leaders'].sole['id']
+  end
+
+  test 'editable affiliate cache follows stored translations membership and deletion independently of defaults' do
+    %w[CooperationPartner Leader Manager Funder].each do |type|
+      permission = Permission.find_or_create_by!(klass: type, action_name: 'update')
+      RolePermission.create!(role: @role, permission: permission)
+    end
+    leader = Leader.create!(project_id: @project.id, name_type: 'Personal')
+    translation = leader.translations.create!(locale: 'en', first_name: 'Anna', last_name: 'Example')
+    default = read_project
+    assert_equal 'Anna Example', read_project(include: 'affiliates')['leaders'].sole['name']
+    translation.update_columns(first_name: '', last_name: nil)
+    stored = read_project(include: 'affiliates')['leaders'].sole['translations'].sole
+    assert_equal ['', nil], stored.values_at('first_name', 'last_name')
+    extra = leader.translations.create!(locale: 'fr', name: 'Stored French name')
+    assert_includes read_project(include: 'affiliates')['leaders'].sole['translations'].map { |item| item['id'] }, extra.id
+    extra.destroy!
+    assert_equal [translation.id], read_project(include: 'affiliates')['leaders'].sole['translations'].map { |item| item['id'] }
+    leader.update_column(:project_id, Project.find_by!(shortname: 'test').id)
+    assert_empty read_project(include: 'affiliates')['leaders']
+    leader.update_column(:project_id, @project.id)
+    assert_equal leader.id, read_project(include: 'affiliates')['leaders'].sole['id']
+    leader.destroy!
+    assert_empty read_project(include: 'affiliates')['leaders']
+    Api::V2::ProjectEditSerializer.stub(:new, ->(*) { flunk 'Omitted affiliates must keep their cached response' }) do
+      assert_equal default, read_project
+    end
+  end
+
   private
 
   def read_project(identifier: @project.id, expected: :success, user: @user, **parameters)

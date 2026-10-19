@@ -43,6 +43,11 @@ module ApiContract
               levels_of_indexing add localized umbrella registry labels linked to this
               project's interviews. Affiliates adds cooperation_partners, leaders,
               managers and funders with localized display names, ordered by ID.
+              With profile=edit, affiliates additionally requires update permission for
+              CooperationPartner, Leader, Manager and Funder. Each record adds stored
+              translations (id, locale, name, first_name, last_name), ordered by ID and
+              preserving blanks and nulls without fallback. Localized display fields
+              retain their existing shapes and fallback rules in both profiles.
               Access_config adds boolean registration field settings without user answers;
               edit additionally includes the save identifier. Missing configuration is null.
               Metadata_fields adds field definitions ordered by ID, localized labels,

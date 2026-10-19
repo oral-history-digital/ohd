@@ -77,6 +77,11 @@ module Api
         pundit_reset!
         authorize @project, profile == 'edit' ? :update? : :show?
         authorize MediaStream.new(project: @project), :update? if profile == 'edit' && includes.include?('playback')
+        if profile == 'edit' && includes.include?('affiliates')
+          [CooperationPartner, Leader, Manager, Funder].each do |type|
+            authorize type.new(project: @project), :update?
+          end
+        end
         if includes.include?('branding')
           authorize Logo.new(ref: @project), :update?
           authorize SponsorLogo.new(ref: @project), :update?
