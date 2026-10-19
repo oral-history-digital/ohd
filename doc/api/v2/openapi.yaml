@@ -228,6 +228,11 @@ paths:
           levels_of_indexing add localized umbrella registry labels linked to this
           project's interviews. Affiliates adds cooperation_partners, leaders,
           managers and funders with localized display names, ordered by ID.
+          With profile=edit, affiliates additionally requires update permission for
+          CooperationPartner, Leader, Manager and Funder. Each record adds stored
+          translations (id, locale, name, first_name, last_name), ordered by ID and
+          preserving blanks and nulls without fallback. Localized display fields
+          retain their existing shapes and fallback rules in both profiles.
           Access_config adds boolean registration field settings without user answers;
           edit additionally includes the save identifier. Missing configuration is null.
           Metadata_fields adds field definitions ordered by ID, localized labels,
@@ -634,6 +639,34 @@ components:
           - string
           - 'null'
       title: ProjectAffiliate
+    ProjectAffiliateTranslation:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - locale
+      - name
+      - first_name
+      - last_name
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        locale:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        first_name:
+          type:
+          - string
+          - 'null'
+        last_name:
+          type:
+          - string
+          - 'null'
+      title: ProjectAffiliateTranslation
     ProjectDetailResponse:
       type: object
       additionalProperties: false
@@ -1220,19 +1253,19 @@ components:
         cooperation_partners:
           type: array
           items:
-            "$ref": "#/components/schemas/ProjectAffiliate"
+            "$ref": "#/components/schemas/ProjectEditableAffiliate"
         leaders:
           type: array
           items:
-            "$ref": "#/components/schemas/ProjectAffiliate"
+            "$ref": "#/components/schemas/ProjectEditableAffiliate"
         managers:
           type: array
           items:
-            "$ref": "#/components/schemas/ProjectAffiliate"
+            "$ref": "#/components/schemas/ProjectEditableAffiliate"
         funders:
           type: array
           items:
-            "$ref": "#/components/schemas/ProjectAffiliate"
+            "$ref": "#/components/schemas/ProjectEditableAffiliate"
         contact_email:
           type:
           - string
@@ -1415,6 +1448,50 @@ components:
           type: integer
           minimum: 1
       title: ProjectEditableAccessConfig
+    ProjectEditableAffiliate:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - name_type
+      - name
+      - first_name
+      - last_name
+      - translations
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        type:
+          type: string
+          enum:
+          - CooperationPartner
+          - Leader
+          - Manager
+          - Funder
+        name_type:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display name; personal names combine first_name and last_name
+        first_name:
+          type:
+          - string
+          - 'null'
+        last_name:
+          type:
+          - string
+          - 'null'
+        translations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ProjectAffiliateTranslation"
+      title: ProjectEditableAffiliate
     ProjectEditableImage:
       type: object
       additionalProperties: false

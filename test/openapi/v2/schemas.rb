@@ -132,6 +132,23 @@ module ApiContract
       )
     end
 
+    # Stored names preserve translation IDs and empty values for existing affiliate mutations.
+    class ProjectAffiliateTranslation
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id locale name first_name last_name],
+        properties: {
+          id: { type: :integer, minimum: 1 }, locale: { type: :string },
+          **%i[name first_name last_name].to_h { |field| [field, { type: %w[string null] }] },
+        })
+    end
+
+    # Editable affiliates extend the display shape rather than changing localized field types.
+    class ProjectEditableAffiliate < ProjectAffiliate
+      schema(required: %w[translations], properties: {
+        translations: { type: :array, items: ProjectAffiliateTranslation },
+      })
+    end
+
     # Registration form configuration shared by public display and editing.
     class ProjectAccessConfig
       include OpenapiRuby::Components::Base
@@ -320,6 +337,7 @@ module ApiContract
           metadata_fields: { type: :array, items: ProjectEditableMetadataField },
           media_streams: { type: :array, items: ProjectEditableMediaStream },
           logos: { type: :array, items: ProjectEditableImage },
+          **%i[cooperation_partners leaders managers funders].to_h { |field| [field, { type: :array, items: ProjectEditableAffiliate }] },
           sponsor_logos: { type: :array, items: ProjectEditSponsorLogo },
         },
       )

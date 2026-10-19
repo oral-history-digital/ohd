@@ -11,6 +11,21 @@ module Api
       attribute :logos, if: :include_branding?
       attribute :sponsor_logos, if: :include_sponsor_logos?
 
+      # Keep display names unchanged and add stored translations for each affiliate editor.
+      #
+      # @return [Array<Hash>] Subtype records with translation IDs and values without fallback
+      %w[cooperation_partners leaders managers funders].each do |name|
+        define_method(name) do
+          affiliates = object.affiliates.index_by(&:id)
+          super().map do |data|
+            translations = affiliates.fetch(data.fetch(:id)).translations.sort_by(&:id).map do |translation|
+              translation.attributes.slice('id', 'locale', 'name', 'first_name', 'last_name')
+            end
+            data.merge(translations: translations)
+          end
+        end
+      end
+
       # Adds the configuration ID needed by the existing access-settings save endpoint.
       #
       # @return [Hash, nil] Editable registration settings, or nil if no configuration exists
