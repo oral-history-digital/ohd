@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|branding|external_links|institution_projects|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -87,10 +87,16 @@ module ApiContract
               blanks and nulls without fallback. Missing links return []. Combined
               footer,external_links requests emit links once using the edit projection;
               footer-only reads keep their display fields in both profiles.
+              Institution_projects is edit-only and additionally requires InstitutionProject
+              update permission. It adds assignment id, institution_id (nullable for legacy
+              records), and boolean primary, ordered by assignment ID. Unset primary is
+              false; no assignments returns []. Institution names and choices retain
+              separate readers. Combining institutions,institution_projects preserves
+              the existing institutions display projection and loads assignments once.
               Media and year aggregates retain existing catalog rules: public projects
               include unshared interviews; other project states return zeros or null bounds.
               Requested empty data uses empty arrays, zero counts or null year bounds.
-              Translations, branding and external_links are accepted only with profile=edit; display requests return 400.
+              Translations, branding, external_links and institution_projects are accepted only with profile=edit; display requests return 400.
             TEXT
 
           response 200, 'Authorized project details for the requested profile' do

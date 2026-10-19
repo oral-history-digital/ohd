@@ -63,6 +63,9 @@ module Api
             :collection_id, :locale, :name, :notes
           )
         end
+        if (@includes & %w[institutions institution_projects]).any?
+          result[:institution_links] = fingerprint(InstitutionProject.where(project_id: @project_ids), :project_id, :institution_id, :primary)
+        end
         add_institutions(result) if @includes.include?('institutions')
         result
       end
@@ -89,7 +92,6 @@ module Api
 
       def add_institutions(result)
         links = InstitutionProject.where(project_id: @project_ids)
-        result[:institution_links] = fingerprint(links, :project_id, :institution_id, :primary)
         children = Institution.where(id: links.select(:institution_id))
         institutions = children.or(Institution.where(id: children.select(:parent_id)))
         result[:institutions] = fingerprint(institutions, :parent_id)

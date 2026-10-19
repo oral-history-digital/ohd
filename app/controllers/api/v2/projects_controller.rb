@@ -63,7 +63,7 @@ module Api
       def show
         profile = params.fetch(:profile, 'display')
         invalid_parameter!(:profile) unless %w[display edit].include?(profile)
-        includes = requested_includes(allowed: profile == 'edit' ? DETAIL_INCLUDES + %w[translations branding external_links] : DETAIL_INCLUDES)
+        includes = requested_includes(allowed: profile == 'edit' ? DETAIL_INCLUDES + %w[translations branding external_links institution_projects] : DETAIL_INCLUDES)
         identifier = params[:id]
         @project = if identifier.match?(/\A[0-9]+\z/) # Numeric ID
           Project.find_by(id: identifier)
@@ -78,6 +78,7 @@ module Api
         authorize @project, profile == 'edit' ? :update? : :show?
         authorize MediaStream.new(project: @project), :update? if profile == 'edit' && includes.include?('playback')
         authorize ExternalLink.new(project: @project), :update? if includes.include?('external_links')
+        authorize InstitutionProject.new(project: @project), :update? if includes.include?('institution_projects')
         if profile == 'edit' && includes.include?('affiliates')
           [CooperationPartner, Leader, Manager, Funder].each do |type|
             authorize type.new(project: @project), :update?
@@ -109,8 +110,9 @@ module Api
 
       def preload_projects(projects, includes)
         projects = projects.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob)
+        projects = projects.includes(:institution_projects) if (includes & %w[institutions institution_projects]).any?
         if includes.include?('institutions')
-          projects = projects.includes(:institution_projects, institutions: [:translations, { parent: :translations }])
+          projects = projects.includes(institutions: [:translations, { parent: :translations }])
         end
         projects = projects.includes(affiliates: :translations) if includes.include?('affiliates')
         projects = projects.includes(:access_config) if includes.include?('access_config')
