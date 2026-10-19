@@ -132,10 +132,37 @@ module ApiContract
       )
     end
 
+    # Registration form configuration shared by public display and editing.
+    class ProjectAccessConfig
+      include OpenapiRuby::Components::Base
+
+      fields = {
+        organization: nil,
+        job_description: %w[researcher filmmaker journalist teacher memorial_staff pupil student other],
+        research_intentions: %w[exhibition education film memorial_culture_project genealogy art personal_interest
+          press_publishing school_project university_teaching scientific_paper other],
+        specification: nil, tos_agreement: nil,
+      }
+      properties = fields.to_h do |field, options|
+        flags = { display: { type: :boolean }, obligatory: { type: :boolean } }
+        if options
+          flags[:values] = { type: :object, additionalProperties: false, required: options,
+            properties: options.to_h { |option| [option, { type: :boolean }] } }
+        end
+        [field, { type: :object, additionalProperties: false, required: flags.keys.map(&:to_s), properties: flags }]
+      end
+      schema(type: %w[object null], additionalProperties: false, required: fields.keys.map(&:to_s), properties: properties)
+    end
+
+    # Editable configuration adds its save identifier to the shared field settings.
+    class ProjectEditableAccessConfig < ProjectAccessConfig
+      schema(required: %w[id], properties: { id: { type: :integer, minimum: 1 } })
+    end
+
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
-        required: %w[domain more_text primary_color secondary_color editorial_color has_map is_catalog has_newsletter display_ohd_link show_preview_img oai_doi_identifier],
+        required: %w[domain more_text primary_color secondary_color editorial_color has_map is_catalog has_newsletter display_ohd_link show_preview_img oai_doi_identifier view_modes default_search_order aspect_x aspect_y],
         properties: {
           domain: { type: %w[string null] },
           more_text: { type: %w[string null], description: 'Localized rich text; sanitize before rendering HTML' },
@@ -148,6 +175,11 @@ module ApiContract
           display_ohd_link: { type: :boolean },
           show_preview_img: { type: :boolean, description: 'Show interview preview images even without project access' },
           oai_doi_identifier: { type: %w[string null], description: 'DOI URL only when doi_status is created; otherwise null' },
+          view_modes: { type: :array, items: { type: :string } },
+          default_search_order: { type: %w[string null], enum: %w[title random archive_id] + [nil] },
+          aspect_x: { type: %w[integer null] },
+          aspect_y: { type: %w[integer null] },
+          access_config: ProjectAccessConfig,
           media_types: {
             type: :object, additionalProperties: false, required: %w[audio video],
             properties: { audio: { type: :integer, minimum: 0 }, video: { type: :integer, minimum: 0 } },
@@ -184,18 +216,17 @@ module ApiContract
     class ProjectEdit < ProjectDisplay
       schema(
         description: 'Project settings requiring update permission. Display fields retain their types; stored translations are an optional edit-only include.',
-        required: %w[contact_email aspect_x aspect_y archive_id_number_length fullname_on_landing_page show_legend
-          view_modes upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids],
+        required: %w[contact_email archive_id_number_length fullname_on_landing_page show_legend
+          upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids],
         properties: {
           contact_email: { type: %w[string null] },
-          aspect_x: { type: %w[integer null] },
-          aspect_y: { type: %w[integer null] },
           archive_id_number_length: { type: %w[integer null] },
           fullname_on_landing_page: { type: :boolean },
           show_legend: { type: :boolean },
-          **%i[view_modes upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids]
+          **%i[upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids]
             .to_h { |field| [field, { type: :array, items: { type: :string } }] },
           translations: { type: :array, items: ProjectTranslation },
+          access_config: ProjectEditableAccessConfig,
         },
       )
     end

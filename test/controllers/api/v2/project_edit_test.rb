@@ -7,6 +7,8 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
   CONTRACT_PATH = '/api/v2/projects/{identifier}'
 
   setup do
+    # Load Devise's scope and session serializers before a first-request login.
+    Rails.application.reload_routes! if Devise.mappings.empty?
     @previous_cache = Rails.cache
     Rails.cache = ActiveSupport::Cache::MemoryStore.new
     host! 'test.portal.oral-history.localhost:47001'

@@ -2,17 +2,28 @@ module Api
   module V2
     # Display details extend the summary contract and share its optional includes.
     class ProjectDisplaySerializer < ProjectListSerializer
+      ACCESS_CONFIG_FIELDS = {
+        organization: nil,
+        job_description: %w[researcher filmmaker journalist teacher memorial_staff pupil student other],
+        research_intentions: %w[exhibition education film memorial_culture_project genealogy art personal_interest
+          press_publishing school_project university_teaching scientific_paper other],
+        specification: nil,
+        tos_agreement: nil,
+      }.freeze
+
       attributes :domain, :more_text, :primary_color, :secondary_color, :editorial_color,
-        :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :show_preview_img, :oai_doi_identifier
+        :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :show_preview_img, :oai_doi_identifier,
+        :view_modes, :default_search_order, :aspect_x, :aspect_y
 
       attribute :media_types, if: :include_media_types?
       attribute :interview_year_range, if: :include_year_ranges?
       attribute :birth_year_range, if: :include_year_ranges?
       attribute :subjects, if: :include_subjects?
       attribute :levels_of_indexing, if: :include_levels_of_indexing?
+      attribute :access_config, if: :include_access_config?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 
@@ -55,6 +66,25 @@ module Api
         counts = object.umbrella_level_of_indexing_registry_entry_groups.to_h
         registry_entries(counts.keys).map do |entry|
           { descriptor: registry_descriptor(entry), count: counts.fetch(entry.id) }
+        end
+      end
+
+      # Returns registration field settings without user answers or editor identifiers.
+      # Legacy boolean strings are interpreted as in the existing registration form.
+      #
+      # @return [Hash, nil] Allowlisted boolean settings, or nil if no configuration exists
+      def access_config
+        config = object.access_config
+        return unless config
+
+        ACCESS_CONFIG_FIELDS.to_h do |field, options|
+          settings = (config.public_send(field) || {}).with_indifferent_access
+          result = %i[display obligatory].to_h { |flag| [flag, settings[flag].to_s.downcase == 'true'] }
+          if options
+            values = (settings[:values] || {}).with_indifferent_access
+            result[:values] = options.to_h { |option| [option, values[option].to_s.downcase == 'true'] }
+          end
+          [field, result]
         end
       end
 
