@@ -63,7 +63,7 @@ module Api
       def show
         profile = params.fetch(:profile, 'display')
         invalid_parameter!(:profile) unless %w[display edit].include?(profile)
-        includes = requested_includes(allowed: profile == 'edit' ? DETAIL_INCLUDES + ['translations'] : DETAIL_INCLUDES)
+        includes = requested_includes(allowed: profile == 'edit' ? DETAIL_INCLUDES + %w[translations branding] : DETAIL_INCLUDES)
         identifier = params[:id]
         @project = if identifier.match?(/\A[0-9]+\z/) # Numeric ID
           Project.find_by(id: identifier)
@@ -77,6 +77,10 @@ module Api
         pundit_reset!
         authorize @project, profile == 'edit' ? :update? : :show?
         authorize MediaStream.new(project: @project), :update? if profile == 'edit' && includes.include?('playback')
+        if includes.include?('branding')
+          authorize Logo.new(ref: @project), :update?
+          authorize SponsorLogo.new(ref: @project), :update?
+        end
         umbrella_id = InstanceSetting.current.umbrella_project_id
         collections_scope = policy_scope(Collection) if includes.include?('collection_preview')
         cache_class = profile == 'edit' ? ProjectEditCache : ProjectDisplayCache
@@ -139,8 +143,11 @@ module Api
         if includes.include?('footer')
           options[:external_links] = policy_scope(ExternalLink).where(project_id: project_ids)
             .includes(:translations).order(:id).group_by(&:project_id)
-          options[:sponsor_logos] = policy_scope(SponsorLogo).where(ref_type: 'Project', ref_id: project_ids, locale: I18n.locale.to_s)
-            .includes(file_attachment: :blob).order(:id).group_by(&:ref_id)
+        end
+        if (includes & %w[footer branding]).any?
+          sponsors = policy_scope(SponsorLogo).where(ref_type: 'Project', ref_id: project_ids)
+          sponsors = sponsors.where(locale: I18n.locale.to_s) unless includes.include?('branding')
+          options[:sponsor_logos] = sponsors.includes(file_attachment: :blob).order(:id).group_by(&:ref_id)
         end
         options[:interview_languages] = metrics.interview_languages_by_project if includes.include?('interview_languages')
         options[:media_types] = metrics.media_types_by_project if includes.include?('media_types')

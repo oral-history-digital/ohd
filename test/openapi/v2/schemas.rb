@@ -226,6 +226,21 @@ module ApiContract
       })
     end
 
+    # Complete image records for administration; missing files do not hide editable records.
+    class ProjectEditableImage
+      include OpenapiRuby::Components::Base
+      schema(type: :object, additionalProperties: false, required: %w[id type locale href title url filename], properties: {
+        id: { type: :integer, minimum: 1 }, type: { type: :string, enum: %w[Logo SponsorLogo] },
+        **%i[locale href title url filename].to_h { |field| [field, { type: %w[string null] }] },
+      })
+    end
+
+    # Edit footer reads use the display shape; branding reads use complete image records.
+    class ProjectEditSponsorLogo
+      include OpenapiRuby::Components::Base
+      schema(anyOf: [ProjectSponsorLogo, ProjectEditableImage])
+    end
+
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
@@ -304,6 +319,8 @@ module ApiContract
           access_config: ProjectEditableAccessConfig,
           metadata_fields: { type: :array, items: ProjectEditableMetadataField },
           media_streams: { type: :array, items: ProjectEditableMediaStream },
+          logos: { type: :array, items: ProjectEditableImage },
+          sponsor_logos: { type: :array, items: ProjectEditSponsorLogo },
         },
       )
     end

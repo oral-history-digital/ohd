@@ -67,11 +67,22 @@ module Api
         result
       end
 
+      # Tracks default branding and requested image lists once, including their attachments.
+      #
+      # @param result [Hash] Response dependencies to extend
+      # @return [void]
       def add_branding(result)
-        logos = Logo.where(ref_type: 'Project', ref_id: @project_ids)
-        result[:logos] = fingerprint(logos, :ref_id, :locale)
+        images = UploadedFile.where(type: 'Logo', ref_type: 'Project', ref_id: @project_ids)
+        columns = %i[ref_id locale]
+        if (@includes & %w[footer branding]).any?
+          sponsors = UploadedFile.where(type: 'SponsorLogo', ref_type: 'Project', ref_id: @project_ids)
+          sponsors = sponsors.where(locale: @parameters.fetch(:locale)) unless @includes.include?('branding')
+          images = images.or(sponsors)
+          columns += %i[type href title]
+        end
+        result[:branding_images] = fingerprint(images, *columns)
         attachments = ActiveStorage::Attachment.where(record_type: 'Project', record_id: @project_ids, name: 'favicon')
-          .or(ActiveStorage::Attachment.where(record_type: 'UploadedFile', record_id: logos.select(:id), name: 'file'))
+          .or(ActiveStorage::Attachment.where(record_type: 'UploadedFile', record_id: images.select(:id), name: 'file'))
         result[:attachments] = fingerprint(attachments, :record_type, :record_id, :name, :blob_id)
         result[:blobs] = fingerprint(ActiveStorage::Blob.where(id: attachments.select(:blob_id)), :key, :filename)
       end

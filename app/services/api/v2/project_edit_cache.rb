@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectEditCache < ProjectDisplayCache
       ENDPOINT = 'projects/edit'
-      REVISION = 7
+      REVISION = 8
 
       private
 
