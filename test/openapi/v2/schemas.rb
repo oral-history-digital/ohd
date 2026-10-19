@@ -213,6 +213,9 @@ module ApiContract
           aspect_y: { type: %w[integer null] },
           access_config: ProjectAccessConfig,
           metadata_fields: { type: :array, items: ProjectMetadataField },
+          root_registry_entry_id: { type: %w[integer null], description: 'Target project root entry, or null when absent' },
+          **%i[logged_out_visible_registry_entry_ids hidden_registry_entry_ids]
+            .to_h { |field| [field, { type: :array, items: { type: :string } }] },
           media_types: {
             type: :object, additionalProperties: false, required: %w[audio video],
             properties: { audio: { type: :integer, minimum: 0 }, video: { type: :integer, minimum: 0 } },

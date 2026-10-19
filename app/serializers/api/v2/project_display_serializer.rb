@@ -27,9 +27,12 @@ module Api
       attribute :levels_of_indexing, if: :include_levels_of_indexing?
       attribute :access_config, if: :include_access_config?
       attribute :metadata_fields, if: :include_metadata_fields?
+      attribute :root_registry_entry_id, if: :include_registry_configuration?
+      attribute :logged_out_visible_registry_entry_ids, if: :include_registry_configuration?
+      attribute :hidden_registry_entry_ids, if: :include_registry_configuration?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 
@@ -105,6 +108,13 @@ module Api
           ).merge('label' => localized_value(field, :label),
             'registry_entry_id' => field.registry_reference_type&.registry_entry_id)
         end
+      end
+
+      # Resolves only this project's root; configuration does not grant registry access.
+      #
+      # @return [Integer, nil] Root entry ID, or nil when none is configured
+      def root_registry_entry_id
+        object.root_registry_entry&.id
       end
 
       def more_text
