@@ -39,6 +39,7 @@ class CatalogProjectLoadingTest < ApplicationSystemTestCase
   test 'catalog details load directly and from the list with localized content and access checks' do
     visit "/en/catalog/archives/#{@project.id}?checked_ohd_session=true"
     assert_selector '.ProjectDetails-title', text: 'Catalog migration public'
+    assert_selector '.Breadcrumbs-current', text: 'Catalog migration public'
     assert_text 'Ada Lovelace'
     assert_text 'Catalog institute'
     assert_selector '.CollectionCard-title', text: 'Catalog collection'
@@ -51,6 +52,7 @@ class CatalogProjectLoadingTest < ApplicationSystemTestCase
 
     visit "/de/catalog/archives/#{@project.id}?checked_ohd_session=true"
     assert_selector '.ProjectDetails-title', text: 'Katalogprojekt'
+    assert_selector '.Breadcrumbs-current', text: 'Katalogprojekt'
     assert_text 'Deutsche Beschreibung'
 
     visit "/en/catalog/archives/#{@private_project.id}?checked_ohd_session=true"
