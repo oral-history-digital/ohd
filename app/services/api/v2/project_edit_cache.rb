@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectEditCache < ProjectDisplayCache
       ENDPOINT = 'projects/edit'
-      REVISION = 3
+      REVISION = 4
 
       private
 
@@ -13,6 +13,9 @@ module Api
             :logged_out_visible_registry_entry_ids, :hidden_registry_entry_ids,
             :hidden_transcript_registry_entry_ids, :pdf_registry_entry_ids)
         )
+        if @includes.include?('metadata_fields')
+          result[:metadata_import_settings] = fingerprint(MetadataField.where(project_id: @project_ids), :use_in_metadata_import)
+        end
         if @includes.include?('translations')
           result[:edit_translations] = fingerprint(Project.translation_class.where(project_id: @project_ids),
             :locale, :name, :display_name, :introduction, :more_text, :landing_page_text,

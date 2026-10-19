@@ -4,7 +4,7 @@ module Api
       DEFAULT_PER_PAGE = 25
       MAX_PER_PAGE = 100
       LIST_INCLUDES = %w[counts institutions interview_languages collection_preview].freeze
-      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config]).freeze
+      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields]).freeze
 
       skip_before_action :authenticate_user!, only: [:index, :show]
       before_action :use_global_project_context, only: :index
@@ -126,6 +126,11 @@ module Api
         if includes.include?('counts')
           options[:interview_counts] = metrics.interview_counts_by_project
           options[:collection_counts] = metrics.collection_counts_by_project
+        end
+        if includes.include?('metadata_fields')
+          # Query directly: the legacy association also loads registry trees and names.
+          options[:metadata_fields] = policy_scope(MetadataField).where(project_id: project_ids)
+            .includes(:translations, :registry_reference_type).order(:id).group_by(&:project_id)
         end
         options[:interview_languages] = metrics.interview_languages_by_project if includes.include?('interview_languages')
         options[:media_types] = metrics.media_types_by_project if includes.include?('media_types')

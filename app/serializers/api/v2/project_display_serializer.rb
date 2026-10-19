@@ -11,6 +11,11 @@ module Api
         tos_agreement: nil,
       }.freeze
 
+      METADATA_FIELD_ATTRIBUTES = %w[id name source ref_object_type registry_reference_type_id
+        event_type_id eventable_type facet_order list_columns_order map_color].freeze
+      METADATA_FIELD_FLAGS = %w[use_as_facet use_in_results_table use_in_results_list use_in_map_search
+        use_in_details_view display_on_landing_page].freeze
+
       attributes :domain, :more_text, :primary_color, :secondary_color, :editorial_color,
         :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :show_preview_img, :oai_doi_identifier,
         :view_modes, :default_search_order, :aspect_x, :aspect_y
@@ -21,9 +26,10 @@ module Api
       attribute :subjects, if: :include_subjects?
       attribute :levels_of_indexing, if: :include_levels_of_indexing?
       attribute :access_config, if: :include_access_config?
+      attribute :metadata_fields, if: :include_metadata_fields?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 
@@ -85,6 +91,19 @@ module Api
             result[:values] = options.to_h { |option| [option, values[option].to_s.downcase == 'true'] }
           end
           [field, result]
+        end
+      end
+
+      # Returns field definitions in ID order; clients derive grid/list selections
+      # from use_in_results_table/use_in_results_list and list_columns_order.
+      #
+      # @return [Array<Hash>] Localized metadata definitions without registry trees
+      def metadata_fields
+        instance_options.fetch(:metadata_fields).fetch(object.id, []).map do |field|
+          field.attributes.slice(*METADATA_FIELD_ATTRIBUTES).merge(
+            METADATA_FIELD_FLAGS.to_h { |flag| [flag, field.public_send("#{flag}?")] }
+          ).merge('label' => localized_value(field, :label),
+            'registry_entry_id' => field.registry_reference_type&.registry_entry_id)
         end
       end
 
