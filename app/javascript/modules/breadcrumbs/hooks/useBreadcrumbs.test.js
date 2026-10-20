@@ -33,12 +33,45 @@ describe('useBreadcrumbs', () => {
         jest.clearAllMocks();
     });
 
+    it('waits for display details and updates the project label after a locale change', () => {
+        useI18n.mockReturnValue({ locale: 'de' });
+        useProject.mockReturnValue({ project: undefined });
+        useBreadcrumbModel.mockReturnValue({
+            currentPage: { pageType: 'project_startpage' },
+            items: [],
+        });
+        const { result, rerender } = renderHook(() => useBreadcrumbs());
+        expect(result.current).toEqual([]);
+        expect(useProject).toHaveBeenCalledWith({});
+
+        useProject.mockReturnValue({
+            project: { shortname: 'pilot', display_name: 'Projekt Alpha' },
+        });
+        rerender();
+        expect(result.current[0].label).toBe('Projekt Alpha');
+
+        useI18n.mockReturnValue({ locale: 'en' });
+        useProject.mockReturnValue({ project: undefined });
+        rerender();
+        expect(result.current).toEqual([]);
+
+        useProject.mockReturnValue({
+            project: {
+                shortname: 'pilot',
+                display_name: null,
+                name: 'Project Alpha',
+            },
+        });
+        rerender();
+        expect(result.current[0].label).toBe('Project Alpha');
+    });
+
     it('returns project breadcrumb on project start page even when model items are empty', () => {
         const result = renderHookResult({
             project: {
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Projekt Alpha' },
+                display_name: 'Projekt Alpha',
             },
             currentPage: { pageType: 'project_startpage', pathBase: '/de' },
             modelItems: [],
@@ -58,7 +91,7 @@ describe('useBreadcrumbs', () => {
             project: {
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Projekt Alpha' },
+                display_name: 'Projekt Alpha',
             },
             currentPage: { pageType: 'search_archive', pathBase: '/de' },
             modelItems: [
@@ -91,7 +124,7 @@ describe('useBreadcrumbs', () => {
             project: {
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Projekt Alpha' },
+                display_name: 'Projekt Alpha',
             },
             currentPage: { pageType: 'search_archive' },
             modelItems: [
@@ -129,7 +162,7 @@ describe('useBreadcrumbs', () => {
             project: {
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Projekt Alpha' },
+                display_name: 'Projekt Alpha',
             },
             currentPage: { pageType: 'catalog_page', pathBase: '/de' },
             modelItems: [
