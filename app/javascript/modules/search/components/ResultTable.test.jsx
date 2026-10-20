@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { useProject } from 'modules/routes';
 
 import ResultTable from './ResultTable';
 
@@ -23,31 +24,30 @@ jest.mock('modules/interview-preview', () => ({
 jest.mock('modules/query-string', () => ({
     useSearchParams: () => ({}),
 }));
-jest.mock('modules/routes', () => ({
-    useProject: () => ({
+jest.mock('modules/data', () =>
+    jest.requireActual('../../data/utils/getResultMetadataFields')
+);
+jest.mock('modules/routes', () => ({ useProject: jest.fn() }));
+jest.mock('modules/spinners', () => ({ Spinner: () => <p>Loading</p> }));
+jest.mock('modules/ui', () => ({
+    // eslint-disable-next-line react/prop-types
+    InlineNotification: ({ description }) => <p role="alert">{description}</p>,
+}));
+
+beforeEach(() => {
+    useProject.mockReturnValue({
         project: {
             is_umbrella: false,
-            list_columns: [
-                { id: 1, name: 'collection_id', source: 'Interview' },
-                { id: 2, name: 'interview_date', source: 'Interview' },
-                { id: 3, name: 'level_of_indexing_ohd', source: 'Interview' },
-                {
-                    id: 4,
-                    name: 'subjects_ohd',
-                    source: 'RegistryReferenceType',
-                },
-                {
-                    id: 5,
-                    name: 'countries_ohd',
-                    source: 'RegistryReferenceType',
-                },
-            ],
-            metadata_fields: {
-                2: { label: { de: 'Eigener Titel' } },
-            },
+            metadata_fields: [
+                { id: 1, name: 'collection_id' },
+                { id: 2, name: 'interview_date', label: 'Eigener Titel' },
+                { id: 3, name: 'level_of_indexing_ohd' },
+                { id: 4, name: 'subjects_ohd' },
+                { id: 5, name: 'countries_ohd' },
+            ].map((field) => ({ ...field, use_in_results_list: true })),
         },
-    }),
-}));
+    });
+});
 
 test('uses metadata labels when no custom list label exists', () => {
     render(<ResultTable interviews={[]} />);
@@ -67,4 +67,18 @@ test('uses metadata labels when no custom list label exists', () => {
     expect(
         screen.getByRole('columnheader', { name: 'Länder' })
     ).toBeInTheDocument();
+});
+
+test('waits for metadata and shows failed requests instead of a table', () => {
+    useProject.mockReturnValue({ isLoading: true });
+    const { rerender } = render(<ResultTable interviews={[]} />);
+    expect(screen.getByText('Loading')).toBeInTheDocument();
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    expect(useProject).toHaveBeenCalledWith({ include: ['metadata_fields'] });
+
+    useProject.mockReturnValue({ error: { message: 'Access denied' } });
+    rerender(<ResultTable interviews={[]} />);
+    expect(screen.getByRole('alert')).toHaveTextContent('Access denied');
+    expect(screen.queryByText('Loading')).not.toBeInTheDocument();
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
 });

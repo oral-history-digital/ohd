@@ -5,6 +5,7 @@ import {
 } from 'modules/constants';
 import {
     getCurrentUser,
+    getResultMetadataFields,
     useHumanReadable,
     useProjectDetail,
 } from 'modules/data';
@@ -23,7 +24,7 @@ import { useSelector } from 'react-redux';
 
 /**
  * Shows an interview row with project links and access settings loaded through Redux.
- * Metadata columns still follow the current project's configuration.
+ * Metadata columns follow the current project's configuration loaded through Redux.
  *
  * @param {Object} props - Row properties.
  * @param {Object} props.interview - Interview summary.
@@ -40,7 +41,8 @@ export default function InterviewListRow({
 }) {
     const { locale } = useI18n();
     const { humanReadable } = useHumanReadable();
-    const { project } = useProject();
+    const { project } = useProject({ include: ['metadata_fields'] });
+    const columns = getResultMetadataFields(project?.metadata_fields, 'table');
     const { project: projectOfInterview } = useProjectDetail(
         interview.project_id
     );
@@ -121,10 +123,10 @@ export default function InterviewListRow({
                     )}
                 </LinkOrA>
             </td>
-            {project.is_umbrella && (
+            {project?.is_umbrella && (
                 <td className="Table-cell">{projectName}</td>
             )}
-            {project.list_columns?.map((column) => {
+            {columns.map((column) => {
                 const allowedToSee =
                     !isRestricted ||
                     (isRestricted && column.display_on_landing_page) ||

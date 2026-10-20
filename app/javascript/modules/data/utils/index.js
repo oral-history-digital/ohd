@@ -5,3 +5,4 @@ export * from './normalizeIds';
 export * from './resolveCurrentProject';
 export * from './parseDate';
 export * from './toDateString';
+export * from './getResultMetadataFields';

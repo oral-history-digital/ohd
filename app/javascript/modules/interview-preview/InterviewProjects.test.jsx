@@ -9,6 +9,7 @@ import InterviewListRow from './InterviewListRow';
 import InterviewPreview from './InterviewPreview';
 
 jest.mock('modules/data', () => ({
+    ...jest.requireActual('../data/utils/getResultMetadataFields'),
     useProjectDetail: jest.fn(),
     getCurrentUser: () => null,
     useCurrentProject: () => ({ project: { is_umbrella: true } }),
@@ -33,7 +34,14 @@ jest.mock('modules/routes', () => ({
     useProject: () => ({
         project: {
             is_umbrella: true,
-            list_columns: [{ name: 'description', source: 'Interview' }],
+            metadata_fields: [
+                {
+                    id: 1,
+                    name: 'description',
+                    source: 'Interview',
+                    use_in_results_list: true,
+                },
+            ],
         },
     }),
     LinkOrA: ({ project, to, onLinkClick, children }) =>
