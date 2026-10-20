@@ -1,33 +1,32 @@
-import { getProjectId } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
-import { deleteData, getCurrentProject } from 'modules/data';
+import { deleteData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+/**
+ * Confirms deletion of selected interviews and returns detail pages to search results.
+ *
+ * @param {Object} props - Selected interviews.
+ * @param {string[]} props.selectedArchiveIds - Public interview identifiers.
+ * @returns {React.ReactElement} Permission-gated deletion dialog.
+ */
 export default function DeleteInterviews({ selectedArchiveIds }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const pathBase = usePathBase();
-    const projectId = useSelector(getProjectId);
-    const project = useSelector(getCurrentProject);
 
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
 
+    /** Deletes through the current route and leaves a deleted interview detail page. */
     function deleteInterviews() {
         selectedArchiveIds.forEach((archiveId) =>
-            dispatch(
-                deleteData(
-                    { locale, projectId, project },
-                    'interviews',
-                    archiveId
-                )
-            )
+            dispatch(deleteData({ pathBase }, 'interviews', archiveId))
         );
 
         const isDetailPage = new RegExp(`^${pathBase}/interviews`);
