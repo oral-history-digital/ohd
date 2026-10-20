@@ -84,7 +84,8 @@ function emptyProjects(generation = 0, context = null) {
  * Merges shared fields while preserving omitted fields and other locales. Editing
  * additions are stored separately so display responses cannot overwrite them.
  * Access changes and relevant mutations clear the cache and invalidate in-flight
- * responses. State is created only when the first v2 project request starts.
+ * responses. Queued-job acknowledgements retain cached project data.
+ * State is created only when the first v2 project request starts.
  *
  * @param {V2ProjectState|undefined} state - Existing v2 project state, if initialized.
  * @param {Object} action - V2 request action or a legacy access/mutation action.
@@ -103,7 +104,10 @@ export function reduceV2Projects(state, action) {
                 action.mutationResource || action.dataType
             ) &&
             ([REMOVE_DATA, UPDATE_DATA].includes(action.type) ||
-                (action.mutation && action.type === RECEIVE_DATA));
+                // "processing" acknowledges queued work; keep project views mounted.
+                (action.mutation &&
+                    action.type === RECEIVE_DATA &&
+                    action.msg !== 'processing'));
         if (
             accountChanged ||
             recordsChanged ||
