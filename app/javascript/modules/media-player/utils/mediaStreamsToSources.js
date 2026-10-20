@@ -7,7 +7,7 @@ import { buildMediaUrl } from './buildMediaUrl';
 /**
  * Converts an array of media stream objects into a list of source objects for VideoJS.
  *
- * @param {Array} mediaStreams - Array of media stream objects to convert.
+ * @param {Array<{media_type: string, resolution: string, suffix: string|null}>} mediaStreams - Playback stream descriptors.
  * @param {string} pathBase - Base path for building media URLs.
  * @param {'audio'|'video'} mediaType - The type of media ('audio' or 'video').
  * @param {string|number} archiveId - Archive identifier for the media.
@@ -38,7 +38,7 @@ export function mediaStreamsToSources(
         case 'video':
             sources = filteredStreams.map((stream) => ({
                 src: buildMediaUrl(
-                    stream.path,
+                    stream.suffix,
                     pathBase,
                     archiveId,
                     tape,
@@ -54,7 +54,7 @@ export function mediaStreamsToSources(
         default:
             sources = filteredStreams.map((stream) => ({
                 src: buildMediaUrl(
-                    stream.path,
+                    stream.suffix,
                     pathBase,
                     archiveId,
                     tape,
