@@ -39,10 +39,16 @@ export default function AuthShow({
     interview,
     children,
 }) {
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({});
     const { isAuthorized } = useAuthorization();
+    // Login/account controls do not depend on project settings. Project-access
+    // branches must wait, so missing settings cannot look like denied membership.
+    if (isLoggedIn && ifLoggedIn && user) return children;
+    if (!isLoggedIn && ifLoggedOut) return children;
+    if (!project || isLoading || error) return null;
+
     const isInterviewRestricted = interview?.workflow_state === 'restricted';
-    const isCatalogProject = project?.is_catalog_project;
+    const isCatalogProject = project?.is_catalog;
     const canViewInterview =
         isAuthorized(interview, 'show') ||
         user?.interview_permissions?.some(

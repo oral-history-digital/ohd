@@ -1,5 +1,6 @@
 import groupBy from 'lodash.groupby';
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { useSelector } from 'react-redux';
 
 import UserProject from './UserProject';
@@ -12,7 +13,7 @@ import UserProject from './UserProject';
  */
 function UserProjects() {
     const user = useSelector(getCurrentUser);
-    const currentProject = useSelector(getCurrentProject);
+    const { project: currentProject } = useProject({});
     const userProjects = Object.values(user?.user_projects || {});
 
     const currentUserProject = userProjects.find(
