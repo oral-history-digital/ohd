@@ -72,7 +72,6 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def email_changed(record, opts={})
-    binding.pry
     devise_mail(record, :email_changed, opts)
   end
 
