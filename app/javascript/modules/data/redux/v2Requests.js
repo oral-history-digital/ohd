@@ -93,6 +93,13 @@ export function fetchV2Data(
             resolve = done;
         });
         pending.set(key, promise);
+        const query = new URLSearchParams(url.split('?')[1]);
+        const profile = query.get('profile') || 'display';
+        const include =
+            query
+                .get('include')
+                ?.split(',')
+                .map((name) => name.trim()) || [];
         const metadata = {
             apiVersion: 2,
             dataType: resource,
@@ -101,6 +108,8 @@ export function fetchV2Data(
             generation,
             locale,
             single,
+            profile,
+            include,
         };
         dispatch({ ...metadata, type: REQUEST_DATA });
         /**

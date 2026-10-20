@@ -17,12 +17,12 @@ import { fetchV2Data, v2AccessContext } from '../redux/v2Requests';
  */
 
 /**
- * Fetches display details and reads the project and request status from Redux.
- * Access changes and mutations trigger refetching. Locale/include changes require
+ * Fetches project details and reads the requested profile and status from Redux.
+ * Access changes and mutations trigger refetching. Locale/profile/include changes require
  * their own successful response; summaries alone do not count as loaded details.
  *
  * @param {number|string|null|undefined} identifier - Project ID or shortname; empty skips fetching.
- * @param {ProjectDetailOptions} [options={}] - Optional display fields to request.
+ * @param {ProjectDetailOptions} [options={}] - Profile and optional fields to request.
  * @returns {ProjectDetailResult} Details and status, plus mutate() for an explicit refresh.
  */
 export function useProjectDetail(identifier, options = {}) {
