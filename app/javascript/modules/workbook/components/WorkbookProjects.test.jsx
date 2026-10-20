@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useProjectDetail } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { isMobile } from 'modules/user-agent';
 
 import WorkbookActions from './WorkbookActions';
 import WorkbookItemList from './WorkbookItemList';
 
-let mockIsUmbrella = true;
 let mockInterviews;
 const mockActions = {
     fetchData: jest.fn(),
@@ -19,7 +19,7 @@ jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: 'en', t: (key) => key }),
 }));
 jest.mock('modules/routes', () => ({
-    useProject: () => ({ project: { id: 7 }, isUmbrella: mockIsUmbrella }),
+    useProject: jest.fn(),
     LinkOrA: ({ project, to, onLinkClick, children }) => (
         <a href={`/${project.shortname}/en/${to}`} onClick={onLinkClick}>
             {children}
@@ -32,6 +32,10 @@ jest.mock('modules/search', () => ({
 }));
 jest.mock('modules/interview-helpers', () => ({ TapeAndTime: () => null }));
 jest.mock('modules/user-agent', () => ({ isMobile: jest.fn() }));
+jest.mock('modules/spinners', () => ({ Spinner: () => <p>Loading</p> }));
+jest.mock('modules/ui', () => ({
+    InlineNotification: ({ description }) => <p role="alert">{description}</p>,
+}));
 jest.mock('./WorkbookActions', () => jest.fn(() => null));
 jest.mock(
     './WorkbookItemContainer',
@@ -77,7 +81,7 @@ const contents = [
 
 beforeEach(() => {
     jest.clearAllMocks();
-    mockIsUmbrella = true;
+    useProject.mockReturnValue({ project: { id: 7, is_umbrella: true } });
     mockInterviews = { p001: { transcript_coupled: true } };
     isMobile.mockReturnValue(false);
     useProjectDetail.mockImplementation((id) => ({
@@ -112,7 +116,7 @@ test('umbrella lists preserve entry order and project-specific interview, search
 });
 
 test('project lists exclude other projects and retain entry actions', () => {
-    mockIsUmbrella = false;
+    useProject.mockReturnValue({ project: { id: 7, is_umbrella: false } });
     render(<WorkbookItemList type="saved_interviews" contents={contents} />);
     expect(screen.queryByText('Saved search')).not.toBeInTheDocument();
     expect(useProjectDetail).not.toHaveBeenCalledWith(8);
@@ -120,6 +124,27 @@ test('project lists exclude other projects and retain entry actions', () => {
         item: contents[2],
         itemPath: 'interviews/p001?tape=2&time=0h01m02s',
     });
+});
+
+test('lists wait for the current project and hide cached entries after an access error', () => {
+    useProject.mockReturnValue({ isLoading: true, isUmbrella: true });
+    const { rerender } = render(
+        <WorkbookItemList type="saved_interviews" contents={contents} />
+    );
+    expect(screen.getByText('Loading')).toBeInTheDocument();
+    expect(screen.queryByText('Saved interview')).not.toBeInTheDocument();
+    expect(useProjectDetail).not.toHaveBeenCalled();
+    useProject.mockReturnValue({ project: { id: 7, is_umbrella: false } });
+    rerender(<WorkbookItemList type="saved_interviews" contents={contents} />);
+    expect(screen.getByText('Saved interview')).toBeInTheDocument();
+    expect(useProject).toHaveBeenCalledWith({});
+    useProject.mockReturnValue({
+        project: { id: 7, is_umbrella: false },
+        error: { message: 'Access denied' },
+    });
+    rerender(<WorkbookItemList type="saved_interviews" contents={contents} />);
+    expect(screen.getByRole('alert')).toHaveTextContent('Access denied');
+    expect(screen.queryByText('Saved interview')).not.toBeInTheDocument();
 });
 
 test('unavailable entries stay visible and load their interview only after project details arrive', () => {
