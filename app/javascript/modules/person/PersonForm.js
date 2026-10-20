@@ -4,8 +4,10 @@ import { submitDataWithFetch } from 'modules/api';
 import { useEventTypes } from 'modules/event-types';
 import { Event, EventForm } from 'modules/events';
 import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
 import {
@@ -91,6 +93,15 @@ const formElements = [
     },
 ];
 
+/**
+ * Edits a person and nested events, keeping the people and person caches current.
+ *
+ * @param {Object} props - Person editing context.
+ * @param {Object} [props.data] - Existing person; omit to create one.
+ * @param {Function} [props.onSubmit] - Called after a successful person save.
+ * @param {Function} [props.onCancel] - Cancels editing.
+ * @returns {React.ReactElement} Person form or project/event-type loading status.
+ */
 export default function PersonForm({ data: person, onSubmit, onCancel }) {
     const [isFetching, setIsFetching] = useState(false);
     const { data: eventTypes, isLoading: eventTypesAreLoading } =
@@ -100,13 +111,24 @@ export default function PersonForm({ data: person, onSubmit, onCancel }) {
     const mutatePersonLandingPageMetadata =
         useMutatePersonLandingPageMetadata();
     const pathBase = usePathBase();
-    const { project } = useProject();
+    const { project, isLoading: projectIsLoading, error } = useProject({});
+    const { t } = useI18n();
 
     function showEvent(event) {
         return <Event event={event} />;
     }
 
-    if (eventTypesAreLoading) {
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (projectIsLoading || !project || eventTypesAreLoading) {
         return <Spinner />;
     }
 
