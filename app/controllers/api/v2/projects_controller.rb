@@ -4,7 +4,7 @@ module Api
       DEFAULT_PER_PAGE = 25
       MAX_PER_PAGE = 100
       LIST_INCLUDES = %w[counts institutions interview_languages collection_preview].freeze
-      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer texts map_sections]).freeze
+      DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration form_options playback footer texts map_sections]).freeze
 
       EDIT_INCLUDES = (DETAIL_INCLUDES + %w[translations branding external_links institution_projects]).freeze
 

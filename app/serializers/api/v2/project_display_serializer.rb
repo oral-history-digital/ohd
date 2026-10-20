@@ -30,6 +30,10 @@ module Api
       attribute :root_registry_entry_id, if: :include_registry_configuration?
       attribute :logged_out_visible_registry_entry_ids, if: :include_registry_configuration?
       attribute :hidden_registry_entry_ids, if: :include_registry_configuration?
+      attribute :hidden_transcript_registry_entry_ids, if: :include_registry_configuration?
+      # Interview and upload forms need these choices without project-update permission.
+      attribute :archive_id_number_length, if: :include_form_options?
+      attribute :upload_types, if: :include_form_options?
       attribute :media_streams, if: :include_playback?
       attribute :media_missing_text, if: :include_playback?
       attribute :external_links, if: :include_footer?
@@ -38,7 +42,7 @@ module Api
       attribute :map_sections, if: :include_map_sections?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer texts map_sections].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration form_options playback footer texts map_sections].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 

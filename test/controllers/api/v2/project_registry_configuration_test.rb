@@ -21,13 +21,13 @@ class Api::V2::ProjectRegistryConfigurationTest < ActionDispatch::IntegrationTes
     Rails.cache = @previous_cache
   end
 
-  test 'configuration is optional and public display excludes transcript editor settings' do
+  test 'configuration is optional and public display includes transcript visibility settings when requested' do
     queries = []
     subscriber = ->(*event) { queries << event.last[:sql] if event.last[:sql].match?(/FROM [`"]?registry_entries[`"]?/i) }
     ActiveSupport::Notifications.subscribed(subscriber, 'sql.active_record') do
       2.times do
         data = read_project(include: nil)
-        %w[root_registry_entry_id logged_out_visible_registry_entry_ids hidden_registry_entry_ids].each do |key|
+        %w[root_registry_entry_id logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids].each do |key|
           assert_not data.key?(key)
         end
       end
@@ -37,7 +37,7 @@ class Api::V2::ProjectRegistryConfigurationTest < ActionDispatch::IntegrationTes
     assert_equal @root.id, data['root_registry_entry_id']
     assert_equal ['11'], data['logged_out_visible_registry_entry_ids']
     assert_equal ['12'], data['hidden_registry_entry_ids']
-    assert_not data.key?('hidden_transcript_registry_entry_ids')
+    assert_equal ['13'], data['hidden_transcript_registry_entry_ids']
     get '/api/v2/projects', params: { include: 'registry_configuration' }
     assert_response :bad_request
   end
@@ -45,10 +45,12 @@ class Api::V2::ProjectRegistryConfigurationTest < ActionDispatch::IntegrationTes
   test 'cache follows visibility edits and root creation removal and reassignment within the target project' do
     default = read_project(include: nil)
     read_project
-    @project.update_columns(logged_out_visible_registry_entry_ids: [], hidden_registry_entry_ids: ['14'])
+    @project.update_columns(logged_out_visible_registry_entry_ids: [], hidden_registry_entry_ids: ['14'],
+      hidden_transcript_registry_entry_ids: ['15'])
     data = read_project
     assert_empty data['logged_out_visible_registry_entry_ids']
     assert_equal ['14'], data['hidden_registry_entry_ids']
+    assert_equal ['15'], data['hidden_transcript_registry_entry_ids']
     @root.update_column(:code, 'former_root')
     assert_nil read_project['root_registry_entry_id']
     replacement = RegistryEntry.create!(project_id: @project.id, code: 'root', workflow_state: 'public')
@@ -71,7 +73,9 @@ class Api::V2::ProjectRegistryConfigurationTest < ActionDispatch::IntegrationTes
     role = Role.create!(project: @project, name: 'Registry member')
     grant = UserRole.create!(user: user, role: role)
     sign_in user, scope: :user
-    assert_equal @root.id, read_project['root_registry_entry_id']
+    data = read_project
+    assert_equal @root.id, data['root_registry_entry_id']
+    assert_equal ['13'], data['hidden_transcript_registry_entry_ids']
     read_project(profile: 'edit', expected: :forbidden)
     permission = Permission.find_or_create_by!(klass: 'Project', action_name: 'update')
     RolePermission.create!(role: role, permission: permission)

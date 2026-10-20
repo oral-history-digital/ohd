@@ -345,8 +345,10 @@ module ApiContract
           sponsor_logos: { type: :array, items: ProjectSponsorLogo },
           media_missing_text: { type: %w[string null], description: 'Localized custom rich text; sanitize before rendering. Null means use the standard UI message.' },
           root_registry_entry_id: { type: %w[integer null], description: 'Target project root entry, or null when absent' },
-          **%i[logged_out_visible_registry_entry_ids hidden_registry_entry_ids]
+          **%i[logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids]
             .to_h { |field| [field, { type: :array, items: { type: :string } }] },
+          archive_id_number_length: { type: %w[integer null], description: 'Configured interview ID digit count' },
+          upload_types: { type: :array, items: { type: :string }, description: 'Configured upload choices; does not grant upload permission' },
           media_types: {
             type: :object, additionalProperties: false, required: %w[audio video],
             properties: { audio: { type: :integer, minimum: 0 }, video: { type: :integer, minimum: 0 } },
