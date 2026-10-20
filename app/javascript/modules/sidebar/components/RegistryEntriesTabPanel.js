@@ -2,19 +2,28 @@ import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { RegistrySearchFormContainer } from 'modules/registry';
-import { useProject } from 'modules/routes';
+import { useProjectIdentity } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
 import DownloadRegistryEntries from './DownloadRegistryEntries';
 
+/**
+ * Shows registry search, view controls, and authorized downloads.
+ *
+ * @param {Object} props - Registry sidebar properties.
+ * @param {boolean} props.showRegistryEntriesSearchResults - Whether results replace the tree.
+ * @param {string[]} props.locales - Locales offered for downloads.
+ * @param {Function} props.changeRegistryEntriesViewMode - Changes the current project's view.
+ * @returns {React.ReactElement} Registry sidebar controls.
+ */
 function RegistryEntriesTabPanel({
     showRegistryEntriesSearchResults,
     locales,
     changeRegistryEntriesViewMode,
 }) {
     const { t } = useI18n();
-    const { project, projectId } = useProject();
+    const { projectShortname } = useProjectIdentity();
 
     return (
         <ErrorBoundary small>
@@ -28,7 +37,7 @@ function RegistryEntriesTabPanel({
                         onClick={() =>
                             changeRegistryEntriesViewMode(
                                 !showRegistryEntriesSearchResults,
-                                projectId
+                                projectShortname
                             )
                         }
                     >
@@ -60,7 +69,7 @@ function RegistryEntriesTabPanel({
                 ))}
 
                 {/* TODO: replace hardcoded project check with another solution */}
-                {project.shortname === 'adg' && (
+                {projectShortname === 'adg' && (
                     <div className="u-mt">
                         <a
                             href="https://ohtm-dash.oral-history.digital/"
