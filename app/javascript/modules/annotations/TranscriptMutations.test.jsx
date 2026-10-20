@@ -100,8 +100,8 @@ test('preserves text-marking languages, public interview ID, nested replacement 
     rerender(
         <MarkTextForm
             {...props}
-            markTextStatus={{ for_interviews_pilot001: 'fetched' }}
+            markTextStatus={{ for_interviews_pilot001: 'processing' }}
         />
     );
-    expect(screen.getByText('edit.text.fetched')).toBeInTheDocument();
+    expect(screen.getByText('edit.text.processing')).toBeInTheDocument();
 });

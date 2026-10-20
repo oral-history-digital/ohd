@@ -8,7 +8,12 @@ import { useCatalogProjects } from '../../explorer/hooks/useCatalogProjects';
 import { LOGGED_IN, LOGOUT } from '../../user/action-types';
 import userReducer from '../../user/reducer';
 import { RECEIVE_DATA } from '../redux/action-types';
-import { deleteData, receiveData, submitData } from '../redux/actions';
+import {
+    deleteData,
+    receiveData,
+    receiveMutationData,
+    submitData,
+} from '../redux/actions';
 import { makeProjectSelector, projectDetailUrl } from '../redux/projectDetails';
 import { makeProjectListSelector, projectListUrl } from '../redux/projectLists';
 import { dataReducer } from '../redux/reducer';
@@ -411,6 +416,59 @@ test('account and mutation changes clear data, refetch mounted lists, and reject
     act(() => complete([project(7, { name: 'Fresh' })]));
     expect(result.current.projects[0].name).toBe('Fresh');
 });
+
+test.each(['mark_text', 'speaker_designations'])(
+    'queued %s work keeps project views loaded while recording processing status',
+    (nestedDataType) => {
+        const store = makeStore();
+        const { result } = mount(store, () => ({
+            list: useProjectList(),
+            detail: useProjectDetail(7, {
+                include: ['registry_configuration'],
+            }),
+        }));
+        act(() => {
+            complete([project()], 0);
+            completeDetail(project(7, { root_registry_entry_id: 9 }), 1);
+        });
+        const cachedProjects = store.getState().data.v2.projects;
+        act(() =>
+            store.dispatch(
+                receiveMutationData({
+                    msg: 'processing',
+                    id: 'pilot001',
+                    data_type: 'interviews',
+                    nested_data_type: nestedDataType,
+                    extra_params: 'for_interviews_pilot001',
+                })
+            )
+        );
+        expect(
+            store.getState().data.statuses[nestedDataType]
+                .for_interviews_pilot001
+        ).toBe('processing');
+        expect(store.getState().data.v2.projects).toBe(cachedProjects);
+        expect(result.current.detail).toMatchObject({
+            isLoading: false,
+            project: { id: 7, root_registry_entry_id: 9 },
+        });
+        expect(result.current.list.projects).toHaveLength(1);
+        expect(Loader.getJson).toHaveBeenCalledTimes(2);
+
+        act(() =>
+            store.dispatch(
+                receiveMutationData({
+                    archive_id: 'pilot001',
+                    data_type: 'interviews',
+                    data: { id: 99 },
+                })
+            )
+        );
+        expect(result.current.detail.project).toBeUndefined();
+        expect(result.current.list.projects).toEqual([]);
+        expect(Loader.getJson).toHaveBeenCalledTimes(4);
+    }
+);
 
 test('detail callers share a normalized request and keep query results out of list membership', () => {
     const store = makeStore();
