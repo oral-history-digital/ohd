@@ -1,17 +1,46 @@
 /* global railsMode */
 import { OHD_DOMAINS } from 'modules/constants';
-import { getUmbrellaProject } from 'modules/data';
+import { getUmbrellaProject, useProjectDetail } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+/**
+ * Links an entity to the portal catalog, opening it externally on project domains.
+ *
+ * @param {Object} props - Catalog target.
+ * @param {number} props.id - Target project or collection ID.
+ * @param {'archive'|'collection'} props.type - Existing catalog route category.
+ * @returns {React.ReactElement|null} Catalog link or error; empty while loading.
+ */
 export default function CatalogLink({ id, type }) {
     const { t, locale } = useI18n();
-    const { project } = useProject();
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project, isLoading, error: projectError } = useProject({});
+    // Legacy records still identify the umbrella project during migration.
+    const umbrellaIdentity = useSelector(getUmbrellaProject);
+    const {
+        project: umbrellaProject,
+        isLoading: umbrellaIsLoading,
+        error: umbrellaError,
+    } = useProjectDetail(umbrellaIdentity?.shortname);
+    const error = projectError || umbrellaError;
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project || umbrellaIsLoading || !umbrellaProject)
+        return null;
 
     const linkLocale = locale === 'de' ? 'de' : 'en';
     const linkPath = `/${linkLocale}/catalog/${type}s/${id}`;
@@ -52,6 +81,5 @@ export default function CatalogLink({ id, type }) {
 
 CatalogLink.propTypes = {
     id: PropTypes.number.isRequired,
-    collectionId: PropTypes.number.isRequired,
     type: PropTypes.oneOf(['archive', 'collection']),
 };
