@@ -17,7 +17,8 @@ class SessionsController < Devise::SessionsController
   def is_logged_in
     redirect_to last_token ?
       url_with_access_token :
-      join_params(url_with_access_token, "checked_ohd_session=true")
+      join_params(url_with_access_token, "checked_ohd_session=true"),
+      allow_other_host: true
   end
 
   def new
@@ -27,7 +28,7 @@ class SessionsController < Devise::SessionsController
     store_location_for(resource_name, path) if path.present?
 
     if current_user
-      redirect_to url_with_access_token
+      redirect_to url_with_access_token, allow_other_host: true
     else
       if request.base_url == OHD_DOMAIN
         super
@@ -36,7 +37,7 @@ class SessionsController < Devise::SessionsController
         # Sanitize project shortname to prevent injection
         safe_shortname = ERB::Util.url_encode(project.shortname) if project
         safe_path = ERB::Util.url_encode(path.to_s)
-        redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{safe_shortname}&path=#{safe_path}"
+        redirect_to "#{OHD_DOMAIN}#{new_user_session_path}?project=#{safe_shortname}&path=#{safe_path}", allow_other_host: true
       end
     end
   end

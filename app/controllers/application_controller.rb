@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
           project: project.identifier,
           path: request.fullpath,
         )
-        redirect_to "#{OHD_DOMAIN}#{path}"
+        redirect_to "#{OHD_DOMAIN}#{path}", allow_other_host: true
     end
   end
 

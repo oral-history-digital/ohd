@@ -21,10 +21,6 @@ module Archive
     # The app keeps optional `belongs_to` associations (see the initializer). Set
     # here rather than in an initializer: the 8.1 defaults above would otherwise win.
     config.active_record.belongs_to_required_by_default = false
-    # Sign-in intentionally redirects to archive domains on other hosts. Log instead
-    # of raising (the 7.0 default) so those flows keep working; the redirect sites
-    # should get explicit `allow_other_host: true` in a follow-up.
-    config.action_controller.action_on_open_redirect = :log
 
     config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']
     config.active_storage.variant_processor = :mini_magick
