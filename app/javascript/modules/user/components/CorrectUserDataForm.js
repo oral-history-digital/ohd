@@ -1,15 +1,30 @@
 import { useState } from 'react';
 
+import { useProjectDetail } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
-import request from 'superagent';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
+import PropTypes from 'prop-types';
 
 import { NON_ZIP_COUNTRIES } from '../constants';
 import useProjectAccessConfig from '../useProjectAccessConfig';
 
+/**
+ * Displays the user-data correction form after loading the project's access-field configuration.
+ *
+ * @param {Object} props - Correction form properties.
+ * @param {string} props.projectId - Project shortname used by the existing save flow.
+ * @param {Object} props.currentUser - Account whose data is being corrected.
+ * @param {Object} props.userProject - Existing access request and its mutation ID.
+ * @param {Object} props.countryKeys - Country choices by locale.
+ * @param {Function} props.submitData - Existing correction submission action.
+ * @param {Function} props.onSubmit - Called after starting submission.
+ * @param {Function} [props.onCancel] - Closes the form without submitting.
+ * @returns {React.ReactElement} Correction form, loading indicator, or persistent error.
+ */
 export default function CorrectUserDataForm({
-    project,
     projectId,
     currentUser,
     userProject,
@@ -19,10 +34,31 @@ export default function CorrectUserDataForm({
     onCancel,
 }) {
     const { t, locale } = useI18n();
-    const pathBase = usePathBase();
+    const { projectDbId } = useProject();
 
     const [hideZip, setHideZip] = useState(true);
+    const { project, error, isLoading, isValidating } = useProjectDetail(
+        projectDbId,
+        { include: ['access_config'] }
+    );
+    const projectAccessElements = useProjectAccessConfig(
+        project,
+        userProject,
+        currentUser
+    );
 
+    if (error || (!isLoading && !project?.access_config))
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error?.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading) return <Spinner />;
+
+    /** @returns {Object[]} Account fields combined with this project's access fields. */
     const formElements = () => {
         const nameElements = [
             {
@@ -96,12 +132,6 @@ export default function CorrectUserDataForm({
             },
         ];
 
-        const projectAccessElements = useProjectAccessConfig(
-            project,
-            userProject,
-            currentUser
-        );
-
         return nameElements
             .concat(addressElements)
             .concat(countrySelect)
@@ -111,6 +141,7 @@ export default function CorrectUserDataForm({
     return (
         <Form
             scope="user_project"
+            fetching={isValidating}
             onSubmit={(params) => {
                 submitData({ locale, projectId, project }, params);
                 onSubmit();
@@ -124,3 +155,13 @@ export default function CorrectUserDataForm({
         />
     );
 }
+
+CorrectUserDataForm.propTypes = {
+    projectId: PropTypes.string.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    userProject: PropTypes.object.isRequired,
+    countryKeys: PropTypes.object,
+    submitData: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
+};
