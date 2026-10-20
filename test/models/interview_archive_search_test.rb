@@ -47,17 +47,47 @@ class InterviewArchiveSearchTest < ActiveSupport::TestCase
     assert_includes query.filters, [:project_id, @archive.id]
   end
 
-  test 'umbrella fulltext searches only accessible projects' do
+  test 'fulltext filters protected matches while browsing preserves discovery' do
     user = User.find_by!(email: 'john@example.com')
     access = UserProject.create!(user: user, project: @archive)
     # Set up granted access without triggering the grant event's mail workflow.
     access.update_columns(workflow_state: 'project_access_granted')
+    interviews = %w[public restricted restricted].each_with_index.map do |state, index|
+      Interview.create!(project: @archive, archive_id: "#{@archive.shortname}00#{index}",
+        workflow_state: state, media_type: 'audio')
+    end
+    public_interview, granted, denied = interviews
+
+    access.update_columns(workflow_state: 'project_access_requested')
+    query = capture_search(user, @umbrella, fulltext: 'history')
+    assert_includes query.filters, [:archive_id, '__no_authorized_interviews__']
+    access.update_columns(workflow_state: 'project_access_granted')
 
     query = capture_search(user, @umbrella, fulltext: 'history')
-    assert_includes query.filters, [:project_id, user.accessible_projects.pluck(:id)]
+    assert_includes query.filters, [:archive_id, [public_interview.archive_id]]
+    InterviewPermission.create!(user: user, interview: granted)
+
+    query = capture_search(user, @umbrella, fulltext: 'history')
+    assert_equal [public_interview.archive_id, granted.archive_id].sort,
+      query.filters.assoc(:archive_id).last.sort
 
     query = capture_search(user, @archive, fulltext: 'history')
-    assert_includes query.filters, [:project_id, @archive.id]
+    assert_equal [public_interview.archive_id, granted.archive_id].sort,
+      query.filters.assoc(:archive_id).last.sort
+    refute_includes query.filters.assoc(:archive_id).last, denied.archive_id
+
+    query = capture_search(user, @archive, {})
+    assert_nil query.filters.assoc(:archive_id)
+    assert_includes query.filters, [:workflow_state, ['restricted', 'public']]
+
+    permission = Permission.find_or_create_by!(klass: 'General', action_name: 'edit')
+    role = Role.create!(project: @archive, name: 'Search editor')
+    RolePermission.create!(role: role, permission: permission)
+    UserRole.create!(user: user, role: role)
+    denied.update!(workflow_state: 'unshared')
+    query = capture_search(user, @umbrella, fulltext: 'history')
+    assert_includes query.filters.assoc(:archive_id).last, denied.archive_id
+    assert_includes query.filters, [:workflow_state, ['public', 'restricted', 'unshared']]
   end
 
   private
