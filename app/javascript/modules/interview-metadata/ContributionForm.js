@@ -8,15 +8,19 @@ import {
     useInvalidateInterviewContributors,
     usePeople,
 } from 'modules/person';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaUserEdit, FaUserPlus } from 'react-icons/fa';
 
+/**
+ * Edits interview contributors while preserving nested forms and person-cache refreshes.
+ * @param {Object} props - Record data, form options, and mutation callbacks.
+ * @returns {React.ReactElement|null} Editing controls and request feedback.
+ */
 export default function ContributionForm({
     withSpeakerDesignation,
-    project,
-    projectId,
     locale,
     data,
     nested,
@@ -29,6 +33,7 @@ export default function ContributionForm({
     onCancel,
     submitData,
 }) {
+    const pathBase = usePathBase();
     const { t } = useI18n();
     const [selectedPersonId, setSelectedPersonId] = useState(null);
     const invalidateInterviewContributors = useInvalidateInterviewContributors(
@@ -54,7 +59,7 @@ export default function ContributionForm({
             // 2. Form's handleNestedFormSubmit (new items): signature is (dummy, params, index)
             //    - index is used to insert item at correct array position
             // The forms module routes to the correct handler based on element.id
-            submitData({ locale, projectId, project }, params, index, callback);
+            submitData({ pathBase }, params, index, callback);
         } else {
             // Fallback if submitData is not provided
             if (typeof onSubmit === 'function') onSubmit();
@@ -213,8 +218,6 @@ ContributionForm.propTypes = {
     index: PropTypes.number,
     nested: PropTypes.bool,
     locale: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onSubmitCallback: PropTypes.func,
