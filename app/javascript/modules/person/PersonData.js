@@ -6,6 +6,7 @@ import { ContentField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
 import Biography from './Biography';
@@ -13,10 +14,24 @@ import NameOrPseudonym from './NameOrPseudonym';
 import getDisplayedMetadataFields from './getDisplayedMetadataFields';
 import { usePersonWithAssociations } from './hooks';
 
+/**
+ * Displays person metadata allowed by the current project's field and access settings.
+ *
+ * @param {Object} props - Component properties.
+ * @param {Object} props.interview - Interview used for name and pseudonym display.
+ * @param {number|null} [props.intervieweeId] - Person to load.
+ * @returns {React.ReactElement} Person metadata or its loading/error state.
+ */
 export default function PersonData({ interview, intervieweeId }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const { humanReadable } = useHumanReadable();
-    const { project } = useProject();
+    const {
+        project,
+        isLoading: projectIsLoading,
+        error: projectError,
+    } = useProject({
+        include: ['metadata_fields'],
+    });
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const isEditor = useIsEditor();
 
@@ -24,14 +39,26 @@ export default function PersonData({ interview, intervieweeId }) {
         data: person,
         isLoading,
         isValidating,
+        error: personError,
     } = usePersonWithAssociations(intervieweeId);
 
     const displayedMetadataFields = getDisplayedMetadataFields(
-        Object.values(project.metadata_fields),
+        project?.metadata_fields || [],
         projectAccessGranted
     );
 
-    if (isLoading) {
+    const error = projectError || personError;
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (projectIsLoading || isLoading) {
         return <Spinner />;
     }
 
@@ -60,7 +87,7 @@ export default function PersonData({ interview, intervieweeId }) {
                     return (
                         <EventContentField
                             key={index}
-                            label={field.label?.[locale]}
+                            label={field.label}
                             events={events}
                         />
                     );
@@ -78,7 +105,7 @@ export default function PersonData({ interview, intervieweeId }) {
                     );
                 }
 
-                const label = field.label?.[locale] || t(field.name);
+                const label = field.label || t(field.name);
                 const value = humanReadable({
                     obj: person,
                     attribute: field.name,
