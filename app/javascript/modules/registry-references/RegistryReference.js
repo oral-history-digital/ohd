@@ -8,12 +8,33 @@ import {
     useMutatePersonLandingPageMetadata,
     useMutatePersonWithAssociations,
 } from 'modules/person';
+import { usePathBase } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
+/**
+ * Shows a registry reference with authorized editing and deletion controls.
+ * Uses route-based URLs and preserves each owning entity's mutation refresh flow.
+ *
+ * @param {Object} props - Reference properties.
+ * @param {Object} props.registryEntry - Entry name and notes by locale.
+ * @param {Object} props.registryReference - Reference to display or delete.
+ * @param {Object} props.registryEntriesStatus - Registry entry loading status.
+ * @param {Object} props.refObject - Person, interview, or segment owning the reference.
+ * @param {boolean} [props.hideEdit] - Hides editing and deletion controls.
+ * @param {string} [props.contentLocale] - Preferred reference language.
+ * @param {Object} props.registryEntries - Registry entries keyed by ID.
+ * @param {number} [props.lowestAllowedRegistryEntryId] - Restricts the editable registry tree.
+ * @param {boolean} [props.inTranscript] - Enables transcript editing behavior.
+ * @param {number} [props.registryReferenceTypeId] - Restricts editing to this reference type.
+ * @param {Function} [props.setOpenReference] - Toggles reference notes.
+ * @param {Function} props.fetchData - Loads registry entries through Redux.
+ * @param {Function} props.deleteData - Deletes interview or segment references through Redux.
+ * @returns {React.ReactElement} Reference label and permitted controls.
+ */
 export default function RegistryReference({
     registryEntry,
     registryReference,
@@ -21,7 +42,6 @@ export default function RegistryReference({
     refObject,
     hideEdit,
     contentLocale,
-    project,
     registryEntries,
     lowestAllowedRegistryEntryId,
     inTranscript,
@@ -31,6 +51,7 @@ export default function RegistryReference({
     deleteData,
 }) {
     const { t, locale } = useI18n();
+    const pathBase = usePathBase();
     const { isAuthorized } = useAuthorization();
     const { deleteRegistryReference } = useRegistryReferenceApi();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
@@ -38,10 +59,6 @@ export default function RegistryReference({
         useMutatePersonLandingPageMetadata();
 
     useEffect(() => {
-        loadRegistryEntry();
-    });
-
-    function loadRegistryEntry() {
         const id = registryReference.registry_entry_id;
 
         if (
@@ -53,20 +70,31 @@ export default function RegistryReference({
                     !registryEntries[id].associations_loaded))
         ) {
             fetchData(
-                { locale, project },
+                { pathBase },
                 'registry_entries',
                 id,
                 null,
                 'with_associations=true'
             );
         }
-    }
+    }, [
+        pathBase,
+        registryReference.registry_entry_id,
+        registryEntriesStatus,
+        registryEntries,
+        fetchData,
+    ]);
 
+    /**
+     * Starts deletion through the owning entity's existing cache refresh flow.
+     *
+     * @returns {Promise<void>} Resolves after starting the deletion.
+     */
     async function destroy() {
         switch (refObject.type) {
             case 'Interview':
                 deleteData(
-                    { locale, project },
+                    { pathBase },
                     'interviews',
                     refObject.archiveId || refObject.archive_id || refObject.id,
                     'registry_references',
@@ -85,7 +113,7 @@ export default function RegistryReference({
             case 'Segment':
             default:
                 deleteData(
-                    { locale, project },
+                    { pathBase },
                     'registry_references',
                     registryReference.id,
                     null,
@@ -100,6 +128,7 @@ export default function RegistryReference({
         registryEntry.notes[contentLocale] || registryEntry.notes[locale]
     );
 
+    /** Toggles the displayed notes for this registry entry. */
     function toggleOpenReference() {
         setOpenReference((currentReference) =>
             currentReference?.id === registryEntry.id ? null : registryEntry
@@ -189,7 +218,6 @@ export default function RegistryReference({
 }
 
 RegistryReference.propTypes = {
-    project: PropTypes.object.isRequired,
     hideEdit: PropTypes.bool,
     inTranscript: PropTypes.bool,
     lowestAllowedRegistryEntryId: PropTypes.number,

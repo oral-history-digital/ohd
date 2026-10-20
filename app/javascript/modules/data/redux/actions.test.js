@@ -1,12 +1,13 @@
 import { Loader } from 'modules/api';
 import { pathBase } from 'modules/routes';
 
-import { submitData } from './actions';
+import { deleteData, submitData } from './actions';
 
 jest.mock('modules/api', () => ({
     Loader: {
         put: jest.fn(),
         post: jest.fn(),
+        delete: jest.fn(),
     },
 }));
 
@@ -67,5 +68,48 @@ describe('submitData', () => {
         expect(Loader.put).toHaveBeenCalledTimes(2);
         expect(Loader.post).not.toHaveBeenCalled();
         expect(params.segment.id).toBe(92654354);
+    });
+});
+
+describe('deleteData', () => {
+    beforeEach(() => jest.clearAllMocks());
+
+    it.each(['/en', '/history/de'])(
+        'uses explicit route prefix %s and retains mutation invalidation',
+        (prefix) => {
+            const dispatch = jest.fn();
+            deleteData(
+                { pathBase: prefix },
+                'registry_references',
+                4,
+                null,
+                null,
+                true
+            )(dispatch);
+            expect(Loader.delete.mock.calls[0][0]).toBe(
+                `${prefix}/registry_references/4`
+            );
+            expect(pathBase).not.toHaveBeenCalled();
+            const receive = Loader.delete.mock.calls[0][2];
+            expect(receive({})).toMatchObject({
+                mutation: true,
+                mutationResource: 'registry_references',
+            });
+        }
+    );
+
+    it('preserves legacy path resolution and nested interview deletion', () => {
+        const props = { locale: 'de', project: { shortname: 'pilot' } };
+        deleteData(
+            props,
+            'interviews',
+            'H-001',
+            'registry_references',
+            4
+        )(jest.fn());
+        expect(pathBase).toHaveBeenCalledWith(props);
+        expect(Loader.delete.mock.calls[0][0]).toBe(
+            '/pilot/de/interviews/H-001/registry_references/4'
+        );
     });
 });
