@@ -5,6 +5,17 @@ class RegistrationTest < ApplicationSystemTestCase
   EMAIL = 'john@example.com'
   PASSWORD = 'Password123!'
 
+  test 'logout returns to anonymous navigation without a JavaScript error' do
+    login_as 'alice@example.com'
+    assert_selector '.SessionButtons a', text: 'Account'
+    within '.SessionButtons' do
+      click_on 'Logout'
+    end
+    assert_selector '.SessionButtons [data-testid="login-link"]'
+    assert_no_selector '.SessionButtons button', text: 'Logout'
+    assert_no_selector '#webpack-dev-server-client-overlay'
+  end
+
   test "register as a new user without MFA" do
     fill_registration_form(
       first_name: 'Mario',
