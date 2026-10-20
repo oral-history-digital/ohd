@@ -21,6 +21,7 @@ jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: 'en', t: (key) => key }),
 }));
 jest.mock('modules/routes', () => ({
+    useProject: () => ({ project: { id: 7 } }),
     LinkOrA: ({ project, children }) => (
         <a href={`/${project.shortname}/en`}>{children}</a>
     ),
