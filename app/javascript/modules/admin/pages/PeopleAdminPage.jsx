@@ -6,25 +6,32 @@ import { useI18n } from 'modules/i18n';
 import { PersonForm, PersonTable, usePeople } from 'modules/person';
 import { hideSidebar } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
-import { ErrorMessage } from 'modules/ui';
+import { InlineNotification } from 'modules/ui';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 
 import { AddButton, EditViewOrRedirect } from '../components';
 
+/**
+ * Shows authorized people administration with visible loading and request errors.
+ *
+ * @returns {React.ReactElement} People controls, request status, or access feedback.
+ */
 export default function PeopleAdminPage() {
     const { t } = useI18n();
     const dispatch = useDispatch();
-    const { isLoading: eventTypesAreLoading } = useEventTypes();
-    const { isLoading: peopleAreLoading, data: people, error } = usePeople();
+    const { isLoading: eventTypesAreLoading, error: eventTypesError } =
+        useEventTypes();
+    const {
+        isLoading: peopleAreLoading,
+        data: people,
+        error: peopleError,
+    } = usePeople();
+    const error = peopleError || eventTypesError;
 
     useEffect(() => {
         dispatch(hideSidebar());
-    }, []);
-
-    if (!people || eventTypesAreLoading) {
-        return null;
-    }
+    }, [dispatch]);
 
     function renderForm(data, onSubmit, onCancel) {
         return (
@@ -32,10 +39,7 @@ export default function PeopleAdminPage() {
         );
     }
 
-    const peopleCount =
-        typeof people === 'undefined'
-            ? undefined
-            : Object.values(people).length;
+    const peopleCount = people ? Object.values(people).length : undefined;
 
     return (
         <EditViewOrRedirect>
@@ -49,10 +53,15 @@ export default function PeopleAdminPage() {
                         {peopleCount} {t('activerecord.models.person.other')}
                     </h1>
 
-                    {peopleAreLoading ? (
+                    {error ? (
+                        <InlineNotification
+                            variant="error"
+                            title={t('error')}
+                            description={error.message}
+                            isClosable={false}
+                        />
+                    ) : peopleAreLoading || eventTypesAreLoading || !people ? (
                         <Spinner />
-                    ) : error ? (
-                        <ErrorMessage>{error.message}</ErrorMessage>
                     ) : (
                         <>
                             <AddButton
