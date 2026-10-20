@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { FormElement } from 'modules/forms';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { pluralize } from 'modules/strings';
 import { isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
@@ -11,6 +11,11 @@ import PropTypes from 'prop-types';
 import { parametrizedQuery } from '../utils';
 import DataSearchFormElement from './DataSearchFormElement';
 
+/**
+ * Uses the current route for resource requests without loading project details.
+ * @param {Object} props - Record data, form settings, and request callbacks.
+ * @returns {React.ReactElement} Resource form and controls.
+ */
 export default function DataSearchForm({
     scope,
     query,
@@ -22,8 +27,8 @@ export default function DataSearchForm({
     resetQuery,
     hideSidebar,
 }) {
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
     const formEl = useRef(null);
 
     useEffect(() => {
@@ -42,13 +47,7 @@ export default function DataSearchForm({
     function handleReset() {
         formEl.current?.reset();
         resetQuery(pluralize(scope));
-        fetchData(
-            { projectId, locale, project },
-            pluralize(scope),
-            null,
-            null,
-            null
-        );
+        fetchData({ pathBase }, pluralize(scope), null, null, null);
     }
 
     function handleSubmit(event) {
@@ -57,7 +56,7 @@ export default function DataSearchForm({
             hideSidebar();
         }
         fetchData(
-            { projectId, locale, project },
+            { pathBase },
             pluralize(scope),
             null,
             null,

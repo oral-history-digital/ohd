@@ -7,6 +7,7 @@ jest.mock('modules/i18n', () => ({
     useI18n: () => ({ t: (key) => key, locale: 'en' }),
 }));
 jest.mock('modules/routes', () => ({
+    usePathBase: () => '/test/en',
     useProject: () => ({
         project: { id: 1, shortname: 'test' },
         projectId: 'test',
@@ -60,11 +61,7 @@ test('fetches with the serialized query on submit', () => {
     fireEvent.submit(screen.getByRole('button', { name: 'search' }));
 
     expect(defaultProps.fetchData).toHaveBeenCalledWith(
-        {
-            projectId: 'test',
-            locale: 'en',
-            project: { id: 1, shortname: 'test' },
-        },
+        { pathBase: '/test/en' },
         'collections',
         null,
         null,
@@ -89,11 +86,7 @@ test('resets the query and reloads unfiltered data on unmount', () => {
 
     expect(defaultProps.resetQuery).toHaveBeenCalledWith('collections');
     expect(defaultProps.fetchData).toHaveBeenCalledWith(
-        {
-            projectId: 'test',
-            locale: 'en',
-            project: { id: 1, shortname: 'test' },
-        },
+        { pathBase: '/test/en' },
         'collections',
         null,
         null,

@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 
 import { fetchData, getInstitutions, getStatuses } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { useDispatch, useSelector } from 'react-redux';
 
+/**
+ * Loads institutions through the current route and reads their existing Redux records.
+ * @returns {Object} Institution records by ID.
+ */
 export function useGetInstitutions() {
     const dispatch = useDispatch();
-    const { locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
     const institutions = useSelector(getInstitutions);
     const statuses = useSelector(getStatuses);
 
@@ -17,16 +19,10 @@ export function useGetInstitutions() {
         // dispatch fetchData if not, to avoid unnecessary API calls
         if (!statuses?.institution?.all) {
             dispatch(
-                fetchData(
-                    { locale, project, projectId },
-                    'institutions',
-                    null,
-                    null,
-                    'all'
-                )
+                fetchData({ pathBase }, 'institutions', null, null, 'all')
             );
         }
-    }, [dispatch, locale, project, projectId, statuses?.institution?.all]);
+    }, [dispatch, pathBase, statuses?.institution?.all]);
 
     return institutions;
 }

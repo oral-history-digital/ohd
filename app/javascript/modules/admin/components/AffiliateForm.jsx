@@ -2,11 +2,15 @@ import { useState } from 'react';
 
 import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Uses the current route for resource requests without loading project details.
+ * @param {Object} props - Record data, form settings, and request callbacks.
+ * @returns {React.ReactElement} Resource form and controls.
+ */
 export default function AffiliateForm({
     data,
     scope,
@@ -14,8 +18,7 @@ export default function AffiliateForm({
     onCancel,
     values,
 }) {
-    const { locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
     const dispatch = useDispatch();
 
     const [isPersonal, setIsPersonal] = useState(
@@ -32,7 +35,7 @@ export default function AffiliateForm({
             onSubmit={(params) => {
                 dispatch(
                     submitData(
-                        { locale, projectId, project },
+                        { pathBase },
                         params,
                         {},
                         typeof onSubmit === 'function' ? onSubmit : undefined
