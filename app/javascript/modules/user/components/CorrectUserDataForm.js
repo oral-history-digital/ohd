@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { useProjectDetail } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
@@ -34,13 +33,11 @@ export default function CorrectUserDataForm({
     onCancel,
 }) {
     const { t, locale } = useI18n();
-    const { projectDbId } = useProject();
 
     const [hideZip, setHideZip] = useState(true);
-    const { project, error, isLoading, isValidating } = useProjectDetail(
-        projectDbId,
-        { include: ['access_config'] }
-    );
+    const { project, error, isLoading, isValidating } = useProject({
+        include: ['access_config'],
+    });
     const projectAccessElements = useProjectAccessConfig(
         project,
         userProject,
