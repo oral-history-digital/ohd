@@ -1,20 +1,18 @@
 import { useState } from 'react';
 
 import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
-import { Form, validateTapeNumber } from 'modules/forms';
+import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
 
-export default function UploadEditTable({
-    projectId,
-    project,
-    archiveId,
-    interview,
-    languages,
-    submitData,
-}) {
+/**
+ * Uploads interview editing tables and links to the template for the current route.
+ * @param {Object} props - Record data, form options, and mutation callbacks.
+ * @returns {React.ReactElement|null} Editing controls and request feedback.
+ */
+export default function UploadEditTable({ archiveId, interview, submitData }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const [showForm, setShowForm] = useState(true);
@@ -70,7 +68,7 @@ export default function UploadEditTable({
             <Form
                 scope="edit_table"
                 onSubmit={(params) => {
-                    submitData({ locale, projectId, project }, params);
+                    submitData({ pathBase }, params);
                     setShowForm(false);
                 }}
                 submitText="edit.upload_edit_table.title"
@@ -106,9 +104,5 @@ export default function UploadEditTable({
 UploadEditTable.propTypes = {
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
-    languages: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
 };
