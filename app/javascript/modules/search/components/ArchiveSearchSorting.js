@@ -5,9 +5,11 @@ import classNames from 'classnames';
 import curry from 'lodash.curry';
 import flow from 'lodash.flow';
 import { getEditView } from 'modules/archive';
-import { getCurrentProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useSearchParams } from 'modules/query-string';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
@@ -19,9 +21,19 @@ import searchOptionsFromMetadataFields from '../searchOptionsFromMetadataFields'
 import sortByFacetOrder from '../sortByFacetOrder';
 import SortOrderButton from './SortOrderButton';
 
+/**
+ * Builds search sorting options from the current project's metadata configuration.
+ * Waits for project settings before applying the default sort.
+ *
+ * @param {Object} props - Component properties.
+ * @param {string} [props.className] - Additional CSS class.
+ * @returns {React.ReactElement} Sorting controls or their loading/error state.
+ */
 export default function ArchiveSearchSorting({ className }) {
     const { t } = useI18n();
-    const project = useSelector(getCurrentProject);
+    const { project, isLoading, error } = useProject({
+        include: ['metadata_fields'],
+    });
     const editView = useSelector(getEditView);
 
     const {
@@ -42,16 +54,16 @@ export default function ArchiveSearchSorting({ className }) {
         curry(addObligatoryOptions)(fulltextIsSet)
     );
     const sortByOptions = transformMetadataFields(
-        Object.values(project?.metadata_fields || {})
+        // The ordering helper sorts in place; keep the Redux array unchanged.
+        [...(project?.metadata_fields || [])]
     );
 
     useEffect(() => {
-        if (!sortBy) {
-            // Set defaults.
-            const defaults = defaultSortOptions(project?.default_search_order);
+        if (project && !error && !sortBy) {
+            const defaults = defaultSortOptions(project.default_search_order);
             setDefaultSortOptions(defaults.sort, defaults.order);
         }
-    }, [sortBy]);
+    }, [project, error, sortBy, setDefaultSortOptions]);
 
     function handleSortByChange(option) {
         const newSortBy = option.value;
@@ -92,6 +104,18 @@ export default function ArchiveSearchSorting({ className }) {
             };
         },
     };
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <div className={classNames('SearchSorting', className)}>
