@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
 import useProject from './useProject';
+import useProjectIdentity from './useProjectIdentity';
 
 jest.mock('react-redux', () => ({ useSelector: jest.fn() }));
 jest.mock('react-router-dom', () => ({ useMatch: jest.fn() }));
@@ -15,6 +16,29 @@ jest.mock('modules/data', () => ({
 beforeEach(() => {
     jest.clearAllMocks();
     useProjectDetail.mockReturnValue({});
+});
+
+test('identity reads keep the route shortname available without requesting details', () => {
+    useSelector.mockReturnValue({
+        7: { id: 7, shortname: 'pilot', is_umbrella: false },
+    });
+    useMatch.mockReturnValue({ params: { projectId: 'pilot', locale: 'en' } });
+    const { result, rerender } = renderHook(() => useProjectIdentity());
+    expect(result.current).toEqual({
+        projectShortname: 'pilot',
+        projectDbId: 7,
+        isUmbrella: false,
+    });
+
+    useSelector.mockReturnValue({});
+    useMatch.mockReturnValue({ params: { projectId: 'other', locale: 'en' } });
+    rerender();
+    expect(result.current).toEqual({
+        projectShortname: 'other',
+        projectDbId: undefined,
+        isUmbrella: undefined,
+    });
+    expect(useProjectDetail).not.toHaveBeenCalled();
 });
 
 test('exposes umbrella role from configured flag rather than project shortname', () => {
