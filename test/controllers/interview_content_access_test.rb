@@ -67,6 +67,45 @@ class InterviewContentAccessTest < ActionController::TestCase
     end
   end
 
+  test 'VTT and CSV recheck interview grants even with a warm export cache' do
+    sign_in @reader
+    cache = ActiveSupport::Cache::MemoryStore.new
+    grant = InterviewPermission.create!(user: @reader, interview: @interview)
+    Rails.stub(:cache, cache) do
+      @controller.stub(:current_project, @project) do
+        [:vtt, :csv].each do |format|
+          get :show, params: { id: @interview.archive_id, locale: 'en', lang: 'eng', tape_number: 1, format: format }
+          assert_response :success
+          assert_includes response.body, 'My name is Mario Rossi'
+        end
+        grant.destroy!
+        [:vtt, :csv].each do |format|
+          get :show, params: { id: @interview.archive_id, locale: 'en', lang: 'eng', tape_number: 1, format: format }
+          assert_response :forbidden
+          refute_includes response.body, 'My name is Mario Rossi'
+        end
+      end
+    end
+  end
+
+  test 'VTT and CSV honor owning-project grants through umbrella context' do
+    sign_in @reader
+    umbrella = Project.find_by!(shortname: 'ohd')
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+    InterviewPermission.create!(user: @reader, interview: @interview)
+    @controller.stub(:current_project, umbrella) do
+      [:vtt, :csv].each do |format|
+        get :show, params: { id: @interview.archive_id, locale: 'en', lang: 'eng', tape_number: 1, format: format }
+        assert_response :success
+      end
+      @access.update_columns(workflow_state: 'project_access_requested')
+      [:vtt, :csv].each do |format|
+        get :show, params: { id: @interview.archive_id, locale: 'en', lang: 'eng', tape_number: 1, format: format }
+        assert_response :forbidden
+      end
+    end
+  end
+
   private
 
   # Stubs PDF rendering, ensuring unauthorized requests never reach generation.

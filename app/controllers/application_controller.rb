@@ -393,7 +393,7 @@ class ApplicationController < ActionController::Base
         render plain: 'not_authorized', status: :forbidden
       end
       format.csv do
-        render text: 'not_authorized', status: :forbidden
+        render plain: 'not_authorized', status: :forbidden
       end
       format.pdf do
         render plain: 'not_authorized', status: :forbidden
