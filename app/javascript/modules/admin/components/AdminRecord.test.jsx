@@ -169,31 +169,8 @@ test('deletes the server record and removes it from Redux state', () => {
     fireEvent.click(screen.getByRole('button', { name: 'delete' }));
 
     expect(deleteData.mock.calls).toEqual([
-        [
-            {
-                locale: 'en',
-                projectId: 'test',
-                project: { id: 1, shortname: 'test' },
-            },
-            'collections',
-            7,
-            null,
-            null,
-            true,
-        ],
-        [
-            {
-                locale: 'en',
-                projectId: 'test',
-                project: { id: 1, shortname: 'test' },
-            },
-            'collections',
-            7,
-            null,
-            null,
-            null,
-            true,
-        ],
+        [{ pathBase: '/test/en' }, 'collections', 7, null, null, true],
+        [{ pathBase: '/test/en' }, 'collections', 7, null, null, null, true],
     ]);
     expect(dispatch).toHaveBeenCalledTimes(2);
 });

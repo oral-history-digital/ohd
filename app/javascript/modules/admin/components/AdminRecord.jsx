@@ -5,7 +5,7 @@ import { deleteData, useGetProject, useSensitiveData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { pluralize } from 'modules/strings';
 import { AdminMenu } from 'modules/ui';
@@ -70,7 +70,6 @@ export default function AdminRecord({
 }) {
     const dispatch = useDispatch();
     const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
     const pathBase = usePathBase();
 
     useSensitiveData(data, sensitiveAttributes);
@@ -86,7 +85,7 @@ export default function AdminRecord({
         // skip remove from state, only remove server-side
         dispatch(
             deleteData(
-                { locale, projectId, project },
+                { pathBase },
                 pluralize(scope),
                 data.id,
                 null,
@@ -97,7 +96,7 @@ export default function AdminRecord({
         // only remove from state
         dispatch(
             deleteData(
-                { locale, projectId, project },
+                { pathBase },
                 outerScope ? pluralize(outerScope) : pluralize(scope),
                 outerScopeId || data.id,
                 outerScope ? pluralize(scope) : null,
