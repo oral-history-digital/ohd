@@ -26,6 +26,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Check for Ruby debugging statements
+        run: |
+          if git --no-pager grep -nE '\b(binding\.(pry|irb)|debugger)\b' -- '*.rb' \
+            | grep -vE '^[^:]+:[0-9]+:[[:space:]]*#'; then
+            echo "::error::Ruby debugging statements found. Remove them before merging."
+            exit 1
+          fi
       - name: Update packages
         run: sudo apt-get update
       - name: Set up Java 8
