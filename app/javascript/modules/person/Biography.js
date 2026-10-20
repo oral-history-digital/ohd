@@ -11,6 +11,11 @@ import { useSelector } from 'react-redux';
 import BiographicalEntriesContainer from './BiographicalEntriesContainer';
 import { usePersonWithAssociations } from './hooks';
 
+/**
+ * Shows available biography entries and downloads for the current interviewee.
+ *
+ * @returns {React.ReactElement|null} Biography, loading indicator, or null when person data is unavailable.
+ */
 export default function Biography() {
     const { t } = useI18n();
     const pathBase = usePathBase();
@@ -24,7 +29,7 @@ export default function Biography() {
         return <Spinner size="small" />;
     }
 
-    if (!interviewee.biographical_entries) {
+    if (!interviewee?.biographical_entries) {
         return null;
     }
 
