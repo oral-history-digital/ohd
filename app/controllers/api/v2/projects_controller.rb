@@ -6,6 +6,8 @@ module Api
       LIST_INCLUDES = %w[counts institutions interview_languages collection_preview].freeze
       DETAIL_INCLUDES = (LIST_INCLUDES + %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration playback footer texts map_sections]).freeze
 
+      EDIT_INCLUDES = (DETAIL_INCLUDES + %w[translations branding external_links institution_projects]).freeze
+
       skip_before_action :authenticate_user!, only: [:index, :show]
       before_action :use_global_project_context, only: :index
 
@@ -63,31 +65,14 @@ module Api
       def show
         profile = params.fetch(:profile, 'display')
         invalid_parameter!(:profile) unless %w[display edit].include?(profile)
-        includes = requested_includes(allowed: profile == 'edit' ? DETAIL_INCLUDES + %w[translations branding external_links institution_projects] : DETAIL_INCLUDES)
-        identifier = params[:id]
-        @project = if identifier.match?(/\A[0-9]+\z/) # Numeric ID
-          Project.find_by(id: identifier)
-        else
-          Project.by_identifier(identifier)
-        end
-        raise ActiveRecord::RecordNotFound unless @project
+        includes = requested_includes(allowed: profile == 'edit' ? EDIT_INCLUDES : DETAIL_INCLUDES)
+        @project = find_project(params[:id])
 
         # Use the requested project for authorization, regardless of the request's domain.
         @current_project = @project
         pundit_reset!
         authorize @project, profile == 'edit' ? :update? : :show?
-        authorize MediaStream.new(project: @project), :update? if profile == 'edit' && includes.include?('playback')
-        authorize ExternalLink.new(project: @project), :update? if includes.include?('external_links')
-        authorize InstitutionProject.new(project: @project), :update? if includes.include?('institution_projects')
-        if profile == 'edit' && includes.include?('affiliates')
-          [CooperationPartner, Leader, Manager, Funder].each do |type|
-            authorize type.new(project: @project), :update?
-          end
-        end
-        if includes.include?('branding')
-          authorize Logo.new(ref: @project), :update?
-          authorize SponsorLogo.new(ref: @project), :update?
-        end
+        authorize_included_resources(includes, profile: profile)
         umbrella_id = InstanceSetting.current.umbrella_project_id
         collections_scope = policy_scope(Collection) if includes.include?('collection_preview')
         cache_class = profile == 'edit' ? ProjectEditCache : ProjectDisplayCache
@@ -107,6 +92,38 @@ module Api
       end
 
       private
+
+      # Resolves public project identifiers independently of the request host.
+      #
+      # @param identifier [String] Numeric database ID or exact shortname
+      # @return [Project] Requested project
+      # @raise [ActiveRecord::RecordNotFound] When the identifier does not match a project
+      def find_project(identifier)
+        is_numeric = identifier.match?(/\A[0-9]+\z/)
+        project = is_numeric ? Project.find_by(id: identifier) : Project.by_identifier(identifier)
+        project || raise(ActiveRecord::RecordNotFound)
+      end
+
+      # Checks included resources before cache lookup, after authorizing the target project.
+      # Affiliate and branding reads use their read policies; mutations retain update checks.
+      #
+      # @param includes [Array<String>] Validated include names
+      # @param profile [String] Display or edit representation
+      # @return [void]
+      def authorize_included_resources(includes, profile:)
+        authorize MediaStream.new(project: @project), :update? if profile == 'edit' && includes.include?('playback')
+        authorize ExternalLink.new(project: @project), :update? if includes.include?('external_links')
+        authorize InstitutionProject.new(project: @project), :update? if includes.include?('institution_projects')
+        if profile == 'edit' && includes.include?('affiliates')
+          [CooperationPartner, Leader, Manager, Funder].each do |type|
+            authorize type.new(project: @project), :show?
+          end
+        end
+        if includes.include?('branding')
+          authorize Logo.new(ref: @project), :show?
+          authorize SponsorLogo.new(ref: @project), :show?
+        end
+      end
 
       def preload_projects(projects, includes)
         projects = projects.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob)

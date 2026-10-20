@@ -2,7 +2,7 @@ module Api
   module V2
     # Keep localized display fields unchanged; complete translations are optional.
     class ProjectEditSerializer < ProjectDisplaySerializer
-      attributes :contact_email, :archive_id_number_length,
+      attributes :contact_email, :doi_status, :archive_id_number_length,
         :fullname_on_landing_page, :show_legend,
         :upload_types, :logged_out_visible_registry_entry_ids,
         :hidden_registry_entry_ids, :hidden_transcript_registry_entry_ids, :pdf_registry_entry_ids
@@ -20,9 +20,7 @@ module Api
         define_method(name) do
           affiliates = object.affiliates.index_by(&:id)
           super().map do |data|
-            translations = affiliates.fetch(data.fetch(:id)).translations.sort_by(&:id).map do |translation|
-              translation.attributes.slice('id', 'locale', 'name', 'first_name', 'last_name')
-            end
+            translations = stored_translations(affiliates.fetch(data.fetch(:id)), 'name', 'first_name', 'last_name')
             data.merge(translations: translations)
           end
         end
@@ -44,9 +42,7 @@ module Api
         super.map do |data|
           field = fields.fetch(data.fetch('id'))
           data.merge('use_in_metadata_import' => field.use_in_metadata_import?,
-            'translations' => field.translations.sort_by(&:id).map do |translation|
-              translation.attributes.slice('id', 'locale', 'label')
-            end)
+            'translations' => stored_translations(field, 'label'))
         end
       end
 
@@ -67,9 +63,7 @@ module Api
         links = instance_options.fetch(:external_links).fetch(object.id, []).index_by(&:id)
         super.map do |data|
           link = links.fetch(data.fetch(:id))
-          data.merge(internal_name: link.internal_name, translations: link.translations.sort_by(&:id).map do |translation|
-            translation.attributes.slice('id', 'locale', 'name', 'url')
-          end)
+          data.merge(internal_name: link.internal_name, translations: stored_translations(link, 'name', 'url'))
         end
       end
 
@@ -104,9 +98,7 @@ module Api
       def texts
         pages = object.texts.index_by(&:id)
         super.map do |data|
-          translations = pages.fetch(data.fetch(:id)).translations.sort_by(&:id).map do |translation|
-            translation.attributes.slice('id', 'locale', 'text')
-          end
+          translations = stored_translations(pages.fetch(data.fetch(:id)), 'text')
           data.merge(translations: translations)
         end
       end
@@ -140,19 +132,29 @@ module Api
         define_method(attribute) { object.public_send("#{attribute}?") }
       end
 
+      # @return [Boolean] Whether stored project translations were requested
       def include_translations?
         instance_options.fetch(:requested_includes, []).include?('translations')
       end
 
+      # @return [Array<Hash>] Project translations with mutation IDs and no locale fallback
       def translations
-        # Preserve IDs for existing save endpoints and stored blanks without fallback.
-        object.translations.sort_by(&:id).map do |translation|
-          translation.attributes.slice('id', 'locale', 'name', 'display_name', 'introduction',
-            'more_text', 'landing_page_text', 'restricted_landing_page_text', 'media_missing_text')
-        end
+        stored_translations(object, 'name', 'display_name', 'introduction', 'more_text',
+          'landing_page_text', 'restricted_landing_page_text', 'media_missing_text')
       end
 
       private
+
+      # Selects only editable translation fields, preserving stored blanks and nulls.
+      #
+      # @param record [ActiveRecord::Base] Record with preloaded translations
+      # @param fields [Array<String>] Stored attributes to include alongside ID and locale
+      # @return [Array<Hash>] Translation attributes in ID order, with string keys
+      def stored_translations(record, *fields)
+        record.translations.sort_by(&:id).map do |translation|
+          translation.attributes.slice('id', 'locale', *fields)
+        end
+      end
 
       # Keeps editing fields explicit and retains records whose attachment is missing.
       #

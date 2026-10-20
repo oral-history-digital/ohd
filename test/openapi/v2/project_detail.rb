@@ -43,8 +43,8 @@ module ApiContract
               levels_of_indexing add localized umbrella registry labels linked to this
               project's interviews. Affiliates adds cooperation_partners, leaders,
               managers and funders with localized display names, ordered by ID.
-              With profile=edit, affiliates additionally requires update permission for
-              CooperationPartner, Leader, Manager and Funder. Each record adds stored
+              With profile=edit, affiliates uses related-record show permissions after
+              the project-update check; subtype update permissions govern mutations. Each record adds stored
               translations (id, locale, name, first_name, last_name), ordered by ID and
               preserving blanks and nulls without fallback. Localized display fields
               retain their existing shapes and fallback rules in both profiles.
@@ -74,8 +74,9 @@ module ApiContract
               Sponsor logos match the requested locale exactly; unattached logos are
               omitted. Missing data returns empty arrays. Both profiles use this display
               projection; stored editing names and translations are not included.
-              Branding is edit-only and additionally requires Logo and SponsorLogo
-              update permission. It adds logos and sponsor_logos across all locales,
+              Branding is edit-only and checks Logo and SponsorLogo show permissions
+              after project-update authorization. Image update permissions govern mutations.
+              It adds logos and sponsor_logos across all locales,
               including null locales and unattached records, ordered by ID. Records
               contain id, type, locale, href, title, url and filename; missing attachments
               use null url and filename. Empty lists return []. When combined with

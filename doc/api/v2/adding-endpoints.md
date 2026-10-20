@@ -43,7 +43,10 @@ implementation as a reference. Define the backend contract before migrating clie
 6. **Test the behavior and contract.** Add controller/serializer tests under
    `test/controllers/api/v2` and `test/serializers/api/v2`. Use
    [ApiSchemaAssertions](../../../test/support/api_schema_assertions.rb) for actual
-   responses, including errors. Cover denied/cross-project access, locale
+   responses, including errors. For endpoints with several response profiles, pass
+   `data_schema:` with the expected component name; the operation union alone does
+   not verify which profile was requested. Assert essential requested include fields
+   separately. Cover denied/cross-project access, locale
    fallback, invalid parameters, pagination, include combinations, and query
    growth as applicable. For caching, test reuse, mutation freshness, and access
    revocation. Update dependency fingerprints for added fields and bump the

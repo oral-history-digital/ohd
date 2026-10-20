@@ -392,10 +392,11 @@ module ApiContract
     class ProjectEdit < ProjectDisplay
       schema(
         description: 'Project settings requiring update permission. Display fields retain their types; stored translations are an optional edit-only include.',
-        required: %w[contact_email archive_id_number_length fullname_on_landing_page show_legend
+        required: %w[contact_email doi_status archive_id_number_length fullname_on_landing_page show_legend
           upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids],
         properties: {
           contact_email: { type: %w[string null] },
+          doi_status: { type: %w[string null] },
           archive_id_number_length: { type: %w[integer null] },
           fullname_on_landing_page: { type: :boolean },
           show_legend: { type: :boolean },

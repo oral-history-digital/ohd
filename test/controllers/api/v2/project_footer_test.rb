@@ -122,7 +122,8 @@ class Api::V2::ProjectFooterTest < ActionDispatch::IntegrationTest
   def read_project(include: 'footer', expected: :success, **parameters)
     get "/api/v2/projects/#{@project.id}", params: { locale: 'en', include: include, **parameters }.compact
     assert_response expected
-    assert_api_response_schema('/api/v2/projects/{identifier}')
+    assert_api_response_schema('/api/v2/projects/{identifier}',
+      data_schema: request.query_parameters['profile'] == 'edit' ? 'ProjectEdit' : 'ProjectDisplay')
     JSON.parse(response.body)['data']
   end
 end

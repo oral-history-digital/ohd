@@ -71,12 +71,17 @@ class Api::V2::ProjectBrandingTest < ActionDispatch::IntegrationTest
     assert_nil read_project['logos'].first['url']
   end
 
-  test 'branding is edit only and resource and project revocation block cached responses' do
+  test 'branding reads allow partial image editors but still require project update permission' do
     read_project
     read_project(profile: 'display', expected: :bad_request)
     @permissions.fetch('SponsorLogo').destroy!
-    read_project(expected: :forbidden)
+    assert_equal @sponsor.id, read_project['sponsor_logos'].sole['id']
+    context = ProjectContext.new(@user.reload, @project)
+    assert Pundit.policy!(context, @logo).update?
+    assert_not Pundit.policy!(context, @sponsor).update?
     @permissions.fetch('Logo').destroy!
+    assert_equal @logo.id, read_project['logos'].sole['id']
+    @permissions.fetch('Project').destroy!
     read_project(expected: :forbidden)
     assert_empty read_project(profile: 'display', include: 'footer')['sponsor_logos']
     @project.update_column(:workflow_state, 'unshared')
@@ -108,7 +113,8 @@ class Api::V2::ProjectBrandingTest < ActionDispatch::IntegrationTest
   def read_project(expected: :success, **parameters)
     get "/api/v2/projects/#{@project.id}", params: { locale: 'en', profile: 'edit', include: 'branding', **parameters }.compact
     assert_response expected
-    assert_api_response_schema('/api/v2/projects/{identifier}')
+    assert_api_response_schema('/api/v2/projects/{identifier}',
+      data_schema: request.query_parameters['profile'] == 'edit' ? 'ProjectEdit' : 'ProjectDisplay')
     JSON.parse(response.body)['data']
   end
 end
