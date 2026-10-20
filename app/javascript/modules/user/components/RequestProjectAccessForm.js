@@ -1,4 +1,3 @@
-import { useProjectDetail } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
@@ -29,10 +28,10 @@ export default function RequestProjectAccessForm({
     showStepTwo,
 }) {
     const { t, locale } = useI18n();
-    const { projectDbId } = useProject();
-    const { project, error, isLoading, isValidating } = useProjectDetail(
-        projectDbId,
-        { include: ['access_config'] }
+    const { project, projectDbId, error, isLoading, isValidating } = useProject(
+        {
+            include: ['access_config'],
+        }
     );
     const currentUserProject = Object.values(
         currentUser.user_projects || {}

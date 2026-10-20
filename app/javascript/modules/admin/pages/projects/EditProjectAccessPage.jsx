@@ -1,5 +1,5 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import { submitData, useProjectDetail } from 'modules/data';
+import { submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
@@ -20,14 +20,10 @@ import {
  */
 export default function EditProjectAccessPage() {
     const { t } = useI18n();
-    const { projectDbId } = useProject();
-    const { project, error, isLoading, isValidating } = useProjectDetail(
-        projectDbId,
-        {
-            profile: 'edit',
-            include: ['access_config'],
-        }
-    );
+    const { project, error, isLoading, isValidating } = useProject({
+        profile: 'edit',
+        include: ['access_config'],
+    });
     const dispatch = useDispatch();
 
     /**
@@ -140,7 +136,7 @@ export default function EditProjectAccessPage() {
                             description={error.message}
                             isClosable={false}
                         />
-                    ) : isLoading || !projectDbId ? (
+                    ) : isLoading ? (
                         <Spinner />
                     ) : project?.access_config ? (
                         <EditData

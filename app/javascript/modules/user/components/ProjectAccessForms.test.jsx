@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { fireEvent, render, screen } from '@testing-library/react';
-import { useProjectDetail } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useProject } from 'modules/routes';
 
@@ -9,7 +8,6 @@ import RequestProjectAccessForm from './RequestProjectAccessForm';
 
 let mockLocale = 'de';
 
-jest.mock('modules/data', () => ({ useProjectDetail: jest.fn() }));
 jest.mock('modules/routes', () => ({
     pathBase: jest.requireActual('modules/routes/pathBase').default,
     useProject: jest.fn(),
@@ -107,8 +105,7 @@ function displayProject(archiveDomain) {
 beforeEach(() => {
     jest.clearAllMocks();
     mockLocale = 'de';
-    useProject.mockReturnValue({ projectDbId: 7 });
-    useProjectDetail.mockReturnValue({ isLoading: true });
+    useProject.mockReturnValue({ projectDbId: 7, isLoading: true });
 });
 
 test.each(forms)(
@@ -119,11 +116,15 @@ test.each(forms)(
         const { rerender } = render(<Component {...formProps} />);
         expect(screen.getByRole('status')).toHaveTextContent('Loading');
         expect(Form).not.toHaveBeenCalled();
-        expect(useProjectDetail).toHaveBeenCalledWith(7, {
+        expect(useProject).toHaveBeenCalledWith({
             include: ['access_config'],
         });
         const project = displayProject(domain);
-        useProjectDetail.mockReturnValue({ project, isLoading: false });
+        useProject.mockReturnValue({
+            projectDbId: 7,
+            project,
+            isLoading: false,
+        });
         rerender(<Component {...formProps} />);
         const { elements, values, data } = Form.mock.lastCall[0];
         const field = (attribute) =>
@@ -172,7 +173,8 @@ test.each(forms)(
             { user_project: { id: 4, organization: 'Institute' } }
         );
         expect(formProps.onSubmit).toHaveBeenCalledTimes(1);
-        useProjectDetail.mockReturnValue({
+        useProject.mockReturnValue({
+            projectDbId: 7,
             project,
             isLoading: false,
             isValidating: true,
@@ -187,7 +189,8 @@ test.each(forms)(
     (_name, Component) => {
         const formProps = props();
         const { rerender } = render(<Component {...formProps} />);
-        useProjectDetail.mockReturnValue({
+        useProject.mockReturnValue({
+            projectDbId: 7,
             isLoading: false,
             error: { status: 403, message: 'Access denied.' },
         });
@@ -195,7 +198,8 @@ test.each(forms)(
         expect(screen.getByRole('alert')).toHaveTextContent('Access denied.');
         expect(screen.queryByRole('status')).not.toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
-        useProjectDetail.mockReturnValue({
+        useProject.mockReturnValue({
+            projectDbId: 7,
             isLoading: false,
             project: { id: 7, access_config: null },
         });

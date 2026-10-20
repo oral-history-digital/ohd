@@ -2,6 +2,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import Loader from 'modules/api/Loader';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -14,6 +15,9 @@ jest.mock('modules/api/Loader', () => ({
     default: { getJson: jest.fn(), put: jest.fn() },
 }));
 jest.mock('modules/data', () => ({
+    getProjects: jest.requireActual(
+        '../../../data/redux/selectors/baseSelectors'
+    ).getProjects,
     useProjectDetail: jest.requireActual('../../../data/hooks/useProjectDetail')
         .useProjectDetail,
     submitData: jest.requireActual('../../../data/redux/actions').submitData,
@@ -22,10 +26,7 @@ jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: 'de', t: (key) => key }),
 }));
 jest.mock('modules/routes', () => ({
-    useProject: () => ({
-        projectDbId: 7,
-        project: { id: 7, shortname: 'pilot', access_config: { id: 999 } },
-    }),
+    useProject: jest.requireActual('../../../routes/useProject').default,
     pathBase: () => '/pilot/de',
 }));
 jest.mock(
@@ -73,7 +74,11 @@ function renderPage() {
     );
     return render(
         <Provider store={store}>
-            <EditProjectAccessPage />
+            <MemoryRouter
+                initialEntries={['/pilot/de/project/edit-access-config']}
+            >
+                <EditProjectAccessPage />
+            </MemoryRouter>
         </Provider>
     );
 }
@@ -128,7 +133,7 @@ test('loads editing settings and refetches after the existing save endpoint succ
     expect(screen.getByRole('status')).toHaveTextContent('Loading');
     expect(EditData).not.toHaveBeenCalled();
     expect(Loader.getJson.mock.lastCall[0]).toBe(
-        '/api/v2/projects/7?include=access_config&locale=de&profile=edit'
+        '/api/v2/projects/pilot?include=access_config&locale=de&profile=edit'
     );
     act(() => complete(true));
     expect(EditData.mock.lastCall[0]).toMatchObject({
