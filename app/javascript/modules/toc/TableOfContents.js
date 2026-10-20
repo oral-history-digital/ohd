@@ -1,13 +1,25 @@
 import { useEffect } from 'react';
 
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 
 import HeadingContainer from './HeadingContainer';
 import { getPreparedHeadings } from './getPreparedHeadings';
 
+/**
+ * Loads interview headings and displays them in the selected content language.
+ *
+ * @param {Object} props - Heading context.
+ * @param {boolean} props.headingsFetched - Whether heading data has loaded.
+ * @param {Object} [props.headings] - Heading segments by ID.
+ * @param {string} [props.alpha3] - Selected content language code.
+ * @param {boolean} props.isIdle - Whether playback has not started on mount.
+ * @param {string} props.archiveId - Public interview identifier.
+ * @param {Function} props.fetchData - Loads interview headings through Redux.
+ * @returns {React.ReactElement} Headings, an empty-state message, or loading indicator.
+ */
 export default function TableOfContents({
     headingsFetched,
     headings,
@@ -16,8 +28,8 @@ export default function TableOfContents({
     archiveId,
     fetchData,
 }) {
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
 
     useEffect(() => {
         // Only scroll to top if media has not started yet.
@@ -32,13 +44,8 @@ export default function TableOfContents({
             return;
         }
 
-        fetchData(
-            { locale, projectId, project },
-            'interviews',
-            archiveId,
-            'headings'
-        );
-    }, [headingsFetched]);
+        fetchData({ pathBase }, 'interviews', archiveId, 'headings');
+    }, [headingsFetched, fetchData, pathBase, archiveId]);
 
     if (!headingsFetched) {
         return <Spinner />;
@@ -73,6 +80,7 @@ TableOfContents.propTypes = {
     archiveId: PropTypes.string.isRequired,
     headingsFetched: PropTypes.bool.isRequired,
     headings: PropTypes.object,
+    alpha3: PropTypes.string,
     preparedHeadings: PropTypes.array,
     isIdle: PropTypes.bool.isRequired,
     fetchData: PropTypes.func.isRequired,
