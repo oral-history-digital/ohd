@@ -9,28 +9,43 @@ import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 
 import AdminSubTab from './AdminSubTab';
 
+/**
+ * Shows authorized indexing controls for the current project.
+ *
+ * @returns {React.ReactElement|null} Controls, request status, or nothing without permission.
+ */
 export default function IndexingTabPanel() {
     const { t } = useI18n();
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({});
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
-
-    function isRegularArchive() {
-        return !project.is_umbrella;
-    }
 
     if (!isAuthorized({ type: 'General' }, 'edit')) {
         return null;
     }
 
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
+
     return (
         <ErrorBoundary small>
             <h3 className="SidebarTabs-title">{t('edit.indexing')}</h3>
             <div className="flyout-sub-tabs-container flyout-video">
-                {isRegularArchive() && (
+                {!project.is_umbrella && (
                     <AdminSubTab
                         title="edit.interview.new"
                         url={`${pathBase}/interviews/new`}
@@ -44,7 +59,7 @@ export default function IndexingTabPanel() {
                     obj={{ type: 'Upload' }}
                     action="create"
                 />
-                {isRegularArchive() && (
+                {!project.is_umbrella && (
                     <AdminSubTab
                         title="edit.person.admin"
                         url={`${pathBase}/people`}
@@ -60,45 +75,41 @@ export default function IndexingTabPanel() {
                 >
                     <RegistryReferenceTypesSearchForm />
                 </AdminSubTab>
-                {isRegularArchive() && (
-                    <AdminSubTab
-                        title="edit.registry_name_type.admin"
-                        url={`${pathBase}/registry_name_types`}
-                        obj={{ type: 'RegistryNameType' }}
-                        action="update"
-                    >
-                        <RegistryNameTypesSearchForm />
-                    </AdminSubTab>
-                )}
-                {isRegularArchive() && (
-                    <AdminSubTab
-                        title="edit.contribution_type.admin"
-                        url={`${pathBase}/contribution_types`}
-                        obj={{ type: 'ContributionType' }}
-                        action="update"
-                    >
-                        <ContributionTypesSearchForm />
-                    </AdminSubTab>
-                )}
-                {isRegularArchive() && (
-                    <AdminSubTab
-                        title="edit.collection.admin"
-                        url={`${pathBase}/collections`}
-                        obj={{ type: 'Collection' }}
-                        action="update"
-                    >
-                        <CollectionsSearchForm />
-                    </AdminSubTab>
-                )}
-                {isRegularArchive() && (
-                    <AdminSubTab
-                        title="edit.language.admin"
-                        url={`${pathBase}/languages`}
-                        obj={{ type: 'Language' }}
-                        action="update"
-                    >
-                        <LanguagesSearchForm />
-                    </AdminSubTab>
+                {!project.is_umbrella && (
+                    <>
+                        <AdminSubTab
+                            title="edit.registry_name_type.admin"
+                            url={`${pathBase}/registry_name_types`}
+                            obj={{ type: 'RegistryNameType' }}
+                            action="update"
+                        >
+                            <RegistryNameTypesSearchForm />
+                        </AdminSubTab>
+                        <AdminSubTab
+                            title="edit.contribution_type.admin"
+                            url={`${pathBase}/contribution_types`}
+                            obj={{ type: 'ContributionType' }}
+                            action="update"
+                        >
+                            <ContributionTypesSearchForm />
+                        </AdminSubTab>
+                        <AdminSubTab
+                            title="edit.collection.admin"
+                            url={`${pathBase}/collections`}
+                            obj={{ type: 'Collection' }}
+                            action="update"
+                        >
+                            <CollectionsSearchForm />
+                        </AdminSubTab>
+                        <AdminSubTab
+                            title="edit.language.admin"
+                            url={`${pathBase}/languages`}
+                            obj={{ type: 'Language' }}
+                            action="update"
+                        >
+                            <LanguagesSearchForm />
+                        </AdminSubTab>
+                    </>
                 )}
             </div>
         </ErrorBoundary>
