@@ -52,6 +52,32 @@ describe('submitData', () => {
         expect(params.segment.id).toBe(92654354);
     });
 
+    it.each([
+        ['/en', true],
+        ['/en', false],
+        ['/history/de', true],
+        ['/history/de', false],
+    ])(
+        'uses route prefix %s for an existing record: %s',
+        (prefix, existing) => {
+            const params = {
+                registry_reference: {
+                    registry_entry_id: 7,
+                    ...(existing ? { id: 4 } : {}),
+                },
+            };
+            submitData({ pathBase: prefix }, params)(jest.fn());
+            const loader = existing ? Loader.put : Loader.post;
+            expect(loader.mock.calls[0][0]).toBe(
+                `${prefix}/registry_references${existing ? '/4' : ''}`
+            );
+            expect(pathBase).not.toHaveBeenCalled();
+            expect(loader.mock.calls[0][3]({})).toMatchObject({
+                mutation: true,
+            });
+        }
+    );
+
     it('keeps using PUT on repeated submits with the same params object', () => {
         const params = {
             segment: {

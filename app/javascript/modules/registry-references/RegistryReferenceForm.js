@@ -1,17 +1,38 @@
 import { useEffect } from 'react';
 
-import { useRegistryReferenceApi } from 'modules/api';
+import { fetcher, useRegistryReferenceApi } from 'modules/api';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import {
     useMutatePersonLandingPageMetadata,
     useMutatePersonWithAssociations,
 } from 'modules/person';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
+import useSWRImmutable from 'swr/immutable';
 
+/**
+ * Creates or edits references using Redux project identity and entity-owned reference types.
+ * Person mutations refresh both person representations; other references use Redux saves.
+ *
+ * @param {Object} props - Form properties.
+ * @param {Object} [props.registryReference] - Existing reference; omit when creating.
+ * @param {Object} [props.registryReferenceTypes] - Available reference types keyed by ID.
+ * @param {Object} props.registryReferenceTypesStatus - Reference type request status.
+ * @param {Object} [props.refObject] - Record receiving a new reference.
+ * @param {Object} [props.interview] - Interview receiving a new reference.
+ * @param {number} [props.registryReferenceTypeId] - Fixed reference type.
+ * @param {number} [props.lowestAllowedRegistryEntryId] - Restricts the selectable registry tree.
+ * @param {boolean} [props.inTranscript] - Limits type choices to transcript types.
+ * @param {Function} props.fetchData - Loads reference types through Redux.
+ * @param {Function} props.submitData - Saves non-person references through Redux.
+ * @param {Function} [props.onSubmit] - Called after submitting the form.
+ * @param {Function} [props.onCancel] - Closes the form without saving.
+ * @returns {React.ReactElement} Reference form or its loading/error state.
+ */
 export default function RegistryReferenceForm({
-    umbrellaProject,
     registryReference,
     registryReferenceTypes,
     registryReferenceTypesStatus,
@@ -25,8 +46,29 @@ export default function RegistryReferenceForm({
     onSubmit,
     onCancel,
 }) {
-    const { locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const {
+        project,
+        isLoading: projectIsLoading,
+        error: projectError,
+    } = useProject({});
+    const pathBase = usePathBase();
+    const globalTypesPath =
+        project &&
+        !projectError &&
+        !project.is_umbrella &&
+        registryReferenceTypeId
+            ? `${pathBase}/registry_reference_types/global.json`
+            : null;
+    const {
+        data: globalTypes,
+        isLoading: globalTypesAreLoading,
+        error: globalTypesError,
+    } = useSWRImmutable(globalTypesPath, fetcher);
+    const loadUmbrellaTree =
+        Boolean(registryReferenceTypeId) &&
+        (project?.is_umbrella ||
+            globalTypes?.some((type) => type.id === registryReferenceTypeId));
     const { createRegistryReference, updateRegistryReference } =
         useRegistryReferenceApi();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
@@ -34,30 +76,35 @@ export default function RegistryReferenceForm({
         useMutatePersonLandingPageMetadata();
 
     useEffect(() => {
-        if (!registryReferenceTypesStatus[`for_projects_${project?.id}`]) {
+        if (
+            project &&
+            !projectError &&
+            !registryReferenceTypesStatus[`for_projects_${project.id}`]
+        ) {
             fetchData(
-                { locale, projectId, project },
+                { pathBase },
                 'registry_reference_types',
                 null,
                 null,
-                `for_projects=${project?.id}`
+                `for_projects=${project.id}`
             );
         }
-    });
+    }, [
+        project,
+        projectError,
+        registryReferenceTypesStatus,
+        pathBase,
+        fetchData,
+    ]);
 
-    function isUmbrellaRegistryReferenceType() {
-        return umbrellaProject.registry_reference_type_ids.includes(
-            registryReferenceTypeId
-        );
-    }
-
+    /** @returns {Object[]} Tree selection and optional reference type fields. */
     function buildElements() {
         let elements = [
             {
                 elementType: 'registryEntryTreeSelect',
                 attribute: 'registry_entry_id',
                 lowestAllowedRegistryEntryId,
-                loadUmbrellaTree: isUmbrellaRegistryReferenceType(),
+                loadUmbrellaTree: Boolean(loadUmbrellaTree),
                 inTranscript,
                 goDeeper: true,
             },
@@ -75,6 +122,7 @@ export default function RegistryReferenceForm({
         return elements;
     }
 
+    /** @returns {Object[]|undefined} Available types, limited to transcript types when needed. */
     function buildRegistryReferenceTypes() {
         if (registryReferenceTypes) {
             return inTranscript
@@ -84,6 +132,24 @@ export default function RegistryReferenceForm({
                 : Object.values(registryReferenceTypes);
         }
     }
+
+    const error = projectError || (globalTypesPath ? globalTypesError : null);
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (
+        projectIsLoading ||
+        !project ||
+        (globalTypesPath && globalTypesAreLoading)
+    )
+        return <Spinner />;
 
     return (
         <div>
@@ -141,12 +207,7 @@ export default function RegistryReferenceForm({
                     } else {
                         // Segment references use Redux. Form is already closed by parent,
                         // so callback is just for cleanup if needed.
-                        submitData(
-                            { locale, projectId, project },
-                            params,
-                            {},
-                            onSubmit
-                        );
+                        submitData({ pathBase }, params, {}, onSubmit);
                     }
                 }}
                 onCancel={onCancel}
@@ -157,13 +218,12 @@ export default function RegistryReferenceForm({
 }
 
 RegistryReferenceForm.propTypes = {
-    umbrellaProject: PropTypes.object.isRequired,
     registryReference: PropTypes.object,
     refObject: PropTypes.object,
     inTranscript: PropTypes.bool,
     registryReferenceTypes: PropTypes.object,
     registryReferenceTypeId: PropTypes.number,
-    registryReferenceTypesStatus: PropTypes.string,
+    registryReferenceTypesStatus: PropTypes.object.isRequired,
     lowestAllowedRegistryEntryId: PropTypes.number,
     interview: PropTypes.object,
     fetchData: PropTypes.func.isRequired,

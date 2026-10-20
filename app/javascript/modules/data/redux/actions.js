@@ -123,7 +123,8 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
  * otherwise. Dispatches loading, success, and error actions; successful responses
  * also invalidate affected v2 caches.
  *
- * @param {Object} props - Project and locale used to build the request path.
+ * @param {Object} props - Request path or legacy project and locale context.
+ * @param {string} [props.pathBase] - Route-based prefix; overrides project-based path construction.
  * @param {Object} params - Form payload keyed by the singular resource name.
  * @param {Object} [opts={}] - Submission settings.
  * @param {boolean} [opts.updateStateBeforeSubmit=false] - Apply an optimistic update for PUT.
@@ -162,7 +163,7 @@ export function submitData(props, params, opts = {}, callback) {
                     )
                 );
             Loader.put(
-                `${pathBase(props)}/${pluralizedDataType}/${id}`,
+                `${props.pathBase || pathBase(props)}/${pluralizedDataType}/${id}`,
                 payload,
                 dispatch,
                 receiveMutationData,
@@ -182,7 +183,7 @@ export function submitData(props, params, opts = {}, callback) {
             dispatch(requestData(pluralizedDataType));
             //dispatch(addData(params));
             Loader.post(
-                `${pathBase(props)}/${pluralizedDataType}`,
+                `${props.pathBase || pathBase(props)}/${pluralizedDataType}`,
                 params,
                 dispatch,
                 receiveMutationData,
