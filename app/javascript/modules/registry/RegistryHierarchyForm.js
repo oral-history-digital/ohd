@@ -1,8 +1,19 @@
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 
+/**
+ * Adds or edits a registry hierarchy relationship through the current route.
+ *
+ * @param {Object} props - Form properties.
+ * @param {Object} [props.registryHierarchy] - Existing relationship to edit.
+ * @param {Object} [props.descendantRegistryEntry] - Entry receiving a parent.
+ * @param {Function} props.submitData - Saves the relationship through Redux.
+ * @param {Function} props.onSubmit - Called after starting the save.
+ * @param {Function} [props.onCancel] - Closes the form without saving.
+ * @returns {React.ReactElement} Hierarchy relationship form.
+ */
 export default function RegistryHierarchyForm({
     registryHierarchy,
     descendantRegistryEntry,
@@ -11,7 +22,7 @@ export default function RegistryHierarchyForm({
     onCancel,
 }) {
     const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
 
     return (
         <div>
@@ -27,7 +38,7 @@ export default function RegistryHierarchyForm({
             <Form
                 scope="registry_hierarchy"
                 onSubmit={(params) => {
-                    submitData({ locale, projectId, project }, params);
+                    submitData({ pathBase }, params);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
