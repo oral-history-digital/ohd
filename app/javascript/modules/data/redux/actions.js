@@ -197,7 +197,8 @@ export function submitData(props, params, opts = {}, callback) {
  * Deletes a record through the legacy API and invalidates affected v2 caches.
  * By default, removes the cached legacy record before sending the request.
  *
- * @param {Object} props - Project and locale used to build the request path.
+ * @param {Object} props - Request path or legacy project and locale context.
+ * @param {string} [props.pathBase] - Route-based prefix; overrides project-based path construction.
  * @param {string} dataType - Plural name of the parent resource.
  * @param {number|string} id - Parent or standalone record ID.
  * @param {?string} [nestedDataType] - Nested resource name, when deleting a child.
@@ -217,7 +218,7 @@ export function deleteData(
     onlyRemove = false,
     callback
 ) {
-    let url = `${pathBase(props)}/${dataType}/${id}`;
+    let url = `${props.pathBase || pathBase(props)}/${dataType}/${id}`;
     if (nestedDataType) {
         url += `/${nestedDataType}/${nestedId}`;
     }

@@ -1,13 +1,29 @@
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
-import { Modal } from 'modules/ui';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification, Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
 import RegistryReferenceContainer from './RegistryReferenceContainer';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
+/**
+ * Shows loaded references for the current interview using Redux registry configuration.
+ *
+ * @param {Object} props - Reference list properties.
+ * @param {Object} props.registryEntriesStatus - Entry and query loading status.
+ * @param {Object} props.registryEntries - Registry entries keyed by ID.
+ * @param {number} [props.registryReferenceTypeId] - Limits the list to one reference type.
+ * @param {Object} props.refObject - Person, interview, or segment whose references are shown.
+ * @param {Object} props.interview - Interview used to filter references and authorize creation.
+ * @param {boolean} [props.inTranscript] - Enables transcript reference behavior.
+ * @param {number} [props.lowestAllowedRegistryEntryId] - Restricts the selectable registry tree.
+ * @param {string} [props.contentLocale] - Reference content language.
+ * @param {Function} [props.setOpenReference] - Opens reference notes.
+ * @returns {React.ReactElement|null} References and authorized creation controls, or loading/error state.
+ */
 export default function RegistryReferences({
     registryEntriesStatus,
     registryEntries,
@@ -20,9 +36,24 @@ export default function RegistryReferences({
     setOpenReference,
 }) {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({
+        include: ['registry_configuration'],
+    });
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     if (
+        !project.root_registry_entry_id ||
         !registryEntriesStatus[project.root_registry_entry_id] ||
         registryEntriesStatus[project.root_registry_entry_id].split('-')[0] !==
             'fetched'
@@ -32,6 +63,7 @@ export default function RegistryReferences({
 
     if (
         !refObject ||
+        !interview ||
         !registryEntriesStatus[
             `ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`
         ] ||
