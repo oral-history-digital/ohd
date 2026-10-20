@@ -23,8 +23,13 @@ module ApiSchemaAssertions
   end
 
   # Checks the response from the preceding request, including error responses.
-  # Selects its schema by endpoint, HTTP method, actual status, and content type.
-  def assert_api_response_schema(path, method: 'get')
+  # A named data schema additionally checks the expected representation on success.
+  #
+  # @param path [String] OpenAPI path template
+  # @param method [String] HTTP method
+  # @param data_schema [String, nil] Expected component schema for the response's data field
+  # @return [void]
+  def assert_api_response_schema(path, method: 'get', data_schema: nil)
     status = response.status.to_s
     media_type = response.media_type
     operation = ApiSchemaAssertions.definition.fetch('paths').fetch(path).fetch(method)
@@ -37,7 +42,11 @@ module ApiSchemaAssertions
     pointer = '#/' + segments.map { |segment| segment.gsub('~', '~0').gsub('/', '~1') }.join('/')
     # URI fragments also need escaping for path parameters such as {identifier}.
     reference = '#' + URI::DEFAULT_PARSER.escape(pointer.delete_prefix('#'))
-    errors = api_schema.ref(reference).validate(JSON.parse(response.body)).to_a
+    body = JSON.parse(response.body)
+    errors = api_schema.ref(reference).validate(body).to_a
+    if data_schema && response.successful?
+      errors.concat(api_schema.schema(data_schema).validate(body.fetch('data')).to_a)
+    end
     messages = errors.map { |error| "#{error['data_pointer']}: #{error['error']}" }
     assert_empty errors, "API response violates OpenAPI:\n#{messages.join("\n")}"
   end

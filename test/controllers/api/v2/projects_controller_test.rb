@@ -24,6 +24,19 @@ class Api::V2::ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.available_locales.map(&:to_s).sort, locale['schema']['enum'].sort
   end
 
+  test 'OpenAPI include choices match the controller allowlists' do
+    {
+      '/api/v2/projects' => Api::V2::ProjectsController::LIST_INCLUDES,
+      '/api/v2/projects/{identifier}' => Api::V2::ProjectsController::EDIT_INCLUDES,
+    }.each do |path, allowed|
+      parameters = ApiSchemaAssertions.definition.fetch('paths').fetch(path).fetch('get').fetch('parameters')
+      include_schema = parameters.find { |parameter| parameter['name'] == 'include' }.fetch('schema')
+      # The pattern declares the same choices for the first and subsequent comma-separated names.
+      choices = include_schema.fetch('pattern').scan(/\(([^()]+)\)/).flat_map { |group| group.first.split('|') }.uniq
+      assert_equal allowed.sort, choices.sort, path
+    end
+  end
+
   test 'generated OpenAPI document matches the Ruby contract' do
     generated = YAML.safe_load_file(Rails.root.join('doc/api/v2/openapi.yaml'))
     assert_equal ApiSchemaAssertions.definition, generated,

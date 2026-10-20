@@ -312,7 +312,8 @@ class Api::V2::ProjectDetailTest < ActionDispatch::IntegrationTest
   def read_detail(identifier: @project.id, suffix: '', expected: :success, **parameters)
     get "/api/v2/projects/#{identifier}#{suffix}", params: { locale: 'en', **parameters }
     assert_response expected
-    assert_api_response_schema(CONTRACT_PATH)
+    assert_api_response_schema(CONTRACT_PATH,
+      data_schema: request.query_parameters['profile'] == 'edit' ? 'ProjectEdit' : 'ProjectDisplay')
     JSON.parse(response.body)
   end
 

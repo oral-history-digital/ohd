@@ -94,7 +94,8 @@ class Api::V2::ProjectRegistryConfigurationTest < ActionDispatch::IntegrationTes
   def read_project(include: 'registry_configuration', expected: :success, **parameters)
     get "/api/v2/projects/#{@project.id}", params: { include: include, **parameters }.compact
     assert_response expected
-    assert_api_response_schema('/api/v2/projects/{identifier}')
+    assert_api_response_schema('/api/v2/projects/{identifier}',
+      data_schema: request.query_parameters['profile'] == 'edit' ? 'ProjectEdit' : 'ProjectDisplay')
     JSON.parse(response.body)['data']
   end
 end

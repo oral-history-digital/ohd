@@ -38,6 +38,8 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
     assert api_schema.schema('ProjectEdit').valid?(edit)
     assert_not api_schema.schema('ProjectDisplay').valid?(edit)
     assert_equal 'editor@example.org', edit['contact_email']
+    assert_nil edit['doi_status']
+    assert_not display.key?('doi_status')
     assert_equal [16, 9], edit.values_at('aspect_x', 'aspect_y')
     %w[view_modes upload_types logged_out_visible_registry_entry_ids hidden_registry_entry_ids hidden_transcript_registry_entry_ids pdf_registry_entry_ids].each do |field|
       assert_equal @project.public_send(field), edit[field]
@@ -51,6 +53,17 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
     edit = read_project
     %w[fullname_on_landing_page show_preview_img show_legend].each { |field| assert_equal false, edit[field] }
     %w[aspect_x aspect_y archive_id_number_length contact_email].each { |field| assert_nil edit[field] }
+  end
+
+  test 'profile checks reject display data for editing and requested include fields are present' do
+    read_project(profile: 'display')
+    assert_raises(Minitest::Assertion) do
+      assert_api_response_schema(CONTRACT_PATH, data_schema: 'ProjectEdit')
+    end
+    data = read_project(include: 'translations,affiliates,branding,texts,map_sections')
+    %w[translations cooperation_partners leaders managers funders logos sponsor_logos texts map_sections].each do |field|
+      assert data.key?(field), "Requested include did not return #{field}"
+    end
   end
 
   test 'translations return stored values and IDs across locales without fallback or unrelated records' do
@@ -117,7 +130,7 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
   test 'edit field and translation mutations invalidate cached responses without timestamp changes' do
     read_project(include: 'translations')
     changes = {
-      contact_email: 'changed@example.org', aspect_x: 4, aspect_y: 3, archive_id_number_length: 8,
+      contact_email: 'changed@example.org', doi_status: 'created', aspect_x: 4, aspect_y: 3, archive_id_number_length: 8,
       fullname_on_landing_page: true, show_preview_img: true, show_legend: false,
       view_modes: ['list'], upload_types: ['bulk_photos'], logged_out_visible_registry_entry_ids: ['21'],
       hidden_registry_entry_ids: ['22'], hidden_transcript_registry_entry_ids: ['23'], pdf_registry_entry_ids: ['24'],
@@ -150,11 +163,8 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
     read_project(identifier: 'missing-project', expected: :not_found)
   end
 
-  test 'editable affiliates preserve display fields and stored translations behind subtype permissions' do
-    read_project(include: 'affiliates', expected: :forbidden)
+  test 'editable affiliate reads preserve all subtypes without requiring every subtype update permission' do
     records = [CooperationPartner, Leader, Manager, Funder].map do |type|
-      permission = Permission.find_or_create_by!(klass: type.name, action_name: 'update')
-      RolePermission.create!(role: @role, permission: permission)
       affiliate = type.create!(project_id: @project.id, name_type: 'Organizational')
       affiliate.translations.create!(locale: 'en', name: '', first_name: nil, last_name: ' ')
       affiliate.translations.create!(locale: 'de', name: "German #{type.name}")
@@ -174,16 +184,18 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
       assert_equal ['', nil, ' '], english.values_at('name', 'first_name', 'last_name')
       assert_not_equal other.id, data['id']
     end
-    @role.role_permissions.joins(:permission).find_by!(permissions: { klass: 'Funder' }).destroy!
+    permission = Permission.find_or_create_by!(klass: 'Leader', action_name: 'update')
+    RolePermission.create!(role: @role, permission: permission)
+    assert_equal records[1].id, read_project(include: 'affiliates')['leaders'].sole['id']
+    context = ProjectContext.new(@user.reload, @project)
+    assert Pundit.policy!(context, records[1]).update?
+    assert_not Pundit.policy!(context, records[3]).update?
+    @grant.destroy!
     read_project(include: 'affiliates', expected: :forbidden)
     assert_equal records[1].id, read_project(profile: 'display', include: 'affiliates')['leaders'].sole['id']
   end
 
   test 'editable affiliate cache follows stored translations membership and deletion independently of defaults' do
-    %w[CooperationPartner Leader Manager Funder].each do |type|
-      permission = Permission.find_or_create_by!(klass: type, action_name: 'update')
-      RolePermission.create!(role: @role, permission: permission)
-    end
     leader = Leader.create!(project_id: @project.id, name_type: 'Personal')
     translation = leader.translations.create!(locale: 'en', first_name: 'Anna', last_name: 'Example')
     default = read_project
@@ -409,11 +421,19 @@ class Api::V2::ProjectEditTest < ActionDispatch::IntegrationTest
       corner1_lat: 51.50939, corner1_lon: -0.11832, corner2_lat: 44.433333, corner2_lon: 26.1)
   end
 
+  # Requests the chosen profile and validates both the operation and its expected data schema.
+  #
+  # @param identifier [String, Integer] Project shortname or ID
+  # @param expected [Symbol] Expected response status
+  # @param user [User, nil] Account to sign in, or nil for anonymous requests
+  # @param parameters [Hash] Query parameters overriding the edit defaults
+  # @return [Hash, nil] Project data, or nil for errors
   def read_project(identifier: @project.id, expected: :success, user: @user, **parameters)
     login_as user if user
     get "/api/v2/projects/#{identifier}", params: { profile: 'edit', locale: 'en', **parameters }
     assert_response expected
-    assert_api_response_schema(CONTRACT_PATH)
+    assert_api_response_schema(CONTRACT_PATH,
+      data_schema: request.query_parameters['profile'] == 'edit' ? 'ProjectEdit' : 'ProjectDisplay')
     JSON.parse(response.body)['data']
   end
 end
