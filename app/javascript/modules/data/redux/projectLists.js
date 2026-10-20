@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 
+import { readProjectRecord } from './projectRecords';
 import { v2AccessContext, v2RequestKey } from './v2Requests';
 
 /**
@@ -84,10 +85,9 @@ export const makeProjectListSelector = () =>
             const list = matchesContext ? projects.lists[key] : null;
             const request = matchesContext ? projects.requests[key] : null;
             return {
-                projects: (list?.ids || []).map((id) => ({
-                    ...projects.records[id],
-                    ...projects.translations.display[id]?.[locale],
-                })),
+                projects: (list?.ids || []).map((id) =>
+                    readProjectRecord(projects, id, locale)
+                ),
                 pagination: list?.pagination,
                 status: request?.status,
                 error: request?.error || null,

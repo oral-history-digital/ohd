@@ -8,22 +8,8 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
+import { localizedProjectFields, projectEditFields } from './projectRecords';
 
-const localizedFields = [
-    'name',
-    'display_name',
-    'introduction',
-    'more_text',
-    'logo',
-    'institutions',
-    'collection_preview',
-    'subjects',
-    'levels_of_indexing',
-    'cooperation_partners',
-    'leaders',
-    'managers',
-    'funders',
-];
 const relatedResources = [
     'projects',
     'collections',
@@ -33,6 +19,13 @@ const relatedResources = [
     'languages',
     'interview_languages',
     'logos',
+    'sponsor_logos',
+    'media_streams',
+    'external_links',
+    'access_configs',
+    'metadata_fields',
+    'texts',
+    'map_sections',
     'roles',
     'permissions',
     'user_roles',
@@ -52,13 +45,16 @@ const relatedResources = [
     'registry_name_types',
     'registry_hierarchies',
     'registry_references',
+    'registry_reference_types',
+    'event_types',
 ];
 
 /**
  * @typedef {Object} V2ProjectState
- * @property {Object<string, Object>} records - Locale-independent fields by project ID.
- * @property {Object} translations - Display values by project ID and requested locale (may use
- * fallback locale); stored translation records are reserved for a later editor migration.
+ * @property {Object<string, Object>} records - Shared fields by project ID, with
+ * locale-independent editing additions under records[id].edit.
+ * @property {Object} translations - Localized values under display[id][locale] and
+ * edit[id][locale]. stored[id] holds project translation arrays without fallback.
  * @property {Object<string, Object>} lists - Ordered IDs and pagination by request key.
  * @property {Object<string, Object>} requests - Status/error by request key; detail results also retain the returned project ID.
  * @property {number} generation - Counter used to reject responses from before invalidation.
@@ -75,7 +71,7 @@ const relatedResources = [
 function emptyProjects(generation = 0, context = null) {
     return {
         records: {},
-        translations: { display: {}, stored: {} },
+        translations: { display: {}, edit: {}, stored: {} },
         lists: {},
         requests: {},
         generation,
@@ -85,7 +81,8 @@ function emptyProjects(generation = 0, context = null) {
 
 /**
  * Stores project lists and details without changing legacy project records.
- * Merges received fields while preserving omitted fields and other locales.
+ * Merges shared fields while preserving omitted fields and other locales. Editing
+ * additions are stored separately so display responses cannot overwrite them.
  * Access changes and relevant mutations clear the cache and invalidate in-flight
  * responses. State is created only when the first v2 project request starts.
  *
@@ -152,13 +149,26 @@ export function reduceV2Projects(state, action) {
 
     const records = { ...state.records };
     const display = { ...state.translations.display };
+    const edit = { ...state.translations.edit };
+    const stored = { ...state.translations.stored };
+    const editable =
+        action.profile === 'edit' ? projectEditFields(action.include) : [];
     const received = action.single ? [action.data.data] : action.data.data;
     for (const project of received) {
         const stable = {};
         const localized = {};
-        for (const [field, value] of Object.entries(project))
-            (localizedFields.includes(field) ? localized : stable)[field] =
-                value;
+        const stableEdit = {};
+        const localizedEdit = {};
+        for (const [field, value] of Object.entries(project)) {
+            if (field === 'translations') {
+                if (action.profile === 'edit') stored[project.id] = value;
+                continue;
+            }
+            const isLocalized = localizedProjectFields.includes(field);
+            if (editable.includes(field))
+                (isLocalized ? localizedEdit : stableEdit)[field] = value;
+            else (isLocalized ? localized : stable)[field] = value;
+        }
         records[project.id] = { ...records[project.id], ...stable };
         display[project.id] = {
             ...display[project.id],
@@ -167,11 +177,24 @@ export function reduceV2Projects(state, action) {
                 ...localized,
             },
         };
+        if (action.profile === 'edit') {
+            records[project.id].edit = {
+                ...records[project.id].edit,
+                ...stableEdit,
+            };
+            edit[project.id] = {
+                ...edit[project.id],
+                [action.locale]: {
+                    ...edit[project.id]?.[action.locale],
+                    ...localizedEdit,
+                },
+            };
+        }
     }
     return {
         ...state,
         records,
-        translations: { ...state.translations, display },
+        translations: { display, edit, stored },
         lists: action.single
             ? state.lists
             : {
@@ -186,7 +209,13 @@ export function reduceV2Projects(state, action) {
             [action.key]: {
                 status: 'succeeded',
                 error: null,
-                ...(action.single ? { id: action.data.data.id } : {}),
+                ...(action.single
+                    ? {
+                          id: action.data.data.id,
+                          profile: action.profile,
+                          include: action.include,
+                      }
+                    : {}),
             },
         },
     };

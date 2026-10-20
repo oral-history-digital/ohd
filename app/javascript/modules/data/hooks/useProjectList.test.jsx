@@ -659,3 +659,329 @@ test('cached project selection hides names after access changes or logout', () =
     expect(select(store.getState(), 7, 'de')).toBeUndefined();
     expect(Loader.getJson).toHaveBeenCalledTimes(1);
 });
+
+test('edit callers share requests but display responses do not satisfy edit loading', () => {
+    const store = makeStore();
+    let profile = 'display';
+    const { result, rerender } = mount(store, () => [
+        useProjectDetail(7, { profile }),
+        useProjectDetail(7, { profile }),
+    ]);
+    act(() => completeDetail(project()));
+    expect(projectDetailUrl(7, 'de', { profile: 'display' })).toBe(
+        projectDetailUrl(7, 'de')
+    );
+    profile = 'edit';
+    rerender();
+    expect(Loader.getJson).toHaveBeenCalledTimes(2);
+    expect(Loader.getJson.mock.calls[1][0]).toContain('profile=edit');
+    expect(result.current[0].project).toBeUndefined();
+    expect(result.current[0].isLoading).toBe(true);
+    act(() =>
+        completeDetail(project(7, { contact_email: 'editor@example.org' }))
+    );
+    expect(result.current[0].project.contact_email).toBe('editor@example.org');
+    expect(result.current[0].project).toEqual(result.current[1].project);
+    profile = 'display';
+    rerender();
+    expect(result.current[0].project).not.toHaveProperty('contact_email');
+    expect(result.current[0].project).not.toHaveProperty('edit');
+    expect(Loader.getJson).toHaveBeenCalledTimes(2);
+});
+
+test('display and footer responses preserve full editing data without exposing it to display readers', () => {
+    const store = makeStore();
+    let profile = 'edit';
+    let include = [
+        'translations',
+        ' branding ',
+        'footer',
+        'external_links',
+        'playback',
+        'access_config',
+    ];
+    const { result, rerender } = mount(store, () =>
+        useProjectDetail(7, { profile, include })
+    );
+    const translations = [{ id: 1, locale: 'en', name: '', more_text: null }];
+    const full = project(7, {
+        contact_email: 'editor@example.org',
+        translations,
+        access_config: { id: 3, organization: { display: true } },
+        media_streams: [{ id: 4, path: 'protected-template', suffix: 'mp4' }],
+        external_links: [
+            {
+                id: 5,
+                name: 'Link',
+                internal_name: 'Internal',
+                translations: [],
+            },
+        ],
+        logos: [{ id: 6, locale: 'de', filename: 'logo.png' }],
+        sponsor_logos: [{ id: 9, locale: 'en', filename: 'sponsor.png' }],
+    });
+    act(() => completeDetail(full));
+    expect(result.current.project).toEqual(full);
+    const displayFields = {
+        access_config: { organization: { display: true } },
+        media_streams: [{ id: 4, suffix: 'mp4' }],
+        external_links: [{ id: 5, name: 'Link' }],
+        sponsor_logos: [],
+    };
+    profile = 'display';
+    include = ['footer', 'playback', 'access_config'];
+    rerender();
+    act(() => completeDetail(project(7, displayFields)));
+    expect(result.current.project).toEqual(project(7, displayFields));
+    act(() => {
+        load(store);
+        complete([project()]);
+    });
+    const cached = makeProjectSelector()(store.getState(), 7, 'de');
+    expect(cached).not.toHaveProperty('contact_email');
+    expect(cached).not.toHaveProperty('logos');
+    expect(cached).not.toHaveProperty('translations');
+    expect(
+        makeProjectListSelector()(
+            store.getState(),
+            projectListUrl('de', { all: true }),
+            'de'
+        ).projects[0]
+    ).toEqual(cached);
+    profile = 'edit';
+    include = ['footer'];
+    rerender();
+    act(() =>
+        completeDetail(
+            project(7, {
+                contact_email: 'editor@example.org',
+                external_links: displayFields.external_links,
+                sponsor_logos: [],
+            })
+        )
+    );
+    expect(result.current.project.external_links).toEqual(
+        displayFields.external_links
+    );
+    expect(result.current.project.sponsor_logos).toEqual([]);
+    include = [
+        'translations',
+        'branding',
+        'footer',
+        'external_links',
+        'playback',
+        'access_config',
+    ];
+    rerender();
+    expect(result.current.project).toEqual(full);
+    expect(store.getState().data.v2.projects.translations.stored[7]).toEqual(
+        translations
+    );
+});
+
+test('new localized includes retain their language and editing translations independently', () => {
+    const store = makeStore();
+    let profile = 'display';
+    const include = [
+        'texts',
+        'metadata_fields',
+        'map_sections',
+        'footer',
+        'playback',
+        'affiliates',
+    ];
+    const { result, rerender } = mount(store, () =>
+        useProjectDetail(7, { profile, include })
+    );
+    const fields = {
+        texts: [{ id: 1, text: 'Deutsch' }],
+        metadata_fields: [{ id: 2, label: 'Deutsch' }],
+        map_sections: [{ id: 3, label: 'Deutsch' }],
+        external_links: [{ id: 4, name: 'Deutsch' }],
+        sponsor_logos: [{ id: 5, locale: 'de' }],
+        media_missing_text: 'Deutsch',
+    };
+    act(() => completeDetail(project(7, fields)));
+    mockLocale = 'en';
+    rerender();
+    act(() =>
+        completeDetail(
+            project(
+                7,
+                Object.fromEntries(
+                    Object.keys(fields).map((field) => [field, null])
+                )
+            )
+        )
+    );
+    profile = 'edit';
+    rerender();
+    act(() =>
+        completeDetail(
+            project(7, {
+                texts: [
+                    {
+                        id: 1,
+                        text: 'English',
+                        translations: [{ locale: 'en', text: '' }],
+                    },
+                ],
+            })
+        )
+    );
+    mockLocale = 'de';
+    profile = 'display';
+    rerender();
+    expect(result.current.project).toMatchObject(fields);
+    profile = 'edit';
+    rerender();
+    act(() =>
+        completeDetail(
+            project(7, {
+                texts: [
+                    {
+                        id: 1,
+                        text: 'Deutsch',
+                        translations: [{ locale: 'de', text: null }],
+                    },
+                ],
+            })
+        )
+    );
+    expect(result.current.project.texts[0].translations).toEqual([
+        { locale: 'de', text: null },
+    ]);
+    mockLocale = 'en';
+    rerender();
+    expect(result.current.project.texts[0].translations).toEqual([
+        { locale: 'en', text: '' },
+    ]);
+    const records = store.getState().data.v2.projects.records[7];
+    for (const field of Object.keys(fields))
+        expect(records).not.toHaveProperty(field);
+});
+
+test('denied edit refresh hides editing values while display data remains usable', () => {
+    const store = makeStore();
+    const { result } = mount(store, () =>
+        useProjectDetail(7, { profile: 'edit' })
+    );
+    act(() =>
+        completeDetail(project(7, { contact_email: 'editor@example.org' }))
+    );
+    act(() => {
+        result.current.mutate();
+    });
+    const [, , dispatch, , fail] = Loader.getJson.mock.calls[1];
+    act(() => dispatch(fail({ status: 403, message: 'Denied' })));
+    expect(result.current.project).toBeUndefined();
+    expect(result.current.error.status).toBe(403);
+    expect(Loader.getJson).toHaveBeenCalledTimes(2);
+    expect(makeProjectSelector()(store.getState(), 7, 'de')).not.toHaveProperty(
+        'contact_email'
+    );
+});
+
+test.each([
+    'sponsor_logos',
+    'media_streams',
+    'external_links',
+    'access_configs',
+    'metadata_fields',
+    'texts',
+    'map_sections',
+])(
+    '%s delete completion clears edit data and rejects responses from before invalidation',
+    (resource) => {
+        const store = makeStore();
+        const { result } = mount(store, () =>
+            useProjectDetail(7, { profile: 'edit' })
+        );
+        act(() =>
+            completeDetail(project(7, { contact_email: 'old@example.org' }))
+        );
+        act(() => {
+            result.current.mutate();
+        });
+        const old = Loader.getJson.mock.calls[1];
+        act(() =>
+            store.dispatch(
+                deleteData(
+                    { locale: 'de', project: { shortname: 'pilot' } },
+                    resource,
+                    42,
+                    null,
+                    null,
+                    true
+                )
+            )
+        );
+        const deletion = Loader.delete.mock.calls[0];
+        act(() =>
+            deletion[1](
+                deletion[2]({ data_type: 'projects', id: 7, data: { id: 7 } })
+            )
+        );
+        expect(Loader.getJson).toHaveBeenCalledTimes(3);
+        expect(result.current.project).toBeUndefined();
+        act(() =>
+            old[2](
+                old[3]({
+                    data: project(7, { contact_email: 'stale@example.org' }),
+                })
+            )
+        );
+        expect(store.getState().data.v2.projects.records).toEqual({});
+        act(() =>
+            completeDetail(project(7, { contact_email: 'fresh@example.org' }))
+        );
+        expect(result.current.project.contact_email).toBe('fresh@example.org');
+    }
+);
+
+test.each(['logout', 'permission change'])(
+    '%s removes edit translations and rejects pending protected responses',
+    (change) => {
+        const store = makeStore();
+        const { result } = mount(store, () =>
+            useProjectDetail(7, { profile: 'edit', include: ['translations'] })
+        );
+        act(() =>
+            completeDetail(
+                project(7, {
+                    contact_email: 'old@example.org',
+                    translations: [{ locale: 'de', name: 'Stored' }],
+                })
+            )
+        );
+        act(() => {
+            result.current.mutate();
+        });
+        const old = Loader.getJson.mock.calls[1];
+        act(() =>
+            store.dispatch(
+                change === 'logout'
+                    ? { type: LOGOUT }
+                    : receiveData({
+                          data_type: 'users',
+                          id: 'current',
+                          data: { id: 2, permissions: {} },
+                      })
+            )
+        );
+        act(() =>
+            old[2](
+                old[3]({
+                    data: project(7, {
+                        contact_email: 'stale@example.org',
+                        translations: [{ locale: 'de', name: 'Stale' }],
+                    }),
+                })
+            )
+        );
+        expect(result.current.project).toBeUndefined();
+        expect(store.getState().data.v2.projects.translations.stored).toEqual(
+            {}
+        );
+    }
+);
