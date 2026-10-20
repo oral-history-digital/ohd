@@ -11,6 +11,13 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+/**
+ * Shows account navigation and starts logout without clearing the account early.
+ *
+ * @param {Object} props - Navigation properties.
+ * @param {string} [props.className] - Additional wrapper classes.
+ * @returns {React.ReactElement} Account controls or login and registration links.
+ */
 export default function SessionButtons({ className }) {
     const { t, locale } = useI18n();
     const { projectId } = useProject();
@@ -85,8 +92,6 @@ export default function SessionButtons({ className }) {
                             dispatch(clearStateData('projects', pid, 'people'));
                         });
                     }
-                    dispatch(clearStateData('users'));
-                    dispatch(clearStateData('users'));
                     dispatch(submitLogout(`${pathBase}/users/sign_out`));
                 }}
             >

@@ -61,6 +61,14 @@ const Loader = {
             });
     },
 
+    /**
+     * Deletes a resource, accepting successful JSON or empty responses.
+     *
+     * @param {string} url - Resource URL.
+     * @param {Function} dispatch - Redux dispatch function.
+     * @param {Function|null} callback - Creates the response action, if provided.
+     * @param {Function} [cb] - Called after success with parsed JSON or an empty object.
+     */
     delete: function (url, dispatch, callback, cb) {
         const dispatchCallback =
             typeof callback === 'function'

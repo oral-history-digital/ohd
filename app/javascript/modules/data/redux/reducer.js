@@ -1,3 +1,4 @@
+import { LOGOUT } from '../../user/action-types';
 import {
     DELETE_STATUS_MSG,
     RECEIVE_DATA,
@@ -49,6 +50,7 @@ const initialState = {
 /**
  * Updates cached entities and request status. Routes v2 project actions to their
  * own state branch while preserving the existing legacy data flow.
+ * Logout clears cached accounts; anonymous current-account responses remain null.
  *
  * @param {Object} [state=initialState] - Data branch of the Redux store.
  * @param {Object} action - Request, response, mutation, or access-change action.
@@ -65,6 +67,19 @@ export const dataReducer = (state = initialState, action) => {
         state = {
             ...state,
             projectRequests: { ...state.projectRequests, [key]: request },
+        };
+    }
+    if (
+        action.type === LOGOUT ||
+        (action.type === RECEIVE_DATA &&
+            action.dataType === 'users' &&
+            action.id === 'current' &&
+            action.data === null)
+    ) {
+        return {
+            ...state,
+            users: { current: null },
+            statuses: { ...state.statuses, users: initialState.statuses.users },
         };
     }
     switch (action.type) {

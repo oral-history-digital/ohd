@@ -49,13 +49,26 @@ function mount(path = '/pilot/de/users/account') {
     return store;
 }
 
-/** Completes the pending current-account request without loading any project data. */
-function completeAccount() {
+/**
+ * Completes the current-account request without loading project data.
+ *
+ * @param {Object|null} [data={id: 2}] - Account data, or null for an anonymous session.
+ */
+function completeAccount(data = { id: 2 }) {
     const [, , dispatch, success] = Loader.getJson.mock.lastCall;
-    dispatch(success({ data_type: 'users', id: 'current', data: { id: 2 } }));
+    dispatch(success({ data_type: 'users', id: 'current', data }));
 }
 
 beforeEach(() => jest.clearAllMocks());
+
+test('an anonymous account response ends the session without starting repeated account requests', () => {
+    const store = mount();
+    act(() => completeAccount(null));
+    expect(store.getState().data.users.current).toBeNull();
+    expect(store.getState().user.isLoggedIn).toBe(false);
+    expect(store.getState().user.isLoggedOut).toBe(true);
+    expect(Loader.getJson).toHaveBeenCalledTimes(1);
+});
 
 test.each([
     ['/pilot/de/users/account', '/pilot/de'],
