@@ -204,7 +204,7 @@ class InterviewsController < ApplicationController
   end
 
   def transcript
-    interview = Interview.find_by_archive_id(params[:id])
+    interview = Interview.find_by!(archive_id: params[:id])
     authorize interview
 
     respond_to do |format|
@@ -218,7 +218,7 @@ class InterviewsController < ApplicationController
   end
 
   def observations
-    interview = Interview.find_by_archive_id(params[:id])
+    interview = Interview.find_by!(archive_id: params[:id])
     authorize interview
 
     respond_to do |format|

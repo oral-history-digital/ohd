@@ -32,8 +32,11 @@ class InterviewPolicy < ApplicationPolicy
     user
   end
 
+  # Requires login and access to the interview's protected contents for exports.
+  #
+  # @return [Boolean, nil] Whether a transcript may be exported
   def transcript?
-    user && (user.accessible_projects.include?(project) || user.admin?)
+    user && content?
   end
 
   def observations?
@@ -60,6 +63,13 @@ class InterviewPolicy < ApplicationPolicy
   #
   # @return [Boolean] Whether the interview's contents may be searched
   def search_fulltext?
+    content?
+  end
+
+  # Authorizes protected contents within the current project context.
+  #
+  # @return [Boolean] Whether the interview's contents may be accessed
+  def content?
     Scope.new(ProjectContext.new(user, project), Interview).search_fulltext.exists?(record.id)
   end
 
