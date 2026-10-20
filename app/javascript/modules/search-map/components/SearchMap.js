@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useTrackPageView } from 'modules/analytics';
 import { useIsEditor } from 'modules/archive';
-import { getMapSections } from 'modules/data';
+import { DEFAULT_MAP_SECTION } from 'modules/data';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
 import { usePathBase, useProject } from 'modules/routes';
-import { MapSpinnerOverlay } from 'modules/spinners';
+import { MapSpinnerOverlay, Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,16 +24,26 @@ import MapNewBoundsSetter from './MapNewBoundsSetter';
 import MapSectionsSelect from './MapSectionsSelect';
 import SearchMapPopup from './SearchMapPopup';
 
+// Keep the effect's section dependency stable while project data is unavailable.
+const EMPTY_MAP_SECTIONS = [];
+
+/**
+ * Shows project map search with configured sections and default bounds when none exist.
+ *
+ * @returns {React.ReactElement} Search map, project request status, or disabled-map redirect.
+ */
 export default function SearchMap() {
-    const mapSections = useSelector(getMapSections);
     const mapView = useSelector(getMapView);
     const isEditor = useIsEditor();
     const pathBase = usePathBase();
-    const { project } = useProject();
+    const {
+        project,
+        isLoading: projectIsLoading,
+        error: projectError,
+    } = useProject({ include: ['map_sections'] });
+    const mapSections = project?.map_sections || EMPTY_MAP_SECTIONS;
 
-    const [currentSection, setCurrentSection] = useState(
-        mapSections[0]?.name || null
-    );
+    const [currentSection, setCurrentSection] = useState(null);
     const { t } = useI18n();
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
@@ -60,11 +71,21 @@ export default function SearchMap() {
 
     const defaultSection =
         mapSections.find((section) => section.name === currentSection) ||
-        mapSections[0];
+        mapSections[0] ||
+        DEFAULT_MAP_SECTION;
 
-    if (!defaultSection) {
-        return null;
+    const requestError = projectError || error;
+    if (requestError) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('modules.search_map.error')}
+                description={requestError.message}
+                isClosable={false}
+            />
+        );
     }
+    if (projectIsLoading || !project) return <Spinner />;
 
     const bounds = [
         [defaultSection.corner1_lat, defaultSection.corner1_lon],
@@ -93,34 +114,29 @@ export default function SearchMap() {
             <div className="wrapper-content map SearchMap">
                 {isEditor && <HelpText code="search_map" className="u-mb" />}
 
-                {error ? (
-                    <div>
-                        {t('modules.search_map.error')}: {error.message}
-                    </div>
-                ) : (
-                    <MapComponent
-                        className="Map--search"
-                        loading={isLoading}
-                        markers={markers || []}
-                        popupComponent={SearchMapPopup}
-                    >
-                        <>
-                            {locationsLoading && <MapSpinnerOverlay />}
-                            <MapNewBoundsSetter
-                                bounds={bounds}
-                                view={mapView}
-                                onViewChange={handleViewChange}
-                            />
-                        </>
-                    </MapComponent>
-                )}
+                <MapComponent
+                    className="Map--search"
+                    loading={isLoading}
+                    markers={markers || []}
+                    popupComponent={SearchMapPopup}
+                >
+                    <>
+                        {locationsLoading && <MapSpinnerOverlay />}
+                        <MapNewBoundsSetter
+                            bounds={bounds}
+                            view={mapView}
+                            onViewChange={handleViewChange}
+                        />
+                    </>
+                </MapComponent>
 
                 <div className="SearchMap-controls">
                     <MapFilterContainer />
 
                     <MapSectionsSelect
                         className="SearchMap-sections"
-                        section={currentSection}
+                        sections={mapSections}
+                        section={currentSection || defaultSection.name}
                         onChange={setCurrentSection}
                     />
                 </div>
