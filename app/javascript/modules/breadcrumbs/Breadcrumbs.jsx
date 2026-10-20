@@ -22,8 +22,15 @@ export function selectBreadcrumbLogo({
               instanceSettings?.secondary_breadcrumb_logo_url;
 }
 
+/**
+ * Displays route breadcrumbs using the current project's display settings.
+ *
+ * @param {Object} props - Breadcrumb properties.
+ * @param {string} [props.logoSrc] - Override for the umbrella navigation logo.
+ * @returns {React.ReactElement|null} Breadcrumb navigation when items are available.
+ */
 export default function Breadcrumbs({ logoSrc }) {
-    const { project } = useProject();
+    const { project } = useProject({});
     const { locale } = useI18n();
     const crumbs = useBreadcrumbs();
     const instanceSettings = useSelector(

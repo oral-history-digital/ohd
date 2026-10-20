@@ -155,7 +155,7 @@ describe('useBreadcrumbModel', () => {
             project: {
                 shortname: 'mog',
                 default_locale: 'de',
-                display_name: { de: 'Archiv Alpha' },
+                display_name: 'Archiv Alpha',
             },
             interview: {
                 id: 101,
@@ -214,7 +214,7 @@ describe('useBreadcrumbModel', () => {
             project: {
                 shortname: 'mog',
                 default_locale: 'de',
-                display_name: { de: 'Archiv Alpha' },
+                display_name: 'Archiv Alpha',
             },
             interview: null,
             collections: {},
@@ -479,7 +479,7 @@ describe('useBreadcrumbModel', () => {
             project: {
                 shortname: 'mog',
                 default_locale: 'de',
-                display_name: { de: 'Archiv Alpha' },
+                display_name: 'Archiv Alpha',
             },
             interview: {
                 id: 101,
@@ -536,7 +536,7 @@ describe('useBreadcrumbModel', () => {
             project: {
                 shortname: 'mog',
                 default_locale: 'de',
-                display_name: { de: 'Archiv Alpha' },
+                display_name: 'Archiv Alpha',
             },
             interview: {
                 id: 101,
@@ -685,7 +685,7 @@ describe('useBreadcrumbModel', () => {
                 shortname: 'adg',
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+                display_name: 'Archiv Deutsches Gedaechtnis',
             },
             interview: null,
             currentUser: null,
@@ -770,7 +770,7 @@ describe('useBreadcrumbModel', () => {
                 shortname: 'adg',
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+                display_name: 'Archiv Deutsches Gedaechtnis',
             },
             interview: null,
             currentUser: null,
@@ -847,7 +847,7 @@ describe('useBreadcrumbModel', () => {
                 shortname: 'adg',
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+                display_name: 'Archiv Deutsches Gedaechtnis',
             },
             interview: null,
             currentUser: null,

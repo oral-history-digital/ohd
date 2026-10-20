@@ -22,7 +22,7 @@ import {
 } from '../utils';
 
 /**
- * Builds breadcrumbs for the current route.
+ * Loads current-project display details and builds breadcrumbs for the route.
  * On catalog project detail pages, reads the project name from Redux;
  * the detail page loads missing project data.
  *
@@ -34,7 +34,7 @@ import {
 export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
     const currentPage = useCurrentPage();
     const { locale, t } = useI18n();
-    const { project } = useProject();
+    const { project } = useProject({});
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(project || {});
     const currentUser = useSelector(getCurrentUser);
