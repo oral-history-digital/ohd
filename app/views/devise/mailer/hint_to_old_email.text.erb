@@ -1,0 +1,69 @@
+<%
+    case @resource.default_locale.to_sym || I18n.locale
+    when :en
+  -%>
+
+Hello <%= @resource.display_name %>,
+
+You have changed the e-mail address for your account in the application <%= @project_name %>.
+If you did not initiate the email change, please notify the <%= @project_name %> team immediately.
+
+With best regards
+
+<%= @project_name %>
+<% when :ru -%>
+  Добрый день <%= @resource.display_name %>,
+
+  Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту <%= @project_name %>.
+  Если вы не инициировали изменение адреса электронной почты, пожалуйста, немедленно сообщите об этом команде <%= @project_name %>.
+
+  С уважением,
+
+  <%= @project_name %>
+<% when :uk -%>
+  Доброго дня <%= @resource.display_name %>,
+
+  Ви змінили адресу електронної пошти для свого облікового запису в додатку <%= @project_name %>.
+  Якщо ви не ініціювали зміну адреси електронної пошти, будь ласка, негайно повідомте про це команду <%= @project_name %>.
+
+  З найкращими побажаннями
+
+  <%= @project_name %>
+<% when :el -%>
+  Καλημέρα <%= @resource.display_name %>,
+
+  έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή <%= @project_name %>.
+  Εάν δεν έχετε ζητήσει την αλλαγή της διεύθυνσης ηλεκτρονικού ταχυδρομείου, παρακαλούμε να ενημερώσετε αμέσως την ομάδα του <%= @project_name %>.
+
+  Με εκτίμηση,
+
+  <%= @project_name %>
+<% when :es -%>
+  Hola <%= @resource.display_name %>,
+
+  Usted ha cambiado el correo electrónico de su cuenta para la aplicación <%= @project_name %>.
+  Si usted no ha solicitado el cambio de correo electrónico, le rogamos que se ponga en contacto con el equipo de <%= @project_name %> lo antes posible.
+
+  Saludos cordiales,
+
+  <%= @project_name %>
+<% when :ar -%>
+  مرحبًا <%= @resource.display_name %>,
+
+  لقد قمت بتغيير عنوان البريد الإلكتروني الخاص بحسابك في تطبيق <%= @project_name %>.
+  إذا لم تكن أنت من قام بتغيير عنوان البريد الإلكتروني، فيرجى إبلاغ فريق <%= @project_name %> بذلك على الفور.
+
+  مع أطيب التحيات
+
+  <%= @project_name %>
+<% else -%>
+  Guten Tag <%= @resource.display_name %>,
+
+  Sie haben die E-Mail Adresse für Ihren Account in der Anwendung <%= @project_name %> geändert.
+  Falls Sie die E-Mail-Änderung nicht veranlasst haben, informieren Sie bitte umgehend das Team von <%= @project_name %>.
+
+  Mit freundlichen Grüßen,
+
+  <%= @project_name %>
+<% end -%>
+

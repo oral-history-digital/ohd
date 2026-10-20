@@ -12,6 +12,7 @@ class User < ApplicationRecord
          :validatable,
          :lockable
 
+
   # Store WebAuthn ID
   def webauthn_id
     @webauthn_id ||= Base64.urlsafe_encode64(id.to_s, padding: false)
@@ -124,6 +125,17 @@ class User < ApplicationRecord
     subject = TranslationValue.for('devise.mailer.remove.subject', locale_with_project_fallback(project))
     CustomDeviseMailer.access_mail(self, {subject: subject, project: project}).deliver_later(wait: 5.seconds)
     RemoveUserJob.set(wait: 10.seconds).perform_later(user_id: self.id)
+  end
+
+  # Override Devise's method to send notification to old email when email changes
+  def send_reconfirmation_instructions
+    # Send hint to old email before Devise sends confirmation to new email
+    hint_to_old_email if unconfirmed_email.present?
+    super
+  end
+
+  def hint_to_old_email
+    CustomDeviseMailer.hint_to_old_email(self).deliver_later
   end
 
   def projects
