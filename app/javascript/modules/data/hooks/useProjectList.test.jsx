@@ -779,6 +779,63 @@ test('display and footer responses preserve full editing data without exposing i
     );
 });
 
+test('form and registry configuration stays shared across display and edit reads', () => {
+    const store = makeStore();
+    let profile = 'edit';
+    const include = ['form_options', 'registry_configuration'];
+    const { result, rerender } = mount(store, () =>
+        useProjectDetail(7, { profile, include })
+    );
+    const initial = {
+        archive_id_number_length: 4,
+        upload_types: ['bulk_metadata'],
+        logged_out_visible_registry_entry_ids: ['11'],
+        hidden_registry_entry_ids: ['12'],
+        hidden_transcript_registry_entry_ids: ['13'],
+    };
+    act(() =>
+        completeDetail(
+            project(7, {
+                ...initial,
+                contact_email: 'editor@example.org',
+            })
+        )
+    );
+    const record = store.getState().data.v2.projects.records[7];
+    expect(record).toMatchObject(initial);
+    expect(record.edit).toEqual({ contact_email: 'editor@example.org' });
+
+    profile = 'display';
+    rerender();
+    expect(result.current.project).toBeUndefined();
+    const updated = {
+        archive_id_number_length: null,
+        upload_types: [],
+        logged_out_visible_registry_entry_ids: [],
+        hidden_registry_entry_ids: ['22'],
+        hidden_transcript_registry_entry_ids: ['23'],
+    };
+    act(() => completeDetail(project(7, updated)));
+    expect(result.current.project).toMatchObject(updated);
+    expect(result.current.project).not.toHaveProperty('contact_email');
+
+    profile = 'edit';
+    rerender();
+    expect(result.current.project).toMatchObject({
+        ...updated,
+        contact_email: 'editor@example.org',
+    });
+    expect(Loader.getJson).toHaveBeenCalledTimes(2);
+    act(() => {
+        load(store);
+        complete([project()]);
+    });
+    expect(result.current.project).toMatchObject(updated);
+    expect(makeProjectSelector()(store.getState(), 7, 'de')).not.toHaveProperty(
+        'contact_email'
+    );
+});
+
 test('new localized includes retain their language and editing translations independently', () => {
     const store = makeStore();
     let profile = 'display';
