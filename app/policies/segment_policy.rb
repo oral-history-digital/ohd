@@ -1,4 +1,11 @@
 class SegmentPolicy < ApplicationPolicy
+  # Requires access to the segment's actual parent interview before serialization.
+  #
+  # @return [Boolean, nil] Whether the logged-in user may read the segment
+  def show?
+    user && InterviewPolicy.new(ProjectContext.new(user, project), record.interview).content?
+  end
+
   class Scope < Scope
     attr_reader :user, :segment, :project
 

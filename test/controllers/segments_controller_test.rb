@@ -85,6 +85,52 @@ class SegmentsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'single segment reads ignore forged interview IDs and recheck grants before cached data' do
+    @access.update_columns(workflow_state: 'project_access_granted')
+    other = Interview.create!(project: @project, archive_id: "#{@project.shortname}999",
+      workflow_state: 'public', media_type: 'audio')
+    Rails.stub(:cache, ActiveSupport::Cache::MemoryStore.new) do
+      request_segment(@project, other.archive_id)
+      assert_response :forbidden
+      assert_equal({ 'msg' => 'not_authorized' }, JSON.parse(response.body))
+
+      grant = InterviewPermission.create!(user: @reader, interview: @interview)
+      request_segment
+      assert_response :success
+      assert_equal @segment.id, JSON.parse(response.body).dig('data', 'id')
+      assert_equal 'My name is Mario Rossi', JSON.parse(response.body).dig('data', 'text', 'eng-public')
+
+      grant.destroy!
+      request_segment
+      assert_response :forbidden
+      assert_equal({ 'msg' => 'not_authorized' }, JSON.parse(response.body))
+    end
+  end
+
+  test 'single segments enforce owning-project access and context while retaining admin access' do
+    @access.update_columns(workflow_state: 'project_access_granted')
+    InterviewPermission.create!(user: @reader, interview: @interview)
+    umbrella = Project.find_by!(shortname: 'ohd')
+    InstanceSetting.current.update!(umbrella_project: umbrella)
+    request_segment(umbrella)
+    assert_response :success
+    @access.update_columns(workflow_state: 'project_access_requested')
+    request_segment(umbrella)
+    assert_response :forbidden
+
+    other = DataHelper.test_project(shortname: 'outside')
+    UserProject.create!(user: @reader, project: other).update_columns(workflow_state: 'project_access_granted')
+    request_segment(other)
+    assert_response :forbidden
+
+    sign_out :user
+    request_segment
+    assert_response :unauthorized
+    sign_in User.find_by!(email: 'alice@example.com')
+    request_segment
+    assert_response :success
+  end
+
   private
 
   # Requests the interview's segment list using the supplied project context.
@@ -95,6 +141,18 @@ class SegmentsControllerTest < ActionController::TestCase
     @controller.send(:pundit_reset!)
     @controller.stub(:current_project, project) do
       get :index, params: { interview_id: @interview.archive_id, locale: 'en', format: :json }
+    end
+  end
+
+  # Requests a segment by its real ID; the claimed interview must not grant access.
+  #
+  # @param project [Project] Request project context
+  # @param interview_id [String] Untrusted parent interview parameter
+  # @return [void]
+  def request_segment(project = @project, interview_id = @interview.archive_id)
+    @controller.send(:pundit_reset!)
+    @controller.stub(:current_project, project) do
+      get :show, params: { id: @segment.id, interview_id: interview_id, locale: 'en', format: :json }
     end
   end
 end
