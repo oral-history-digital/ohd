@@ -2,33 +2,43 @@ import { useState } from 'react';
 
 import classNames from 'classnames';
 import { fetchTranslationsForLocale, setLocale } from 'modules/archive';
-import {
-    ALPHA2_TO_ALPHA3,
-    DEFAULT_LOCALES,
-    SYSTEM_LOCALES,
-} from 'modules/constants';
+import { ALPHA2_TO_ALPHA3, SYSTEM_LOCALES } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 
-const projectLocales = (project) =>
-    project ? project.available_locales : DEFAULT_LOCALES;
-
+/**
+ * Switches among project locales after loading the destination UI translations.
+ *
+ * @param {Object} props - Locale control properties.
+ * @param {string} [props.className] - Additional wrapper classes.
+ * @returns {React.ReactElement|null} Locale controls or error; empty while loading.
+ */
 export default function LocaleButtons({ className }) {
     const dispatch = useDispatch();
-    const { project } = useProject();
-    const locales = projectLocales(project);
-    const { locale: currentLocale } = useI18n();
+    const { project, isLoading, error } = useProject({});
+    const { t, locale: currentLocale } = useI18n();
     const navigate = useNavigate();
     const matchWithProject = useMatch('/:projectId/:locale/*');
     const matchWOProject = useMatch('/:locale/*');
     const [searchParams] = useSearchParams();
     const [loadingLocale, setLoadingLocale] = useState(null);
 
-    if (!project) return null;
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return null;
 
     function handleButtonClick(locale) {
         // Prevent multiple clicks while loading
@@ -88,7 +98,7 @@ export default function LocaleButtons({ className }) {
 
     return (
         <div className={classNames('LocaleButtons', className)}>
-            {locales?.map((locale) => (
+            {project.available_locales?.map((locale) => (
                 <button
                     key={locale}
                     type="button"
