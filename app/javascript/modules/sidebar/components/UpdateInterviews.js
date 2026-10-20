@@ -1,10 +1,20 @@
-import { getLocale, getProjectId } from 'modules/archive';
-import { getCurrentProject, submitData } from 'modules/data';
+import { submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
+/**
+ * Confirms and applies the same update to each selected interview through the current route.
+ * Authorization is supplied by the surrounding interview action controls.
+ *
+ * @param {Object} props - Bulk update settings.
+ * @param {Object} props.params - Fields to update on each interview.
+ * @param {string} props.action - Translation key for the confirmation text.
+ * @param {string[]} props.selectedArchiveIds - Public interview identifiers.
+ * @returns {React.ReactElement} Bulk update confirmation dialog.
+ */
 export default function UpdateInterviews({
     params,
     action,
@@ -12,22 +22,20 @@ export default function UpdateInterviews({
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
-    const locale = useSelector(getLocale);
-    const projectId = useSelector(getProjectId);
-    const project = useSelector(getCurrentProject);
+    const pathBase = usePathBase();
 
+    /**
+     * Dispatches a separate update for each public interview identifier.
+     *
+     * @param {Object} params - Fields to update; left unchanged for subsequent saves.
+     */
     function updateInterviews(params) {
         selectedArchiveIds.forEach((archiveId) => {
             const updatedParams = {
                 ...params,
                 id: archiveId,
             };
-            dispatch(
-                submitData(
-                    { locale, projectId, project },
-                    { interview: updatedParams }
-                )
-            );
+            dispatch(submitData({ pathBase }, { interview: updatedParams }));
         });
     }
 
