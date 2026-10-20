@@ -1,9 +1,7 @@
 import { getProjects, useProjectDetail } from 'modules/data';
 import { useSelector } from 'react-redux';
-import { useMatch } from 'react-router-dom';
 
-import { findProjectByDomain } from './domainUtils';
-import isLocaleValid from './isLocaleValid';
+import useProjectIdentity from './useProjectIdentity';
 
 /**
  * @typedef {import('../data/hooks/useProjectDetail').ProjectDetailOptions} ProjectDetailOptions
@@ -25,20 +23,11 @@ import isLocaleValid from './isLocaleValid';
  * @returns {ProjectIdentity|(ProjectIdentity & ProjectDetailResult)} Project identity and, with options, request status and refresh.
  */
 export default function useProject(options) {
+    const { projectShortname, projectDbId, isUmbrella } = useProjectIdentity();
     const projects = useSelector(getProjects);
-    const match = useMatch('/:projectId/:locale/*');
-    const routeShortname =
-        match && isLocaleValid(match.params.locale)
-            ? match.params.projectId
-            : undefined;
-    const legacyProject = routeShortname
-        ? Object.values(projects || {}).find(
-              (project) => project.shortname === routeShortname
-          )
-        : findProjectByDomain(projects);
-    const shortname = routeShortname || legacyProject?.shortname;
+    const legacyProject = projects?.[projectDbId];
     const details = useProjectDetail(
-        options === undefined ? null : shortname,
+        options === undefined ? null : projectShortname,
         options
     );
 
@@ -46,17 +35,17 @@ export default function useProject(options) {
     const project = options === undefined ? legacyProject : details.project;
     const identity = {
         project,
-        projectShortname: shortname,
+        projectShortname,
         // TODO: Replace this shortname alias with projectShortname in remaining callers.
-        projectId: shortname,
-        projectDbId: project?.id ?? legacyProject?.id,
-        isUmbrella: project?.is_umbrella ?? legacyProject?.is_umbrella,
+        projectId: projectShortname,
+        projectDbId: project?.id ?? projectDbId,
+        isUmbrella: project?.is_umbrella ?? isUmbrella,
     };
     return options === undefined
         ? identity
         : {
               ...details,
               ...identity,
-              isLoading: !shortname || details.isLoading,
+              isLoading: !projectShortname || details.isLoading,
           };
 }

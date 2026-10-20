@@ -1,51 +1,41 @@
 import { useEffect } from 'react';
 
 import {
-    deleteData,
+    clearStateData,
     fetchData,
     getCurrentUser,
     getUsersStatus,
 } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getIsLoggedIn, getIsLoggedOut } from '../selectors';
 
+/**
+ * Loads the current account through the route's locale/project path without waiting
+ * for project details. Logout clears the local account without sending a request.
+ */
 export default function useFetchAccount() {
     const dispatch = useDispatch();
     const user = useSelector(getCurrentUser);
-    const usersStatus = useSelector(getUsersStatus);
+    const { current: accountStatus } = useSelector(getUsersStatus);
     const isLoggedIn = useSelector(getIsLoggedIn);
     const isLoggedOut = useSelector(getIsLoggedOut);
 
-    const { project, projectId } = useProject();
-    const { locale } = useI18n();
+    const pathBase = usePathBase();
 
     useEffect(() => {
         if (
-            /^reload/.test(usersStatus.current) ||
-            (isLoggedIn && !user && !/^fetching/.test(usersStatus.current))
+            /^reload/.test(accountStatus) ||
+            (isLoggedIn && !user && !/^fetching/.test(accountStatus))
         ) {
-            dispatch(
-                fetchData({ projectId, locale, project }, 'users', 'current')
-            );
+            dispatch(fetchData({ pathBase }, 'users', 'current'));
         }
-    }, [usersStatus.current, isLoggedIn]);
+    }, [dispatch, accountStatus, isLoggedIn, user, pathBase]);
 
     useEffect(() => {
         if (isLoggedOut && user) {
-            dispatch(
-                deleteData(
-                    { projectId, locale, project },
-                    'users',
-                    'current',
-                    null,
-                    null,
-                    false,
-                    true
-                )
-            );
+            dispatch(clearStateData('users', 'current'));
         }
-    }, [isLoggedOut]);
+    }, [dispatch, isLoggedOut, user]);
 }
