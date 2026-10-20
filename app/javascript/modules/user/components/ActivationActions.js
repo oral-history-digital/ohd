@@ -82,7 +82,6 @@ export default function ActivationFlow({ className }) {
                 >
                     {(close) => (
                         <RequestProjectAccessFormContainer
-                            project={project}
                             onSubmit={close}
                             onCancel={close}
                         />
