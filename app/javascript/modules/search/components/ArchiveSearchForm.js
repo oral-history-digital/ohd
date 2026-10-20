@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useTrackSiteSearch } from 'modules/analytics';
 import { AuthShowContainer } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
 import { useSearchParams } from 'modules/query-string';
-import { ResetFiltersButton } from 'modules/ui';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification, ResetFiltersButton } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 
@@ -11,7 +14,17 @@ import defaultSortOptions from '../defaultSortOptions';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
-export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
+/**
+ * Shows search input and facets, using Redux project settings when clearing fulltext search.
+ *
+ * @param {Object} props - Form properties.
+ * @param {string} [props.projectId] - Project shortname used for input behavior.
+ * @param {Function} props.hideSidebar - Closes the sidebar on mobile devices.
+ * @returns {React.ReactElement} Search form or its project loading/error state.
+ */
+export default function ArchiveSearchForm({ projectId, hideSidebar }) {
+    const { project, isLoading, error } = useProject({});
+    const { t } = useI18n();
     const formEl = useRef(null);
     const trackSiteSearch = useTrackSiteSearch();
 
@@ -68,7 +81,7 @@ export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
             setFulltextInput('');
 
             // Set defaults.
-            const defaults = defaultSortOptions(project?.default_search_order);
+            const defaults = defaultSortOptions(project.default_search_order);
             setFulltextAndSort(undefined, defaults.sort, defaults.order);
         }
 
@@ -76,6 +89,18 @@ export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
             hideSidebar();
         }
     }
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <div className="ArchiveSearchForm">
@@ -114,6 +139,5 @@ export default function ArchiveSearchForm({ projectId, project, hideSidebar }) {
 
 ArchiveSearchForm.propTypes = {
     projectId: PropTypes.string,
-    project: PropTypes.object,
     hideSidebar: PropTypes.func.isRequired,
 };
