@@ -2,17 +2,27 @@ import { useState } from 'react';
 
 import { Form, SingleTextInputForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 
+/**
+ * Submits text replacements for the interview's selected transcript language.
+ *
+ * @param {Object} props - Text-marking context.
+ * @param {Function} props.submitData - Saves replacements through Redux.
+ * @param {Object} props.interview - Interview with a public ID and content languages.
+ * @param {string|number} props.archiveId - Public interview identifier used for status lookup.
+ * @param {Object} [props.markTextStatus] - Text-marking request statuses.
+ * @returns {React.ReactElement} Replacement form and status message.
+ */
 export default function MarkTextForm({
     submitData,
     interview,
     archiveId,
     markTextStatus,
 }) {
-    const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
     const [showForm, setShowForm] = useState(true);
 
     const showMarkedText = (value) => {
@@ -29,7 +39,7 @@ export default function MarkTextForm({
                 <Form
                     scope="mark_text"
                     onSubmit={function (params) {
-                        submitData({ project, locale }, params);
+                        submitData({ pathBase }, params);
                         setShowForm(false);
                     }}
                     helpTextCode="mark_text_form"
@@ -70,18 +80,11 @@ export default function MarkTextForm({
         let text = markTextStatus[`for_interviews_${archiveId}`]
             ? t('edit.text.' + markTextStatus[`for_interviews_${archiveId}`])
             : t('edit.mark_text.explanation');
-        if (
-            // TODO: Review this part
-            //markTextStatus[`for_interviews_${archiveId}`]
-            //!showForm
-            true
-        ) {
-            return (
-                <div>
-                    <p>{text}</p>
-                </div>
-            );
-        }
+        return (
+            <div>
+                <p>{text}</p>
+            </div>
+        );
     };
 
     return (
