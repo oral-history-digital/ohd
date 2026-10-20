@@ -17,6 +17,8 @@ import WorkbookActions from './WorkbookActions';
 /**
  * Loads an entry's project through Redux and links to its saved interview or search.
  * Entries remain visible when project details are unavailable.
+ * Shows entry controls only after the current project loads and is confirmed
+ * to be an individual project.
  *
  * @param {Object} props - Entry properties and existing interview actions.
  * @param {Object} props.data - Saved workbook entry, including its project ID.
@@ -42,7 +44,11 @@ export default function WorkbookItem({
     const { t, locale } = useI18n();
     const { project } = useProjectDetail(data.project_id);
     const { facets } = useFacets();
-    const { isUmbrella } = useProject();
+    const {
+        project: currentProject,
+        isLoading: currentProjectLoading,
+        error: currentProjectError,
+    } = useProject({});
     const projectId = project?.shortname;
     const interview = interviews[data.media_id];
 
@@ -175,13 +181,16 @@ export default function WorkbookItem({
                 )}
             </p>
 
-            {!isUmbrella && (
-                <WorkbookActions
-                    item={data}
-                    itemPath={itemPath}
-                    className="WorkbookEntry-actions"
-                />
-            )}
+            {currentProject &&
+                !currentProjectLoading &&
+                !currentProjectError &&
+                !currentProject.is_umbrella && (
+                    <WorkbookActions
+                        item={data}
+                        itemPath={itemPath}
+                        className="WorkbookEntry-actions"
+                    />
+                )}
         </div>
     );
 }

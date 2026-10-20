@@ -3,6 +3,8 @@ import { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
@@ -19,21 +21,34 @@ import WorkbookItemContainer from './WorkbookItemContainer';
 export default function WorkbookItemList({ type, contents }) {
     const { t } = useI18n();
     const [open, setOpen] = useState(false);
-    const { project, isUmbrella } = useProject();
+    const { project, isLoading, error } = useProject({});
 
     const items = useMemo(() => {
-        if (isUmbrella) {
+        if (project?.is_umbrella) {
             return contents || [];
         }
 
         return (
             contents?.filter((item) => item.project_id === project?.id) || []
         );
-    }, [contents, isUmbrella, project?.id]);
+    }, [contents, project?.is_umbrella, project?.id]);
 
+    /** Toggles the section without changing its saved entry order. */
     function handleClick() {
         setOpen((prev) => !prev);
     }
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <div className="userContents">
