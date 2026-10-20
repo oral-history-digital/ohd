@@ -6,10 +6,24 @@ import {
     useMutatePersonLandingPageMetadata,
     useMutatePersonWithAssociations,
 } from 'modules/person';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 
+/**
+ * Edits a nested person event and refreshes person caches after a saved update.
+ *
+ * @param {Object} props - Event editing context.
+ * @param {Object} [props.data] - Existing event.
+ * @param {number} [props.personId] - Person owning the event.
+ * @param {string} [props.formClasses] - Additional form classes.
+ * @param {number} [props.index] - Position of a new nested event.
+ * @param {Function} props.submitData - Redux save action or nested-form insertion callback.
+ * @param {Function} [props.onSubmit] - Closes the event form after submission.
+ * @param {Function} [props.onSubmitCallback] - Completion callback managed by the form.
+ * @param {Function} [props.onCancel] - Cancels editing.
+ * @returns {React.ReactElement} Event form or loading indicator.
+ */
 export default function EventForm({
     data: event,
     personId,
@@ -20,13 +34,13 @@ export default function EventForm({
     onSubmitCallback,
     onCancel,
 }) {
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
     const mutatePersonLandingPageMetadata =
         useMutatePersonLandingPageMetadata();
 
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
 
     const { data: eventTypes, isLoading } = useEventTypes();
 
@@ -118,12 +132,7 @@ export default function EventForm({
                     // 2. Form's handleNestedFormSubmit (new items): signature is (dummy, params, index)
                     //    - index is used to insert item at correct array position
                     // The forms module routes to the correct handler based on element.id
-                    submitData(
-                        { locale, projectId, project },
-                        params,
-                        index,
-                        handleEventUpdate
-                    );
+                    submitData({ pathBase }, params, index, handleEventUpdate);
                 }
                 if (typeof onSubmit === 'function') {
                     onSubmit();
