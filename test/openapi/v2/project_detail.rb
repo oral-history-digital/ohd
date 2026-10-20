@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|form_options|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|form_options|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -57,10 +57,14 @@ module ApiContract
               Edit additionally returns use_in_metadata_import and stored label
               translations with IDs, preserving blanks and nulls without fallback.
               Registry_configuration adds root_registry_entry_id (null when absent),
-              logged_out_visible_registry_entry_ids and hidden_registry_entry_ids.
-              IDs in visibility arrays remain strings. These are UI settings, not
-              authorization for registry records. Transcript visibility settings remain
-              edit-only; existing edit settings are returned even without this include.
+              logged_out_visible_registry_entry_ids, hidden_registry_entry_ids and
+              hidden_transcript_registry_entry_ids. IDs in visibility arrays remain
+              strings. These are UI settings, not authorization for registry records.
+              Form_options adds archive_id_number_length (integer or null) and
+              upload_types (array of strings) for interview and upload forms.
+              Both includes require project show permission in the display profile;
+              form options do not grant interview-create or upload permission.
+              The edit profile retains these settings even without the includes.
               Playback adds media_streams ordered by ID (including still images) and
               localized media_missing_text. Display streams contain id, media_type,
               resolution and suffix only. Clients build URLs through the existing
