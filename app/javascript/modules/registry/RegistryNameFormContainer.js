@@ -1,4 +1,5 @@
 import {
+    FetchProjectResource,
     getNormDataProviders,
     getRegistryNameTypesForCurrentProject,
 } from 'modules/data';
@@ -22,4 +23,20 @@ const mapDispatchToProps = (dispatch) =>
         dispatch
     );
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistryNameForm);
+const ReadyForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RegistryNameForm);
+
+/**
+ * Loads name-type choices before showing the registry-name editor.
+ * @param {Object} props - Editor values and callbacks forwarded unchanged.
+ * @returns {React.ReactElement} Editor or resource loading indicator.
+ */
+export default function RegistryNameFormContainer(props) {
+    return (
+        <FetchProjectResource resource="registry_name_types">
+            <ReadyForm {...props} />
+        </FetchProjectResource>
+    );
+}

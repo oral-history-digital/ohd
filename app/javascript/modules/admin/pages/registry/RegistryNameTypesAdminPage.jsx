@@ -1,4 +1,5 @@
 import {
+    FetchProjectResource,
     getRegistryNameTypesForCurrentProject,
     getRegistryNameTypesStatus,
 } from 'modules/data';
@@ -25,41 +26,43 @@ export default function RegistryNameTypesAdminPage() {
     if (!projectDbId) return <Spinner />;
 
     return (
-        <PaginatedAdminRecordList
-            data={data}
-            dataStatus={dataStatus}
-            resultPagesCount={dataStatus.resultPagesCount}
-            query={query}
-            outerScope="project"
-            outerScopeId={projectDbId}
-            scope="registry_name_type"
-            sortAttribute="name"
-            sortAttributeTranslated
-            detailsAttributes={['name']}
-            initialFormValues={{ project_id: projectDbId }}
-            formElements={[
-                //{
-                //attribute: 'code',
-                //help: 'help_texts.registry_name_types.code',
-                //validate: function(v){return /^\w+$/.test(v)}
-                //},
-                {
-                    attribute: 'name',
-                    multiLocale: true,
-                },
-                {
-                    attribute: 'order_priority',
-                    validate: function (v) {
-                        return /^\d+$/.test(v);
+        <FetchProjectResource resource="registry_name_types">
+            <PaginatedAdminRecordList
+                data={data}
+                dataStatus={dataStatus}
+                resultPagesCount={dataStatus.resultPagesCount}
+                query={query}
+                outerScope="project"
+                outerScopeId={projectDbId}
+                scope="registry_name_type"
+                sortAttribute="name"
+                sortAttributeTranslated
+                detailsAttributes={['name']}
+                initialFormValues={{ project_id: projectDbId }}
+                formElements={[
+                    //{
+                    //attribute: 'code',
+                    //help: 'help_texts.registry_name_types.code',
+                    //validate: function(v){return /^\w+$/.test(v)}
+                    //},
+                    {
+                        attribute: 'name',
+                        multiLocale: true,
                     },
-                },
-            ]}
-            joinedData={{}}
-            helpTextCode="registry_name_type_form"
-            fetchData={fetchData}
-            deleteData={deleteData}
-            submitData={submitData}
-            setQueryParams={setQueryParams}
-        />
+                    {
+                        attribute: 'order_priority',
+                        validate: function (v) {
+                            return /^\d+$/.test(v);
+                        },
+                    },
+                ]}
+                joinedData={{}}
+                helpTextCode="registry_name_type_form"
+                fetchData={fetchData}
+                deleteData={deleteData}
+                submitData={submitData}
+                setQueryParams={setQueryParams}
+            />
+        </FetchProjectResource>
     );
 }
