@@ -26,6 +26,7 @@ module Api
       attribute :subjects, if: :include_subjects?
       attribute :levels_of_indexing, if: :include_levels_of_indexing?
       attribute :access_config, if: :include_access_config?
+      attribute :contact_email, if: :include_email_preview?
       attribute :metadata_fields, if: :include_metadata_fields?
       attribute :root_registry_entry_id, if: :include_registry_configuration?
       attribute :logged_out_visible_registry_entry_ids, if: :include_registry_configuration?
@@ -42,7 +43,7 @@ module Api
       attribute :map_sections, if: :include_map_sections?
 
       # Boolean checks for requested includes; the controller has already parsed their names into an array.
-      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config metadata_fields registry_configuration form_options playback footer texts map_sections].each do |name|
+      %w[media_types year_ranges subjects levels_of_indexing affiliates access_config email_preview metadata_fields registry_configuration form_options playback footer texts map_sections].each do |name|
         define_method("include_#{name}?") { instance_options.fetch(:requested_includes, []).include?(name) }
       end
 

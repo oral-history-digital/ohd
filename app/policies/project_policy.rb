@@ -48,6 +48,14 @@ class ProjectPolicy < ApplicationPolicy
     show?
   end
 
+  # Allows project editors and project-user managers to read email-preview settings.
+  # Checks the manager's role directly; editing one's own membership is insufficient.
+  #
+  # @return [Boolean] Whether the user may read settings for this project's email previews
+  def email_preview?
+    !!(update? || (user && user.roles?(record, 'UserProject', 'update')))
+  end
+
   def edit_info?
     update?
   end

@@ -30,7 +30,7 @@ module ApiContract
           parameter name: :profile, in: :query, schema: { type: :string, enum: %w[display edit], default: 'display' },
             description: 'Display requires show permission; edit requires update permission, including for public projects. Omitted profile means display.'
           parameter name: :include, in: :query,
-            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|form_options|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|metadata_fields|registry_configuration|form_options|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*)*$' },
+            schema: { type: :string, pattern: '^\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|email_preview|metadata_fields|registry_configuration|form_options|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*(,\s*(counts|institutions|interview_languages|collection_preview|media_types|year_ranges|subjects|levels_of_indexing|affiliates|access_config|email_preview|metadata_fields|registry_configuration|form_options|playback|footer|texts|map_sections|branding|external_links|institution_projects|translations)\s*)*$' },
             description: <<~TEXT
               Same optional fields as the list endpoint: counts adds interview_counts
               and collection_counts; other names add their matching fields. Defaults
@@ -48,6 +48,11 @@ module ApiContract
               translations (id, locale, name, first_name, last_name), ordered by ID and
               preserving blanks and nulls without fallback. Localized display fields
               retain their existing shapes and fallback rules in both profiles.
+              Email_preview adds contact_email (nullable), requiring an administrator,
+              Project update permission, or UserProject update permission for the target
+              project. Editing one's own membership is insufficient. The edit profile
+              retains contact_email without this include. Names use the requested locale
+              through the existing display fields; no full translation records are added.
               Access_config adds boolean registration field settings without user answers;
               edit additionally includes the save identifier. Missing configuration is null.
               Metadata_fields adds field definitions ordered by ID, localized labels,

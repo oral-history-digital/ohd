@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 13
+      REVISION = 14
 
       private
 
@@ -14,6 +14,7 @@ module Api
           more_text: fingerprint(Project.translation_class.where(project_id: @project_ids), :project_id, :locale, :more_text),
           doi_prefix: Rails.configuration.datacite['prefix']
         )
+        result[:email_preview] = fingerprint(@projects, :contact_email) if @includes.include?('email_preview')
         if @includes.include?('access_config')
           result[:access_config] = fingerprint(AccessConfig.where(project_id: @project_ids),
             :project_id, :organization, :job_description, :research_intentions, :specification, :tos_agreement)

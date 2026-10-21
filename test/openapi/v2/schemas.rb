@@ -336,6 +336,7 @@ module ApiContract
           default_search_order: { type: %w[string null], enum: %w[title random archive_id] + [nil] },
           aspect_x: { type: %w[integer null] },
           aspect_y: { type: %w[integer null] },
+          contact_email: { type: %w[string null], description: 'Contact address: optional authorized email_preview include in display; always present in edit' },
           access_config: ProjectAccessConfig,
           metadata_fields: { type: :array, items: ProjectMetadataField },
           media_streams: { type: :array, items: ProjectMediaStream },
