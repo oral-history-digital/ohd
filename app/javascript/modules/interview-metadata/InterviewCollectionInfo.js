@@ -4,7 +4,10 @@ import {
     DisclosurePanel,
 } from '@reach/disclosure';
 import { useProjectAccessStatus } from 'modules/auth';
-import { getCollectionsForCurrentProject } from 'modules/data';
+import {
+    FetchProjectResource,
+    getCollectionsForCurrentProject,
+} from 'modules/data';
 import { SingleValueWithForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
@@ -48,37 +51,39 @@ export default function InterviewCollectionInfo({ interview }) {
     if (isLoading || !project) return <Spinner />;
 
     return (
-        <SingleValueWithForm
-            elementType="select"
-            obj={interview}
-            values={collections}
-            withEmpty={true}
-            //validate={function(v){return /^\d+$/.test(v)}}
-            individualErrorMsg="empty"
-            attribute="collection_id"
-            value={collection?.name[locale]}
-            projectAccessGranted={projectAccessGranted}
-            hideEmpty
-        >
-            {collection && (
-                <Disclosure>
-                    <DisclosureButton className="Button">
-                        <FaInfo title={titleText} aria-label={titleText} />
-                    </DisclosureButton>
-                    <CatalogLink type="collection" id={collection.id} />
-                    <DisclosurePanel>
-                        <span
-                            dangerouslySetInnerHTML={{
-                                __html: sanitizeHtml(
-                                    collection.notes[locale],
-                                    'RICH_TEXT'
-                                ),
-                            }}
-                        />
-                    </DisclosurePanel>
-                </Disclosure>
-            )}
-        </SingleValueWithForm>
+        <FetchProjectResource resource="collections">
+            <SingleValueWithForm
+                elementType="select"
+                obj={interview}
+                values={collections}
+                withEmpty={true}
+                //validate={function(v){return /^\d+$/.test(v)}}
+                individualErrorMsg="empty"
+                attribute="collection_id"
+                value={collection?.name[locale]}
+                projectAccessGranted={projectAccessGranted}
+                hideEmpty
+            >
+                {collection && (
+                    <Disclosure>
+                        <DisclosureButton className="Button">
+                            <FaInfo title={titleText} aria-label={titleText} />
+                        </DisclosureButton>
+                        <CatalogLink type="collection" id={collection.id} />
+                        <DisclosurePanel>
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtml(
+                                        collection.notes[locale],
+                                        'RICH_TEXT'
+                                    ),
+                                }}
+                            />
+                        </DisclosurePanel>
+                    </Disclosure>
+                )}
+            </SingleValueWithForm>
+        </FetchProjectResource>
     );
 }
 

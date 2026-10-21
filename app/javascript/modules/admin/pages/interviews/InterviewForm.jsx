@@ -1,6 +1,7 @@
 import { createElement, useState } from 'react';
 
 import {
+    FetchProjectResource,
     getCollectionsForCurrentProject,
     getContributionTypesForCurrentProject,
     getLanguages,
@@ -215,7 +216,18 @@ export default function InterviewForm({
     if (projectLoading || !project) return <Spinner />;
 
     if (showForm) {
-        return renderForm();
+        const form = withContributions ? (
+            <FetchProjectResource resource="contribution_types">
+                {renderForm()}
+            </FetchProjectResource>
+        ) : (
+            renderForm()
+        );
+        return (
+            <FetchProjectResource resource="collections">
+                {form}
+            </FetchProjectResource>
+        );
     }
 
     return (
