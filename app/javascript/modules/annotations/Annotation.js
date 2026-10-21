@@ -7,7 +7,7 @@ import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import AnnotationFormContainer from './AnnotationFormContainer';
+import AnnotationForm from './AnnotationForm';
 
 /**
  * Shows a localized annotation and authorized edit/delete controls.
@@ -47,7 +47,7 @@ export default function Annotation({
                         }
                     >
                         {(closeModal) => (
-                            <AnnotationFormContainer
+                            <AnnotationForm
                                 annotation={annotation}
                                 segment={segment}
                                 contentLocale={contentLocale}

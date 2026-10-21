@@ -25,7 +25,7 @@ jest.mock('modules/forms', () => ({
     ),
 }));
 jest.mock(
-    './AnnotationFormContainer',
+    './AnnotationForm',
     () =>
         function AnnotationForm() {
             return null;

@@ -1,10 +1,7 @@
 /* eslint-disable react/prop-types */
 import { act, render } from '@testing-library/react';
-import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 
-import AnnotationForm from '../../annotations/AnnotationForm';
-import AnnotationFormContainer from '../../annotations/AnnotationFormContainer';
 import SegmentForm from './SegmentForm';
 
 const mockDispatch = jest.fn();
@@ -22,10 +19,6 @@ jest.mock('modules/person', () => ({
 jest.mock('modules/spinners', () => ({ Spinner: () => null }));
 jest.mock('../hooks', () => ({
     useSegmentSaveNotification: () => ({ handleSaveStart: mockSaveStart }),
-}));
-jest.mock('../../annotations/AnnotationForm', () => ({
-    __esModule: true,
-    default: jest.fn(() => null),
 }));
 
 test('segment saves preserve content locale and completion callback while using the route prefix', () => {
@@ -56,20 +49,4 @@ test('segment saves preserve content locale and completion callback while using 
     expect(mockSaveStart).toHaveBeenCalledTimes(1);
     save.mock.calls[0][2]();
     expect(onSubmit).toHaveBeenCalledTimes(1);
-});
-
-test('annotation wrapper passes route context and dispatches saves without reading project records', () => {
-    render(<AnnotationFormContainer contentLocale="ger" segment={{ id: 3 }} />);
-    const props = AnnotationForm.mock.lastCall[0];
-    expect(props.pathBase).toBe('/adg/en');
-    expect(props.contentLocale).toBe('ger');
-    props.submitData(
-        { pathBase: props.pathBase },
-        { annotation: { text: 'Note' } }
-    );
-    expect(submitData).toHaveBeenCalledWith(
-        { pathBase: '/adg/en' },
-        { annotation: { text: 'Note' } }
-    );
-    expect(mockDispatch).toHaveBeenCalledWith({ type: 'SAVE' });
 });

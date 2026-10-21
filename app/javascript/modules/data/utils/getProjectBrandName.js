@@ -1,4 +1,4 @@
-import localizedValue from '../../utils/localizedValue';
+import { localizedValue } from 'modules/utils';
 
 /**
  * Formats a localized project name with its optional display shortname.
