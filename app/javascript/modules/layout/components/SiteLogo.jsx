@@ -7,21 +7,26 @@ import { OHD_DOMAINS } from 'modules/constants';
 import {
     getCurrentUser,
     getProjectBrandName,
-    getUmbrellaProject,
+    useUmbrellaProject,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { getProjectLogoSrc } from 'modules/project-home';
 import { useCurrentPage, useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+/**
+ * Links to the umbrella homepage using its localized display name and selected logo.
+ * @param {Object} props - Logo styling.
+ * @param {string} [props.className] - Additional link classes.
+ * @returns {React.ReactElement|false} Umbrella navigation logo when enabled.
+ */
 function SiteLogo({ className }) {
     const { locale } = useI18n();
-    const { project } = useProject();
+    const { project } = useProject({});
     const dispatch = useDispatch();
     const currentAccount = useSelector(getCurrentUser);
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project: umbrellaProject } = useUmbrellaProject();
     const currentPage = useCurrentPage();
     const isHome = currentPage.pageType === 'site_startpage';
 
@@ -41,8 +46,7 @@ function SiteLogo({ className }) {
         : `/${locale}`;
 
     const displayLogo = project?.display_ohd_link || isHome;
-    const logoSrc =
-        getProjectLogoSrc(umbrellaProject, locale) || '/logo-ohd.svg';
+    const logoSrc = umbrellaProject?.logo?.url || '/logo-ohd.svg';
     const logoTitle = getProjectBrandName(umbrellaProject, locale);
 
     return (

@@ -4,8 +4,8 @@ import {
     getCurrentProject,
     getCurrentUser,
     getProjectBrandName,
-    getUmbrellaProject,
     submitData,
+    useUmbrellaProject,
 } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -18,7 +18,7 @@ export default function ConfirmNewZwarTosPopup() {
     const { t, locale } = useI18n();
     const dispatch = useDispatch();
     const project = useSelector(getCurrentProject);
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project: umbrellaProject } = useUmbrellaProject();
 
     const projectId = 'za';
     const currentUser = useSelector(getCurrentUser);

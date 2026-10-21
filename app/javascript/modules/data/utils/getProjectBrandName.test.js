@@ -21,3 +21,9 @@ test('uses only the localized project name when display shortname is missing', (
 test('does not fall back to the machine shortname', () => {
     expect(getProjectBrandName({ shortname: 'portal' }, 'en')).toBeNull();
 });
+
+test('formats the localized name returned by project details', () => {
+    expect(
+        getProjectBrandName({ name: 'Portal', display_shortname: 'oh.d' }, 'en')
+    ).toBe('Portal (oh.d)');
+});

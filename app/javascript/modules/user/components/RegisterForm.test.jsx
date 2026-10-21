@@ -13,11 +13,14 @@ jest.mock('modules/constants', () => ({
 }));
 jest.mock('modules/data', () => ({
     getCurrentProject: (state) => state.project,
-    getProjectBrandName: (project, locale) =>
-        project.display_shortname
-            ? `${project.name[locale]} (${project.display_shortname})`
-            : project.name[locale],
-    getUmbrellaProject: (state) => state.umbrellaProject,
+    getProjectBrandName: jest.requireActual(
+        '../../data/utils/getProjectBrandName'
+    ).getProjectBrandName,
+    useUmbrellaProject: () => ({
+        project: jest
+            .requireMock('react-redux')
+            .useSelector((state) => state.umbrellaProject),
+    }),
 }));
 jest.mock('modules/forms', () => ({
     Form: () => null,
@@ -55,6 +58,11 @@ jest.mock('modules/query-string', () => ({
 }));
 jest.mock('modules/routes', () => ({
     usePathBase: () => '/en',
+    useProject: () => ({
+        project: jest
+            .requireMock('react-redux')
+            .useSelector((state) => state.project),
+    }),
 }));
 jest.mock('modules/utils', () => ({
     sanitizeHtml: (value) => value,
@@ -76,7 +84,7 @@ function renderRegisterForm(isUmbrella) {
             project: { is_umbrella: isUmbrella },
             umbrellaProject: {
                 display_shortname: 'tp.d',
-                name: { en: 'Test-Portal.Digital' },
+                name: 'Test-Portal.Digital',
             },
             user: { registrationStatus: null },
         })
