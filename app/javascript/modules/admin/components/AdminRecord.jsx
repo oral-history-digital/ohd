@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import { registerDoi } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
-import { deleteData, useGetProject, useSensitiveData } from 'modules/data';
+import { deleteData, useProjectDetail, useSensitiveData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { camelCase, pluralize } from 'modules/strings';
-import { AdminMenu } from 'modules/ui';
+import { AdminMenu, InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
@@ -20,33 +20,39 @@ import JoinedData from './JoinedData';
 const Item = AdminMenu.Item;
 
 /**
- * Loads full project data for admin dialogs that need more than a list summary.
- * TODO: Use the edit profile when project forms support the standardized contract.
+ * Loads editable project details and stored translations for administration dialogs.
  *
  * @param {Object} props - Dialog properties.
- * @param {Object} props.data - Project summary with its ID.
- * @param {Function} props.children - Renders full data and receives a refresh callback.
+ * @param {Object} props.data - Project summary with its shortname or ID.
+ * @param {Function} props.children - Renders loaded project data.
  * @returns {React.ReactElement} Dialog content, loading indicator, or error.
  */
 function ProjectAdminContent({ data, children }) {
     const { t } = useI18n();
-    const {
-        project: fullProject,
-        error,
-        mutate: mutateProject,
-    } = useGetProject({ id: data?.id });
+    const { project, isLoading, error } = useProjectDetail(
+        data?.shortname || data?.id,
+        {
+            profile: 'edit',
+            include: ['translations'],
+        }
+    );
 
-    if (!fullProject) {
-        return error ? (
-            <p role="alert">
-                {t('error')}: {error.message}
-            </p>
-        ) : (
-            <Spinner withPadding />
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
         );
-    }
+    if (isLoading || !project) return <Spinner withPadding />;
 
-    return children(fullProject, mutateProject);
+    // The existing save endpoint accepts comma-separated locales; Redux retains the array.
+    return children({
+        ...project,
+        pseudo_available_locales: project.available_locales.join(','),
+    });
 }
 
 export default function AdminRecord({
@@ -197,18 +203,10 @@ export default function AdminRecord({
                                     )}
                                     {scope === 'project' ? (
                                         <ProjectAdminContent data={data}>
-                                            {(resolvedProject, onSubmit) =>
+                                            {(resolvedProject) =>
                                                 form(
                                                     resolvedProject,
-                                                    () => {
-                                                        if (
-                                                            typeof onSubmit ===
-                                                            'function'
-                                                        ) {
-                                                            onSubmit();
-                                                        }
-                                                        close();
-                                                    },
+                                                    close,
                                                     close
                                                 )
                                             }

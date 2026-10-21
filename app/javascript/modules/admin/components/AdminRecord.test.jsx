@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { registerDoi } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
-import { deleteData, useGetProject } from 'modules/data';
+import { deleteData, useProjectDetail } from 'modules/data';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
@@ -25,7 +25,7 @@ jest.mock('modules/auth', () => {
 });
 jest.mock('modules/data', () => ({
     deleteData: jest.fn((...args) => ({ type: 'deleteData', args })),
-    useGetProject: jest.fn(),
+    useProjectDetail: jest.fn(),
     useSensitiveData: jest.fn(),
 }));
 jest.mock('modules/i18n', () => ({
@@ -83,7 +83,11 @@ jest.mock('modules/ui', () => {
     };
     AdminMenu.Item = AdminMenuItem;
 
-    return { AdminMenu };
+    function InlineNotification({ description }) {
+        return <p role="alert">{description}</p>;
+    }
+    InlineNotification.propTypes = { description: MockPropTypes.string };
+    return { AdminMenu, InlineNotification };
 });
 jest.mock('react-redux', () => ({
     connect: () => (Component) => Component,
@@ -95,8 +99,8 @@ jest.mock('./DataDetails', () => {
     function DataDetails({ detailsAttributes, data }) {
         return (
             <div data-testid="data-details">
-                {detailsAttributes.join(',')}:{data.id}:{data.title}:
-                {data.doi_status}
+                {detailsAttributes.join(',')}:{data.id}:
+                {data.shortname || data.title}:{data.doi_status}
             </div>
         );
     }
@@ -215,9 +219,9 @@ test('renders custom record and joined-data components', () => {
 });
 
 test('project editing waits for details instead of opening a form with summary data', () => {
-    useGetProject.mockReturnValue({
+    useProjectDetail.mockReturnValue({
         project: undefined,
-        loading: true,
+        isLoading: true,
         error: null,
     });
     const form = jest.fn();
@@ -232,9 +236,9 @@ test('project editing waits for details instead of opening a form with summary d
 });
 
 test('project editing shows a loading error without falling back to summary data', () => {
-    useGetProject.mockReturnValue({
-        project: undefined,
-        loading: false,
+    useProjectDetail.mockReturnValue({
+        project: { id: 7, available_locales: ['en'] },
+        isLoading: false,
         error: { status: 403, message: 'Forbidden' },
     });
     const form = jest.fn();
@@ -248,17 +252,19 @@ test('project editing shows a loading error without falling back to summary data
     expect(form).not.toHaveBeenCalled();
 });
 
-test('project editing uses loaded translations and refreshes details after submission', () => {
+test('project editing retains stored translations and adapts locales without manually refetching', () => {
     const project = {
         id: 7,
         type: 'Project',
-        name: { en: 'Archive' },
-        translations_attributes: [{ locale: 'en', name: 'Archive' }],
+        shortname: 'archive',
+        name: 'Archive',
+        available_locales: ['de', 'en'],
+        translations: [{ id: 12, locale: 'en', name: '' }],
     };
     const mutate = jest.fn();
-    useGetProject.mockReturnValue({
+    useProjectDetail.mockReturnValue({
         project,
-        loading: false,
+        isLoading: false,
         error: null,
         mutate,
     });
@@ -269,25 +275,39 @@ test('project editing uses loaded translations and refreshes details after submi
         form,
     });
     expect(form).toHaveBeenCalledWith(
-        project,
+        { ...project, pseudo_available_locales: 'de,en' },
         expect.any(Function),
         expect.any(Function)
     );
     form.mock.calls[0][1]();
-    expect(mutate).toHaveBeenCalledTimes(1);
+    expect(mutate).not.toHaveBeenCalled();
+    expect(project).not.toHaveProperty('pseudo_available_locales');
 });
 
-test('project details load title and DOI status rather than relying on list fields', () => {
-    useGetProject.mockReturnValue({
-        project: { id: 7, title: 'project-shortname', doi_status: 'created' },
+test('project dialogs load by shortname and display the API identifier and DOI status', () => {
+    useProjectDetail.mockReturnValue({
+        project: {
+            id: 7,
+            shortname: 'project-shortname',
+            available_locales: ['en'],
+            doi_status: 'created',
+        },
     });
     renderAdminRecord({
         scope: 'project',
-        data: { id: 7, type: 'Project', name: 'Summary' },
-        detailsAttributes: ['title', 'doi_status'],
+        data: {
+            id: 7,
+            type: 'Project',
+            shortname: 'project-shortname',
+            name: 'Summary',
+        },
+        detailsAttributes: ['shortname', 'doi_status'],
         hideEdit: true,
     });
-    expect(useGetProject).toHaveBeenCalledWith({ id: 7 });
+    expect(useProjectDetail).toHaveBeenCalledWith('project-shortname', {
+        profile: 'edit',
+        include: ['translations'],
+    });
     expect(screen.getByTestId('data-details')).toHaveTextContent(
         'project-shortname:created'
     );

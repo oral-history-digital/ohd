@@ -6,7 +6,6 @@ import {
     getUsersStatus,
     useGetCollection,
     useGetInstitution,
-    useGetProject,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useSelector } from 'react-redux';
@@ -45,7 +44,6 @@ jest.mock('modules/data', () => ({
     getUsersStatus: jest.fn(),
     useGetCollection: jest.fn(),
     useGetInstitution: jest.fn(),
-    useGetProject: jest.fn(),
     makeProjectSelector: jest.requireActual('../../data/redux/projectDetails')
         .makeProjectSelector,
 }));
@@ -331,7 +329,6 @@ describe('useBreadcrumbModel', () => {
                 loading: false,
             },
         ]);
-        expect(useGetProject).not.toHaveBeenCalled();
     });
 
     it('includes parent archive before collection on catalog collection detail pages', () => {
