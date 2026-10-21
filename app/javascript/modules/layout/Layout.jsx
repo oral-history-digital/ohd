@@ -17,9 +17,14 @@ import {
 } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { useCurrentPage, useSyncLegacyProjectId } from 'modules/routes';
+import {
+    useCurrentPage,
+    useProject,
+    useSyncLegacyProjectId,
+} from 'modules/routes';
 import { Sidebar, getSidebarVisible, toggleSidebar } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import {
     AfterConfirmationPopup,
     AfterEnable2FAPopup,
@@ -51,15 +56,26 @@ import {
 } from './components';
 import getFaviconUrl from './getFaviconUrl';
 
+/**
+ * Renders the page shell with project branding, navigation, account prompts, and sidebar controls.
+ * Waits for project data and reports loading errors before displaying page content.
+ *
+ * @param {Object} props - Layout content.
+ * @param {React.ReactNode} [props.children] - Current page to display.
+ * @returns {React.ReactElement|null} Page shell or request status; empty without project data.
+ */
 export default function Layout({ children }) {
     const dispatch = useDispatch();
-    const { locale } = useI18n();
+    const { locale, t } = useI18n();
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
-    // Page content currently needs details; routing only needs the base project data.
-    const { project, projectShortname, isLoading } = useCurrentProject({
-        requireDetails: true,
-    });
+    const { project, projectShortname, isLoading, error } = useProject({});
+    // TODO: Remove once project identity/access use the new Redux records and contribution
+    // types, registry name/reference types, and collections are loaded by their consumers.
+    const { isLoading: legacyResourcesLoading, error: legacyResourcesError } =
+        useCurrentProject({
+            requireDetails: true,
+        });
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
     const isEditviewActive = useIsEditor();
 
@@ -92,19 +108,29 @@ export default function Layout({ children }) {
         }
     }, [searchParams, setSearchParams]);
 
+    /** Hides the current banner for the rest of this browser session. */
     function handleBannerClose() {
         dispatch(hideBanner());
         doNotShowBannerAgainThisSession();
     }
 
-    let titleBase = getProjectBrandName(umbrellaProject, locale);
-    if (project) {
-        titleBase = project?.display_name?.[locale] || project?.name?.[locale];
-    }
-
+    const titleBase =
+        project?.display_name ||
+        project?.name ||
+        getProjectBrandName(umbrellaProject, locale);
     const faviconUrl = getFaviconUrl(project);
+    const loadingError = error || legacyResourcesError;
+    if (loadingError)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={loadingError.message}
+                isClosable={false}
+            />
+        );
 
-    if (isLoading) {
+    if (isLoading || legacyResourcesLoading) {
         return (
             <div className="Layout Layout--loading">
                 <main className="Site-content Layout-loadingContent">
