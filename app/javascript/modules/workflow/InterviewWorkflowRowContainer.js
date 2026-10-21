@@ -1,12 +1,11 @@
-import { getLocale, getProjectId, setArchiveId } from 'modules/archive';
+import { setArchiveId } from 'modules/archive';
 import {
     fetchData,
-    getCollectionsForCurrentProject,
-    getCurrentProject,
+    getCollections,
     getLanguages,
+    getTaskTypesForCurrentProject,
     getTasks,
     getTasksStatus,
-    getUsersStatus,
 } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,13 +13,11 @@ import { bindActionCreators } from 'redux';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
 
 const mapStateToProps = (state) => ({
-    collections: getCollectionsForCurrentProject(state),
+    collections: getCollections(state),
     languages: getLanguages(state),
-    project: getCurrentProject(state),
-    projectId: getProjectId(state),
+    taskTypes: getTaskTypesForCurrentProject(state),
     tasks: getTasks(state),
     tasksStatus: getTasksStatus(state),
-    usersStatus: getUsersStatus(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
