@@ -15,7 +15,7 @@ import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaAngleDown, FaAngleUp, FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
+import BiographicalEntryForm from './BiographicalEntryForm';
 
 /**
  * Shows a localized biographical entry and authorized edit/delete controls.
@@ -45,7 +45,7 @@ export default function BiographicalEntry({ data, deleteData }) {
                     }
                 >
                     {(close) => (
-                        <BiographicalEntryFormContainer
+                        <BiographicalEntryForm
                             biographicalEntry={data}
                             onSubmit={close}
                             onCancel={close}

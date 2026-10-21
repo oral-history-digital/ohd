@@ -37,7 +37,7 @@ jest.mock('@reach/disclosure', () => ({
     DisclosurePanel: () => null,
 }));
 jest.mock(
-    './BiographicalEntryFormContainer',
+    './BiographicalEntryForm',
     () =>
         function BiographyForm() {
             return null;
