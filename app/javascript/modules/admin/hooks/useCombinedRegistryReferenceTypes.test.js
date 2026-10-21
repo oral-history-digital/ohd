@@ -21,7 +21,7 @@ jest.mock('swr/immutable', () => jest.fn());
 beforeEach(() => {
     jest.clearAllMocks();
     usePathBase.mockReturnValue('/project/en');
-    useProject.mockReturnValue({ isUmbrella: false });
+    useProject.mockReturnValue({ project: { is_umbrella: false } });
     useSelector.mockImplementation((selector) => {
         if (selector === getRegistryReferenceTypesForCurrentProject) {
             return { 1: { id: 1 }, 2: { id: 2 } };
@@ -51,7 +51,7 @@ test('combines project and global types for non-OHD projects', () => {
 });
 
 test('uses only project types for OHD projects', () => {
-    useProject.mockReturnValue({ isUmbrella: true });
+    useProject.mockReturnValue({ project: { is_umbrella: true } });
 
     const { result } = renderHook(() => useCombinedRegistryReferenceTypes());
 
