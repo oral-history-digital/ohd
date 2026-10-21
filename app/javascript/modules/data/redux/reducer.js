@@ -16,7 +16,6 @@ const initialState = {
         current: null,
     },
     projects: {},
-    projectRequests: {},
     projectRepresentations: {},
     instance_settings: null,
     statuses: {
@@ -78,14 +77,6 @@ export const dataReducer = (state = initialState, action) => {
             data: action.data.data,
             extraParams: `for_projects_${action.projectId}`,
             page: '1',
-        };
-    }
-    // Save project request progress alongside the usual data and loading updates.
-    if (action.projectRequest) {
-        const { key, ...request } = action.projectRequest;
-        state = {
-            ...state,
-            projectRequests: { ...state.projectRequests, [key]: request },
         };
     }
     if (

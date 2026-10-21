@@ -11,7 +11,6 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
-import { fetchProject } from './projectRequests';
 
 function receiveError(dataType, id, error) {
     return {
@@ -82,19 +81,18 @@ export const replaceInstanceSettings = (data) => ({
     data,
 });
 
-/** Loads data. Single-project requests also share pending requests and track errors. */
+/**
+ * Loads a legacy resource through its project/locale route into Redux.
+ * Project records use useProjectDetail/useProjectList and the shared request flow.
+ *
+ * @param {Object} props - Request context, including pathBase or project and locale.
+ * @param {string} dataType - Resource endpoint name.
+ * @param {number|string} [id] - Optional record identifier.
+ * @param {string} [nestedDataType] - Optional nested endpoint name.
+ * @param {string} [extraParams] - Query string without the leading question mark.
+ * @returns {function(Function): void} Thunk dispatching resource loading and results.
+ */
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
-    // Share duplicate requests and track errors for single-project reads.
-    // Apply these changes to projects first; keep other data loading unchanged.
-    // TODO: Consider moving this logic into Loader.getJson() to share across all data types.
-    if (dataType === 'projects' && id && !nestedDataType) {
-        return fetchProject(props, id, extraParams, {
-            requestData,
-            receiveData,
-            receiveError,
-        });
-    }
-
     let url = `${props.pathBase || pathBase(props)}/${dataType}`;
     if (id) {
         url += `/${id}`;

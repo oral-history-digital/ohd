@@ -1,5 +1,4 @@
 export * from './useArchiveSearchIds';
-export * from './useCurrentProject';
 export * from './useGetCollection';
 export * from './useGetHomepageSettings';
 export * from './useGetInstitution';

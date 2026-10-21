@@ -18,7 +18,6 @@ export {
     getTranslationValuesQuery,
     getPeopleQuery,
     getPermissionsQuery,
-    getProjectsQuery,
     getRegistryEntriesSearch,
     getRegistryNameTypesQuery,
     getRegistryReferenceTypesQuery,
