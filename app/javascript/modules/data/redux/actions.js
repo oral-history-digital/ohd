@@ -68,11 +68,13 @@ export const receiveData = (json) => ({
  * caches can be invalidated without changing legacy response merging.
  *
  * @param {Object} json - Legacy mutation response envelope.
- * @returns {Object} Receive action with mutation set to true.
+ * @param {string} [mutationResource] - Resource changed by the request; the response may contain a parent record.
+ * @returns {Object} Receive action with mutation metadata for cache invalidation.
  */
-export const receiveMutationData = (json) => ({
+export const receiveMutationData = (json, mutationResource) => ({
     ...receiveData(json),
     mutation: true,
+    ...(mutationResource ? { mutationResource } : {}),
 });
 
 export const replaceInstanceSettings = (data) => ({
@@ -166,7 +168,7 @@ export function submitData(props, params, opts = {}, callback) {
                 `${props.pathBase || pathBase(props)}/${pluralizedDataType}/${id}`,
                 payload,
                 dispatch,
-                receiveMutationData,
+                (json) => receiveMutationData(json, pluralizedDataType),
                 (error) => receiveError(pluralizedDataType, id, error),
                 callback
             );
@@ -186,7 +188,7 @@ export function submitData(props, params, opts = {}, callback) {
                 `${props.pathBase || pathBase(props)}/${pluralizedDataType}`,
                 params,
                 dispatch,
-                receiveMutationData,
+                (json) => receiveMutationData(json, pluralizedDataType),
                 (error) => receiveError(pluralizedDataType, null, error),
                 callback
             );
@@ -229,10 +231,7 @@ export function deleteData(
             Loader.delete(
                 url,
                 dispatch,
-                (json) => ({
-                    ...receiveMutationData(json),
-                    mutationResource: dataType,
-                }),
+                (json) => receiveMutationData(json, dataType),
                 callback
             );
         };
@@ -246,10 +245,7 @@ export function deleteData(
             Loader.delete(
                 url,
                 dispatch,
-                (json) => ({
-                    ...receiveMutationData(json),
-                    mutationResource: dataType,
-                }),
+                (json) => receiveMutationData(json, dataType),
                 callback
             );
         };
