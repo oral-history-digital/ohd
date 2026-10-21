@@ -1,17 +1,24 @@
 /* eslint-disable react/prop-types */
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { getCurrentProject, useProjectList } from 'modules/data';
+import { useProjectList } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { useSelector } from 'react-redux';
 
 import UserTable from './UserTable';
 import useUsers from './useUsers';
 
 jest.mock('modules/data', () => ({
-    getCurrentProject: jest.fn(),
     getCurrentUser: () => ({ admin: true }),
     getRolesForCurrentProject: () => [],
     Fetch: ({ children }) => children,
     useProjectList: jest.fn(),
+}));
+jest.mock('modules/routes', () => ({ useProject: jest.fn() }));
+jest.mock('modules/spinners', () => ({
+    Spinner: () => <p role="status">Loading</p>,
+}));
+jest.mock('modules/ui', () => ({
+    InlineNotification: ({ description }) => <p role="alert">{description}</p>,
 }));
 jest.mock('react-redux', () => ({ useSelector: jest.fn() }));
 jest.mock('modules/i18n', () => ({
@@ -39,10 +46,12 @@ jest.mock('./useUsers', () => jest.fn());
 beforeEach(() => {
     jest.clearAllMocks();
     useSelector.mockImplementation((selector) => selector());
-    getCurrentProject.mockReturnValue({
-        id: 1,
-        is_umbrella: true,
-        available_locales: ['en'],
+    useProject.mockReturnValue({
+        project: {
+            id: 1,
+            is_umbrella: true,
+            available_locales: ['en'],
+        },
     });
     useProjectList.mockReturnValue({
         projects: [
@@ -90,10 +99,12 @@ test('updates the project filter when the Redux list arrives', () => {
 });
 
 test('shows the role filter instead of the project filter within a project', () => {
-    getCurrentProject.mockReturnValue({
-        id: 2,
-        is_umbrella: false,
-        available_locales: ['en'],
+    useProject.mockReturnValue({
+        project: {
+            id: 2,
+            is_umbrella: false,
+            available_locales: ['en'],
+        },
     });
     render(<UserTable />);
     expect(
@@ -104,4 +115,50 @@ test('shows the role filter instead of the project filter within a project', () 
     expect(
         screen.getByRole('combobox', { name: 'activerecord.models.role.one' })
     ).toBeInTheDocument();
+});
+
+test('waits for project settings before querying users, initializes the project filter correctly, and fails closed', () => {
+    useProject.mockReturnValue({ isLoading: true });
+    const { rerender } = render(<UserTable />);
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(useUsers).not.toHaveBeenCalled();
+    useProject.mockReturnValue({
+        project: { id: 2, is_umbrella: false, available_locales: ['en', 'de'] },
+    });
+    rerender(<UserTable />);
+    expect(useProject).toHaveBeenCalledWith({});
+    expect(useUsers.mock.lastCall[2]).toBe('project_access_requested');
+    fireEvent.change(
+        screen.getByRole('combobox', {
+            name: 'activerecord.attributes.user.workflow_state',
+        }),
+        { target: { value: 'all' } }
+    );
+    expect(useUsers.mock.lastCall[2]).toBe('all');
+    useProject.mockReturnValue({
+        project: { id: 2, is_umbrella: false, available_locales: ['en', 'de'] },
+        isValidating: true,
+    });
+    rerender(<UserTable />);
+    expect(useUsers.mock.lastCall[2]).toBe('all');
+    useProject.mockReturnValue({ error: { message: 'Access denied.' } });
+    rerender(<UserTable />);
+    expect(screen.getByRole('alert')).toHaveTextContent('Access denied.');
+    expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+});
+
+test('changing projects resets user filters to the appropriate default', () => {
+    const { rerender } = render(<UserTable />);
+    expect(useUsers.mock.lastCall[2]).toBe('afirmed');
+    fireEvent.change(
+        screen.getByRole('combobox', {
+            name: 'activerecord.attributes.user.workflow_state',
+        }),
+        { target: { value: 'all' } }
+    );
+    useProject.mockReturnValue({
+        project: { id: 2, is_umbrella: false, available_locales: ['en'] },
+    });
+    rerender(<UserTable />);
+    expect(useUsers.mock.lastCall[2]).toBe('project_access_requested');
 });

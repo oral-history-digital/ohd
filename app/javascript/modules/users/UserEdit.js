@@ -1,17 +1,23 @@
-import { getCurrentProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useProjectIdentity } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import ProjectsOverview from './ProjectsOverview';
 import UserFormContainer from './UserFormContainer';
 
+/**
+ * Shows account or current-project access details and the existing user editor.
+ * @param {Object} props - User record, user-list cache path, and save callback.
+ * @returns {React.ReactElement} Project-scoped details or pending project identity.
+ */
 export default function UserEdit({ data, dataPath, onSubmit }) {
     const { t, locale } = useI18n();
-    const project = useSelector(getCurrentProject);
-    const scope = project.is_umbrella ? 'user' : 'user_project';
+    const { projectDbId, isUmbrella } = useProjectIdentity();
+    if (!projectDbId || isUmbrella === undefined) return <Spinner />;
+    const scope = isUmbrella ? 'user' : 'user_project';
     const userProject = Object.values(data.user_projects).find(
-        (urp) => urp.project_id === project.id
+        (urp) => urp.project_id === projectDbId
     );
 
     const details = [
@@ -93,13 +99,13 @@ export default function UserEdit({ data, dataPath, onSubmit }) {
                 </div>
             </section>
 
-            {!project.is_umbrella && (
+            {!isUmbrella && (
                 <section className="UserEdit-section">
                     <h3>{t('modules.project_access.one')}</h3>
                     <div className="UserEdit-details">
                         {projectDetails.map((detail, index) => {
                             return detailRepresentation(
-                                userProject[detail],
+                                userProject?.[detail],
                                 detail,
                                 index
                             );
@@ -108,19 +114,21 @@ export default function UserEdit({ data, dataPath, onSubmit }) {
                 </section>
             )}
 
-            {project.is_umbrella && (
+            {isUmbrella && (
                 <section className="UserEdit-section">
                     <ProjectsOverview user={data} />
                 </section>
             )}
 
-            <UserFormContainer
-                data={project.is_umbrella ? data : userProject}
-                dataPath={dataPath}
-                userId={data.id}
-                scope={scope}
-                onSubmit={onSubmit}
-            />
+            {(isUmbrella || userProject) && (
+                <UserFormContainer
+                    data={isUmbrella ? data : userProject}
+                    dataPath={dataPath}
+                    userId={data.id}
+                    scope={scope}
+                    onSubmit={onSubmit}
+                />
+            )}
         </div>
     );
 }
