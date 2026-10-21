@@ -1,7 +1,6 @@
 import { useI18n } from 'modules/i18n';
+import { localizedValue } from 'modules/utils';
 import PropTypes from 'prop-types';
-
-import localizedValue from '../../utils/localizedValue';
 
 /**
  * Displays a localized affiliate name from current or legacy records.

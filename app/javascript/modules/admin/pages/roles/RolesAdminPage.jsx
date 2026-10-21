@@ -9,7 +9,7 @@ import { useAdminDataActions } from '../../hooks';
 import RolePermissions from './RolePermissions';
 
 /**
- * Lists project-scoped resources without loading project details.
+ * Lists all roles for the current project and allows creating, editing, and deleting them.
  * @returns {React.ReactElement} Administration list or pending project identity.
  */
 export default function RolesAdminPage() {

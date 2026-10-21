@@ -1,9 +1,8 @@
 import { getTranslations } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import { localizedValue } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-
-import localizedValue from '../../../utils/localizedValue';
 
 /**
  * Shows a built-in facet name or the field's localized label.
