@@ -97,3 +97,17 @@ test('passes persisted-file removal to the parent form', () => {
 
     expect(onRemoveCurrent).toHaveBeenCalledTimes(1);
 });
+
+test('shows API image URLs without requiring a legacy src alias', () => {
+    render(
+        <FileInputFormElement
+            {...defaultProps}
+            data={{ url: '/logo.png', filename: 'project-logo.png' }}
+            preview="image"
+        />
+    );
+    expect(screen.getByText('project-logo.png')).toBeInTheDocument();
+    expect(
+        document.querySelector('.FileInputField-preview img')
+    ).toHaveAttribute('src', '/logo.png');
+});
