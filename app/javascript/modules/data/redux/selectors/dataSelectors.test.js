@@ -223,6 +223,26 @@ describe('getUmbrellaProject', () => {
 
         expect(getUmbrellaProject(_state)).toEqual(umbrellaProject);
     });
+
+    test('uses the current record identity without exposing its content or protected fields', () => {
+        const current = dotProp.set(projectState, 'data.v2.projects', {
+            context: v2AccessContext(projectState),
+            records: {
+                1: {
+                    id: 1,
+                    shortname: 'renamed',
+                    is_umbrella: true,
+                    name: 'Title',
+                    edit: { contact_email: 'private@example.org' },
+                },
+            },
+        });
+        expect(getUmbrellaProject(current)).toEqual({
+            id: 1,
+            shortname: 'renamed',
+            is_umbrella: true,
+        });
+    });
 });
 
 describe('getShowFeaturedInterviews', () => {
