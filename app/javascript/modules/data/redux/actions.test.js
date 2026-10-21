@@ -1,7 +1,7 @@
 import { Loader } from 'modules/api';
 import { pathBase } from 'modules/routes';
 
-import { deleteData, fetchData, submitData } from './actions';
+import { deleteData, submitData } from './actions';
 
 jest.mock('modules/api', () => ({
     Loader: {
@@ -174,39 +174,5 @@ describe('deleteData', () => {
         expect(Loader.delete.mock.calls[0][0]).toBe(
             '/pilot/de/interviews/H-001/registry_references/4'
         );
-    });
-});
-
-test('project-scoped registry-name lists share nested storage with mutations while paginated reads retain their envelope', () => {
-    const dispatch = jest.fn();
-    const json = {
-        data_type: 'registry_name_types',
-        data: { 2: { id: 2, code: 'spelling' } },
-        extra_params: 'for_projects_7',
-    };
-    fetchData(
-        { pathBase: '/pilot/en' },
-        'registry_name_types',
-        null,
-        null,
-        'for_projects=7'
-    )(dispatch);
-    const receive = Loader.getJson.mock.lastCall[3];
-    expect(receive(json)).toMatchObject({
-        dataType: 'projects',
-        nestedDataType: 'registry_name_types',
-        id: 7,
-        data: json.data,
-    });
-    fetchData(
-        { pathBase: '/pilot/en' },
-        'registry_name_types',
-        null,
-        null,
-        'page=1'
-    )(dispatch);
-    expect(Loader.getJson.mock.lastCall[3](json)).toMatchObject({
-        dataType: 'registry_name_types',
-        nestedDataType: undefined,
     });
 });

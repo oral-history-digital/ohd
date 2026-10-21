@@ -61,13 +61,15 @@ export function v2RequestKey(url, context, generation) {
  * @param {string} options.locale - Requested locale used to store display values.
  * @param {boolean} [options.refresh=false] - Refetch completed data; still shares pending requests.
  * @param {boolean} [options.single=false] - Expect one record instead of a paginated list.
+ * @param {string} [options.projectResource] - Legacy project-owned list using this request flow.
+ * @param {number} [options.projectId] - Expected owner of that resource list.
  * @returns {function(Function, Function): Promise<V2ReadResult>} Redux thunk. Cached
  * or obsolete requests resolve with both response and error set to null.
  */
 export function fetchV2Data(
     resource,
     url,
-    { locale, refresh = false, single = false } = {}
+    { locale, refresh = false, single = false, projectResource, projectId } = {}
 ) {
     return (dispatch, getState) => {
         const state = getState();
@@ -110,6 +112,7 @@ export function fetchV2Data(
             single,
             profile,
             include,
+            ...(projectResource ? { projectResource, projectId } : {}),
         };
         dispatch({ ...metadata, type: REQUEST_DATA });
         /**
@@ -154,6 +157,34 @@ export function fetchV2Data(
                 null,
                 dispatch,
                 (response) => {
+                    if (projectResource) {
+                        // TODO: Remove envelope adaptation when these resources have
+                        // standardized endpoints. They already share project request safety.
+                        const matchesOwner =
+                            response?.data_type === 'projects' &&
+                            response.nested_data_type === projectResource &&
+                            Number(response.id) === projectId;
+                        const rootNameTypes =
+                            projectResource === 'registry_name_types' &&
+                            response?.data_type === projectResource &&
+                            response.extra_params ===
+                                `for_projects_${projectId}`;
+                        if (
+                            !(matchesOwner || rootNameTypes) ||
+                            !response.data ||
+                            Array.isArray(response.data) ||
+                            typeof response.data !== 'object' ||
+                            !Object.values(response.data).every(
+                                (record) =>
+                                    Number.isInteger(record?.id) &&
+                                    record.id > 0
+                            )
+                        )
+                            return fail({
+                                message: 'Invalid project resource response.',
+                            });
+                        return finish(RECEIVE_DATA, { response, error: null });
+                    }
                     const records = single ? [response?.data] : response?.data;
                     if (
                         !Array.isArray(records) ||

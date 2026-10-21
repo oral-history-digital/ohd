@@ -116,24 +116,7 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
                 extraParams?.replace(/[=&]/g, '_')
             )
         );
-        const projectId = new URLSearchParams(extraParams).get('for_projects');
-        // TODO: Remove this adapter when registry-name list and mutation envelopes agree.
-        // Full lists currently return at the root; mutations already use project-nested records.
-        const receive =
-            dataType === 'registry_name_types' && projectId
-                ? (json) =>
-                      receiveData(
-                          json.data_type === dataType
-                              ? {
-                                    ...json,
-                                    data_type: 'projects',
-                                    nested_data_type: dataType,
-                                    id: Number(projectId),
-                                }
-                              : json
-                      )
-                : receiveData;
-        Loader.getJson(url, null, dispatch, receive);
+        Loader.getJson(url, null, dispatch, receiveData);
     };
 }
 

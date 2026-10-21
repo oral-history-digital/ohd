@@ -151,6 +151,16 @@ export function reduceV2Projects(state, action) {
         };
     if (action.type !== RECEIVE_DATA) return state;
 
+    // Resource records still use their existing nested storage, not project summaries.
+    if (action.projectResource)
+        return {
+            ...state,
+            requests: {
+                ...state.requests,
+                [action.key]: { status: 'succeeded', error: null },
+            },
+        };
+
     const records = { ...state.records };
     const display = { ...state.translations.display };
     const edit = { ...state.translations.edit };
