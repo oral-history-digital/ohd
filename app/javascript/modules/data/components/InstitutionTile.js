@@ -1,15 +1,39 @@
-import { getLocale } from 'modules/archive';
-import { getCollections, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { LinkOrA } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
+import { useProjectDetail } from '../hooks/useProjectDetail';
+import { getCollections } from '../redux/selectors/baseSelectors';
+
+/**
+ * Links to an institution's project after its current display details are available.
+ * @param {Object} props - Related project ID and optional collection link text.
+ * @returns {React.ReactElement|null} Project link, or nothing while unavailable.
+ */
+function InstitutionProjectLink({ projectId, children }) {
+    const { project, isLoading, error } = useProjectDetail(projectId);
+    if (isLoading || error || !project) return null;
+    return (
+        <LinkOrA project={project} to="">
+            {children || project.name}
+        </LinkOrA>
+    );
+}
+
+InstitutionProjectLink.propTypes = {
+    projectId: PropTypes.number.isRequired,
+    children: PropTypes.node,
+};
+
+/**
+ * Shows an institution's logo and related projects and collections.
+ * @param {Object} props - Institution record with relationship IDs and localized fields.
+ * @returns {React.ReactElement} Institution summary with Redux-backed project links.
+ */
 export function InstitutionTile({ data }) {
-    const locale = useSelector(getLocale);
-    const projects = useSelector(getProjects);
     const collections = useSelector(getCollections);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     const collectionsForInstitute = data.collection_ids.map(
         (id) => collections[id]
@@ -31,13 +55,9 @@ export function InstitutionTile({ data }) {
             <h3>{t('activerecord.models.project.other')}</h3>
             <ul>
                 {Object.values(data.institution_projects).map((ip) => {
-                    const project = projects[ip.project_id];
-                    if (!project) return null;
                     return (
                         <li key={ip.id}>
-                            <LinkOrA project={project} to="">
-                                {project.name[locale]}
-                            </LinkOrA>
+                            <InstitutionProjectLink projectId={ip.project_id} />
                         </li>
                     );
                 })}
@@ -47,12 +67,13 @@ export function InstitutionTile({ data }) {
             <ul>
                 {collectionsForInstitute.map((collection) => {
                     if (!collection) return null;
-                    const project = projects[collection.project_id];
                     return (
                         <li key={collection.id}>
-                            <LinkOrA project={project} to="">
+                            <InstitutionProjectLink
+                                projectId={collection.project_id}
+                            >
                                 {collection.name[locale]}
-                            </LinkOrA>
+                            </InstitutionProjectLink>
                         </li>
                     );
                 })}

@@ -2,7 +2,9 @@ import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { RegistrySearchFormContainer } from 'modules/registry';
-import { useProjectIdentity } from 'modules/routes';
+import { useProject, useProjectIdentity } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
@@ -13,16 +15,15 @@ import DownloadRegistryEntries from './DownloadRegistryEntries';
  *
  * @param {Object} props - Registry sidebar properties.
  * @param {boolean} props.showRegistryEntriesSearchResults - Whether results replace the tree.
- * @param {string[]} props.locales - Locales offered for downloads.
  * @param {Function} props.changeRegistryEntriesViewMode - Changes the current project's view.
  * @returns {React.ReactElement} Registry sidebar controls.
  */
 function RegistryEntriesTabPanel({
     showRegistryEntriesSearchResults,
-    locales,
     changeRegistryEntriesViewMode,
 }) {
     const { t } = useI18n();
+    const { project, isLoading, error } = useProject({});
     const { projectShortname } = useProjectIdentity();
 
     return (
@@ -49,24 +50,35 @@ function RegistryEntriesTabPanel({
                         )}
                     </button>
                 </p>
-                {locales.map((locale) => (
-                    <AuthorizedContent
-                        key={locale}
-                        object={{ type: 'General' }}
-                        action="edit"
-                    >
-                        <div key={locale}>
-                            <DownloadRegistryEntries
-                                format="pdf"
-                                specificLocale={locale}
-                            />
-                            <DownloadRegistryEntries
-                                format="csv"
-                                specificLocale={locale}
-                            />
-                        </div>
-                    </AuthorizedContent>
-                ))}
+                {error ? (
+                    <InlineNotification
+                        variant="error"
+                        title={t('error')}
+                        description={error.message}
+                        isClosable={false}
+                    />
+                ) : isLoading ? (
+                    <Spinner />
+                ) : (
+                    (project?.available_locales || []).map((locale) => (
+                        <AuthorizedContent
+                            key={locale}
+                            object={{ type: 'General' }}
+                            action="edit"
+                        >
+                            <div key={locale}>
+                                <DownloadRegistryEntries
+                                    format="pdf"
+                                    specificLocale={locale}
+                                />
+                                <DownloadRegistryEntries
+                                    format="csv"
+                                    specificLocale={locale}
+                                />
+                            </div>
+                        </AuthorizedContent>
+                    ))
+                )}
 
                 {/* TODO: replace hardcoded project check with another solution */}
                 {projectShortname === 'adg' && (
@@ -93,7 +105,6 @@ function RegistryEntriesTabPanel({
 
 RegistryEntriesTabPanel.propTypes = {
     showRegistryEntriesSearchResults: PropTypes.bool.isRequired,
-    locales: PropTypes.array.isRequired,
     changeRegistryEntriesViewMode: PropTypes.func.isRequired,
 };
 
