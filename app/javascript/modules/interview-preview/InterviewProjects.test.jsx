@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { useAuthorization } from 'modules/auth';
 import { useProjectDetail } from 'modules/data';
 import { useInterviewSearch } from 'modules/interview-search';
+import { useProjectIdentity } from 'modules/routes';
 import { WorkbookItemForm } from 'modules/workbook';
 
 import InterviewListRow from './InterviewListRow';
@@ -12,7 +13,6 @@ jest.mock('modules/data', () => ({
     ...jest.requireActual('../data/utils/getResultMetadataFields'),
     useProjectDetail: jest.fn(),
     getCurrentUser: () => null,
-    useCurrentProject: () => ({ project: { is_umbrella: true } }),
     useHumanReadable: () => ({
         humanReadable: ({ obj, attribute }) => obj[attribute],
     }),
@@ -31,6 +31,7 @@ jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: 'en', t: (key) => key }),
 }));
 jest.mock('modules/routes', () => ({
+    useProjectIdentity: jest.fn(),
     useProject: () => ({
         project: {
             is_umbrella: true,
@@ -107,6 +108,7 @@ const props = {
 
 beforeEach(() => {
     jest.clearAllMocks();
+    useProjectIdentity.mockReturnValue({ isUmbrella: true });
     useProjectDetail.mockReturnValue({ project });
     useAuthorization.mockReturnValue({ isAuthorized: () => false });
     useInterviewSearch.mockReturnValue({ numResults: 2, data: {} });
@@ -209,4 +211,15 @@ test('restricted rows keep anonymous titles and hide metadata without permission
     expect(screen.getByText('Anonymous title')).toBeInTheDocument();
     expect(screen.queryByText('Full interview title')).not.toBeInTheDocument();
     expect(screen.getByText('---')).toBeInTheDocument();
+});
+
+test('cards show project attribution only on umbrella routes', () => {
+    useProjectIdentity.mockReturnValue({ isUmbrella: false });
+    const { rerender } = render(
+        <InterviewPreview {...props} statuses={{}} isLoggedIn />
+    );
+    expect(screen.queryByText('Display name')).not.toBeInTheDocument();
+    useProjectIdentity.mockReturnValue({ isUmbrella: true });
+    rerender(<InterviewPreview {...props} statuses={{}} isLoggedIn />);
+    expect(screen.getByText('Display name')).toBeInTheDocument();
 });
