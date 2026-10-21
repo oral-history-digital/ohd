@@ -47,7 +47,8 @@ export function projectDetailUrl(
 
 /**
  * Selects routing identities, preferring current Redux records over bootstrap data.
- * Bootstrap remains available while details load; neither localized nor protected fields are returned.
+ * Stable bootstrap identities remain available after account changes clear project content.
+ * Legacy storage also holds nested resources; only routing fields are returned here.
  *
  * @param {Object} state - Root Redux state.
  * @returns {Object<number, Object>} IDs, shortnames, domains, and umbrella flags by project ID.
