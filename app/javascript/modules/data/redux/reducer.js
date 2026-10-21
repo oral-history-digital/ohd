@@ -57,10 +57,29 @@ const initialState = {
  * @returns {Object} Updated data state, or the same object for ignored actions.
  */
 export const dataReducer = (state = initialState, action) => {
+    const previousProjects = state.v2?.projects;
     const v2Projects = reduceV2Projects(state.v2?.projects, action);
     if (v2Projects !== state.v2?.projects)
         state = { ...state, v2: { ...state.v2, projects: v2Projects } };
-    if (action.apiVersion === 2) return state;
+    if (action.apiVersion === 2) {
+        if (
+            !action.projectResource ||
+            action.type !== RECEIVE_DATA ||
+            v2Projects === previousProjects
+        )
+            return state;
+        // Only accepted responses reach nested storage. Replace the complete list
+        // so records hidden by changed permissions cannot survive a fresh read.
+        action = {
+            type: RECEIVE_DATA,
+            dataType: 'projects',
+            nestedDataType: action.projectResource,
+            id: action.projectId,
+            data: action.data.data,
+            extraParams: `for_projects_${action.projectId}`,
+            page: '1',
+        };
+    }
     // Save project request progress alongside the usual data and loading updates.
     if (action.projectRequest) {
         const { key, ...request } = action.projectRequest;
