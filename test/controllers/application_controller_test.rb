@@ -64,28 +64,32 @@ class ApplicationControllerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'bootstrap uses localized API summaries and retains only stable routing fields outside them' do
+  test 'bootstrap uses localized base display details and retains only stable routing fields outside them' do
     umbrella = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a", workflow_state: 'public')
     project = DataHelper.test_project(shortname: "cur#{SecureRandom.hex(2)}a", workflow_state: 'public')
-    project.translations.find_or_initialize_by(locale: 'en').update!(name: 'English project')
+    project.translations.find_or_initialize_by(locale: 'en').update!(name: 'English project', more_text: 'English details')
     controller = ApplicationController.new
     controller.define_singleton_method(:current_user) { nil }
 
     payload = I18n.with_locale(:en) do
       controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: umbrella)
     end
-    assert_equal 'en', payload[:summaries][:locale]
-    summaries = JSON.parse(payload[:summaries][:data].to_json)
-    assert_equal [umbrella.id, project.id].sort, summaries.map { |record| record['id'] }.sort
-    summaries.each { |record| assert api_schema.schema('ProjectSummary').valid?(record) }
-    assert_equal 'English project', summaries.find { |record| record['id'] == project.id }['name']
+    assert_equal 'en', payload[:locale]
+    details = JSON.parse(payload[:data].to_json)
+    assert_equal [umbrella.id, project.id].sort, details.map { |record| record['id'] }.sort
+    details.each { |record| assert api_schema.schema('ProjectDisplay').valid?(record) }
+    detail = details.find { |record| record['id'] == project.id }
+    assert_equal 'English project', detail['name']
+    assert_equal 'English details', detail['more_text']
+    assert_not detail.key?('contact_email')
+    assert_not detail.key?('access_config')
     assert_equal({ id: umbrella.id, shortname: umbrella.shortname, archive_domain: umbrella.archive_domain.presence, is_umbrella: true },
-      payload[:summaries][:identities][umbrella.id.to_s])
-    assert_equal %i[archive_domain id is_umbrella shortname], payload[:summaries][:identities][project.id.to_s].keys.sort
+      payload[:identities][umbrella.id.to_s])
+    assert_equal %i[archive_domain id is_umbrella shortname], payload[:identities][project.id.to_s].keys.sort
     assert_not payload.key?(:project_representations)
   end
 
-  test 'bootstrap excludes denied summaries and separates authorized cached content' do
+  test 'bootstrap excludes denied details and separates authorized cached content' do
     project = DataHelper.test_project(shortname: "prv#{SecureRandom.hex(2)}a", workflow_state: 'unshared')
     controller = ApplicationController.new
     account = User.find_by!(email: 'alice@example.com')
@@ -93,12 +97,30 @@ class ApplicationControllerTest < ActiveSupport::TestCase
 
     Rails.stub(:cache, ActiveSupport::Cache::MemoryStore.new) do
       payload = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
-      assert_equal [project.id], payload[:summaries][:data].map { |record| record[:id] }
-      assert_equal 1, payload[:summaries][:identities].size
+      assert_equal [project.id], payload[:data].map { |record| record[:id] }
+      assert_equal 1, payload[:identities].size
       account = nil
       payload = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
-      assert_empty payload[:summaries][:data]
-      assert_equal project.id, payload[:summaries][:identities][project.id.to_s][:id]
+      assert_empty payload[:data]
+      assert_equal project.id, payload[:identities][project.id.to_s][:id]
+    end
+  end
+
+  test 'bootstrap reuses display details and refreshes them after localized text changes' do
+    project = DataHelper.test_project(shortname: "bsc#{SecureRandom.hex(2)}a", workflow_state: 'public')
+    controller = ApplicationController.new
+    controller.define_singleton_method(:current_user) { nil }
+
+    I18n.with_locale(:en) do
+      Rails.stub(:cache, ActiveSupport::Cache::MemoryStore.new) do
+        first = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+        Api::V2::ProjectDisplaySerializer.stub(:new, ->(*) { flunk 'Cached bootstrap serialized details again' }) do
+          assert_equal first, controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+        end
+        project.translations.find_or_initialize_by(locale: 'en').update!(more_text: 'Changed details')
+        refreshed = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+        assert_equal 'Changed details', refreshed[:data].first[:more_text]
+      end
     end
   end
 

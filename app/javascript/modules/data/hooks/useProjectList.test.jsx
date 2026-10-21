@@ -10,7 +10,7 @@ import userReducer from '../../user/reducer';
 import { RECEIVE_DATA } from '../redux/action-types';
 import {
     deleteData,
-    initializeProjectSummaries,
+    initializeProjects,
     receiveData,
     receiveMutationData,
     submitData,
@@ -1217,45 +1217,46 @@ test('reads a recipient locale without changing the UI locale and keeps preview 
     expect(Loader.getJson).toHaveBeenCalledTimes(3);
 });
 
-test('bootstrap summaries use current-account records and locales without completing list or detail queries', () => {
+test('bootstrap details satisfy base reads by shortname and ID only for the bootstrap locale', () => {
     const store = makeStore();
     store.dispatch(
-        initializeProjectSummaries({
-            locale: 'en',
-            data: [project(7, { name: 'Bootstrap name' })],
-        })
+        initializeProjects(
+            {
+                locale: 'en',
+                data: [
+                    project(7, {
+                        name: 'Bootstrap name',
+                        more_text: 'Details',
+                    }),
+                ],
+            },
+            store.getState()
+        )
     );
     const initialized = store.getState().data.projects;
-    expect(initialized.records[7]).toMatchObject({
-        id: 7,
-        shortname: 'project7',
-    });
     expect(initialized.records[7]).not.toHaveProperty('name');
     expect(initialized.translations.display[7].en.name).toBe('Bootstrap name');
-    expect(initialized.requests).toEqual({});
     expect(initialized.lists).toEqual({});
-    expect(store.getState().data.projects.resources[7].collections).toEqual({
-        99: { id: 99 },
-    });
+    expect(initialized.resources[7].collections).toEqual({ 99: { id: 99 } });
 
-    /**
-     * @param {Object} props - Hook consumers.
-     * @param {React.ReactNode} props.children - Consumers using the initialized store.
-     * @returns {React.ReactElement} Provider for the initialized store.
-     */
-    const wrapper = ({ children }) => (
-        <Provider store={store}>{children}</Provider>
-    );
-    const { result } = renderHook(() => useProjectDetail('project7'), {
-        wrapper,
-    });
-    expect(result.current.isLoading).toBe(true);
-    expect(result.current.project).toBeUndefined();
-    expect(Loader.getJson).toHaveBeenCalledTimes(1);
-    act(() => completeDetail(project(7, { name: 'Requested locale details' })));
-    expect(result.current.project.name).toBe('Requested locale details');
+    const { result } = mount(store, () => [
+        useProjectDetail('project7', { locale: 'en' }),
+        useProjectDetail(7, { locale: 'en' }),
+    ]);
+    expect(result.current[0].project.more_text).toBe('Details');
+    expect(result.current[1].project).toEqual(result.current[0].project);
+    expect(result.current[0].isLoading).toBe(false);
+    expect(Loader.getJson).not.toHaveBeenCalled();
+
+    mount(store, () => [
+        useProjectDetail(7, { locale: 'de' }),
+        useProjectDetail(7, { locale: 'en', include: ['footer'] }),
+        useProjectDetail(7, { locale: 'en', profile: 'edit' }),
+        useProjectList({ locale: 'en' }),
+    ]);
+    expect(Loader.getJson).toHaveBeenCalledTimes(4);
     act(() => store.dispatch({ type: LOGOUT }));
-    expect(result.current.project).toBeUndefined();
+    expect(result.current[0].project).toBeUndefined();
     expect(store.getState().data.projects.records).toEqual({});
 });
 

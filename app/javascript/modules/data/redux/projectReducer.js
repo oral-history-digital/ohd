@@ -9,6 +9,7 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
+import { projectDetailUrl } from './projectDetails';
 import { localizedProjectFields, projectEditFields } from './projectRecords';
 import { projectRequestKey } from './projectRequests';
 
@@ -155,7 +156,7 @@ function invalidateProjectQueries(state, action, resource) {
  * Access changes clear cached content. Ordinary mutations retain loaded data and
  * refresh affected queries; both discard older in-flight responses.
  * Queued-job acknowledgements retain cached project data.
- * Bootstrap summaries initialize records without completing any list/detail query.
+ * Bootstrap details complete base display queries for their locale, but no lists or includes.
  *
  * @param {ProjectState|undefined} state - Existing project state, if initialized.
  * @param {Object} action - Bootstrap, request, or legacy access/mutation action.
@@ -280,7 +281,28 @@ export function reduceProjects(state = emptyProjects(), action) {
               ? ['contact_email']
               : [];
     const received = action.single ? [action.data.data] : action.data.data;
+    const requests = { ...state.requests };
     for (const project of received) {
+        if (initializing) {
+            // Both identifier forms refer to the same base detail response. Includes,
+            // editing profiles, and other locales have different keys and still fetch.
+            for (const identifier of [project.id, project.shortname]) {
+                const url = projectDetailUrl(identifier, action.locale);
+                const key = projectRequestKey(
+                    url,
+                    action.context,
+                    state.generation
+                );
+                requests[key] = {
+                    url,
+                    id: project.id,
+                    status: 'succeeded',
+                    error: null,
+                    profile: 'display',
+                    include: [],
+                };
+            }
+        }
         const stable = {};
         const localized = {};
         const stableEdit = {};
@@ -334,9 +356,8 @@ export function reduceProjects(state = emptyProjects(), action) {
                           pagination: action.data.pagination,
                       },
                   },
-        // Bootstrap contains summaries, not evidence that a list/detail query is complete.
         requests: initializing
-            ? state.requests
+            ? requests
             : {
                   ...state.requests,
                   [action.key]: {

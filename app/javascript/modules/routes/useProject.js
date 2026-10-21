@@ -15,7 +15,8 @@ import useProjectIdentity from './useProjectIdentity';
 
 /**
  * Loads the current project's display or editing details through Redux, using its route or domain.
- * Bootstrap supplies routing identity only; project data stays unavailable until the requested details load.
+ * Bootstrap supplies base display details for its locale. Other locales, editing data,
+ * and optional includes load on demand before they are returned here.
  *
  * @param {ProjectDetailOptions} [options={}] - Locale, profile, and optional includes.
  * @returns {ProjectIdentity & ProjectDetailResult} Project identity, requested details, request status, and refresh.
