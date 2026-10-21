@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import {
     CollectionsAdminPage,
@@ -25,18 +25,20 @@ import {
 } from 'modules/admin';
 import {
     clearViewModes,
-    getProjectId,
+    getViewMode,
     setArchiveId,
     setAvailableViewModes,
     setViewMode,
 } from 'modules/archive';
-import { getCurrentProject } from 'modules/data';
+import { useI18n } from 'modules/i18n';
 import { InterviewContainer } from 'modules/interview';
 import { TextPage } from 'modules/layout';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { RegistryContainer } from 'modules/registry';
 import { SearchPage } from 'modules/search';
 import { SearchMap } from 'modules/search-map';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import {
     AccountPage,
     ActivateAccount,
@@ -46,23 +48,52 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 
+import useProject from './useProject';
+
+/**
+ * Renders project pages and initializes view modes after project settings load.
+ * Keeps a valid user-selected mode when details refresh within the same project.
+ * @returns {React.ReactElement} Project routes, loading indicator, or request error.
+ */
 export default function ProjectRoutes() {
-    const projectId = useSelector(getProjectId);
-    const project = useSelector(getCurrentProject);
+    const { t } = useI18n();
+    const { project, isLoading, error } = useProject({});
+    const projectDbId = project?.id;
+    const viewModes = project?.view_modes;
+    const currentViewMode = useSelector(getViewMode);
+    const initializedFor = useRef(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // Set project-specific redux data here.
-        dispatch(setAvailableViewModes(project?.view_modes));
-        dispatch(setViewMode(project?.view_modes?.[0] || null));
+        if (!projectDbId || !viewModes) return;
+        dispatch(setAvailableViewModes(viewModes));
+        if (
+            initializedFor.current !== projectDbId ||
+            !viewModes.includes(currentViewMode)
+        ) {
+            dispatch(setViewMode(viewModes[0] || null));
+        }
+        initializedFor.current = projectDbId;
+    }, [dispatch, projectDbId, viewModes, currentViewMode]);
 
-        return function unsetCurrentProjectData() {
-            // Unset project-specific redux data here.
+    useEffect(() => {
+        if (!projectDbId) return;
+        return () => {
             dispatch(clearViewModes());
             dispatch(setArchiveId(null));
-            //dispatch(setProjectId(null));
         };
-    }, [projectId, dispatch]);
+    }, [dispatch, projectDbId]);
+
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner withPadding />;
 
     return (
         <ErrorBoundary>
