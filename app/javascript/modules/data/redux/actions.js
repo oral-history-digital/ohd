@@ -255,7 +255,10 @@ export function deleteData(
             Loader.delete(
                 url,
                 dispatch,
-                (json) => receiveMutationData(json, dataType),
+                (json) => ({
+                    ...receiveMutationData(json, dataType),
+                    mutationDeleted: true,
+                }),
                 callback
             );
         };
@@ -269,7 +272,10 @@ export function deleteData(
             Loader.delete(
                 url,
                 dispatch,
-                (json) => receiveMutationData(json, dataType),
+                (json) => ({
+                    ...receiveMutationData(json, dataType),
+                    mutationDeleted: true,
+                }),
                 callback
             );
         };

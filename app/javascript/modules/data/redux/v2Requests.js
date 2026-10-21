@@ -105,6 +105,7 @@ export function fetchV2Data(
         const metadata = {
             apiVersion: 2,
             dataType: resource,
+            url,
             key,
             context,
             generation,
