@@ -1,11 +1,5 @@
 import shuffle from 'lodash.shuffle';
-import {
-    getArchiveId,
-    getEditView,
-    getLocale,
-    getProjectId,
-} from 'modules/archive';
-import { DEFAULT_LOCALES } from 'modules/constants';
+import { getArchiveId, getEditView, getProjectId } from 'modules/archive';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
 import { findProjectByDomain } from 'modules/routes/domainUtils';
 import { createSelector } from 'reselect';
@@ -274,87 +268,11 @@ export const getShowStartPageVideo = (state) => {
     return projectId === 'mog';
 };
 
-export const getProjectTranslation = createSelector(
-    [getLocale, getCurrentProject],
-    (locale, currentProject) => {
-        if (!currentProject) {
-            return null;
-        } else {
-            const translation = currentProject.translations_attributes.find(
-                (t) => t.locale === locale
-            );
-            return (
-                translation ||
-                currentProject.translations_attributes.find(
-                    (t) => t.locale === currentProject.default_locale
-                )
-            );
-        }
-    }
-);
-
 export const getIsCampscapesProject = (state) => {
     const projectId = getProjectId(state);
 
     return projectId === 'campscapes';
 };
-
-export const getIsCatalog = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.is_catalog === true;
-    }
-);
-
-export const getCurrentProjectMapSectionsHydrating = createSelector(
-    [getCurrentProject, (state) => getStatuses(state)?.projects],
-    (currentProject, projectsStatus) => {
-        if (!currentProject?.id) {
-            return false;
-        }
-
-        return (
-            projectsStatus?.[currentProject.id] === 'fetching' &&
-            !currentProject.map_sections
-        );
-    }
-);
-
-export const getMapSections = createSelector(
-    [getCurrentProject, getCurrentProjectMapSectionsHydrating],
-    (currentProject, isHydrating) => {
-        if (!currentProject) {
-            return [];
-        }
-
-        // While project details are still loading, return no section to avoid
-        // a temporary jump to fallback bounds.
-        if (isHydrating) {
-            return [];
-        }
-
-        if (!currentProject.map_sections) {
-            return [DEFAULT_MAP_SECTION];
-        }
-
-        const sections = Object.values(currentProject.map_sections);
-
-        if (sections.length === 0) {
-            return [DEFAULT_MAP_SECTION];
-        }
-
-        return sections.sort((a, b) => a.order - b.order);
-    }
-);
-
-export const getProjectLocales = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject
-            ? currentProject.available_locales
-            : DEFAULT_LOCALES;
-    }
-);
 
 export const getStartpageProjects = createSelector(
     [getPublicProjects],
@@ -412,13 +330,6 @@ export const getRolesForCurrentProjectFetched = createSelector(
     (rolesStatus, currentProject) => {
         const fetched = /^fetched/;
         return fetched.test(rolesStatus[`for_projects_${currentProject?.id}`]);
-    }
-);
-
-export const getMediaStreamsForCurrentProject = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.media_streams;
     }
 );
 
