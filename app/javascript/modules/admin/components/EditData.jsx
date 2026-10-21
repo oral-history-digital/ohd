@@ -9,9 +9,9 @@ import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
 /**
- * Uses the current route for resource requests without loading project details.
- * @param {Object} props - Record data, form settings, and request callbacks.
- * @returns {React.ReactElement} Resource form and controls.
+ * Displays record fields and lets users switch to a form to edit, save, or cancel changes.
+ * @param {Object} props - Record, field definitions, form defaults, loading state, and save action.
+ * @returns {React.ReactElement} Record details or the active edit form.
  */
 export default function EditData({
     data,
