@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
 
+import { useI18n } from 'modules/i18n';
 import { isSegmentActive } from 'modules/interview-helpers';
+import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
+import { InlineNotification } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Virtuoso } from 'react-virtuoso';
@@ -17,29 +20,39 @@ import {
 import EditTableHeaderContainer from './EditTableHeaderContainer';
 import EditTableRowContainer from './EditTableRowContainer';
 
+/**
+ * Displays editable interview segments with project-aware columns and route-based loading.
+ * @param {Object} props - Interview, segment statuses, filters, playback position, and fetch action.
+ * @returns {React.ReactElement} Segment editing table or loading/error state.
+ */
 export default function EditTable({
     interview,
-    project,
-    locale,
     mediaTime,
     tape,
     filter,
     segmentsStatus,
     archiveId,
-    projectId,
     fetchData,
 }) {
+    const pathBase = usePathBase();
+    const { t } = useI18n();
+    const { project, isLoading, error } = useProject({});
     useEffect(() => {
         if (!segmentsStatus[`for_interviews_${archiveId}`]) {
-            fetchData(
-                { locale, projectId, project },
-                'interviews',
-                archiveId,
-                'segments'
-            );
+            fetchData({ pathBase }, 'interviews', archiveId, 'segments');
         }
-    }, []);
+    }, [archiveId, fetchData, pathBase, segmentsStatus]);
 
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
     if (
         !segmentsStatus[`for_interviews_${archiveId}`] ||
         segmentsStatus[`for_interviews_${archiveId}`].split('-')[0] !==
@@ -130,11 +143,7 @@ EditTable.propTypes = {
     segmentsStatus: PropTypes.object.isRequired,
     filter: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     tape: PropTypes.number.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

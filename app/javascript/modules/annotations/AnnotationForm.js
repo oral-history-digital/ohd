@@ -79,9 +79,7 @@ export default class AnnotationForm extends Component {
 AnnotationForm.propTypes = {
     annotation: PropTypes.object,
     segment: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
+    pathBase: PropTypes.string.isRequired,
     contentLocale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

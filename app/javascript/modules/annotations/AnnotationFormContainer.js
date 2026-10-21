@@ -1,22 +1,22 @@
-import { getLocale, getProjectId } from 'modules/archive';
-import { getCurrentProject, submitData } from 'modules/data';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useCallback } from 'react';
+
+import { submitData } from 'modules/data';
+import { usePathBase } from 'modules/routes';
+import { useDispatch } from 'react-redux';
 
 import AnnotationForm from './AnnotationForm';
 
-const mapStateToProps = (state) => ({
-    locale: getLocale(state),
-    project: getCurrentProject(state),
-    projectId: getProjectId(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        {
-            submitData,
-        },
-        dispatch
+/**
+ * Supplies route context and a stable Redux save action to the existing annotation editor.
+ * @param {Object} props - Annotation, segment, content locale, and form callbacks.
+ * @returns {React.ReactElement} Annotation editor without a legacy project dependency.
+ */
+export default function AnnotationFormContainer(props) {
+    const pathBase = usePathBase();
+    const dispatch = useDispatch();
+    const save = useCallback(
+        (...args) => dispatch(submitData(...args)),
+        [dispatch]
     );
-
-export default connect(mapStateToProps, mapDispatchToProps)(AnnotationForm);
+    return <AnnotationForm {...props} pathBase={pathBase} submitData={save} />;
+}
