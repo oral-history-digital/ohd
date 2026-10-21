@@ -1,6 +1,8 @@
 require "application_system_test_case"
+require_relative "helpers/project_loading_helper"
 
 class EditProjectInfoFormTest < ApplicationSystemTestCase
+  include ProjectLoadingHelper
 
   test 'edit Archive configuration form' do
     visit '/'
@@ -75,5 +77,19 @@ class EditProjectInfoFormTest < ApplicationSystemTestCase
       new_value: 'Updated Test Archive Name',
       db_field_to_check: 'name'
     )
+  end
+
+  test 'project name save updates header and footer without a document reload' do
+    setup_project_loading_records
+    login_as @admin.email
+    open_project_loading_configuration('Edit archive information')
+    find('button', text: 'Edit', exact_text: true, match: :first).click
+    mark_project_document
+    fill_in 'project_name_en', with: 'Renamed Alpha Archive'
+    within('form#project') { click_on 'Submit' }
+    assert_selector 'footer', text: 'Renamed Alpha Archive', wait: 15
+    assert_selector 'nav[aria-label="breadcrumb"]', text: 'Renamed Alpha Archive'
+    assert_equal 'Renamed Alpha Archive', @alpha.reload.name(:en)
+    assert_same_project_document
   end
 end
