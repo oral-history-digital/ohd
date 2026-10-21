@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
 import BiographicalEntryContainer from './BiographicalEntryContainer';
-import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
+import BiographicalEntryForm from './BiographicalEntryForm';
 import { usePersonWithAssociations } from './hooks';
 
 export default function BiographicalEntries({ interview, intervieweeId }) {
@@ -61,7 +61,7 @@ export default function BiographicalEntries({ interview, intervieweeId }) {
                         }
                     >
                         {(close) => (
-                            <BiographicalEntryFormContainer
+                            <BiographicalEntryForm
                                 person={interviewee}
                                 onSubmit={close}
                                 onCancel={close}
