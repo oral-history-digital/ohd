@@ -65,6 +65,7 @@ jest.mock('modules/routes', () => ({
     }),
 }));
 jest.mock('modules/utils', () => ({
+    localizedValue: jest.requireActual('../../utils/localizedValue').default,
     sanitizeHtml: (value) => value,
 }));
 jest.mock('react-redux', () => ({
