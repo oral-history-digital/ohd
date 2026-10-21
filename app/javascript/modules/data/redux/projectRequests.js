@@ -11,7 +11,7 @@ const pendingByStore = new WeakMap();
  * @param {Object} state - Root Redux state.
  * @returns {string} Serialized account, session, role, and project-access values.
  */
-export function v2AccessContext(state) {
+export function projectAccessContext(state) {
     const user = state.data.users?.current;
     return JSON.stringify([
         Boolean(state.user?.isLoggedIn),
@@ -35,16 +35,16 @@ export function v2AccessContext(state) {
  * Identifies a read request within an account and cache generation.
  *
  * @param {string} url - Request URL with normalized query parameters.
- * @param {string} context - Serialized access settings from v2AccessContext.
+ * @param {string} context - Serialized access settings from projectAccessContext.
  * @param {number} generation - Counter increased when cached data is invalidated.
  * @returns {string} Key used for the query result, request status, and pending promise.
  */
-export function v2RequestKey(url, context, generation) {
+export function projectRequestKey(url, context, generation) {
     return JSON.stringify([url, context, generation]);
 }
 
 /**
- * @typedef {Object} V2ReadResult
+ * @typedef {Object} ProjectReadResult
  * @property {?Object} response - API response envelope, or null for a skipped request.
  * @property {?{status: ?number, message: string}} error - Failure, or null on success.
  */
@@ -55,7 +55,7 @@ export function v2RequestKey(url, context, generation) {
  * reused unless refreshed; responses invalidated by access changes or mutations
  * are discarded. Failures resolve with an error rather than rejecting.
  *
- * @param {string} resource - Entity name handled by a v2 reducer, such as projects.
+ * @param {string} resource - Entity name whose records and requests share this flow (currently projects).
  * @param {string} url - Request URL with normalized query parameters.
  * @param {Object} [options={}] - Response locale and refresh settings.
  * @param {string} options.locale - Requested locale used to store display values.
@@ -63,26 +63,26 @@ export function v2RequestKey(url, context, generation) {
  * @param {boolean} [options.single=false] - Expect one record instead of a paginated list.
  * @param {string} [options.projectResource] - Legacy project-owned list using this request flow.
  * @param {number} [options.projectId] - Expected owner of that resource list.
- * @returns {function(Function, Function): Promise<V2ReadResult>} Redux thunk. Cached
+ * @returns {function(Function, Function): Promise<ProjectReadResult>} Redux thunk. Cached
  * or obsolete requests resolve with both response and error set to null.
  */
-export function fetchV2Data(
+export function fetchProjectData(
     resource,
     url,
     { locale, refresh = false, single = false, projectResource, projectId } = {}
 ) {
     return (dispatch, getState) => {
         const state = getState();
-        const context = v2AccessContext(state);
-        const generation = state.data.v2?.[resource]?.generation || 0;
-        const key = v2RequestKey(url, context, generation);
+        const context = projectAccessContext(state);
+        const generation = state.data[resource]?.generation || 0;
+        const key = projectRequestKey(url, context, generation);
         let pending = pendingByStore.get(getState);
         if (!pending) {
             pending = new Map();
             pendingByStore.set(getState, pending);
         }
         if (pending.has(key)) return pending.get(key);
-        const previous = state.data.v2?.[resource];
+        const previous = state.data[resource];
         if (
             !refresh &&
             previous?.context === context &&
@@ -120,15 +120,15 @@ export function fetchV2Data(
          * Settles the shared promise and builds the action for the reducer.
          *
          * @param {string} type - Success or failure action type.
-         * @param {V2ReadResult} result - Response or structured error.
+         * @param {ProjectReadResult} result - Response or structured error.
          * @returns {Object} Redux action; obsolete payloads are removed.
          */
         const finish = (type, result) => {
             pending.delete(key);
             const current = getState();
             const obsolete =
-                v2AccessContext(current) !== context ||
-                (current.data.v2?.[resource]?.generation || 0) !== generation;
+                projectAccessContext(current) !== context ||
+                (current.data[resource]?.generation || 0) !== generation;
             if (obsolete) result = { response: null, error: null };
             resolve(result);
             return {

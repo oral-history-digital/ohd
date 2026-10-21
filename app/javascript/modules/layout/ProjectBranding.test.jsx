@@ -20,8 +20,9 @@ jest.mock('modules/api/Loader', () => ({
 jest.mock('modules/data', () => ({
     getProjectIdentities: jest.requireActual('../data/redux/projectDetails')
         .getProjectIdentities,
-    getProjects: jest.requireActual('../data/redux/selectors/baseSelectors')
-        .getProjects,
+    getProjectResources: jest.requireActual(
+        '../data/redux/selectors/baseSelectors'
+    ).getProjectResources,
     useProjectDetail: jest.requireActual('../data/hooks/useProjectDetail')
         .useProjectDetail,
 }));

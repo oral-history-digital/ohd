@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { readProjectRecord } from './projectRecords';
-import { v2AccessContext, v2RequestKey } from './v2Requests';
+import { projectAccessContext, projectRequestKey } from './projectRequests';
 
 /**
  * @typedef {Object} ProjectDetailOptions
@@ -48,16 +48,16 @@ export function projectDetailUrl(
 /**
  * Selects routing identities, preferring current Redux records over bootstrap data.
  * Stable bootstrap identities remain available after account changes clear project content.
- * Legacy storage also holds nested resources; only routing fields are returned here.
+ * Only public routing fields are returned; resources and project content stay separate.
  *
  * @param {Object} state - Root Redux state.
  * @returns {Object<number, Object>} IDs, shortnames, domains, and umbrella flags by project ID.
  */
 export const getProjectIdentities = createSelector(
     [
+        (state) => state.data.projects?.identities,
         (state) => state.data.projects,
-        (state) => state.data.v2?.projects,
-        v2AccessContext,
+        projectAccessContext,
     ],
     (bootstrap, projects, context) => {
         const records = projects?.context === context ? projects.records : {};
@@ -82,8 +82,8 @@ export const getProjectIdentities = createSelector(
 export const makeProjectSelector = () =>
     createSelector(
         [
-            (state) => state.data.v2?.projects,
-            v2AccessContext,
+            (state) => state.data.projects,
+            projectAccessContext,
             (_state, id) => id,
             (_state, _id, locale) => locale,
         ],
@@ -103,13 +103,17 @@ export const makeProjectSelector = () =>
 export const makeProjectDetailSelector = () =>
     createSelector(
         [
-            (state) => state.data.v2?.projects,
-            v2AccessContext,
+            (state) => state.data.projects,
+            projectAccessContext,
             (_state, url) => url,
             (_state, _url, locale) => locale,
         ],
         (projects, context, url, locale) => {
-            const key = v2RequestKey(url, context, projects?.generation || 0);
+            const key = projectRequestKey(
+                url,
+                context,
+                projects?.generation || 0
+            );
             const request =
                 url && projects?.context === context
                     ? projects.requests[key]

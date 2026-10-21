@@ -154,7 +154,6 @@ class ApplicationController < ActionController::Base
       current_project: current_project,
       umbrella_project: InstanceSetting.current.umbrella_project
     )
-    projects_data = initial_projects_payload[:projects_data]
 
     @initial_redux_state ||= {
       archive: {
@@ -225,7 +224,6 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: projects_data,
         instance_settings: cache_single(InstanceSetting.current),
         institutions: {},
         collections: {},
@@ -364,7 +362,7 @@ class ApplicationController < ActionController::Base
         Api::V2::ProjectListSerializer.new(project, umbrella_project_id: umbrella_project&.id).as_json
       end
     end
-    { projects_data: identities, summaries: { locale: I18n.locale.to_s, data: summaries } }
+    { summaries: { locale: I18n.locale.to_s, data: summaries, identities: identities } }
   end
 
   def country_keys

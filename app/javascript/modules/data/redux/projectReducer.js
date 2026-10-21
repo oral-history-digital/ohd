@@ -10,7 +10,7 @@ import {
     UPDATE_DATA,
 } from './action-types';
 import { localizedProjectFields, projectEditFields } from './projectRecords';
-import { v2RequestKey } from './v2Requests';
+import { projectRequestKey } from './projectRequests';
 
 const accessResources = [
     'roles',
@@ -77,7 +77,9 @@ const relatedResources = [
 ];
 
 /**
- * @typedef {Object} V2ProjectState
+ * @typedef {Object} ProjectState
+ * @property {Object<string, Object>} identities - Public routing fields retained after access changes.
+ * @property {Object<string, Object>} resources - Legacy nested resource maps by owning project ID.
  * @property {Object<string, Object>} records - Shared fields by project ID, with
  * locale-independent editing and email-preview values under records[id].edit.
  * @property {Object} translations - Localized values under display[id][locale] and
@@ -89,14 +91,17 @@ const relatedResources = [
  */
 
 /**
- * Creates empty v2 project state for an access context and cache generation.
+ * Creates empty project content for an access context and cache generation.
  *
  * @param {number} [generation=0] - Counter retained or increased by the caller.
  * @param {?string} [context=null] - Serialized access settings, or null before fetching.
- * @returns {V2ProjectState} Empty records, translations, lists, and request status.
+ * @param {Object} [previous={}] - Routing identities and legacy resources to retain.
+ * @returns {ProjectState} Empty records, translations, lists, and request status.
  */
-function emptyProjects(generation = 0, context = null) {
+function emptyProjects(generation = 0, context = null, previous = {}) {
     return {
+        identities: previous.identities || {},
+        resources: previous.resources || {},
         records: {},
         translations: { display: {}, edit: {}, stored: {} },
         lists: {},
@@ -111,10 +116,10 @@ function emptyProjects(generation = 0, context = null) {
  * Moves all query keys to the next generation so pre-save responses are discarded.
  * Pending reads restart because their old responses can no longer be accepted.
  *
- * @param {V2ProjectState} state - Current records and query results.
+ * @param {ProjectState} state - Current records and query results.
  * @param {Object} action - Resource mutation with an optional owning project ID.
  * @param {string} resource - Changed resource, including legacy nested resources.
- * @returns {V2ProjectState} Retained data with refreshed query keys and stale request statuses.
+ * @returns {ProjectState} Retained data with refreshed query keys and stale request statuses.
  */
 function invalidateProjectQueries(state, action, resource) {
     const generation = state.generation + 1;
@@ -133,7 +138,7 @@ function invalidateProjectQueries(state, action, resource) {
                 ? request.projectResource === resource
                 : !affiliateResources.includes(resource) ||
                   request.include?.includes('affiliates'));
-        const key = v2RequestKey(request.url, state.context, generation);
+        const key = projectRequestKey(request.url, state.context, generation);
         requests[key] =
             affected || request.status === 'pending'
                 ? { ...request, status: 'stale', error: null }
@@ -144,7 +149,7 @@ function invalidateProjectQueries(state, action, resource) {
 }
 
 /**
- * Stores project lists and details without changing legacy project records.
+ * Stores normalized project lists and details alongside routing and nested resources.
  * Merges shared fields while preserving omitted fields and other locales. Editing
  * additions and preview contact data stay separate from ordinary display reads.
  * Access changes clear cached content. Ordinary mutations retain loaded data and
@@ -152,11 +157,11 @@ function invalidateProjectQueries(state, action, resource) {
  * Queued-job acknowledgements retain cached project data.
  * Bootstrap summaries initialize records without completing any list/detail query.
  *
- * @param {V2ProjectState|undefined} state - Existing v2 project state, if initialized.
+ * @param {ProjectState|undefined} state - Existing project state, if initialized.
  * @param {Object} action - Bootstrap, request, or legacy access/mutation action.
- * @returns {V2ProjectState|undefined} Updated state, or the original value for ignored actions.
+ * @returns {ProjectState|undefined} Updated state, or the original value for ignored actions.
  */
-export function reduceV2Projects(state, action) {
+export function reduceProjects(state = emptyProjects(), action) {
     // Legacy saves trigger fresh reads; their response shapes never become project records here.
     if (action.apiVersion !== 2) {
         if (!state) return state;
@@ -178,7 +183,7 @@ export function reduceV2Projects(state, action) {
             action.type === REPLACE_INSTANCE_SETTINGS ||
             [LOGGED_IN, LOGOUT, AUTH_ERROR].includes(action.type)
         )
-            return emptyProjects(state.generation + 1);
+            return emptyProjects(state.generation + 1, null, state);
         if (recordsChanged) {
             const previous = state.records[action.id];
             const accessChanged =
@@ -193,7 +198,7 @@ export function reduceV2Projects(state, action) {
                                     (action.data[field] || null)
                         )));
             if (accessResources.includes(resource) || accessChanged)
-                return emptyProjects(state.generation + 1);
+                return emptyProjects(state.generation + 1, null, state);
             return invalidateProjectQueries(state, action, resource);
         }
         return state;
@@ -202,10 +207,14 @@ export function reduceV2Projects(state, action) {
     state ||= emptyProjects();
     if (action.generation !== state.generation) return state;
     const initializing = action.type === INITIALIZE_PROJECTS;
-    if (initializing) state = emptyProjects(state.generation, action.context);
+    if (initializing)
+        state = {
+            ...emptyProjects(state.generation, action.context, state),
+            identities: action.identities || state.identities,
+        };
     if (action.type === REQUEST_DATA) {
         if (state.context !== action.context)
-            state = emptyProjects(state.generation, action.context);
+            state = emptyProjects(state.generation, action.context, state);
         return {
             ...state,
             requests: {

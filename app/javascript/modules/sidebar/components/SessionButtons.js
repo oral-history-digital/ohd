@@ -2,7 +2,7 @@
 import classNames from 'classnames';
 import { getArchiveId } from 'modules/archive';
 import { OHD_DOMAINS } from 'modules/constants';
-import { clearStateData, getProjects } from 'modules/data';
+import { clearStateData, getProjectResources } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { pathWithoutInternalSessionFlag } from 'modules/query-string';
 import { usePathBase, useProjectIdentity } from 'modules/routes';
@@ -25,7 +25,7 @@ export default function SessionButtons({ className }) {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(getIsLoggedIn);
     const archiveId = useSelector(getArchiveId);
-    const projects = useSelector(getProjects);
+    const projects = useSelector(getProjectResources);
     const loginReturnPath = pathWithoutInternalSessionFlag(
         location.pathname,
         location.search

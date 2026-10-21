@@ -71,67 +71,70 @@ export const state = {
             },
         },
         projects: {
-            1: {
-                id: 1,
-                type: 'Project',
-                identifier: 'cdoh',
-                available_locales: ['de', 'en', 'ru'],
-                has_map: true,
-                root_registry_entry_id: 1,
-                collections: {
-                    1: {
-                        id: 1,
-                        type: 'Collection',
-                    },
-                },
-                people: {
-                    4: {
-                        id: 4,
-                        type: 'Person',
-                    },
-                },
-                registry_name_types: {
-                    2: {
-                        id: 2,
-                        type: 'RegistryNameType',
-                        code: 'first_name',
-                        name: 'Vorname',
-                    },
-                },
-                roles: {
-                    1: {
-                        id: 1,
-                        type: 'Role',
-                    },
-                },
-                task_types: {
-                    3: {
-                        id: 3,
-                        type: 'TaskType',
-                        key: 'protocol',
-                        abbreviation: 'Pro',
-                    },
-                },
-                contribution_types: {
-                    1: {
-                        id: 1,
-                        type: 'ContributionType',
-                        code: 'interviewee',
-                        project_id: 1,
-                        label: {
-                            de: 'Interviewte*r',
-                            en: 'Interviewee',
+            identities: { 1: { id: 1, shortname: 'cdoh' } },
+            resources: {
+                1: {
+                    id: 1,
+                    type: 'Project',
+                    identifier: 'cdoh',
+                    available_locales: ['de', 'en', 'ru'],
+                    has_map: true,
+                    root_registry_entry_id: 1,
+                    collections: {
+                        1: {
+                            id: 1,
+                            type: 'Collection',
                         },
                     },
-                },
-                media_streams: {
-                    1: {
-                        id: 1,
-                        type: 'MediaStream',
-                        project_id: 1,
-                        path: 'https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4',
-                        media_type: 'video',
-                        resolution: '480p',
+                    people: {
+                        4: {
+                            id: 4,
+                            type: 'Person',
+                        },
+                    },
+                    registry_name_types: {
+                        2: {
+                            id: 2,
+                            type: 'RegistryNameType',
+                            code: 'first_name',
+                            name: 'Vorname',
+                        },
+                    },
+                    roles: {
+                        1: {
+                            id: 1,
+                            type: 'Role',
+                        },
+                    },
+                    task_types: {
+                        3: {
+                            id: 3,
+                            type: 'TaskType',
+                            key: 'protocol',
+                            abbreviation: 'Pro',
+                        },
+                    },
+                    contribution_types: {
+                        1: {
+                            id: 1,
+                            type: 'ContributionType',
+                            code: 'interviewee',
+                            project_id: 1,
+                            label: {
+                                de: 'Interviewte*r',
+                                en: 'Interviewee',
+                            },
+                        },
+                    },
+                    media_streams: {
+                        1: {
+                            id: 1,
+                            type: 'MediaStream',
+                            project_id: 1,
+                            path: 'https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4',
+                            media_type: 'video',
+                            resolution: '480p',
+                        },
                     },
                 },
             },
@@ -313,115 +316,118 @@ export const contributionState = {
             },
         },
         projects: {
-            1: {
-                id: 1,
-                type: 'Project',
-                shortname: 'cdoh',
-                identifier: 'cdoh',
-                available_locales: ['de', 'en', 'ru'],
-                has_map: true,
-                root_registry_entry_id: 1,
-                grant_access_without_login: false,
-                grant_project_access_instantly: false,
-                contribution_types: {
-                    1: {
-                        id: 1,
-                        project_id: 1,
-                        code: 'cinematographer',
-                        order: 2,
-                        use_in_details_view: true,
-                    },
-                    //2: {id: 2, project_id: 1, code: 'interviewee', order: false, use_in_details_view: false},
-                    3: {
-                        id: 3,
-                        project_id: 1,
-                        code: 'interviewer',
-                        order: 1,
-                        use_in_details_view: true,
-                    },
-                    4: {
-                        id: 4,
-                        project_id: 1,
-                        code: 'other_attender',
-                        order: 5,
-                        use_in_details_view: true,
-                    },
-                    5: {
-                        id: 5,
-                        project_id: 1,
-                        code: 'producer',
-                        order: 4,
-                        use_in_details_view: true,
-                    },
-                    6: {
-                        id: 6,
-                        project_id: 1,
-                        code: 'research',
-                        order: 10,
-                        use_in_details_view: true,
-                    },
-                    7: {
-                        id: 7,
-                        project_id: 1,
-                        code: 'segmentator',
-                        order: 8,
-                        use_in_details_view: true,
-                    },
-                    8: {
-                        id: 8,
-                        project_id: 1,
-                        code: 'sound',
-                        order: 3,
-                        use_in_details_view: true,
-                    },
-                    9: {
-                        id: 9,
-                        project_id: 1,
-                        code: 'transcriptor',
-                        order: 6,
-                        use_in_details_view: true,
-                    },
-                    10: {
-                        id: 10,
-                        project_id: 1,
-                        code: 'translator',
-                        order: 7,
-                        use_in_details_view: true,
-                    },
-                    11: {
-                        id: 11,
-                        project_id: false,
-                        code: 'proofreader',
-                        order: 9,
-                        use_in_details_view: true,
-                    },
-                    12: {
-                        id: 12,
-                        project_id: false,
-                        code: 'quality_manager_interviewing',
-                        order: 11,
-                        use_in_details_view: false,
-                    },
-                    13: {
-                        id: 13,
-                        project_id: false,
-                        code: 'quality_manager_transcription',
-                        order: 12,
-                        use_in_details_view: false,
-                    },
-                    14: {
-                        id: 14,
-                        project_id: false,
-                        code: 'quality_manager_translation',
-                        order: 13,
-                        use_in_details_view: false,
-                    },
-                    15: {
-                        id: 15,
-                        project_id: false,
-                        code: 'quality_manager_research',
-                        order: 14,
-                        use_in_details_view: false,
+            identities: { 1: { id: 1, shortname: 'cdoh' } },
+            resources: {
+                1: {
+                    id: 1,
+                    type: 'Project',
+                    shortname: 'cdoh',
+                    identifier: 'cdoh',
+                    available_locales: ['de', 'en', 'ru'],
+                    has_map: true,
+                    root_registry_entry_id: 1,
+                    grant_access_without_login: false,
+                    grant_project_access_instantly: false,
+                    contribution_types: {
+                        1: {
+                            id: 1,
+                            project_id: 1,
+                            code: 'cinematographer',
+                            order: 2,
+                            use_in_details_view: true,
+                        },
+                        //2: {id: 2, project_id: 1, code: 'interviewee', order: false, use_in_details_view: false},
+                        3: {
+                            id: 3,
+                            project_id: 1,
+                            code: 'interviewer',
+                            order: 1,
+                            use_in_details_view: true,
+                        },
+                        4: {
+                            id: 4,
+                            project_id: 1,
+                            code: 'other_attender',
+                            order: 5,
+                            use_in_details_view: true,
+                        },
+                        5: {
+                            id: 5,
+                            project_id: 1,
+                            code: 'producer',
+                            order: 4,
+                            use_in_details_view: true,
+                        },
+                        6: {
+                            id: 6,
+                            project_id: 1,
+                            code: 'research',
+                            order: 10,
+                            use_in_details_view: true,
+                        },
+                        7: {
+                            id: 7,
+                            project_id: 1,
+                            code: 'segmentator',
+                            order: 8,
+                            use_in_details_view: true,
+                        },
+                        8: {
+                            id: 8,
+                            project_id: 1,
+                            code: 'sound',
+                            order: 3,
+                            use_in_details_view: true,
+                        },
+                        9: {
+                            id: 9,
+                            project_id: 1,
+                            code: 'transcriptor',
+                            order: 6,
+                            use_in_details_view: true,
+                        },
+                        10: {
+                            id: 10,
+                            project_id: 1,
+                            code: 'translator',
+                            order: 7,
+                            use_in_details_view: true,
+                        },
+                        11: {
+                            id: 11,
+                            project_id: false,
+                            code: 'proofreader',
+                            order: 9,
+                            use_in_details_view: true,
+                        },
+                        12: {
+                            id: 12,
+                            project_id: false,
+                            code: 'quality_manager_interviewing',
+                            order: 11,
+                            use_in_details_view: false,
+                        },
+                        13: {
+                            id: 13,
+                            project_id: false,
+                            code: 'quality_manager_transcription',
+                            order: 12,
+                            use_in_details_view: false,
+                        },
+                        14: {
+                            id: 14,
+                            project_id: false,
+                            code: 'quality_manager_translation',
+                            order: 13,
+                            use_in_details_view: false,
+                        },
+                        15: {
+                            id: 15,
+                            project_id: false,
+                            code: 'quality_manager_research',
+                            order: 14,
+                            use_in_details_view: false,
+                        },
                     },
                 },
             },
@@ -437,25 +443,31 @@ export const projectState = {
     },
     data: {
         projects: {
-            1: {
-                id: 1,
-                type: 'Project',
-                shortname: 'cdoh',
-                translations_attributes: [{ locale: 'de' }, { locale: 'es' }],
-                available_locales: ['de', 'en', 'ru'],
-                is_catalog: false,
-                map_sections: {
-                    1: {
-                        id: 1,
-                        type: 'MapSection',
-                        name: 'europe',
-                        order: 1,
-                    },
-                    2: {
-                        id: 2,
-                        type: 'MapSection',
-                        name: 'usa',
-                        order: 0,
+            identities: { 1: { id: 1, shortname: 'cdoh' } },
+            resources: {
+                1: {
+                    id: 1,
+                    type: 'Project',
+                    shortname: 'cdoh',
+                    translations_attributes: [
+                        { locale: 'de' },
+                        { locale: 'es' },
+                    ],
+                    available_locales: ['de', 'en', 'ru'],
+                    is_catalog: false,
+                    map_sections: {
+                        1: {
+                            id: 1,
+                            type: 'MapSection',
+                            name: 'europe',
+                            order: 1,
+                        },
+                        2: {
+                            id: 2,
+                            type: 'MapSection',
+                            name: 'usa',
+                            order: 0,
+                        },
                     },
                 },
             },

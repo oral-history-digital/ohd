@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import { getProjectIdentities } from '../projectDetails';
 import {
     getInterviews,
-    getProjects,
+    getProjectResources,
     getStatuses,
     getUsers,
 } from './baseSelectors';
@@ -26,7 +26,7 @@ const EMPTY_STATUSES = {};
  * @returns {Object|null} Nested-resource holder with its project ID, or null before identity resolves.
  */
 export const getCurrentProject = createSelector(
-    [getProjectId, getProjectIdentities, getProjects],
+    [getProjectId, getProjectIdentities, getProjectResources],
     (projectId, identities, projects) => {
         const identity =
             Object.values(identities).find(

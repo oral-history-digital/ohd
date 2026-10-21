@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-    fetchV2Data,
-    v2AccessContext,
-    v2RequestKey,
-} from '../redux/v2Requests';
+    fetchProjectData,
+    projectAccessContext,
+    projectRequestKey,
+} from '../redux/projectRequests';
 
 /**
  * Loads a complete project-owned resource list and waits before rendering its consumers.
@@ -29,21 +29,21 @@ export function FetchProjectResource({ resource, children }) {
     const pathBase = usePathBase();
     const { locale, t } = useI18n();
     const dispatch = useDispatch();
-    const context = useSelector(v2AccessContext);
+    const context = useSelector(projectAccessContext);
     const generation = useSelector(
-        (state) => state.data.v2?.projects?.generation || 0
+        (state) => state.data.projects?.generation || 0
     );
     const url = `${pathBase}/${resource}.json?for_projects=${projectDbId}`;
-    const key = v2RequestKey(url, context, generation);
+    const key = projectRequestKey(url, context, generation);
     const request = useSelector((state) =>
-        state.data.v2?.projects?.context === context
-            ? state.data.v2.projects.requests[key]
+        state.data.projects?.context === context
+            ? state.data.projects.requests[key]
             : undefined
     );
     useEffect(() => {
         if (projectDbId && (!request?.status || request.status === 'stale'))
             dispatch(
-                fetchV2Data('projects', url, {
+                fetchProjectData('projects', url, {
                     locale,
                     projectResource: resource,
                     projectId: projectDbId,

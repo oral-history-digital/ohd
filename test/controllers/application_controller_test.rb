@@ -80,8 +80,8 @@ class ApplicationControllerTest < ActiveSupport::TestCase
     summaries.each { |record| assert api_schema.schema('ProjectSummary').valid?(record) }
     assert_equal 'English project', summaries.find { |record| record['id'] == project.id }['name']
     assert_equal({ id: umbrella.id, shortname: umbrella.shortname, archive_domain: umbrella.archive_domain.presence, is_umbrella: true },
-      payload[:projects_data][umbrella.id.to_s])
-    assert_equal %i[archive_domain id is_umbrella shortname], payload[:projects_data][project.id.to_s].keys.sort
+      payload[:summaries][:identities][umbrella.id.to_s])
+    assert_equal %i[archive_domain id is_umbrella shortname], payload[:summaries][:identities][project.id.to_s].keys.sort
     assert_not payload.key?(:project_representations)
   end
 
@@ -94,11 +94,11 @@ class ApplicationControllerTest < ActiveSupport::TestCase
     Rails.stub(:cache, ActiveSupport::Cache::MemoryStore.new) do
       payload = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
       assert_equal [project.id], payload[:summaries][:data].map { |record| record[:id] }
-      assert_equal 1, payload[:projects_data].size
+      assert_equal 1, payload[:summaries][:identities].size
       account = nil
       payload = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
       assert_empty payload[:summaries][:data]
-      assert_equal project.id, payload[:projects_data][project.id.to_s][:id]
+      assert_equal project.id, payload[:summaries][:identities][project.id.to_s][:id]
     end
   end
 
