@@ -417,6 +417,70 @@ test('account and mutation changes clear data, refetch mounted lists, and reject
     expect(result.current.projects[0].name).toBe('Fresh');
 });
 
+test('saving an annotation updates its segment without clearing project views or refetching settings', () => {
+    const store = makeStore();
+    store.dispatch(
+        receiveData({
+            archive_id: 'pilot001',
+            data_type: 'interviews',
+            data: {
+                id: 99,
+                segments: { 1: { 3: { id: 3, annotations: {} } } },
+            },
+        })
+    );
+    const { result } = mount(store, () => ({
+        list: useProjectList(),
+        detail: useProjectDetail(7, { include: ['registry_configuration'] }),
+    }));
+    act(() => {
+        complete([project()], 0);
+        completeDetail(project(7, { root_registry_entry_id: 9 }), 1);
+    });
+    const cachedProjects = store.getState().data.v2.projects;
+    const segment = {
+        id: 3,
+        annotations: { 12: { id: 12, text: { ger: 'New annotation' } } },
+    };
+    act(() =>
+        store.dispatch(
+            submitData(
+                { pathBase: '/pilot/de' },
+                {
+                    annotation: {
+                        segment_id: 3,
+                        locale: 'ger',
+                        text: 'New annotation',
+                    },
+                }
+            )
+        )
+    );
+    const [, , dispatch, receive] = Loader.post.mock.lastCall;
+    act(() =>
+        dispatch(
+            receive({
+                archive_id: 'pilot001',
+                data_type: 'interviews',
+                nested_data_type: 'segments',
+                nested_id: 3,
+                extra_id: 1,
+                data: segment,
+            })
+        )
+    );
+    expect(store.getState().data.interviews.pilot001.segments[1][3]).toEqual(
+        segment
+    );
+    expect(store.getState().data.v2.projects).toBe(cachedProjects);
+    expect(result.current.detail).toMatchObject({
+        isLoading: false,
+        project: { id: 7, root_registry_entry_id: 9 },
+    });
+    expect(result.current.list.projects).toHaveLength(1);
+    expect(Loader.getJson).toHaveBeenCalledTimes(2);
+});
+
 test.each(['mark_text', 'speaker_designations'])(
     'queued %s work keeps project views loaded while recording processing status',
     (nestedDataType) => {

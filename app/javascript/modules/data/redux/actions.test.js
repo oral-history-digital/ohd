@@ -74,6 +74,42 @@ describe('submitData', () => {
             expect(pathBase).not.toHaveBeenCalled();
             expect(loader.mock.calls[0][3]({})).toMatchObject({
                 mutation: true,
+                mutationResource: 'registry_references',
+            });
+        }
+    );
+
+    it.each([false, true])(
+        'tags annotation saves with the changed resource while keeping the segment response shape (existing: %s)',
+        (existing) => {
+            submitData(
+                { pathBase: '/pilot/de' },
+                {
+                    annotation: {
+                        ...(existing ? { id: 12 } : {}),
+                        text: 'Note',
+                    },
+                }
+            )(jest.fn());
+            const loader = existing ? Loader.put : Loader.post;
+            const receive = loader.mock.lastCall[3];
+            expect(
+                receive({
+                    archive_id: 'pilot001',
+                    data_type: 'interviews',
+                    nested_data_type: 'segments',
+                    nested_id: 3,
+                    extra_id: 1,
+                    data: { id: 3 },
+                })
+            ).toMatchObject({
+                mutation: true,
+                mutationResource: 'annotations',
+                dataType: 'interviews',
+                nestedDataType: 'segments',
+                nestedId: 3,
+                extraId: 1,
+                data: { id: 3 },
             });
         }
     );
