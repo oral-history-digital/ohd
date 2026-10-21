@@ -52,7 +52,7 @@ const relatedResources = [
 /**
  * @typedef {Object} V2ProjectState
  * @property {Object<string, Object>} records - Shared fields by project ID, with
- * locale-independent editing additions under records[id].edit.
+ * locale-independent editing and email-preview values under records[id].edit.
  * @property {Object} translations - Localized values under display[id][locale] and
  * edit[id][locale]. stored[id] holds project translation arrays without fallback.
  * @property {Object<string, Object>} lists - Ordered IDs and pagination by request key.
@@ -82,7 +82,7 @@ function emptyProjects(generation = 0, context = null) {
 /**
  * Stores project lists and details without changing legacy project records.
  * Merges shared fields while preserving omitted fields and other locales. Editing
- * additions are stored separately so display responses cannot overwrite them.
+ * additions and preview contact data stay separate from ordinary display reads.
  * Access changes and relevant mutations clear the cache and invalidate in-flight
  * responses. Queued-job acknowledgements retain cached project data.
  * State is created only when the first v2 project request starts.
@@ -156,7 +156,11 @@ export function reduceV2Projects(state, action) {
     const edit = { ...state.translations.edit };
     const stored = { ...state.translations.stored };
     const editable =
-        action.profile === 'edit' ? projectEditFields(action.include) : [];
+        action.profile === 'edit'
+            ? projectEditFields(action.include)
+            : action.include?.includes('email_preview')
+              ? ['contact_email']
+              : [];
     const received = action.single ? [action.data.data] : action.data.data;
     for (const project of received) {
         const stable = {};
@@ -181,11 +185,14 @@ export function reduceV2Projects(state, action) {
                 ...localized,
             },
         };
-        if (action.profile === 'edit') {
+        // Email previews share protected contact storage with the edit profile.
+        if (editable.length) {
             records[project.id].edit = {
                 ...records[project.id].edit,
                 ...stableEdit,
             };
+        }
+        if (action.profile === 'edit') {
             edit[project.id] = {
                 ...edit[project.id],
                 [action.locale]: {
