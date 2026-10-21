@@ -1,9 +1,11 @@
 import dotProp from 'dot-prop-immutable';
 
+import { v2AccessContext } from '../v2Requests';
 import {
     getCollectionsForCurrentProject,
     getCollectionsStatus,
     getContributionTypesForCurrentProject,
+    getContributionTypesStatus,
     getContributionsStatus,
     getContributorsFetched,
     getCurrentInterview,
@@ -416,5 +418,34 @@ test('getCurrentUser gets user object of current user', () => {
 test('getCurrentUserIsAdmin gets admin status of current user', () => {
     expect(getCurrentUserIsAdmin(state)).toEqual(
         state.data.users.current.admin
+    );
+});
+
+test('finds nested contribution types through modern project identity without a legacy project summary', () => {
+    const types = { 4: { id: 4, code: 'interviewer' } };
+    const modern = {
+        ...projectState,
+        data: {
+            ...projectState.data,
+            projects: { 1: { contribution_types: types } },
+            v2: {
+                projects: {
+                    context: v2AccessContext(projectState),
+                    records: { 1: { id: 1, shortname: 'cdoh' } },
+                },
+            },
+            statuses: {
+                contribution_types: { for_projects_1: 'fetched' },
+                registry_reference_types: { other: 'fetching' },
+            },
+        },
+    };
+    expect(getContributionTypesForCurrentProject(modern)).toEqual(types);
+    expect(getCurrentProject(modern).id).toBe(1);
+    expect(getContributionTypesStatus(modern)).toEqual({
+        for_projects_1: 'fetched',
+    });
+    expect(getContributionTypesStatus(projectState)).toBe(
+        getContributionTypesStatus(projectState)
     );
 });

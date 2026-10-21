@@ -12,6 +12,7 @@ jest.mock('modules/auth', () => ({
 }));
 jest.mock('modules/data', () => ({
     getGroupedContributions: jest.fn(() => []),
+    FetchProjectResource: ({ children }) => children,
 }));
 jest.mock('modules/person', () => ({
     useInterviewContributors: () => ({ data: {} }),
