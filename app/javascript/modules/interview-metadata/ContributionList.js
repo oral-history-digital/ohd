@@ -1,5 +1,5 @@
 import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
-import { getGroupedContributions } from 'modules/data';
+import { FetchProjectResource, getGroupedContributions } from 'modules/data';
 import { useInterviewContributors } from 'modules/person';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
@@ -39,52 +39,55 @@ export default function ContributionList({
     );
     const { isAuthorized } = useAuthorization();
 
-    if (isLoading || typeof people === 'undefined') {
-        return <Spinner />;
-    }
-
     const authorized = isAuthorized(
         { type: 'Contribution', interview_id: interview.id },
         'update'
     );
 
     return (
-        <ul className="ContributionList">
-            {groupedContributions?.map((group) => {
-                const contributions = group?.contributions ?? [];
+        <FetchProjectResource resource="contribution_types">
+            {isLoading || typeof people === 'undefined' ? (
+                <Spinner />
+            ) : (
+                <ul className="ContributionList">
+                    {groupedContributions?.map((group) => {
+                        const contributions = group?.contributions ?? [];
 
-                const visibleCount = contributions.filter(
-                    (c) => c.workflow_state === 'public' || authorized
-                ).length;
+                        const visibleCount = contributions.filter(
+                            (c) => c.workflow_state === 'public' || authorized
+                        ).length;
 
-                return (
-                    visibleCount > 0 && (
-                        <ContributionGroup
-                            key={group.type}
-                            className="ContributionList-item"
-                            contributionType={group.type}
-                        >
-                            {contributions.map((contribution) => {
-                                const person =
-                                    people?.[contribution.person_id] ?? null;
+                        return (
+                            visibleCount > 0 && (
+                                <ContributionGroup
+                                    key={group.type}
+                                    className="ContributionList-item"
+                                    contributionType={group.type}
+                                >
+                                    {contributions.map((contribution) => {
+                                        const person =
+                                            people?.[contribution.person_id] ??
+                                            null;
 
-                                return (
-                                    <ContributionContainer
-                                        person={person}
-                                        contribution={contribution}
-                                        interview={interview}
-                                        key={contribution.id}
-                                        withSpeakerDesignation={
-                                            withSpeakerDesignation
-                                        }
-                                    />
-                                );
-                            })}
-                        </ContributionGroup>
-                    )
-                );
-            })}
-        </ul>
+                                        return (
+                                            <ContributionContainer
+                                                person={person}
+                                                contribution={contribution}
+                                                interview={interview}
+                                                key={contribution.id}
+                                                withSpeakerDesignation={
+                                                    withSpeakerDesignation
+                                                }
+                                            />
+                                        );
+                                    })}
+                                </ContributionGroup>
+                            )
+                        );
+                    })}
+                </ul>
+            )}
+        </FetchProjectResource>
     );
 }
 

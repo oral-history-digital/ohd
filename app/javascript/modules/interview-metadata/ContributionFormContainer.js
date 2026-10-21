@@ -1,23 +1,31 @@
 import { getLocale } from 'modules/archive';
-import { getContributionTypesForCurrentProject } from 'modules/data';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {
+    FetchProjectResource,
+    getContributionTypesForCurrentProject,
+} from 'modules/data';
+import { useSelector } from 'react-redux';
 
 import ContributionForm from './ContributionForm';
 
-const mapStateToProps = (state) => ({
-    locale: getLocale(state),
-    contributionTypes: getContributionTypesForCurrentProject(state),
-});
-
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        {
-            // please NO submitData in here: it would disable
-            // ContributionForm`s functionality
-            // as sub-form
-        },
-        dispatch
+/**
+ * Loads contribution-type choices and supplies them to the contributor editor.
+ * Parent form submission callbacks are forwarded unchanged, including for nested forms.
+ *
+ * @param {Object} props - Contributor form values and parent callbacks.
+ * @returns {React.ReactElement} Contributor editor or resource loading indicator.
+ */
+export default function ContributionFormContainer(props) {
+    const locale = useSelector(getLocale);
+    const contributionTypes = useSelector(
+        getContributionTypesForCurrentProject
     );
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContributionForm);
+    return (
+        <FetchProjectResource resource="contribution_types">
+            <ContributionForm
+                {...props}
+                locale={locale}
+                contributionTypes={contributionTypes}
+            />
+        </FetchProjectResource>
+    );
+}

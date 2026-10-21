@@ -4,6 +4,7 @@ import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
 import { findProjectByDomain } from 'modules/routes/domainUtils';
 import { createSelector } from 'reselect';
 
+import { getProjectIdentities } from '../projectDetails';
 import {
     getInterviews,
     getProjects,
@@ -11,19 +12,28 @@ import {
     getUsers,
 } from './baseSelectors';
 
+// Keep the fallback stable before a resource category has been requested.
+const EMPTY_STATUSES = {};
+
 /**
  * Basic Selectors others depend on
  **/
 
+/**
+ * Selects the current project's legacy nested resources using its routing identity.
+ * Project display and editing data are read through useProject instead.
+ *
+ * @param {Object} state - Root Redux state.
+ * @returns {Object|null} Nested-resource holder with its project ID, or null before identity resolves.
+ */
 export const getCurrentProject = createSelector(
-    [getProjectId, getProjects],
-    (projectId, projects) => {
-        const currentProject =
-            Object.values(projects).find(
+    [getProjectId, getProjectIdentities, getProjects],
+    (projectId, identities, projects) => {
+        const identity =
+            Object.values(identities).find(
                 (project) => project.shortname === projectId
-            ) || findProjectByDomain(projects);
-
-        return currentProject || null;
+            ) || findProjectByDomain(identities);
+        return identity ? { ...projects[identity.id], id: identity.id } : null;
     }
 );
 
@@ -347,9 +357,8 @@ export const getRegistryReferenceTypesStatus = (state) =>
 export const getRegistryNameTypesStatus = (state) =>
     getStatuses(state).registry_reference_types;
 
-// TODO: Is this correct? It gets the same status as getRegistryReferenceTypesStatus
 export const getContributionTypesStatus = (state) =>
-    getStatuses(state).registry_reference_types;
+    getStatuses(state)?.contribution_types || EMPTY_STATUSES;
 
 export const getRootRegistryEntryReload = createSelector(
     [getRegistryEntriesStatus, getCurrentProject],
