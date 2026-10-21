@@ -2,4 +2,4 @@ export * from './action-types';
 export * from './actions';
 export * from './reducer';
 export * from './selectors';
-export { makeProjectSelector } from './projectDetails';
+export { getProjectIdentities, makeProjectSelector } from './projectDetails';

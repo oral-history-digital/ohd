@@ -1,5 +1,4 @@
-import { getProjects, useProjectDetail } from 'modules/data';
-import { useSelector } from 'react-redux';
+import { useProjectDetail } from 'modules/data';
 
 import useProjectIdentity from './useProjectIdentity';
 
@@ -15,37 +14,23 @@ import useProjectIdentity from './useProjectIdentity';
  */
 
 /**
- * Resolves the current project from its route or domain. During migration,
- * calls without options return the legacy Redux record. Passing options (including {})
- * loads API details through Redux, without falling back to the legacy record.
+ * Loads the current project's display or editing details through Redux, using its route or domain.
+ * Bootstrap supplies routing identity only; project data stays unavailable until the requested details load.
  *
- * @param {ProjectDetailOptions} [options] - Locale, profile, and includes; omit to retain the legacy read.
- * @returns {ProjectIdentity|(ProjectIdentity & ProjectDetailResult)} Project identity and, with options, request status and refresh.
+ * @param {ProjectDetailOptions} [options={}] - Locale, profile, and optional includes.
+ * @returns {ProjectIdentity & ProjectDetailResult} Project identity, requested details, request status, and refresh.
  */
-export default function useProject(options) {
+export default function useProject(options = {}) {
     const { projectShortname, projectDbId, isUmbrella } = useProjectIdentity();
-    const projects = useSelector(getProjects);
-    const legacyProject = projects?.[projectDbId];
-    const details = useProjectDetail(
-        options === undefined ? null : projectShortname,
-        options
-    );
-
-    // TODO: Remove this legacy return path once all callers use the detail API.
-    const project = options === undefined ? legacyProject : details.project;
-    const identity = {
-        project,
+    const details = useProjectDetail(projectShortname, options);
+    const project = details.project;
+    return {
+        ...details,
         projectShortname,
         // TODO: Replace this shortname alias with projectShortname in remaining callers.
         projectId: projectShortname,
         projectDbId: project?.id ?? projectDbId,
         isUmbrella: project?.is_umbrella ?? isUmbrella,
+        isLoading: !projectShortname || details.isLoading,
     };
-    return options === undefined
-        ? identity
-        : {
-              ...details,
-              ...identity,
-              isLoading: !projectShortname || details.isLoading,
-          };
 }

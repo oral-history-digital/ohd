@@ -42,6 +42,7 @@ jest.mock('modules/user', () => ({
 }));
 jest.mock('modules/data', () => ({
     getProjects: () => ({}),
+    getProjectIdentities: () => ({}),
     clearStateData: jest.fn(() => ({ type: 'clear' })),
 }));
 jest.mock('modules/auth', () => ({
