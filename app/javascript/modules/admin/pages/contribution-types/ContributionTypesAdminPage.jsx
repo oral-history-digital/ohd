@@ -1,21 +1,28 @@
 import {
     getContributionTypesForCurrentProject,
     getContributionTypesStatus,
-    getCurrentProject,
 } from 'modules/data';
+import { useProjectIdentity } from 'modules/routes';
 import { getContributionTypesQuery } from 'modules/search';
+import { Spinner } from 'modules/spinners';
 import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
+/**
+ * Lists project-scoped resources without loading project details.
+ * @returns {React.ReactElement} Administration list or pending project identity.
+ */
 export default function ContributionTypesAdminPage() {
-    const project = useSelector(getCurrentProject);
+    const { projectDbId } = useProjectIdentity();
     const data = useSelector(getContributionTypesForCurrentProject);
     const dataStatus = useSelector(getContributionTypesStatus);
     const query = useSelector(getContributionTypesQuery);
     const { fetchData, deleteData, submitData, setQueryParams } =
         useAdminDataActions();
+
+    if (!projectDbId) return <Spinner />;
 
     return (
         <PaginatedAdminRecordList
@@ -24,12 +31,12 @@ export default function ContributionTypesAdminPage() {
             resultPagesCount={dataStatus.resultPagesCount}
             query={query}
             outerScope="project"
-            outerScopeId={project.id}
+            outerScopeId={projectDbId}
             scope="contribution_type"
             sortAttribute="name"
             sortAttributeTranslated
             detailsAttributes={['code']}
-            initialFormValues={{ project_id: project.id }}
+            initialFormValues={{ project_id: projectDbId }}
             formElements={[
                 {
                     attribute: 'label',

@@ -1,22 +1,29 @@
 import {
-    getCurrentProject,
     getTaskTypesForCurrentProject,
     getTaskTypesStatus,
 } from 'modules/data';
+import { useProjectIdentity } from 'modules/routes';
 import { getTaskTypesQuery } from 'modules/search';
+import { Spinner } from 'modules/spinners';
 import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 import TaskTypePermissions from './TaskTypePermissions';
 
+/**
+ * Lists project-scoped resources without loading project details.
+ * @returns {React.ReactElement} Administration list or pending project identity.
+ */
 export default function TaskTypesAdminPage() {
-    const project = useSelector(getCurrentProject);
+    const { projectDbId } = useProjectIdentity();
     const data = useSelector(getTaskTypesForCurrentProject);
     const dataStatus = useSelector(getTaskTypesStatus);
     const query = useSelector(getTaskTypesQuery);
     const { fetchData, deleteData, submitData, setQueryParams } =
         useAdminDataActions();
+
+    if (!projectDbId) return <Spinner />;
 
     return (
         <PaginatedAdminRecordList
@@ -25,10 +32,10 @@ export default function TaskTypesAdminPage() {
             resultPagesCount={dataStatus.resultPagesCount}
             query={query}
             outerScope="project"
-            outerScopeId={project.id}
+            outerScopeId={projectDbId}
             scope="task_type"
             detailsAttributes={['name', 'desc']}
-            initialFormValues={{ project_id: project.id }}
+            initialFormValues={{ project_id: projectDbId }}
             formElements={[
                 {
                     attribute: 'label',
