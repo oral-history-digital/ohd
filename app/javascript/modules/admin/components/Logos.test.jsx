@@ -42,3 +42,25 @@ test('passes current project logos to the list', () => {
         type: 'Logo',
     });
 });
+
+test('institution logos retain their records and owner without requesting project edit data', () => {
+    useProject.mockReturnValue({
+        project: { id: 7, logos: [{ id: 99 }], available_locales: ['de'] },
+    });
+    const data = { 12: { id: 12, src: '/institution.png' } };
+    const initialFormValues = {
+        institution_id: 9,
+        ref_id: 9,
+        ref_type: 'Institution',
+        type: 'Logo',
+    };
+    const { getByTestId } = render(
+        <Logos data={data} initialFormValues={initialFormValues} />
+    );
+    const props = JSON.parse(getByTestId('logo-list').textContent);
+    expect(useProject.mock.lastCall[0]).toEqual({});
+    expect(props.data).toEqual(data);
+    expect(props.outerScope).toBe('institution');
+    expect(props.outerScopeId).toBe(9);
+    expect(props.initialFormValues).toEqual(initialFormValues);
+});
