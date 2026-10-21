@@ -1,6 +1,7 @@
 import { ProjectTile, useProjectList } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
@@ -25,9 +26,12 @@ export default function ProjectsAdminList() {
 
     if (error)
         return (
-            <p role="alert">
-                {t('error')}: {error.message}
-            </p>
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
         );
     if (isLoading) return <Spinner withPadding />;
 
@@ -41,9 +45,9 @@ export default function ProjectsAdminList() {
             // useProjectList handles fetching, so the shared list needs no legacy query.
             query={null}
             scope="project"
-            // Contact email is fetched with the full project when opening the edit form.
+            // The edit profile supplies contact email when a project dialog opens.
             sensitiveAttributes={[]}
-            detailsAttributes={['title', 'workflow_state', 'doi_status']}
+            detailsAttributes={['shortname', 'workflow_state', 'doi_status']}
             initialFormValues={{
                 display_ohd_link: true,
                 pseudo_view_modes: 'grid,list,workflow',
