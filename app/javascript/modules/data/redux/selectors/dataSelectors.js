@@ -353,9 +353,8 @@ export const getRegistryEntriesStatus = (state) =>
 export const getRegistryReferenceTypesStatus = (state) =>
     getStatuses(state).registry_reference_types;
 
-// TODO: Is this correct? It gets the same status as getRegistryReferenceTypesStatus
 export const getRegistryNameTypesStatus = (state) =>
-    getStatuses(state).registry_reference_types;
+    getStatuses(state)?.registry_name_types || EMPTY_STATUSES;
 
 export const getContributionTypesStatus = (state) =>
     getStatuses(state)?.contribution_types || EMPTY_STATUSES;

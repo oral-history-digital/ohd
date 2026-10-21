@@ -22,6 +22,7 @@ jest.mock('modules/routes', () => ({
 }));
 jest.mock('react-redux', () => ({ useSelector: jest.fn() }));
 jest.mock('modules/data', () => ({
+    FetchProjectResource: ({ children }) => children,
     getTaskTypesForCurrentProject: jest.fn(),
     getTaskTypesStatus: jest.fn(),
     getCollectionsForCurrentProject: jest.fn(),
