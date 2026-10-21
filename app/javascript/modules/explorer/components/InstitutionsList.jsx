@@ -3,12 +3,11 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import {
     getProjectBrandName,
-    getUmbrellaProject,
     useGetInstitutionsList,
+    useUmbrellaProject,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import {
     useAccordion,
@@ -29,7 +28,7 @@ export function InstitutionsList({
     institutionLevel,
 }) {
     const { t, locale } = useI18n();
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project: umbrellaProject } = useUmbrellaProject();
     const umbrellaProjectName = getProjectBrandName(umbrellaProject, locale);
     const [isMapExpanded, setIsMapExpanded] = useState(false);
     const { expandedId, toggle } = useAccordion();
