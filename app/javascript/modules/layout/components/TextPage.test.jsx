@@ -67,7 +67,7 @@ test('page displays localized text and requests stored translations only after e
     });
     rerender(<TextPage code="conditions" />);
     const form = Form.mock.lastCall[0];
-    expect(form.data.translations_attributes).toEqual(translations);
+    expect(form.data.translations).toEqual(translations);
     expect(form.values).toEqual({ project_id: 7, code: 'conditions' });
     const params = { text: { id: 3, translations_attributes: translations } };
     act(() => form.onSubmit(params));

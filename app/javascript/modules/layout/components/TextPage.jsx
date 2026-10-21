@@ -49,7 +49,7 @@ export function TextPage({ code }) {
 
     return editing ? (
         <Form
-            data={{ ...text, translations_attributes: text.translations || [] }}
+            data={text}
             values={{
                 project_id: project.id,
                 code: code,

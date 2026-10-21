@@ -40,10 +40,10 @@ export default function FileInputFormElement({
         label || t(labelKey || `activerecord.attributes.${scope}.${attribute}`);
     const persistedFiles =
         currentFiles ??
-        (data?.src
+        (data?.url || data?.src
             ? {
                   name: data.filename || labelText,
-                  url: data.thumb_src || data.src,
+                  url: data.thumb_src || data.url || data.src,
                   contentType: 'image/*',
               }
             : []);
