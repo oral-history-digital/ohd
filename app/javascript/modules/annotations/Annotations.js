@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
 import AnnotationContainer from './AnnotationContainer';
-import AnnotationFormContainer from './AnnotationFormContainer';
+import AnnotationForm from './AnnotationForm';
 
 export default function Annotations({ segment, contentLocale }) {
     const { t } = useI18n();
@@ -14,7 +14,10 @@ export default function Annotations({ segment, contentLocale }) {
         <div>
             {Object.values(segment.annotations)
                 .filter((annotation) =>
-                    annotation.text.hasOwnProperty(contentLocale)
+                    Object.prototype.hasOwnProperty.call(
+                        annotation.text,
+                        contentLocale
+                    )
                 )
                 .map((annotation) => (
                     <AnnotationContainer
@@ -39,7 +42,7 @@ export default function Annotations({ segment, contentLocale }) {
                         }
                     >
                         {(closeModal) => (
-                            <AnnotationFormContainer
+                            <AnnotationForm
                                 segment={segment}
                                 contentLocale={contentLocale}
                                 onSubmit={closeModal}
