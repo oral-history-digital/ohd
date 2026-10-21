@@ -12,7 +12,7 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
-import { v2AccessContext } from './v2Requests';
+import { projectAccessContext } from './projectRequests';
 
 /**
  * Seeds authorized summaries from the HTML response without marking any query as loaded.
@@ -21,20 +21,22 @@ import { v2AccessContext } from './v2Requests';
  * @param {Object} payload - Bootstrap summary envelope.
  * @param {string} payload.locale - Locale of the serialized display fields.
  * @param {Object[]} payload.data - Project summaries using the list endpoint contract.
+ * @param {Object} [payload.identities={}] - Public routing fields by project ID.
  * @returns {function(Function, Function): void} Store initialization thunk.
  */
 export const initializeProjectSummaries =
-    ({ locale, data }) =>
+    ({ locale, data, identities = {} }) =>
     (dispatch, getState) => {
         const state = getState();
         dispatch({
             type: INITIALIZE_PROJECTS,
             apiVersion: 2,
             dataType: 'projects',
-            context: v2AccessContext(state),
-            generation: state.data.v2?.projects?.generation || 0,
+            context: projectAccessContext(state),
+            generation: state.data.projects?.generation || 0,
             locale,
             data: { data },
+            identities,
         });
     };
 
@@ -89,7 +91,7 @@ export const receiveData = (json) => ({
 });
 
 /**
- * Builds the usual receive action and marks it as a completed mutation so v2
+ * Builds the usual receive action and marks it as a completed mutation so project
  * caches can be invalidated without changing legacy response merging.
  *
  * @param {Object} json - Legacy mutation response envelope.
@@ -147,7 +149,7 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
 /**
  * Saves a record through the legacy API, using PUT when an ID is present or POST
  * otherwise. Dispatches loading, success, and error actions; successful responses
- * also invalidate affected v2 caches.
+ * also invalidate affected project caches.
  *
  * @param {Object} props - Request path or legacy project and locale context.
  * @param {string} [props.pathBase] - Route-based prefix; overrides project-based path construction.
@@ -221,7 +223,7 @@ export function submitData(props, params, opts = {}, callback) {
 }
 
 /**
- * Deletes a record through the legacy API and invalidates affected v2 caches.
+ * Deletes a record through the legacy API and invalidates affected project caches.
  * By default, removes the cached legacy record before sending the request.
  *
  * @param {Object} props - Request path or legacy project and locale context.

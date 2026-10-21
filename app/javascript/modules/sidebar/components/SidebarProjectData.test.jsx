@@ -41,7 +41,7 @@ jest.mock('modules/user', () => ({
     submitLogout: jest.fn(() => ({ type: 'logout' })),
 }));
 jest.mock('modules/data', () => ({
-    getProjects: () => ({}),
+    getProjectResources: () => ({}),
     getProjectIdentities: () => ({}),
     clearStateData: jest.fn(() => ({ type: 'clear' })),
 }));

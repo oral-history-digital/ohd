@@ -1,6 +1,6 @@
 import dotProp from 'dot-prop-immutable';
 
-import { v2AccessContext } from '../v2Requests';
+import { projectAccessContext } from '../projectRequests';
 import {
     getCollectionsForCurrentProject,
     getCollectionsStatus,
@@ -141,7 +141,7 @@ describe('getGroupedContributions', () => {
         expect(getGroupedContributions(contributionState, false)).toEqual([]);
         const publicType = dotProp.set(
             contributionState,
-            'data.projects.1.contribution_types.3.display_on_landing_page',
+            'data.projects.resources.1.contribution_types.3.display_on_landing_page',
             true
         );
         expect(getGroupedContributions(publicType, false)).toEqual([
@@ -190,7 +190,7 @@ describe('getGroupedContributions', () => {
 describe('getCurrentProject', () => {
     test("gets currently selected project's object", () => {
         expect(getCurrentProject(projectState)).toEqual(
-            projectState.data.projects[1]
+            projectState.data.projects.resources[1]
         );
     });
 
@@ -217,7 +217,7 @@ describe('getUmbrellaProject', () => {
         };
         const _state = dotProp.set(
             projectState,
-            'data.projects.2',
+            'data.projects.identities.2',
             umbrellaProject
         );
 
@@ -225,8 +225,8 @@ describe('getUmbrellaProject', () => {
     });
 
     test('uses the current record identity without exposing its content or protected fields', () => {
-        const current = dotProp.set(projectState, 'data.v2.projects', {
-            context: v2AccessContext(projectState),
+        const current = dotProp.set(projectState, 'data.projects', {
+            context: projectAccessContext(projectState),
             records: {
                 1: {
                     id: 1,
@@ -296,25 +296,25 @@ describe('getIsCampscapesProject', () => {
 
 test('getCollectionsForCurrentProject gets collections object', () => {
     expect(getCollectionsForCurrentProject(projectState)).toEqual(
-        projectState.data.projects[1].collections
+        projectState.data.projects.resources[1].collections
     );
 });
 
 test('getTaskTypesForCurrentProject gets task_types object', () => {
     expect(getTaskTypesForCurrentProject(projectState)).toEqual(
-        projectState.data.projects[1].task_types
+        projectState.data.projects.resources[1].task_types
     );
 });
 
 test('getRolesForCurrentProject gets roles object', () => {
     expect(getRolesForCurrentProject(projectState)).toEqual(
-        projectState.data.projects[1].roles
+        projectState.data.projects.resources[1].roles
     );
 });
 
 test('getContributionTypesForCurrentProject retrieves contributionTypes object', () => {
     expect(getContributionTypesForCurrentProject(projectState)).toEqual(
-        projectState.data.projects[1].contribution_types
+        projectState.data.projects.resources[1].contribution_types
     );
 });
 
@@ -327,7 +327,7 @@ test('getRegistryEntriesStatus gets registry entries status object', () => {
 
 test('getRegistryNameTypesForCurrentProject gets registry name types object', () => {
     expect(getRegistryNameTypesForCurrentProject(state)).toEqual(
-        state.data.registry_name_types
+        state.data.projects.resources[1].registry_name_types
     );
 });
 
@@ -447,12 +447,10 @@ test('finds nested contribution types through modern project identity without a 
         ...projectState,
         data: {
             ...projectState.data,
-            projects: { 1: { contribution_types: types } },
-            v2: {
-                projects: {
-                    context: v2AccessContext(projectState),
-                    records: { 1: { id: 1, shortname: 'cdoh' } },
-                },
+            projects: {
+                resources: { 1: { contribution_types: types } },
+                context: projectAccessContext(projectState),
+                records: { 1: { id: 1, shortname: 'cdoh' } },
             },
             statuses: {
                 contribution_types: { for_projects_1: 'fetched' },
