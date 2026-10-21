@@ -405,40 +405,22 @@ export const getContributorsFetched = createSelector(
     }
 );
 
-export const getProjectAccessStatus = createSelector(
-    [getCurrentUser, getCurrentProject],
-    (user, project) => {
-        const projectRegistration =
-            user &&
-            project &&
-            Object.values(user.user_projects).find(
-                (urp) => urp.project_id === project.id
-            );
-
-        const projectAccessStatus = userHasAccessWithoutRegistration()
-            ? 'project_access_granted'
-            : projectRegistration?.workflow_state;
-
-        function userHasAccessWithoutRegistration() {
-            return (
-                project.grant_access_without_login ||
-                (user && project.grant_project_access_instantly) ||
-                user?.admin === true
-            );
-        }
-
-        return projectAccessStatus;
-    }
-);
-
+/**
+ * Groups current interview contributions by visible type in the configured order.
+ * Project access is supplied by the consumer's shared access hook.
+ *
+ * @param {Object} state - Root Redux state with interview and contribution-type records.
+ * @param {boolean} projectAccessGranted - Whether the viewer has access to the loaded project.
+ * @returns {Object[]|null} Ordered contribution groups, or null before records are available.
+ */
 export const getGroupedContributions = createSelector(
     [
         (state) => getEditView(state),
         (state) => getCurrentInterview(state),
         (state) => getContributionTypesForCurrentProject(state),
-        (state) => getProjectAccessStatus(state),
+        (_state, projectAccessGranted) => Boolean(projectAccessGranted),
     ],
-    (editView, currentInterview, contributionTypes, projectAccessStatus) => {
+    (editView, currentInterview, contributionTypes, projectAccessGranted) => {
         if (
             !currentInterview ||
             !currentInterview.contributions ||
@@ -451,8 +433,7 @@ export const getGroupedContributions = createSelector(
             .filter(
                 (ct) =>
                     editView ||
-                    (projectAccessStatus === 'project_access_granted' &&
-                        ct.use_in_details_view) ||
+                    (projectAccessGranted && ct.use_in_details_view) ||
                     ct.display_on_landing_page
             )
             .sort((a, b) => a.order - b.order)

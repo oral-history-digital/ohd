@@ -135,8 +135,19 @@ test('getCurrentInterview retrieves current interview', () => {
 });
 
 describe('getGroupedContributions', () => {
+    test('hides detail-only contribution types when project access is unavailable', () => {
+        expect(getGroupedContributions(contributionState, false)).toEqual([]);
+        const publicType = dotProp.set(
+            contributionState,
+            'data.projects.1.contribution_types.3.display_on_landing_page',
+            true
+        );
+        expect(getGroupedContributions(publicType, false)).toEqual([
+            { type: 'interviewer', contributions: [interviewer] },
+        ]);
+    });
     test('returns contributions of current interview, ordered and grouped by type, without interviewee', () => {
-        const actual = getGroupedContributions(contributionState);
+        const actual = getGroupedContributions(contributionState, true);
         const expected = [
             {
                 type: 'interviewer',
@@ -153,7 +164,7 @@ describe('getGroupedContributions', () => {
     test('also returns quality managers when edit view is true', () => {
         const _state = dotProp.set(contributionState, 'archive.editView', true);
 
-        const actual = getGroupedContributions(_state);
+        const actual = getGroupedContributions(_state, true);
         const expected = [
             {
                 type: 'interviewer',

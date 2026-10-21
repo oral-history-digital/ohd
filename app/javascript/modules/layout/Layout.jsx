@@ -70,8 +70,8 @@ export default function Layout({ children }) {
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
     const { project, projectShortname, isLoading, error } = useProject({});
-    // TODO: Remove once project identity/access use the new Redux records and contribution
-    // types, registry name/reference types, and collections are loaded by their consumers.
+    // TODO: Remove this fetch and guard once contribution types, registry name/reference
+    // types, and collections are loaded explicitly by their consumers.
     const { isLoading: legacyResourcesLoading, error: legacyResourcesError } =
         useCurrentProject({
             requireDetails: true,

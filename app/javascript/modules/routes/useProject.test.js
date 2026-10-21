@@ -9,7 +9,7 @@ import useProjectIdentity from './useProjectIdentity';
 jest.mock('react-redux', () => ({ useSelector: jest.fn() }));
 jest.mock('react-router-dom', () => ({ useMatch: jest.fn() }));
 jest.mock('modules/data', () => ({
-    getProjects: jest.fn(),
+    getProjectIdentities: jest.fn(),
     useProjectDetail: jest.fn(),
 }));
 
@@ -48,14 +48,15 @@ test('exposes umbrella role from configured flag rather than project shortname',
     useMatch.mockReturnValue({ params: { projectId: 'shared', locale: 'en' } });
 
     const { result, rerender } = renderHook(() => useProject());
-    expect(result.current.project).toEqual(umbrella);
-    expect(useProjectDetail).toHaveBeenCalledWith(null, undefined);
+    expect(result.current.project).toBeUndefined();
+    expect(useProjectDetail).toHaveBeenCalledWith('shared', {});
     expect(result.current.isUmbrella).toBe(true);
     expect(result.current).not.toHaveProperty('isOhd');
 
     useMatch.mockReturnValue({ params: { projectId: 'ohd', locale: 'en' } });
     rerender();
-    expect(result.current.project).toEqual(archive);
+    expect(result.current.project).toBeUndefined();
+    expect(useProjectDetail).toHaveBeenLastCalledWith('ohd', {});
     expect(result.current.isUmbrella).toBe(false);
 });
 

@@ -46,6 +46,32 @@ export function projectDetailUrl(
 }
 
 /**
+ * Selects routing identities, preferring current Redux records over bootstrap data.
+ * Bootstrap remains available while details load; neither localized nor protected fields are returned.
+ *
+ * @param {Object} state - Root Redux state.
+ * @returns {Object<number, Object>} IDs, shortnames, domains, and umbrella flags by project ID.
+ */
+export const getProjectIdentities = createSelector(
+    [
+        (state) => state.data.projects,
+        (state) => state.data.v2?.projects,
+        v2AccessContext,
+    ],
+    (bootstrap, projects, context) => {
+        const records = projects?.context === context ? projects.records : {};
+        return Object.fromEntries(
+            Object.values({ ...bootstrap, ...records }).map(
+                ({ id, shortname, archive_domain, is_umbrella }) => [
+                    id,
+                    { id, shortname, archive_domain, is_umbrella },
+                ]
+            )
+        );
+    }
+);
+
+/**
  * Creates a selector that reads a cached project without fetching it.
  * Returns no project until display values exist for the requested locale and access context.
  *

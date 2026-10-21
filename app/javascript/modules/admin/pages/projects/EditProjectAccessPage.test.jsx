@@ -15,6 +15,9 @@ jest.mock('modules/api/Loader', () => ({
     default: { getJson: jest.fn(), put: jest.fn() },
 }));
 jest.mock('modules/data', () => ({
+    getProjectIdentities: jest.requireActual(
+        '../../../data/redux/projectDetails'
+    ).getProjectIdentities,
     getProjects: jest.requireActual(
         '../../../data/redux/selectors/baseSelectors'
     ).getProjects,

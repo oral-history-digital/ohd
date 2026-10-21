@@ -1,4 +1,4 @@
-import { getProjects } from 'modules/data';
+import { getProjectIdentities } from 'modules/data';
 import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
@@ -7,13 +7,13 @@ import isLocaleValid from './isLocaleValid';
 
 /**
  * Resolves route identifiers without requesting project details.
- * Dedicated domains, numeric IDs, and the umbrella flag use legacy project records during migration.
+ * Uses current Redux records, with bootstrap identities available before details load.
  *
  * @returns {{projectShortname: string|undefined, projectDbId: number|undefined, isUmbrella: boolean|undefined}}
  * Current project identity; the route shortname is available before its summary loads.
  */
 export default function useProjectIdentity() {
-    const projects = useSelector(getProjects);
+    const projects = useSelector(getProjectIdentities);
     const match = useMatch('/:projectId/:locale/*');
     const routeShortname =
         match && isLocaleValid(match.params.locale)
