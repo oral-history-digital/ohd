@@ -69,9 +69,10 @@ const Loader = {
                             `Deleting from ${url} failed: ${res.error}`
                         );
                     } else {
-                        dispatchCallback?.(JSON.parse(res.text));
+                        const json = parseResponseJson(res, url);
+                        dispatchCallback?.(json);
                         if (typeof cb === 'function') {
-                            cb(JSON.parse(res.text));
+                            cb(json);
                         }
                     }
                 }
