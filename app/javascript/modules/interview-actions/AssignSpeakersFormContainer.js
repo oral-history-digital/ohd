@@ -1,8 +1,7 @@
-import { getArchiveId, getProjectId } from 'modules/archive';
+import { getArchiveId } from 'modules/archive';
 import {
     fetchData,
     getContributionTypesForCurrentProject,
-    getCurrentProject,
     getSpeakerDesignationsStatus,
     submitData,
 } from 'modules/data';
@@ -14,8 +13,6 @@ import AssignSpeakersForm from './AssignSpeakersForm';
 const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),
     contributionTypes: getContributionTypesForCurrentProject(state),
-    projectId: getProjectId(state),
-    project: getCurrentProject(state),
     speakerDesignationsStatus: getSpeakerDesignationsStatus(state),
 });
 

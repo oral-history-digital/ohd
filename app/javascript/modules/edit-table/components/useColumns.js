@@ -5,17 +5,22 @@ import { useSelector } from 'react-redux';
 
 import { getSelectedColumns } from '../selectors';
 
+/**
+ * Builds configured edit-table columns from project locales and existing permissions.
+ * @param {Object} interview - Interview and available transcript/annotation languages.
+ * @returns {Object} Permitted/selected columns and their grid layout; empty while project data is unavailable.
+ */
 export default function useColumns(interview) {
     const { isAuthorized } = useAuthorization();
     const selectedColumns = useSelector(getSelectedColumns);
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({});
     const translationColumns = interview.translation_alpha3s.map(
         (alpha3) => `translation_${alpha3}`
     );
     const annotationColumns = interview.annotation_alpha3s.map(
         (alpha3) => `annotation_${alpha3}`
     );
-    const headingColumns = project.available_locales
+    const headingColumns = (project?.available_locales || [])
         .map((locale) => [
             `mainheading_${ALPHA2_TO_ALPHA3[locale]}`,
             `subheading_${ALPHA2_TO_ALPHA3[locale]}`,
@@ -57,7 +62,10 @@ export default function useColumns(interview) {
         return columns;
     }
 
-    const permittedColumns = getPermittedColumns(interview.id);
+    const permittedColumns =
+        project && !isLoading && !error
+            ? getPermittedColumns(interview.id)
+            : [];
 
     const columns = columnOrder
         .filter((column) => selectedColumns.includes(column))

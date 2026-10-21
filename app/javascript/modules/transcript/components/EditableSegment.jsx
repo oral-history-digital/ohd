@@ -3,9 +3,8 @@ import { memo, useMemo, useRef, useState } from 'react';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 import classNames from 'classnames';
-import { getLocale, getProjectId, useIsEditor } from 'modules/archive';
+import { useIsEditor } from 'modules/archive';
 import { useAuthorization } from 'modules/auth';
-import { getCurrentProject } from 'modules/data';
 import { getAutoScroll } from 'modules/interview';
 import { getScrollOffset } from 'modules/media-player';
 import { useTranscriptQueryString } from 'modules/query-string';
@@ -96,9 +95,6 @@ function EditableSegment({
         nextSegmentTime,
         editingSegmentIdRef,
     });
-    const locale = useSelector(getLocale);
-    const projectId = useSelector(getProjectId);
-    const project = useSelector(getCurrentProject);
 
     const [tabIndex, setTabIndex] = useState(0);
     const {
@@ -236,9 +232,6 @@ function EditableSegment({
                                         )}
                                         <SegmentForm
                                             data-testid="segment-form"
-                                            locale={locale}
-                                            projectId={projectId}
-                                            project={project}
                                             contentLocale={contentLocale}
                                             segment={segment}
                                             submitData={handleSubmitData}
