@@ -121,7 +121,7 @@ export default function DataList({
                     {data &&
                         Object.keys(data).map((c) => (
                             <AdminRecord
-                                key={c}
+                                key={data[c].id ?? c}
                                 data={data[c]}
                                 scope={scope}
                                 sensitiveAttributes={sensitiveAttributes}
@@ -170,7 +170,7 @@ export default function DataList({
 }
 
 DataList.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     form: PropTypes.func,
     initialFormValues: PropTypes.object,
     scope: PropTypes.string,

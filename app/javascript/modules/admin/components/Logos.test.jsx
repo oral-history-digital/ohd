@@ -1,14 +1,10 @@
 import { render } from '@testing-library/react';
-import { getCurrentProject, getProjectLocales } from 'modules/data';
-import { useSelector } from 'react-redux';
+import { useProject } from 'modules/routes';
 
 import Logos from './Logos';
 
-jest.mock('modules/data', () => ({
-    getCurrentProject: jest.fn(),
-    getProjectLocales: jest.fn(),
-}));
-jest.mock('react-redux', () => ({ useSelector: jest.fn() }));
+jest.mock('modules/routes', () => ({ useProject: jest.fn() }));
+jest.mock('modules/i18n', () => ({ useI18n: () => ({ t: (key) => key }) }));
 jest.mock('../hooks', () => ({
     useAdminDataActions: () => ({
         fetchData: jest.fn(),
@@ -29,13 +25,10 @@ jest.mock(
 test('passes current project logos to the list', () => {
     const project = {
         id: 7,
-        logos: { 12: { id: 12, src: '/logos/de.png' } },
+        logos: [{ id: 12, url: '/logos/de.png' }],
+        available_locales: ['de'],
     };
-    useSelector.mockImplementation((selector) => {
-        if (selector === getCurrentProject) return project;
-        if (selector === getProjectLocales) return { de: 'Deutsch' };
-        return null;
-    });
+    useProject.mockReturnValue({ project });
 
     const { getByTestId } = render(<Logos />);
     const props = JSON.parse(getByTestId('logo-list').textContent);

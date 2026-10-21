@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { registerDoi } from 'modules/archive';
+import { AuthorizedContent } from 'modules/auth';
 import { deleteData, useGetProject } from 'modules/data';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
@@ -20,7 +21,7 @@ jest.mock('modules/auth', () => {
 
     AuthorizedContent.propTypes = { children: MockPropTypes.node };
 
-    return { AuthorizedContent };
+    return { AuthorizedContent: jest.fn(AuthorizedContent) };
 });
 jest.mock('modules/data', () => ({
     deleteData: jest.fn((...args) => ({ type: 'deleteData', args })),
@@ -290,4 +291,16 @@ test('project details load title and DOI status rather than relying on list fiel
     expect(screen.getByTestId('data-details')).toHaveTextContent(
         'project-shortname:created'
     );
+});
+
+test('uses the resource scope for permission checks when API records omit a class name', () => {
+    renderAdminRecord({
+        scope: 'external_link',
+        data: { id: 7, name: 'Link' },
+    });
+    expect(AuthorizedContent.mock.lastCall[0].object[0]).toEqual({
+        id: 7,
+        name: 'Link',
+        type: 'ExternalLink',
+    });
 });
