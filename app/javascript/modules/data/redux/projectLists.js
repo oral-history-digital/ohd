@@ -19,7 +19,7 @@ import { v2AccessContext, v2RequestKey } from './v2Requests';
  * @typedef {Object} ProjectListSelection
  * @property {Object[]} projects - List records combined with their display values.
  * @property {Object|undefined} pagination - API pagination, available after success.
- * @property {string|undefined} status - Pending, succeeded, or failed; absent before a request.
+ * @property {string|undefined} status - Pending, succeeded, failed, or stale awaiting refresh.
  * @property {?{status: ?number, message: string}} error - Request failure, if any.
  * @property {boolean} isLoading - No list is available and the request has not failed.
  * @property {boolean} isValidating - A request is pending, including during refresh.
@@ -92,7 +92,7 @@ export const makeProjectListSelector = () =>
                 status: request?.status,
                 error: request?.error || null,
                 isLoading: !list && request?.status !== 'failed',
-                isValidating: request?.status === 'pending',
+                isValidating: ['pending', 'stale'].includes(request?.status),
             };
         }
     );

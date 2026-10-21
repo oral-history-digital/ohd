@@ -130,7 +130,7 @@ export const makeProjectDetailSelector = () =>
                     Boolean(url) &&
                     !request?.id &&
                     request?.status !== 'failed',
-                isValidating: request?.status === 'pending',
+                isValidating: ['pending', 'stale'].includes(request?.status),
             };
         }
     );

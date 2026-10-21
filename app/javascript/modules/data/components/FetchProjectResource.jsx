@@ -16,7 +16,8 @@ import {
 /**
  * Loads a complete project-owned resource list and waits before rendering its consumers.
  * Uses the shared project request flow to discard obsolete responses and refetch
- * after account changes or mutations. Records retain their existing nested storage.
+ * after account changes or mutations. Ordinary refreshes keep consumers mounted.
+ * Records retain their existing nested storage.
  *
  * @param {Object} props - Resource list and its consumers.
  * @param {string} props.resource - Resource endpoint name, such as contribution_types.
@@ -40,7 +41,7 @@ export function FetchProjectResource({ resource, children }) {
             : undefined
     );
     useEffect(() => {
-        if (projectDbId && !request?.status)
+        if (projectDbId && (!request?.status || request.status === 'stale'))
             dispatch(
                 fetchV2Data('projects', url, {
                     locale,
@@ -68,7 +69,7 @@ export function FetchProjectResource({ resource, children }) {
                 isClosable={false}
             />
         );
-    if (!projectDbId || request?.status !== 'succeeded') return <Spinner />;
+    if (!projectDbId || !request?.ready) return <Spinner />;
     return children;
 }
 

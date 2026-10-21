@@ -191,7 +191,9 @@ test('legacy save and delete callbacks invalidate catalog data after the server 
     act(() =>
         put[2](put[3]({ data_type: 'projects', id: 7, data: { id: 7 } }))
     );
-    expect(result.current.projects).toEqual([]);
+    expect(result.current.projects[0].name).toBe('Projekt');
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isValidating).toBe(true);
     act(() => complete([project(7, { name: 'Edited' })]));
     act(() => store.dispatch(deleteData(props, 'projects', 7)));
     act(() =>
@@ -529,8 +531,9 @@ test.each(['mark_text', 'speaker_designations'])(
                 })
             )
         );
-        expect(result.current.detail.project).toBeUndefined();
-        expect(result.current.list.projects).toEqual([]);
+        expect(result.current.detail.project.id).toBe(7);
+        expect(result.current.detail.isLoading).toBe(false);
+        expect(result.current.list.projects).toHaveLength(1);
         expect(Loader.getJson).toHaveBeenCalledTimes(4);
     }
 );
@@ -1071,7 +1074,7 @@ test.each([
     'texts',
     'map_sections',
 ])(
-    '%s delete completion clears edit data and rejects responses from before invalidation',
+    '%s deletion refreshes data and rejects responses from before the save',
     (resource) => {
         const store = makeStore();
         const { result } = mount(store, () =>
@@ -1103,7 +1106,11 @@ test.each([
             )
         );
         expect(Loader.getJson).toHaveBeenCalledTimes(3);
-        expect(result.current.project).toBeUndefined();
+        const clearsData = resource === 'access_configs';
+        expect(result.current.project?.contact_email).toBe(
+            clearsData ? undefined : 'old@example.org'
+        );
+        expect(result.current.isLoading).toBe(clearsData);
         act(() =>
             old[2](
                 old[3]({
@@ -1111,7 +1118,9 @@ test.each([
                 })
             )
         );
-        expect(store.getState().data.v2.projects.records).toEqual({});
+        expect(
+            store.getState().data.v2.projects.records[7]?.edit?.contact_email
+        ).toBe(clearsData ? undefined : 'old@example.org');
         act(() =>
             completeDetail(project(7, { contact_email: 'fresh@example.org' }))
         );
@@ -1248,3 +1257,123 @@ test('bootstrap summaries use current-account records and locales without comple
     expect(result.current.project).toBeUndefined();
     expect(store.getState().data.v2.projects.records).toEqual({});
 });
+
+test('affiliate saves refresh only that project include and keep the page shell, other panels, and cached queries ready', () => {
+    const store = makeStore();
+    const { result } = mount(store, () => ({
+        shell: useProjectDetail(7),
+        umbrella: useProjectDetail(1),
+        form: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['translations'],
+        }),
+        affiliates: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        sharedAffiliates: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        managers: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        funders: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        footer: useProjectDetail(7, { include: ['footer'] }),
+        other: useProjectDetail(8, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        list: useProjectList({ all: true }),
+    }));
+    act(() => {
+        completeDetail(project(7), 0);
+        completeDetail(project(1), 1);
+        completeDetail(project(7, { translations: [] }), 2);
+        completeDetail(project(7, { cooperation_partners: [] }), 3);
+        completeDetail(project(7), 4);
+        completeDetail(project(8, { cooperation_partners: [] }), 5);
+        complete([project(7)], 6);
+    });
+    const generation = store.getState().data.v2.projects.generation;
+    act(() =>
+        store.dispatch(
+            receiveMutationData(
+                {
+                    data_type: 'projects',
+                    id: 7,
+                    nested_data_type: 'cooperation_partners',
+                    nested_id: 42,
+                    data: { id: 42, name: { de: 'Partner' } },
+                },
+                'cooperation_partners'
+            )
+        )
+    );
+    expect(Loader.getJson).toHaveBeenCalledTimes(8);
+    expect(Loader.getJson.mock.lastCall[0]).toBe(
+        projectDetailUrl(7, 'de', { profile: 'edit', include: ['affiliates'] })
+    );
+    expect(result.current.affiliates).toMatchObject({
+        isLoading: false,
+        isValidating: true,
+        project: { id: 7, cooperation_partners: [] },
+    });
+    for (const panel of ['shell', 'umbrella', 'form', 'footer', 'other']) {
+        expect(result.current[panel].project).toBeDefined();
+        expect(result.current[panel].isLoading).toBe(false);
+        expect(result.current[panel].isValidating).toBe(false);
+    }
+    expect(result.current.list.projects).toHaveLength(1);
+    expect(store.getState().data.v2.projects.generation).toBe(generation + 1);
+    act(() =>
+        completeDetail(
+            project(7, { cooperation_partners: [{ id: 42, name: 'Partner' }] })
+        )
+    );
+    expect(result.current.affiliates.project.cooperation_partners).toEqual([
+        { id: 42, name: 'Partner' },
+    ]);
+});
+
+test.each([
+    ['name', 'New title', false],
+    ['workflow_state', 'unshared', true],
+    ['grant_access_without_login', false, true],
+])(
+    'project save of %s refreshes in place unless access changed',
+    (field, value, clearsData) => {
+        const store = makeStore();
+        const { result } = mount(store, () => useProjectDetail(7));
+        act(() =>
+            completeDetail(
+                project(7, {
+                    workflow_state: 'public',
+                    grant_access_without_login: true,
+                })
+            )
+        );
+        act(() =>
+            store.dispatch(
+                receiveMutationData(
+                    {
+                        data_type: 'projects',
+                        id: 7,
+                        data: { id: 7, [field]: value },
+                    },
+                    'projects'
+                )
+            )
+        );
+        expect(Loader.getJson).toHaveBeenCalledTimes(2);
+        expect(result.current).toMatchObject({
+            isLoading: clearsData,
+            isValidating: true,
+        });
+        expect(result.current.project?.id).toBe(clearsData ? undefined : 7);
+    }
+);

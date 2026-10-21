@@ -10,6 +10,32 @@ import {
     UPDATE_DATA,
 } from './action-types';
 import { localizedProjectFields, projectEditFields } from './projectRecords';
+import { v2RequestKey } from './v2Requests';
+
+const accessResources = [
+    'roles',
+    'permissions',
+    'user_roles',
+    'user_projects',
+    'role_permissions',
+    'access_configs',
+    'instance_settings',
+];
+const affiliateResources = [
+    'affiliates',
+    'cooperation_partners',
+    'leaders',
+    'managers',
+    'funders',
+];
+const projectAccessFields = [
+    'workflow_state',
+    'grant_access_without_login',
+    'grant_project_access_instantly',
+    'show_preview_img',
+    'shortname',
+    'archive_domain',
+];
 
 const relatedResources = [
     'projects',
@@ -81,11 +107,49 @@ function emptyProjects(generation = 0, context = null) {
 }
 
 /**
+ * Marks affected queries for refresh while keeping loaded pages and form state mounted.
+ * Moves all query keys to the next generation so pre-save responses are discarded.
+ * Pending reads restart because their old responses can no longer be accepted.
+ *
+ * @param {V2ProjectState} state - Current records and query results.
+ * @param {Object} action - Resource mutation with an optional owning project ID.
+ * @param {string} resource - Changed resource, including legacy nested resources.
+ * @returns {V2ProjectState} Retained data with refreshed query keys and stale request statuses.
+ */
+function invalidateProjectQueries(state, action, resource) {
+    const generation = state.generation + 1;
+    const projectId =
+        action.dataType === 'projects' ? action.id : action.data?.project_id;
+    const requests = {};
+    const lists = {};
+    for (const [oldKey, request] of Object.entries(state.requests)) {
+        if (!request.url) continue;
+        const owner = request.projectId || request.id;
+        const sameProject =
+            !projectId || !owner || String(owner) === String(projectId);
+        const affected =
+            sameProject &&
+            (request.projectResource
+                ? request.projectResource === resource
+                : !affiliateResources.includes(resource) ||
+                  request.include?.includes('affiliates'));
+        const key = v2RequestKey(request.url, state.context, generation);
+        requests[key] =
+            affected || request.status === 'pending'
+                ? { ...request, status: 'stale', error: null }
+                : request;
+        if (state.lists[oldKey]) lists[key] = state.lists[oldKey];
+    }
+    return { ...state, generation, requests, lists };
+}
+
+/**
  * Stores project lists and details without changing legacy project records.
  * Merges shared fields while preserving omitted fields and other locales. Editing
  * additions and preview contact data stay separate from ordinary display reads.
- * Access changes and relevant mutations clear the cache and invalidate in-flight
- * responses. Queued-job acknowledgements retain cached project data.
+ * Access changes clear cached content. Ordinary mutations retain loaded data and
+ * refresh affected queries; both discard older in-flight responses.
+ * Queued-job acknowledgements retain cached project data.
  * Bootstrap summaries initialize records without completing any list/detail query.
  *
  * @param {V2ProjectState|undefined} state - Existing v2 project state, if initialized.
@@ -93,17 +157,17 @@ function emptyProjects(generation = 0, context = null) {
  * @returns {V2ProjectState|undefined} Updated state, or the original value for ignored actions.
  */
 export function reduceV2Projects(state, action) {
-    // Legacy mutations and access changes invalidate v2 data without merging legacy responses.
+    // Legacy saves trigger fresh reads; their response shapes never become project records here.
     if (action.apiVersion !== 2) {
         if (!state) return state;
         const accountChanged =
             action.dataType === 'users' &&
             String(action.id) === 'current' &&
             [RECEIVE_DATA, REMOVE_DATA].includes(action.type);
+        const resource =
+            action.mutationResource || action.nestedDataType || action.dataType;
         const recordsChanged =
-            relatedResources.includes(
-                action.mutationResource || action.dataType
-            ) &&
+            relatedResources.includes(resource) &&
             ([REMOVE_DATA, UPDATE_DATA].includes(action.type) ||
                 // "processing" acknowledges queued work; keep project views mounted.
                 (action.mutation &&
@@ -111,11 +175,27 @@ export function reduceV2Projects(state, action) {
                     action.msg !== 'processing'));
         if (
             accountChanged ||
-            recordsChanged ||
             action.type === REPLACE_INSTANCE_SETTINGS ||
             [LOGGED_IN, LOGOUT, AUTH_ERROR].includes(action.type)
         )
             return emptyProjects(state.generation + 1);
+        if (recordsChanged) {
+            const previous = state.records[action.id];
+            const accessChanged =
+                resource === 'projects' &&
+                (action.type === REMOVE_DATA ||
+                    action.mutationDeleted ||
+                    (previous &&
+                        projectAccessFields.some(
+                            (field) =>
+                                Object.hasOwn(action.data || {}, field) &&
+                                (previous[field] || null) !==
+                                    (action.data[field] || null)
+                        )));
+            if (accessResources.includes(resource) || accessChanged)
+                return emptyProjects(state.generation + 1);
+            return invalidateProjectQueries(state, action, resource);
+        }
         return state;
     }
     if (action.dataType !== 'projects') return state;
@@ -132,6 +212,10 @@ export function reduceV2Projects(state, action) {
                 ...state.requests,
                 [action.key]: {
                     ...state.requests[action.key],
+                    url: action.url,
+                    include: action.include,
+                    projectResource: action.projectResource,
+                    projectId: action.projectId,
                     status: 'pending',
                     error: null,
                 },
@@ -150,7 +234,13 @@ export function reduceV2Projects(state, action) {
             ...state,
             requests: {
                 ...state.requests,
-                [action.key]: { status: 'failed', error: action.error },
+                [action.key]: {
+                    ...state.requests[action.key],
+                    status: 'failed',
+                    error: action.error,
+                    id: undefined,
+                    ready: false,
+                },
             },
         };
     if (action.type !== RECEIVE_DATA && !initializing) return state;
@@ -161,7 +251,12 @@ export function reduceV2Projects(state, action) {
             ...state,
             requests: {
                 ...state.requests,
-                [action.key]: { status: 'succeeded', error: null },
+                [action.key]: {
+                    ...state.requests[action.key],
+                    status: 'succeeded',
+                    error: null,
+                    ready: true,
+                },
             },
         };
 
@@ -236,6 +331,7 @@ export function reduceV2Projects(state, action) {
             : {
                   ...state.requests,
                   [action.key]: {
+                      ...state.requests[action.key],
                       status: 'succeeded',
                       error: null,
                       ...(action.single

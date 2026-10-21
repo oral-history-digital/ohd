@@ -33,12 +33,12 @@ export function useProjectList(options = {}) {
     const result = useSelector((state) => select(state, url, locale));
     const context = useSelector(v2AccessContext);
 
-    // Changes after access updates or mutations, so invalidated lists are fetched again.
+    // Access changes and mutations advance the generation; stale lists refresh in place.
     const generation = useSelector(
         (state) => state.data.v2?.projects?.generation || 0
     );
     useEffect(() => {
-        if (enabled && !result.status)
+        if (enabled && (!result.status || result.status === 'stale'))
             dispatch(fetchV2Data('projects', url, { locale }));
     }, [dispatch, url, locale, context, generation, result.status, enabled]);
     const mutate = useCallback(

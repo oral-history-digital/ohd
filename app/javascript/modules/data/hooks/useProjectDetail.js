@@ -18,7 +18,8 @@ import { fetchV2Data, v2AccessContext } from '../redux/v2Requests';
 
 /**
  * Fetches project details and reads the requested profile and status from Redux.
- * Access changes and mutations trigger refetching. Locale/profile/include changes require
+ * Ordinary saves keep loaded details visible while affected queries refresh; access
+ * changes discard them. Locale/profile/include changes require
  * their own successful response; summaries alone do not count as loaded details.
  *
  * @param {number|string|null|undefined} identifier - Project ID or shortname; empty skips fetching.
@@ -37,7 +38,7 @@ export function useProjectDetail(identifier, options = {}) {
         (state) => state.data.v2?.projects?.generation || 0
     );
     useEffect(() => {
-        if (url && !result.status)
+        if (url && (!result.status || result.status === 'stale'))
             dispatch(fetchV2Data('projects', url, { locale, single: true }));
     }, [dispatch, url, locale, context, generation, result.status]);
     const mutate = useCallback(
