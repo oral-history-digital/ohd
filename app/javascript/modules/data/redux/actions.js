@@ -15,30 +15,29 @@ import {
 import { projectAccessContext } from './projectRequests';
 
 /**
- * Seeds authorized summaries from the HTML response without marking any query as loaded.
- * Uses the same record merging as API responses, in the initial account context.
+ * Seeds authorized base display details from HTML in the initial account context.
+ * Uses the API record merge and marks only the bootstrap locale's base detail queries as loaded.
  *
- * @param {Object} payload - Bootstrap summary envelope.
+ * @param {Object} payload - Bootstrap detail envelope.
  * @param {string} payload.locale - Locale of the serialized display fields.
- * @param {Object[]} payload.data - Project summaries using the list endpoint contract.
+ * @param {Object[]} payload.data - Base display details without includes or editing data.
  * @param {Object} [payload.identities={}] - Public routing fields by project ID.
- * @returns {function(Function, Function): void} Store initialization thunk.
+ * @param {Object} state - Initial root state supplying the account and access context.
+ * @returns {Object} Initialization action for normalizing project data before store creation.
  */
-export const initializeProjectSummaries =
-    ({ locale, data, identities = {} }) =>
-    (dispatch, getState) => {
-        const state = getState();
-        dispatch({
-            type: INITIALIZE_PROJECTS,
-            apiVersion: 2,
-            dataType: 'projects',
-            context: projectAccessContext(state),
-            generation: state.data.projects?.generation || 0,
-            locale,
-            data: { data },
-            identities,
-        });
-    };
+export const initializeProjects = (
+    { locale, data, identities = {} },
+    state
+) => ({
+    type: INITIALIZE_PROJECTS,
+    apiVersion: 2,
+    dataType: 'projects',
+    context: projectAccessContext(state),
+    generation: state.data.projects?.generation || 0,
+    locale,
+    data: { data },
+    identities,
+});
 
 function receiveError(dataType, id, error) {
     return {

@@ -192,8 +192,8 @@ class ApplicationController < ActionController::Base
              annotations
           ).to_json,
       },
-      projectSummaries: initial_projects_payload[:summaries],
       data: {
+        projects: initial_projects_payload,
         statuses: {
           users: {current: 'fetched', resultPagesCount: 1},
           interviews: {},
@@ -332,13 +332,13 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # Supplies authorized summaries for Redux and stable identities for routing.
-  # Summaries use the API contract without optional includes or detail readiness.
+  # Supplies authorized base display details for Redux and stable identities for routing.
+  # Uses the detail endpoint's serializer and cache without optional includes or editing data.
   # Routing identities remain available after account changes clear project content.
   #
   # @param current_project [Project, nil] Project resolved for the HTML request
   # @param umbrella_project [Project, nil] Configured umbrella project
-  # @return [Hash] Routing identities and localized project summaries
+  # @return [Hash] Routing identities, locale, and authorized base display details
   def build_initial_projects_payload(current_project:, umbrella_project:)
     projects = [umbrella_project, current_project].compact.uniq(&:id)
     identities = projects.to_h do |project|
@@ -353,16 +353,20 @@ class ApplicationController < ActionController::Base
     scope = ProjectPolicy::Scope.new(
       ProjectContext.new(current_user, nil), Project.where(id: projects.map(&:id))
     ).resolve
-    cache = Api::V2::ProjectListCache.new(
-      projects: scope, user: current_user,
-      parameters: { bootstrap: true, locale: I18n.locale.to_s, includes: [], umbrella_id: umbrella_project&.id }
-    )
-    summaries = cache.fetch do |records, _collections|
-      records.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob).map do |project|
-        Api::V2::ProjectListSerializer.new(project, umbrella_project_id: umbrella_project&.id).as_json
+    details = scope.map do |project|
+      cache = Api::V2::ProjectDisplayCache.new(
+        projects: Project.where(id: project.id), user: current_user,
+        parameters: { project_id: project.id, locale: I18n.locale.to_s, profile: 'display',
+          includes: [], umbrella_id: umbrella_project&.id }
+      )
+      payload = cache.fetch do |records, _collections|
+        record = records.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob).take!
+        { data: Api::V2::ProjectDisplaySerializer.new(record,
+          requested_includes: [], umbrella_project_id: umbrella_project&.id).as_json }
       end
+      payload.fetch(:data)
     end
-    { summaries: { locale: I18n.locale.to_s, data: summaries, identities: identities } }
+    { locale: I18n.locale.to_s, data: details, identities: identities }
   end
 
   def country_keys

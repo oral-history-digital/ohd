@@ -1,3 +1,7 @@
+import {
+    makeProjectDetailSelector,
+    projectDetailUrl,
+} from '../modules/data/redux/projectDetails';
 import { projectAccessContext } from '../modules/data/redux/projectRequests';
 import archiveStore from './archiveStore';
 
@@ -5,9 +9,8 @@ jest.mock('modules/api', () => ({
     apiMiddleware: () => (next) => (action) => next(action),
 }));
 jest.mock('modules/data', () => ({
-    initializeProjectSummaries: jest.requireActual(
-        '../modules/data/redux/actions'
-    ).initializeProjectSummaries,
+    initializeProjects: jest.requireActual('../modules/data/redux/actions')
+        .initializeProjects,
 }));
 jest.mock('./combinedReducers', () => {
     const { combineReducers } = jest.requireActual('redux');
@@ -22,7 +25,7 @@ jest.mock('./combinedReducers', () => {
 });
 jest.mock('./persistedState', () => ({ __esModule: true, default: {} }));
 
-test('normalizes bootstrap summaries before consumers mount and keeps routing identities separate from project content', () => {
+test('normalizes bootstrap details before consumers mount and keeps routing identities separate from project content', () => {
     const identity = {
         id: 1,
         shortname: 'portal',
@@ -31,11 +34,13 @@ test('normalizes bootstrap summaries before consumers mount and keeps routing id
     };
     const store = archiveStore({
         user: { isLoggedIn: true },
-        data: { users: { current: { id: 5 } } },
-        projectSummaries: {
-            identities: { 1: identity },
-            locale: 'de',
-            data: [{ ...identity, name: 'Titel' }],
+        data: {
+            users: { current: { id: 5 } },
+            projects: {
+                identities: { 1: identity },
+                locale: 'de',
+                data: [{ ...identity, name: 'Titel' }],
+            },
         },
     });
     const state = store.getState();
@@ -45,8 +50,20 @@ test('normalizes bootstrap summaries before consumers mount and keeps routing id
         context: projectAccessContext(state),
         records: { 1: identity },
         translations: { display: { 1: { de: { name: 'Titel' } } } },
-        requests: {},
         lists: {},
     });
-    expect(state).not.toHaveProperty('projectSummaries');
+    expect(Object.keys(state.data.projects.requests)).toHaveLength(2);
+    expect(
+        makeProjectDetailSelector()(
+            state,
+            projectDetailUrl('portal', 'de'),
+            'de'
+        )
+    ).toMatchObject({
+        project: { id: 1, name: 'Titel' },
+        status: 'succeeded',
+        isLoading: false,
+    });
+    expect(state.data.projects).not.toHaveProperty('data');
+    expect(state.data.projects).not.toHaveProperty('locale');
 });
