@@ -166,9 +166,11 @@ class InterviewsController < ApplicationController
   end
 
   def show
-    @interview = Interview.find_by_archive_id(params[:id])
+    @interview = Interview.find_by!(archive_id: params[:id])
 
-    unless @interview.present? && current_project.interviews.include?(@interview)
+    if request.format.vtt? || request.format.csv?
+      authorize @interview, :transcript?
+    elsif !current_project.interviews.include?(@interview)
       raise ActiveRecord::RecordNotFound
     end
 
@@ -185,18 +187,12 @@ class InterviewsController < ApplicationController
         render json: data_json(@interview)
       end
       format.vtt do
-        unless current_user&.accessible_projects&.include?(current_project) || current_user&.admin?
-          raise Pundit::NotAuthorizedError
-        end
         vtt = Rails.cache.fetch "#{current_project.shortname}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@locale}-#{params[:tape_number]}" do
           @interview.to_vtt(@locale, params[:tape_number])
         end
         send_data vtt, filename: "#{filename}.vtt", type: "text/vtt"
       end
       format.csv do
-        unless current_user&.accessible_projects&.include?(current_project) || current_user&.admin?
-          raise Pundit::NotAuthorizedError
-        end
         send_data @interview.to_csv(@locale, params[:tape_number]), filename: "#{filename}.csv", type: "text/csv"
       end
       format.html
@@ -204,7 +200,7 @@ class InterviewsController < ApplicationController
   end
 
   def transcript
-    interview = Interview.find_by_archive_id(params[:id])
+    interview = Interview.find_by!(archive_id: params[:id])
     authorize interview
 
     respond_to do |format|
@@ -218,7 +214,7 @@ class InterviewsController < ApplicationController
   end
 
   def observations
-    interview = Interview.find_by_archive_id(params[:id])
+    interview = Interview.find_by!(archive_id: params[:id])
     authorize interview
 
     respond_to do |format|
