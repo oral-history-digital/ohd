@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 /**
- * Uses the current route for resource requests without loading project details.
- * @param {Object} props - Record data, form settings, and request callbacks.
- * @returns {React.ReactElement} Resource form and controls.
+ * Creates or edits a person or organization, with translated name fields.
+ * @param {Object} props - Affiliate record, resource scope, initial values, and save/cancel callbacks.
+ * @returns {React.ReactElement} Affiliate form with fields for the selected name type.
  */
 export default function AffiliateForm({
     data,

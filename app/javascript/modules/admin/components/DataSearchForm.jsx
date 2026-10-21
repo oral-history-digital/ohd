@@ -12,9 +12,9 @@ import { parametrizedQuery } from '../utils';
 import DataSearchFormElement from './DataSearchFormElement';
 
 /**
- * Uses the current route for resource requests without loading project details.
- * @param {Object} props - Record data, form settings, and request callbacks.
- * @returns {React.ReactElement} Resource form and controls.
+ * Filters an admin resource list and loads results when the query is submitted or reset.
+ * @param {Object} props - Resource scope, query, search fields, and query/fetch callbacks.
+ * @returns {React.ReactElement} Search fields with submit, reset, and optional help controls.
  */
 export default function DataSearchForm({
     scope,

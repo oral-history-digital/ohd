@@ -15,6 +15,8 @@ export function useSensitiveData(data, sensitiveAttributes) {
     const pathBase = usePathBase();
 
     const { id, type } = data;
+    // Compare field names by content so new record or array references do not repeat requests.
+    // The effect parses this string back into the field names to fetch.
     const missingAttributes = JSON.stringify(
         sensitiveAttributes.filter((attribute) => !data[attribute])
     );
