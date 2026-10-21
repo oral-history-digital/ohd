@@ -1,12 +1,11 @@
 /* global railsMode */
 import { OHD_DOMAINS } from 'modules/constants';
-import { getUmbrellaProject, useProjectDetail } from 'modules/data';
+import { useUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /**
@@ -20,13 +19,11 @@ import { Link } from 'react-router-dom';
 export default function CatalogLink({ id, type }) {
     const { t, locale } = useI18n();
     const { project, isLoading, error: projectError } = useProject({});
-    // Legacy records still identify the umbrella project during migration.
-    const umbrellaIdentity = useSelector(getUmbrellaProject);
     const {
         project: umbrellaProject,
         isLoading: umbrellaIsLoading,
         error: umbrellaError,
-    } = useProjectDetail(umbrellaIdentity?.shortname);
+    } = useUmbrellaProject();
     const error = projectError || umbrellaError;
 
     if (error) {

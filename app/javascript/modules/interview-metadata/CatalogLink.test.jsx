@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { useProjectDetail } from 'modules/data';
+import { useUmbrellaProject } from 'modules/data';
 import { useProject } from 'modules/routes';
-import { useSelector } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
 import CatalogLink from './CatalogLink';
@@ -10,8 +9,7 @@ jest.mock('modules/constants', () => ({
     OHD_DOMAINS: { test: 'https://portal.example' },
 }));
 jest.mock('modules/data', () => ({
-    getUmbrellaProject: jest.fn(),
-    useProjectDetail: jest.fn(),
+    useUmbrellaProject: jest.fn(),
 }));
 jest.mock('modules/ui', () => ({
     InlineNotification: jest.fn(() => <p role="alert">Request failed</p>),
@@ -37,7 +35,6 @@ jest.mock('modules/i18n', () => ({
 jest.mock('modules/routes', () => ({
     useProject: jest.fn(),
 }));
-jest.mock('react-redux', () => ({ useSelector: jest.fn() }));
 
 beforeAll(() => {
     globalThis.railsMode = 'test';
@@ -45,11 +42,7 @@ beforeAll(() => {
 
 beforeEach(() => {
     useProject.mockReturnValue({ project: { is_umbrella: true } });
-    useSelector.mockReturnValue({
-        shortname: 'portal',
-        display_shortname: 'Legacy name',
-    });
-    useProjectDetail.mockReturnValue({
+    useUmbrellaProject.mockReturnValue({
         project: { shortname: 'portal', display_shortname: 'oh.d' },
     });
 });
@@ -60,7 +53,7 @@ test.each([
 ])(
     'uses display shortname %s in a comma-free catalog title',
     (displayShortname, expectedName) => {
-        useProjectDetail.mockReturnValue({
+        useUmbrellaProject.mockReturnValue({
             project: {
                 display_shortname: displayShortname,
                 shortname: 'portal',
@@ -79,7 +72,7 @@ test.each([
             `Sammlung im ${expectedName}-Katalog`
         );
         expect(useProject).toHaveBeenCalledWith({});
-        expect(useProjectDetail).toHaveBeenCalledWith('portal');
+        expect(useUmbrellaProject).toHaveBeenCalledWith();
         expect(screen.getByRole('link')).toHaveAttribute(
             'href',
             '/de/catalog/collections/90409031'
@@ -106,7 +99,7 @@ test('opens catalog links on the portal when the current project has its own dom
     expect(screen.getByRole('link')).toHaveAttribute('target', '_blank');
 });
 
-test.each([useProject, useProjectDetail])(
+test.each([useProject, useUmbrellaProject])(
     'hides catalog links while %p loads or fails',
     (hook) => {
         hook.mockReturnValue({ isLoading: true });
