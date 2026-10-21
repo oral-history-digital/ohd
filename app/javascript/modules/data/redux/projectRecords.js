@@ -54,7 +54,7 @@ export function projectEditFields(include = []) {
 }
 
 /**
- * Combines shared fields with locale values and the requested editing additions.
+ * Combines shared and localized fields with the requested editing or email-preview values.
  * Stored project translations retain their own array without display fallback.
  *
  * @param {Object|undefined} projects - Project state branch.
@@ -76,6 +76,8 @@ export function readProjectRecord(
     if (!record || !display) return undefined;
     const { edit, ...shared } = record;
     const result = { ...shared, ...display };
+    if (profile === 'display' && include.includes('email_preview'))
+        result.contact_email = edit?.contact_email;
     if (profile === 'edit') {
         const localizedEdit = projects.translations.edit[id]?.[locale];
         for (const field of projectEditFields(include)) {

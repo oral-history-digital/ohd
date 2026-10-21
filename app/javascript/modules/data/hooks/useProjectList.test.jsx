@@ -1164,3 +1164,44 @@ test.each(['logout', 'permission change'])(
         );
     }
 );
+
+test('reads a recipient locale without changing the UI locale and keeps preview contact out of ordinary reads', () => {
+    const store = makeStore();
+    const { result, rerender } = mount(store, () => [
+        useProjectDetail(7),
+        useProjectDetail(7, { locale: 'en', include: ['email_preview'] }),
+    ]);
+    expect(Loader.getJson.mock.calls[0][0]).toBe(
+        '/api/v2/projects/7?locale=de'
+    );
+    expect(Loader.getJson.mock.calls[1][0]).toBe(
+        '/api/v2/projects/7?include=email_preview&locale=en'
+    );
+    act(() => {
+        completeDetail(project(7, { name: 'Projekt DE' }), 0);
+        completeDetail(
+            project(7, {
+                name: 'Project EN',
+                contact_email: 'contact@example.org',
+            }),
+            1
+        );
+    });
+    expect(result.current[0].project.name).toBe('Projekt DE');
+    expect(result.current[0].project).not.toHaveProperty('contact_email');
+    expect(result.current[1].project).toMatchObject({
+        name: 'Project EN',
+        contact_email: 'contact@example.org',
+    });
+    expect(makeProjectSelector()(store.getState(), 7, 'en')).not.toHaveProperty(
+        'contact_email'
+    );
+    expect(
+        store.getState().data.v2.projects.records[7].edit.contact_email
+    ).toBe('contact@example.org');
+    mockLocale = 'ru';
+    rerender();
+    expect(result.current[0].project).toBeUndefined();
+    expect(result.current[1].project.name).toBe('Project EN');
+    expect(Loader.getJson).toHaveBeenCalledTimes(3);
+});

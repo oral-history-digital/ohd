@@ -22,11 +22,12 @@ import { fetchV2Data, v2AccessContext } from '../redux/v2Requests';
  * their own successful response; summaries alone do not count as loaded details.
  *
  * @param {number|string|null|undefined} identifier - Project ID or shortname; empty skips fetching.
- * @param {ProjectDetailOptions} [options={}] - Profile and optional fields to request.
+ * @param {ProjectDetailOptions} [options={}] - Locale, profile, and optional fields to request.
  * @returns {ProjectDetailResult} Details and status, plus mutate() for an explicit refresh.
  */
 export function useProjectDetail(identifier, options = {}) {
-    const { locale } = useI18n();
+    const { locale: currentLocale } = useI18n();
+    const locale = options.locale || currentLocale;
     const dispatch = useDispatch();
     const url = projectDetailUrl(identifier, locale, options);
     const select = useMemo(makeProjectDetailSelector, []);

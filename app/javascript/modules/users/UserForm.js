@@ -1,24 +1,47 @@
-import { useState } from 'react';
+/* global railsMode */
+import { useEffect, useState } from 'react';
 
 import { Dialog } from '@reach/dialog';
 import { submitDataWithFetch } from 'modules/api';
-import { fetchTranslationsForLocale } from 'modules/archive';
-import { useMutateData, useMutateDatum, useSensitiveData } from 'modules/data';
+import {
+    fetchTranslationsForLocale,
+    getTranslations,
+    getTranslationsView,
+} from 'modules/archive';
+import { OHD_DOMAINS } from 'modules/constants';
+import { useMutateData, useMutateDatum } from 'modules/data';
 import { Form } from 'modules/forms';
 import { t as originalT, useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+import {
+    pathBase as projectPathBase,
+    usePathBase,
+    useProject,
+} from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { underscore } from 'modules/strings';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+/**
+ * Edits account or project-access status and previews the notification email in the recipient's language.
+ * Waits for authorized project contact data before showing the form; saves through the existing user endpoint.
+ *
+ * @param {Object} props - User form inputs.
+ * @param {Object} props.data - Account or project-access record to edit.
+ * @param {string} props.dataPath - User-list cache path to refresh after saving.
+ * @param {number|string} props.userId - Account ID in the user list.
+ * @param {string} props.scope - Form scope for account or project-access fields.
+ * @param {string} props.responseLocale - Recipient language allowed by the current project.
+ * @param {Function} [props.onSubmit] - Called after a successful save.
+ * @returns {React.ReactElement} Form, loading indicator, or project request error.
+ */
 export default function UserForm({
     data,
     dataPath,
     userId,
     scope,
-    translationsView,
-    translations,
-    project,
+    responseLocale,
     onSubmit,
 }) {
     const mutateData = useMutateData('users', dataPath);
@@ -27,26 +50,39 @@ export default function UserForm({
     const dispatch = useDispatch();
     const { t } = useI18n();
 
-    useSensitiveData(project, ['contact_email']);
+    const translations = useSelector(getTranslations);
+    const translationsView = useSelector(getTranslationsView);
+    const { project, isLoading, error } = useProject({
+        locale: responseLocale,
+        include: ['email_preview'],
+    });
 
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const [workflowState, setWorkflowState] = useState(false);
-    // Use recipient locale only when target platform or project enables it.
-    const responseLocale = project.available_locales.includes(
-        data.default_locale
-    )
-        ? data.default_locale
-        : project.default_locale;
-    dispatch(fetchTranslationsForLocale(responseLocale, `/${responseLocale}`));
-    const conditionsLink = `${project.domain_with_optional_identifier}/${responseLocale}/conditions`;
+    useEffect(() => {
+        dispatch(
+            fetchTranslationsForLocale(responseLocale, `/${responseLocale}`)
+        );
+    }, [dispatch, responseLocale]);
+
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
+
+    const projectUrl = `${project.archive_domain || OHD_DOMAINS[railsMode]}${projectPathBase({ project, locale: responseLocale })}`;
+    const conditionsLink = `${projectUrl}/conditions`;
     const conditionsLinkTitle = originalT(
         { translations, translationsView, locale: responseLocale },
         'user.tos_agreement'
     );
-    const projectLink =
-        data.pre_access_location ||
-        `${project.domain_with_optional_identifier}/${responseLocale}`;
-    let correctHref = `${project.domain_with_optional_identifier}/${responseLocale}`;
+    const projectLink = data.pre_access_location || projectUrl;
+    let correctHref = projectUrl;
     correctHref +=
         '?correct_user_data=true&access_token=ACCESS_TOKEN_WILL_BE_REPLACED';
     const correctLinkTitle = originalT(
@@ -54,20 +90,23 @@ export default function UserForm({
         'user.correct_link'
     );
 
-    const mailText = workflowState
+    const mailParts = workflowState
         ? originalT(
               { translations, translationsView, locale: responseLocale },
               `devise.mailer.${workflowState}.text`,
               {
-                  project_name: project.name[responseLocale],
-                  project_link: `<a href='${projectLink}' target="_blank" title="Externer Link" rel="noreferrer">${project.name[responseLocale]}</a>`,
+                  project_name: project.name,
+                  project_link: `<a href='${projectLink}' target="_blank" title="Externer Link" rel="noreferrer">${project.name}</a>`,
                   tos_link: `<a href='${conditionsLink}' target="_blank" title="Externer Link" rel="noreferrer">${conditionsLinkTitle}</a>`,
                   user_display_name: `${data.first_name} ${data.last_name}`,
-                  mail_to: `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`,
+                  mail_to: project.contact_email
+                      ? `<a href='mailto:${project.contact_email}'>${project.contact_email}</a>`
+                      : '',
                   correct_link: `<a href='${correctHref}'>${correctLinkTitle}</a>`,
               }
-          ).join('')
+          )
         : '';
+    const mailText = Array.isArray(mailParts) ? mailParts.join('') : mailParts;
 
     const formElements = [
         {
@@ -191,15 +230,6 @@ UserForm.propTypes = {
     dataPath: PropTypes.string,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     scope: PropTypes.string,
-    translationsView: PropTypes.string,
-    translations: PropTypes.object,
-    project: PropTypes.shape({
-        available_locales: PropTypes.arrayOf(PropTypes.string),
-        default_locale: PropTypes.string,
-        domain_with_optional_identifier: PropTypes.string,
-        name: PropTypes.object,
-        contact_email: PropTypes.string,
-        is_umbrella: PropTypes.bool,
-    }).isRequired,
+    responseLocale: PropTypes.string.isRequired,
     onSubmit: PropTypes.func,
 };

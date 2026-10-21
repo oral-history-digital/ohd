@@ -19,7 +19,7 @@ import useProjectIdentity from './useProjectIdentity';
  * calls without options return the legacy Redux record. Passing options (including {})
  * loads API details through Redux, without falling back to the legacy record.
  *
- * @param {ProjectDetailOptions} [options] - Profile and includes; omit to retain the legacy read.
+ * @param {ProjectDetailOptions} [options] - Locale, profile, and includes; omit to retain the legacy read.
  * @returns {ProjectIdentity|(ProjectIdentity & ProjectDetailResult)} Project identity and, with options, request status and refresh.
  */
 export default function useProject(options) {

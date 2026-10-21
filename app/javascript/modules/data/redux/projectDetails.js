@@ -5,6 +5,7 @@ import { v2AccessContext, v2RequestKey } from './v2Requests';
 
 /**
  * @typedef {Object} ProjectDetailOptions
+ * @property {string} [locale] - Requested language; defaults to the UI locale.
  * @property {'display'|'edit'} [profile='display'] - Display values or authorized editing data.
  * @property {string[]} [include=[]] - Optional fields to fetch for this profile.
  */
