@@ -12,8 +12,8 @@ import {
 import { VIEWMODE_WORKFLOW } from 'modules/constants';
 import {
     getProjectBrandName,
-    getUmbrellaProject,
     useCurrentProject,
+    useUmbrellaProject,
 } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -65,7 +65,7 @@ export default function Layout({ children }) {
 
     const bannerActive = useSelector(getBannerActive);
     const currentViewMode = useSelector(getViewMode);
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project: umbrellaProject } = useUmbrellaProject();
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
     const isLoggedIn = useSelector(getIsLoggedIn);

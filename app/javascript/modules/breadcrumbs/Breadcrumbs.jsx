@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { getProjectBrandName, getUmbrellaProject } from 'modules/data';
+import { getProjectBrandName, useUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import PropTypes from 'prop-types';
@@ -36,7 +36,7 @@ export default function Breadcrumbs({ logoSrc }) {
     const instanceSettings = useSelector(
         (state) => state.data?.instance_settings
     );
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project: umbrellaProject } = useUmbrellaProject();
 
     const shouldHideBreadcrumbs =
         crumbs.length === 0 ||

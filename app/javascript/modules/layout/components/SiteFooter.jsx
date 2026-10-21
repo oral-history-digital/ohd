@@ -1,11 +1,10 @@
 /* global railsMode */
 /* global VERSION */
 import { GITHUB_URL, OHD_DOMAINS } from 'modules/constants';
-import { getUmbrellaProject } from 'modules/data';
+import { useUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import { FaGithub } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import ProjectFooter from './ProjectFooter';
@@ -17,7 +16,7 @@ import ProjectFooter from './ProjectFooter';
  */
 export function SiteFooter() {
     const { project, projectShortname } = useProject({ include: ['footer'] });
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project: umbrellaProject } = useUmbrellaProject();
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
 

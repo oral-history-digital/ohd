@@ -13,7 +13,9 @@ jest.mock('modules/constants', () => ({
     OHD_DOMAINS: { test: 'https://portal.example' },
 }));
 jest.mock('modules/data', () => ({
-    getUmbrellaProject: jest.fn(),
+    useUmbrellaProject: () => ({
+        project: jest.requireMock('react-redux').useSelector(),
+    }),
 }));
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: mockLocale, t: (key) => key }),

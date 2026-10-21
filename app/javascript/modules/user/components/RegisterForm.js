@@ -3,15 +3,13 @@ import { useRef, useState } from 'react';
 
 import { getCountryKeys } from 'modules/archive';
 import { EMAIL_REGEX, OHD_DOMAINS, PASSWORD_REGEX } from 'modules/constants';
-import {
-    getCurrentProject,
-    getProjectBrandName,
-    getUmbrellaProject,
-} from 'modules/data';
+import { getProjectBrandName, useUmbrellaProject } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { sanitizeInternalReturnPath } from 'modules/query-string';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { NewTabLink } from 'modules/ui';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
@@ -21,13 +19,18 @@ import { clearRegistrationStatus, submitRegister } from '../actions';
 import { NON_ZIP_COUNTRIES } from '../constants';
 import { getRegistrationStatus } from '../selectors';
 
+/**
+ * Collects account registration data with project context and umbrella branding.
+ * @param {Object} props - Component options and callbacks.
+ * @returns {React.ReactElement|null} Registration/access content when project settings are available.
+ */
 export default function RegisterForm({
     onSubmit = () => null,
     onCancel = () => null,
     showCancelButton = false,
 }) {
-    const project = useSelector(getCurrentProject);
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project, isLoading, error } = useProject({});
+    const { project: umbrellaProject } = useUmbrellaProject();
     const countryKeys = useSelector(getCountryKeys);
     const registrationStatus = useSelector(getRegistrationStatus);
     const dispatch = useDispatch();
@@ -270,6 +273,17 @@ export default function RegisterForm({
     const handleDismissRegistrationNotification = () => {
         dispatch(clearRegistrationStatus());
     };
+
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
 
     const registrationContent = t(
         project.is_umbrella
