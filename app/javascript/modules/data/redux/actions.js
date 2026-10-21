@@ -4,6 +4,7 @@ import { pluralize } from 'modules/strings';
 
 import {
     DELETE_STATUS_MSG,
+    INITIALIZE_PROJECTS,
     RECEIVE_DATA,
     RECEIVE_ERROR,
     REMOVE_DATA,
@@ -11,6 +12,31 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
+import { v2AccessContext } from './v2Requests';
+
+/**
+ * Seeds authorized summaries from the HTML response without marking any query as loaded.
+ * Uses the same record merging as API responses, in the initial account context.
+ *
+ * @param {Object} payload - Bootstrap summary envelope.
+ * @param {string} payload.locale - Locale of the serialized display fields.
+ * @param {Object[]} payload.data - Project summaries using the list endpoint contract.
+ * @returns {function(Function, Function): void} Store initialization thunk.
+ */
+export const initializeProjectSummaries =
+    ({ locale, data }) =>
+    (dispatch, getState) => {
+        const state = getState();
+        dispatch({
+            type: INITIALIZE_PROJECTS,
+            apiVersion: 2,
+            dataType: 'projects',
+            context: v2AccessContext(state),
+            generation: state.data.v2?.projects?.generation || 0,
+            locale,
+            data: { data },
+        });
+    };
 
 function receiveError(dataType, id, error) {
     return {

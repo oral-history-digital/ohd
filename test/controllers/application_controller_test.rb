@@ -1,8 +1,10 @@
 require 'test_helper'
 require 'minitest/mock'
 require 'securerandom'
+require_relative '../support/api_schema_assertions'
 
 class ApplicationControllerTest < ActiveSupport::TestCase
+  include ApiSchemaAssertions
   test 'cached project and interview responses hide unshared collection identity from readers' do
     project = DataHelper.test_project(shortname: "vis#{SecureRandom.hex(3)}a", workflow_state: 'public')
     collection = Collection.create!(project: project, name: 'Hidden collection', workflow_state: 'unshared')
@@ -62,27 +64,42 @@ class ApplicationControllerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'initial projects payload includes configured umbrella project' do
-    umbrella_project = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a")
-    current_project = DataHelper.test_project(shortname: "cur#{SecureRandom.hex(2)}a")
-    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+  test 'bootstrap uses localized API summaries and retains only stable routing fields outside them' do
+    umbrella = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a", workflow_state: 'public')
+    project = DataHelper.test_project(shortname: "cur#{SecureRandom.hex(2)}a", workflow_state: 'public')
+    project.translations.find_or_initialize_by(locale: 'en').update!(name: 'English project')
     controller = ApplicationController.new
-    controller.define_singleton_method(:cache_single) do |project, serializer_name: nil|
-      { id: project.id, serializer_name: serializer_name }
+    controller.define_singleton_method(:current_user) { nil }
+
+    payload = I18n.with_locale(:en) do
+      controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: umbrella)
     end
+    assert_equal 'en', payload[:summaries][:locale]
+    summaries = JSON.parse(payload[:summaries][:data].to_json)
+    assert_equal [umbrella.id, project.id].sort, summaries.map { |record| record['id'] }.sort
+    summaries.each { |record| assert api_schema.schema('ProjectSummary').valid?(record) }
+    assert_equal 'English project', summaries.find { |record| record['id'] == project.id }['name']
+    assert_equal({ id: umbrella.id, shortname: umbrella.shortname, archive_domain: umbrella.archive_domain.presence, is_umbrella: true },
+      payload[:projects_data][umbrella.id.to_s])
+    assert_equal %i[archive_domain id is_umbrella shortname], payload[:projects_data][project.id.to_s].keys.sort
+    assert_not payload.key?(:project_representations)
+  end
 
-    payload = controller.send(
-      :build_initial_projects_payload,
-      current_project: current_project,
-      umbrella_project: InstanceSetting.current.umbrella_project
-    )
+  test 'bootstrap excludes denied summaries and separates authorized cached content' do
+    project = DataHelper.test_project(shortname: "prv#{SecureRandom.hex(2)}a", workflow_state: 'unshared')
+    controller = ApplicationController.new
+    account = User.find_by!(email: 'alice@example.com')
+    controller.define_singleton_method(:current_user) { account }
 
-    assert_equal 'fetched', payload[:project_statuses][umbrella_project.id.to_s]
-    assert_equal umbrella_project.id, payload[:projects_data][umbrella_project.id.to_s][:id]
-    assert_equal 'ProjectBase', payload[:projects_data][umbrella_project.id.to_s][:serializer_name]
-    assert_equal current_project.id, payload[:projects_data][current_project.id.to_s][:id]
-    assert_equal 'ProjectBase', payload[:projects_data][current_project.id.to_s][:serializer_name]
-    assert_equal({ umbrella_project.id.to_s => 'base', current_project.id.to_s => 'base' }, payload[:project_representations])
+    Rails.stub(:cache, ActiveSupport::Cache::MemoryStore.new) do
+      payload = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+      assert_equal [project.id], payload[:summaries][:data].map { |record| record[:id] }
+      assert_equal 1, payload[:projects_data].size
+      account = nil
+      payload = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+      assert_empty payload[:summaries][:data]
+      assert_equal project.id, payload[:projects_data][project.id.to_s][:id]
+    end
   end
 
   test 'project serialization cache changes with umbrella setting' do

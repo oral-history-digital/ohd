@@ -10,6 +10,7 @@ import userReducer from '../../user/reducer';
 import { RECEIVE_DATA } from '../redux/action-types';
 import {
     deleteData,
+    initializeProjectSummaries,
     receiveData,
     receiveMutationData,
     submitData,
@@ -1204,4 +1205,46 @@ test('reads a recipient locale without changing the UI locale and keeps preview 
     expect(result.current[0].project).toBeUndefined();
     expect(result.current[1].project.name).toBe('Project EN');
     expect(Loader.getJson).toHaveBeenCalledTimes(3);
+});
+
+test('bootstrap summaries use current-account records and locales without completing list or detail queries', () => {
+    const store = makeStore();
+    store.dispatch(
+        initializeProjectSummaries({
+            locale: 'en',
+            data: [project(7, { name: 'Bootstrap name' })],
+        })
+    );
+    const initialized = store.getState().data.v2.projects;
+    expect(initialized.records[7]).toMatchObject({
+        id: 7,
+        shortname: 'project7',
+    });
+    expect(initialized.records[7]).not.toHaveProperty('name');
+    expect(initialized.translations.display[7].en.name).toBe('Bootstrap name');
+    expect(initialized.requests).toEqual({});
+    expect(initialized.lists).toEqual({});
+    expect(store.getState().data.projects[7].collections).toEqual({
+        99: { id: 99 },
+    });
+
+    /**
+     * @param {Object} props - Hook consumers.
+     * @param {React.ReactNode} props.children - Consumers using the initialized store.
+     * @returns {React.ReactElement} Provider for the initialized store.
+     */
+    const wrapper = ({ children }) => (
+        <Provider store={store}>{children}</Provider>
+    );
+    const { result } = renderHook(() => useProjectDetail('project7'), {
+        wrapper,
+    });
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.project).toBeUndefined();
+    expect(Loader.getJson).toHaveBeenCalledTimes(1);
+    act(() => completeDetail(project(7, { name: 'Requested locale details' })));
+    expect(result.current.project.name).toBe('Requested locale details');
+    act(() => store.dispatch({ type: LOGOUT }));
+    expect(result.current.project).toBeUndefined();
+    expect(store.getState().data.v2.projects.records).toEqual({});
 });

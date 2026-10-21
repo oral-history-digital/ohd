@@ -1,6 +1,7 @@
 import { AUTH_ERROR, LOGGED_IN, LOGOUT } from 'modules/user/action-types';
 
 import {
+    INITIALIZE_PROJECTS,
     RECEIVE_DATA,
     RECEIVE_ERROR,
     REMOVE_DATA,
@@ -85,10 +86,10 @@ function emptyProjects(generation = 0, context = null) {
  * additions and preview contact data stay separate from ordinary display reads.
  * Access changes and relevant mutations clear the cache and invalidate in-flight
  * responses. Queued-job acknowledgements retain cached project data.
- * State is created only when the first v2 project request starts.
+ * Bootstrap summaries initialize records without completing any list/detail query.
  *
  * @param {V2ProjectState|undefined} state - Existing v2 project state, if initialized.
- * @param {Object} action - V2 request action or a legacy access/mutation action.
+ * @param {Object} action - Bootstrap, request, or legacy access/mutation action.
  * @returns {V2ProjectState|undefined} Updated state, or the original value for ignored actions.
  */
 export function reduceV2Projects(state, action) {
@@ -120,6 +121,8 @@ export function reduceV2Projects(state, action) {
     if (action.dataType !== 'projects') return state;
     state ||= emptyProjects();
     if (action.generation !== state.generation) return state;
+    const initializing = action.type === INITIALIZE_PROJECTS;
+    if (initializing) state = emptyProjects(state.generation, action.context);
     if (action.type === REQUEST_DATA) {
         if (state.context !== action.context)
             state = emptyProjects(state.generation, action.context);
@@ -137,8 +140,9 @@ export function reduceV2Projects(state, action) {
     }
     // An access change or mutation may have invalidated this response in flight.
     if (
-        state.context !== action.context ||
-        state.requests[action.key]?.status !== 'pending'
+        !initializing &&
+        (state.context !== action.context ||
+            state.requests[action.key]?.status !== 'pending')
     )
         return state;
     if (action.type === RECEIVE_ERROR)
@@ -149,7 +153,7 @@ export function reduceV2Projects(state, action) {
                 [action.key]: { status: 'failed', error: action.error },
             },
         };
-    if (action.type !== RECEIVE_DATA) return state;
+    if (action.type !== RECEIVE_DATA && !initializing) return state;
 
     // Resource records still use their existing nested storage, not project summaries.
     if (action.projectResource)
@@ -216,28 +220,32 @@ export function reduceV2Projects(state, action) {
         ...state,
         records,
         translations: { display, edit, stored },
-        lists: action.single
-            ? state.lists
+        lists:
+            action.single || initializing
+                ? state.lists
+                : {
+                      ...state.lists,
+                      [action.key]: {
+                          ids: action.data.data.map(({ id }) => id),
+                          pagination: action.data.pagination,
+                      },
+                  },
+        // Bootstrap contains summaries, not evidence that a list/detail query is complete.
+        requests: initializing
+            ? state.requests
             : {
-                  ...state.lists,
+                  ...state.requests,
                   [action.key]: {
-                      ids: action.data.data.map(({ id }) => id),
-                      pagination: action.data.pagination,
+                      status: 'succeeded',
+                      error: null,
+                      ...(action.single
+                          ? {
+                                id: action.data.data.id,
+                                profile: action.profile,
+                                include: action.include,
+                            }
+                          : {}),
                   },
               },
-        requests: {
-            ...state.requests,
-            [action.key]: {
-                status: 'succeeded',
-                error: null,
-                ...(action.single
-                    ? {
-                          id: action.data.data.id,
-                          profile: action.profile,
-                          include: action.include,
-                      }
-                    : {}),
-            },
-        },
     };
 }

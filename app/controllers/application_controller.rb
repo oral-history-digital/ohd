@@ -154,7 +154,6 @@ class ApplicationController < ActionController::Base
       current_project: current_project,
       umbrella_project: InstanceSetting.current.umbrella_project
     )
-    project_statuses = initial_projects_payload[:project_statuses]
     projects_data = initial_projects_payload[:projects_data]
 
     @initial_redux_state ||= {
@@ -194,6 +193,7 @@ class ApplicationController < ActionController::Base
              annotations
           ).to_json,
       },
+      projectSummaries: initial_projects_payload[:summaries],
       data: {
         statuses: {
           users: {current: 'fetched', resultPagesCount: 1},
@@ -214,7 +214,7 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: project_statuses,
+          projects: {},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -226,7 +226,6 @@ class ApplicationController < ActionController::Base
           contribution_types: {},
         },
         projects: projects_data,
-        projectRepresentations: initial_projects_payload[:project_representations],
         instance_settings: cache_single(InstanceSetting.current),
         institutions: {},
         collections: {},
@@ -335,34 +334,37 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # Start with base project data. Pages request details when they need them.
+  # Supplies authorized summaries for Redux and stable identities for routing.
+  # Summaries use the API contract without optional includes or detail readiness.
+  # Routing identities remain available after account changes clear project content.
+  #
+  # @param current_project [Project, nil] Project resolved for the HTML request
+  # @param umbrella_project [Project, nil] Configured umbrella project
+  # @return [Hash] Routing identities and localized project summaries
   def build_initial_projects_payload(current_project:, umbrella_project:)
-    project_statuses = {}
-    projects_data = {}
-
-    # The umbrella project is always present because cross-project links and
-    # auth/session redirects rely on its domain context.
-    if umbrella_project
-      umbrella_project_id = umbrella_project.id.to_s
-      project_statuses[umbrella_project_id] = 'fetched'
-      projects_data[umbrella_project_id] = cache_single(
-        umbrella_project,
-        serializer_name: 'ProjectBase'
-      )
+    projects = [umbrella_project, current_project].compact.uniq(&:id)
+    identities = projects.to_h do |project|
+      [project.id.to_s, {
+        id: project.id, shortname: project.shortname,
+        archive_domain: project.archive_domain.presence,
+        is_umbrella: project.id == umbrella_project&.id,
+      }]
     end
-
-    # Include the active project's identity and routing settings as well.
-    if current_project && (!umbrella_project || current_project.id != umbrella_project.id)
-      current_project_id = current_project.id.to_s
-      project_statuses[current_project_id] = 'fetched'
-      projects_data[current_project_id] = cache_single(current_project, serializer_name: 'ProjectBase')
+    # Bootstrap runs on HTML entry points too, including denied pages. Apply the
+    # same global project scope as the list endpoint before serializing content.
+    scope = ProjectPolicy::Scope.new(
+      ProjectContext.new(current_user, nil), Project.where(id: projects.map(&:id))
+    ).resolve
+    cache = Api::V2::ProjectListCache.new(
+      projects: scope, user: current_user,
+      parameters: { bootstrap: true, locale: I18n.locale.to_s, includes: [], umbrella_id: umbrella_project&.id }
+    )
+    summaries = cache.fetch do |records, _collections|
+      records.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob).map do |project|
+        Api::V2::ProjectListSerializer.new(project, umbrella_project_id: umbrella_project&.id).as_json
+      end
     end
-
-    {
-      project_statuses: project_statuses,
-      projects_data: projects_data,
-      project_representations: projects_data.keys.to_h { |id| [id, 'base'] }, # default representation is 'base' for all projects
-    }
+    { projects_data: identities, summaries: { locale: I18n.locale.to_s, data: summaries } }
   end
 
   def country_keys
