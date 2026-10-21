@@ -24,6 +24,7 @@ jest.mock('modules/auth', () => ({
     AuthShowContainer: ({ children }) => children,
 }));
 jest.mock('modules/data', () => ({
+    FetchProjectResource: ({ children }) => children,
     getCollectionsForCurrentProject: jest.fn(),
 }));
 const mockCollections = {

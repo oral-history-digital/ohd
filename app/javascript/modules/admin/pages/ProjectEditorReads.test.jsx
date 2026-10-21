@@ -16,6 +16,7 @@ jest.mock('react-redux', () => ({
     useSelector: () => ({}),
 }));
 jest.mock('modules/data', () => ({
+    FetchProjectResource: ({ children }) => children,
     Fetch: ({ children }) => children,
     submitData: jest.fn(() => ({ type: 'SAVE' })),
 }));
