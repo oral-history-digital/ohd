@@ -3,7 +3,7 @@ import { createElement } from 'react';
 import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProjectIdentity } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -15,6 +15,11 @@ import AddButton from './AddButton';
 import AdminRecord from './AdminRecord';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
+/**
+ * Lists resource records with route-based requests; project identity is used only for status keys.
+ * @param {Object} props - Resource records, query state, form configuration, and Redux actions.
+ * @returns {React.ReactElement} Resource list and administration controls.
+ */
 export default function PaginatedAdminRecordList({
     form,
     formElements,
@@ -48,7 +53,8 @@ export default function PaginatedAdminRecordList({
     setQueryParams,
 }) {
     const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
+    const { projectDbId } = useProjectIdentity();
 
     const { hasMorePages, isFetching, loadNextPage, shouldShowPagination } =
         usePaginatedAdminRecords({
@@ -62,9 +68,8 @@ export default function PaginatedAdminRecordList({
             nestedScope,
             fetchData,
             setQueryParams,
-            locale,
-            project,
-            projectId,
+            pathBase,
+            projectDbId,
         });
 
     function createForm(data, onSubmit, onCancel) {
@@ -82,7 +87,7 @@ export default function PaginatedAdminRecordList({
                     values={initialFormValues}
                     scope={scope}
                     onSubmit={(params) => {
-                        submitData({ locale, project, projectId }, params);
+                        submitData({ pathBase }, params);
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }

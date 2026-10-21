@@ -1,10 +1,10 @@
-import { createElement, useEffect } from 'react';
+import { createElement, useEffect, useRef } from 'react';
 
 import { AuthorizedContent } from 'modules/auth';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProjectIdentity } from 'modules/routes';
 import { camelCase, pluralize } from 'modules/strings';
 import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
@@ -13,6 +13,11 @@ import { FaPlus } from 'react-icons/fa';
 import AdminRecord from './AdminRecord';
 import EditViewOrRedirect from './EditViewOrRedirect';
 
+/**
+ * Lists resource records with route-based requests; project identity is used only for status keys.
+ * @param {Object} props - Resource records, query state, form configuration, and Redux actions.
+ * @returns {React.ReactElement} Resource list and administration controls.
+ */
 export default function DataList({
     data,
     scope,
@@ -41,43 +46,37 @@ export default function DataList({
     helpTextCode,
     submitData,
 }) {
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
+    const { projectDbId } = useProjectIdentity();
 
+    const initializedFor = useRef(null);
     useEffect(() => {
-        loadJoinData();
-        if (otherDataToLoad.length) {
-            otherDataToLoad.forEach((d) => {
-                if (!statuses?.[d]?.all) {
-                    fetchData(
-                        { locale, project, projectId },
-                        pluralize(d),
-                        null,
-                        null,
-                        'all'
-                    );
-                }
-            });
-        }
-    }, []);
-
-    function loadJoinData() {
+        const routeKey = `${pathBase}/${projectDbId}`;
+        if (!projectDbId || initializedFor.current === routeKey) return;
+        initializedFor.current = routeKey;
         if (
             joinDataStatus &&
             !(
-                joinDataStatus[`for_projects_${project?.id}`] ||
+                joinDataStatus[`for_projects_${projectDbId}`] ||
                 joinDataStatus.all
             )
         ) {
-            fetchData(
-                { locale, project, projectId },
-                joinDataScope,
-                null,
-                null,
-                null
-            );
+            fetchData({ pathBase }, joinDataScope, null, null, null);
         }
-    }
+        otherDataToLoad.forEach((dataType) => {
+            if (!statuses?.[dataType]?.all)
+                fetchData({ pathBase }, pluralize(dataType), null, null, 'all');
+        });
+    }, [
+        fetchData,
+        joinDataScope,
+        joinDataStatus,
+        otherDataToLoad,
+        pathBase,
+        projectDbId,
+        statuses,
+    ]);
 
     function createForm(data, onSubmit, onCancel) {
         if (form) {
@@ -96,7 +95,7 @@ export default function DataList({
                     helpTextCode={helpTextCode}
                     onSubmit={(params) => {
                         submitData(
-                            { locale, project, projectId },
+                            { pathBase },
                             params,
                             undefined,
                             // Force refetch of list data after submit, to reflect any changes
