@@ -1,21 +1,28 @@
 import {
-    getCurrentProject,
     getRegistryNameTypesForCurrentProject,
     getRegistryNameTypesStatus,
 } from 'modules/data';
+import { useProjectIdentity } from 'modules/routes';
 import { getRegistryNameTypesQuery } from 'modules/search';
+import { Spinner } from 'modules/spinners';
 import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
+/**
+ * Lists project-scoped resources without loading project details.
+ * @returns {React.ReactElement} Administration list or pending project identity.
+ */
 export default function RegistryNameTypesAdminPage() {
-    const project = useSelector(getCurrentProject);
+    const { projectDbId } = useProjectIdentity();
     const data = useSelector(getRegistryNameTypesForCurrentProject);
     const dataStatus = useSelector(getRegistryNameTypesStatus);
     const query = useSelector(getRegistryNameTypesQuery);
     const { fetchData, deleteData, submitData, setQueryParams } =
         useAdminDataActions();
+
+    if (!projectDbId) return <Spinner />;
 
     return (
         <PaginatedAdminRecordList
@@ -24,12 +31,12 @@ export default function RegistryNameTypesAdminPage() {
             resultPagesCount={dataStatus.resultPagesCount}
             query={query}
             outerScope="project"
-            outerScopeId={project.id}
+            outerScopeId={projectDbId}
             scope="registry_name_type"
             sortAttribute="name"
             sortAttributeTranslated
             detailsAttributes={['name']}
-            initialFormValues={{ project_id: project.id }}
+            initialFormValues={{ project_id: projectDbId }}
             formElements={[
                 //{
                 //attribute: 'code',
