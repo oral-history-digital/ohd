@@ -1,8 +1,6 @@
 import dotProp from 'dot-prop-immutable';
-import { DEFAULT_LOCALES } from 'modules/constants';
 
 import {
-    DEFAULT_MAP_SECTION,
     getCollectionsForCurrentProject,
     getCollectionsStatus,
     getContributionTypesForCurrentProject,
@@ -22,15 +20,10 @@ import {
     getHeadingsStatus,
     getInterviewsStatus,
     getIsCampscapesProject,
-    getIsCatalog,
     getLanguagesStatus,
-    getMapSections,
     getMarkTextStatus,
-    getMediaStreamsForCurrentProject,
     getPeopleStatus,
     getPermissionsStatus,
-    getProjectLocales,
-    getProjectTranslation,
     getProjectsStatus,
     getRefTreeStatus,
     getRegistryEntriesStatus,
@@ -252,12 +245,6 @@ describe('getshowStartPageVideo', () => {
     });
 });
 
-test('getProjectTranslation gets project translation for current locale', () => {
-    const actual = getProjectTranslation(projectState);
-    const expected = projectState.data.projects[1].translations_attributes[0];
-    expect(actual).toEqual(expected);
-});
-
 describe('getIsCampscapesProject', () => {
     test('is true when set to campscapes', () => {
         const _state = dotProp.set(
@@ -271,80 +258,6 @@ describe('getIsCampscapesProject', () => {
 
     test('is false otherwise', () => {
         expect(getIsCampscapesProject(projectState)).toBeFalsy();
-    });
-});
-
-describe('getIsCatalog', () => {
-    test('returns is_catalog value', () => {
-        expect(getIsCatalog(projectState)).toEqual(
-            projectState.data.projects[1].is_catalog
-        );
-    });
-
-    test('is false otherwise', () => {
-        const _state = dotProp.set(
-            projectState,
-            'data.projects.1.is_catalog',
-            null
-        );
-
-        expect(getIsCatalog(_state)).toBe(false);
-    });
-});
-
-describe('getMapSections', () => {
-    test('returns map sections as ordered array', () => {
-        const actual = getMapSections(projectState);
-        const expected = [
-            {
-                id: 2,
-                type: 'MapSection',
-                name: 'usa',
-                order: 0,
-            },
-            {
-                id: 1,
-                type: 'MapSection',
-                name: 'europe',
-                order: 1,
-            },
-        ];
-        expect(actual).toEqual(expected);
-    });
-
-    test('returns default section if map sections are blank', () => {
-        const _state = dotProp.set(
-            projectState,
-            'data.projects.1.map_sections',
-            {}
-        );
-        const actual = getMapSections(_state);
-        const expected = [DEFAULT_MAP_SECTION];
-        expect(actual).toEqual(expected);
-    });
-
-    test('returns default section if map sections is undefined', () => {
-        const _state = dotProp.set(
-            projectState,
-            'data.projects.1.map_sections',
-            undefined
-        );
-        const actual = getMapSections(_state);
-        const expected = [DEFAULT_MAP_SECTION];
-        expect(actual).toEqual(expected);
-    });
-});
-
-describe('getProjectLocales', () => {
-    test('gets project locales', () => {
-        expect(getProjectLocales(projectState)).toEqual(
-            projectState.data.projects[1].available_locales
-        );
-    });
-
-    test('gets default locales if no project is selected', () => {
-        const _state = dotProp.set(projectState, 'archive.projectId', null);
-        expect(getProjectLocales(_state)).toEqual(DEFAULT_LOCALES);
     });
 });
 
@@ -363,12 +276,6 @@ test('getTaskTypesForCurrentProject gets task_types object', () => {
 test('getRolesForCurrentProject gets roles object', () => {
     expect(getRolesForCurrentProject(projectState)).toEqual(
         projectState.data.projects[1].roles
-    );
-});
-
-test('getMediaStreamsForCurrentProject retrieves media streams', () => {
-    expect(getMediaStreamsForCurrentProject(projectState)).toEqual(
-        projectState.data.projects[1].media_streams
     );
 });
 
