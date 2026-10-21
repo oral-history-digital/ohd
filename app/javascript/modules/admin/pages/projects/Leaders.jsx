@@ -1,12 +1,35 @@
-import { getCurrentProject } from 'modules/data';
-import { useSelector } from 'react-redux';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 
 import { AffiliateForm, AffiliateShow, DataList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
+/**
+ * Edits project-owned leaders from the edit profile.
+ * @returns {React.ReactElement} Resource list, loading indicator, or request error.
+ */
 export default function Leaders() {
-    const project = useSelector(getCurrentProject);
+    const { t } = useI18n();
+    const {
+        project,
+        error,
+        isLoading: projectLoading,
+    } = useProject({ profile: 'edit', include: ['affiliates'] });
     const { fetchData, deleteData, submitData } = useAdminDataActions();
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (projectLoading || !project) return <Spinner />;
+
     return (
         <DataList
             editView

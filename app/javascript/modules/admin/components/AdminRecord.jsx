@@ -7,7 +7,7 @@ import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { pluralize } from 'modules/strings';
+import { camelCase, pluralize } from 'modules/strings';
 import { AdminMenu } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
@@ -118,6 +118,11 @@ export default function AdminRecord({
     }
 
     const displayName = getDataDisplayName(data, locale);
+    // API records omit the Rails class name; the configured resource scope supplies it for permission checks.
+    const authorizationRecord = {
+        ...data,
+        type: data.type || camelCase(scope),
+    };
 
     return (
         <div
@@ -133,7 +138,10 @@ export default function AdminRecord({
                 showComponent={showComponent}
             />
 
-            <AuthorizedContent object={[data, task]} action="update">
+            <AuthorizedContent
+                object={[authorizationRecord, task]}
+                action="update"
+            >
                 <AdminMenu
                     disabled={disabled}
                     testIdPrefix={`${scope}-${data.id}`}
