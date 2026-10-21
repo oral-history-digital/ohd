@@ -1,17 +1,24 @@
 import { createElement, useRef } from 'react';
 
 import { ALPHA2_TO_ALPHA3 } from 'modules/constants';
-import { getProjectLocales } from 'modules/data';
 import { findTranslationForLocale } from 'modules/forms/utils';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { InputField, RichTextarea, Textarea } from '../input';
 
+/**
+ * Renders translated inputs for the loaded project locales without changing stored translation IDs.
+ * @param {Object} props - Field configuration, persisted translations, and change/validation callbacks.
+ * @returns {React.ReactElement} Localized fields or project loading/error feedback.
+ */
 export default function MultiLocaleWrapper(props) {
     const { t } = useI18n();
-    const locales = useSelector(getProjectLocales);
+    const { project, isLoading, error } = useProject({});
+    const locales = project?.available_locales || [];
 
     const {
         attribute,
@@ -29,6 +36,17 @@ export default function MultiLocaleWrapper(props) {
     } = props;
 
     const localEditedValuesRef = useRef({});
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
+
     let usedLocales = origAsLocale ? [...locales, 'orig'] : locales;
     if (baseLocales?.length) {
         usedLocales = Array.from(new Set([...usedLocales, ...baseLocales]));
@@ -137,6 +155,7 @@ MultiLocaleWrapper.propTypes = {
     scope: PropTypes.string,
     label: PropTypes.string,
     mandatory: PropTypes.bool,
+    baseLocales: PropTypes.arrayOf(PropTypes.string),
     data: PropTypes.object,
     formValues: PropTypes.object,
     handleChange: PropTypes.func,
