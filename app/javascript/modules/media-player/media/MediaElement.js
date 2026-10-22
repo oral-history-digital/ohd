@@ -8,8 +8,9 @@ import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { PLAYBACK_RATES } from '../constants';
 import {
     useGetMediaMissingText,
     useMediaPlayerResize,
@@ -20,6 +21,8 @@ import '../plugins/configurationMenuPlugin.js';
 import '../plugins/customSkipButtonsPlugin.js';
 import '../plugins/fractionalCurrentTimePlugin.js';
 import '../plugins/toggleSizeButtonPlugin.js';
+import { updatePlaybackRate } from '../redux/actions';
+import { getPlaybackRate } from '../redux/selectors';
 import {
     getQualityLabel,
     humanTimeToSeconds,
@@ -79,6 +82,8 @@ export default function MediaElement({
     const mediaStreams = project?.media_streams;
     const hasPlayback = !!project && !isLoading && !error;
     const playerRef = useRef(null);
+    const dispatch = useDispatch();
+    const playbackRate = useSelector(getPlaybackRate);
     const tapeRef = useRef(tape); // Used for event handler below.
     const isTranslationsView = useSelector(getTranslationsView);
     const mediaMissingText = useGetMediaMissingText();
@@ -115,7 +120,7 @@ export default function MediaElement({
         language: locale,
         sources: initialSources,
         poster: posterUrl,
-        playbackRates: [0.6, 0.8, 1, 1.2, 2],
+        playbackRates: PLAYBACK_RATES,
         enableSourceset: false,
         controlBar: {
             volumePanel: {
@@ -205,6 +210,14 @@ export default function MediaElement({
             default:
         }
     }
+
+    // Update the player's playback rate when it changes in Redux state.
+    useEffect(() => {
+        const player = playerRef.current;
+        if (player && player.playbackRate() !== playbackRate) {
+            player.playbackRate(playbackRate);
+        }
+    }, [playbackRate]);
 
     // Update the player's poster when it changes
     useEffect(() => {
@@ -395,6 +408,10 @@ export default function MediaElement({
     function handlePlayerReady(player) {
         playerRef.current = player;
         window.mainPlayerInstance = player;
+        player.playbackRate(playbackRate);
+        player.on('ratechange', () => {
+            dispatch(updatePlaybackRate(player.playbackRate()));
+        });
 
         player.configurationMenuPlugin();
         player.toggleSizePlugin({

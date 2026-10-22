@@ -61,3 +61,11 @@ test('handles the clearTimeChangeRequest action', () => {
     const expectedState = state;
     expect(reducer(_state, action)).toEqual(expectedState);
 });
+
+test('updates playback speed without changing playback position', () => {
+    const playingState = { ...initialState, mediaTime: 20, isPlaying: true };
+    expect(reducer(playingState, actions.updatePlaybackRate(1.5))).toEqual({
+        ...playingState,
+        playbackRate: 1.5,
+    });
+});

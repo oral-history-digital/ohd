@@ -10,6 +10,8 @@ export const getMediaTime = (state) => getState(state).mediaTime;
 
 export const getIsPlaying = (state) => getState(state).isPlaying;
 
+export const getPlaybackRate = (state) => getState(state).playbackRate ?? 1;
+
 export const getIsIdle = createSelector(
     [getCurrentTape, getMediaTime, getIsPlaying],
     (tape, time, isPlaying) => {
