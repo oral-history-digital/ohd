@@ -33,8 +33,6 @@ class ReadBulkPhotosFileJob < ApplicationJob
       csv = Roo::CSV.new(csv_file_name, csv_options: CSV_OPTIONS.merge(col_sep: ";"))
     end
 
-    interviews_to_reindex = []
-
     csv.each_with_index do |data, index|
       begin
         unless index == 0 || data[0].blank? 
@@ -75,7 +73,6 @@ class ReadBulkPhotosFileJob < ApplicationJob
 
           photo.write_iptc_metadata
 
-          interviews_to_reindex << interview
           File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)
 
           if photo.id
@@ -85,7 +82,6 @@ class ReadBulkPhotosFileJob < ApplicationJob
           end
         end
       end
-      Sunspot.index interviews_to_reindex.uniq
       interview
     end
   end

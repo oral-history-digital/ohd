@@ -2,6 +2,7 @@ require 'globalize'
 require 'webvtt'
 
 class Interview < ApplicationRecord
+  include RefreshesSearchIndex
   include Oai
   include OaiDc
   include OaiDatacite
@@ -179,7 +180,7 @@ class Interview < ApplicationRecord
 
   #has_one_attached :still_image
 
-  searchable do
+  searchable auto_index: false, auto_remove: false do
     integer :project_id, :stored => true, :references => Project
     string :archive_id, :stored => true
     # in order to be able to search for archive_id with fulltextsearch
@@ -340,6 +341,25 @@ class Interview < ApplicationRecord
 
   handle_asynchronously :solr_index, queue: 'indexing', priority: 50
   handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
+
+  refresh_search_index_on :archive_id, :project_id, :collection_id, :duration,
+    :workflow_state, :media_type, :properties, translations: [:observations]
+
+  # Identifies the interview document affected by its own indexed attributes.
+  #
+  # @return [Hash{String => Array<Integer>}] Search documents to refresh
+  def search_index_targets
+    targets = { 'Interview' => [id] }
+    if @destroying_search_index || saved_change_to_archive_id?
+      targets.merge!(
+        'Annotation' => annotations.pluck(:id),
+        'Photo' => photos.pluck(:id),
+        'Segment' => segments.pluck(:id),
+        'Person' => contributions.pluck(:person_id)
+      )
+    end
+    targets
+  end
 
   scope :shared, -> {where(workflow_state: 'public')}
   scope :unshared, -> {where(workflow_state: 'unshared')}

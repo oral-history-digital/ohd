@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Language < ApplicationRecord
+  include RefreshesSearchIndex
 
   RTL_LANGUAGES = %w( Hebräisch Arabisch )
 
@@ -13,6 +14,15 @@ class Language < ApplicationRecord
   validates :code, presence: true, uniqueness: true
 
   after_update :touch_interviews
+
+  refresh_search_index_on :code, translations: [:name]
+
+  # Refreshes only interviews linked to this shared language.
+  #
+  # @return [Hash{String => Array<Integer>}] Affected interview documents
+  def search_index_targets
+    { 'Interview' => interview_languages.pluck(:interview_id) }
+  end
 
   class << self
     def find_by_code_or_name(name_or_code)

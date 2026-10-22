@@ -1,4 +1,5 @@
 class Person < ApplicationRecord
+  include RefreshesSearchIndex
 
   enum :title, { doctor: 0, professor: 1, professor_with_promotion: 2 }
 
@@ -44,7 +45,7 @@ class Person < ApplicationRecord
     interviews.touch_all
   end
 
-  searchable do
+  searchable auto_index: false, auto_remove: false do
     string :archive_id, :multiple => true, :stored => true do
       contributions.joins(:interview).pluck('interviews.archive_id')
     end
@@ -87,9 +88,19 @@ class Person < ApplicationRecord
   handle_asynchronously :solr_index!, queue: 'indexing', priority: 50
 
   after_touch do
-    interviews = self.interviews.compact
-    interviews.each(&:touch)
-    Sunspot.index! [interviews]
+    Interview.where(id: contributions.select(:interview_id)).touch_all
+  end
+
+  refresh_search_index_on :project_id, :use_pseudonym, :title, :gender, :date_of_birth,
+    translations: [:first_name, :last_name, :alias_names, :pseudonym_first_name, :pseudonym_last_name]
+
+  # Captures associations before dependent contributions are removed on destruction.
+  #
+  # @return [Hash{String => Array<Integer>}] Own, interview and speaker documents
+  def search_index_targets
+    { 'Person' => [id],
+      'Interview' => contributions.pluck(:interview_id),
+      'Segment' => Segment.where(speaker_id: id).pluck(:id) }
   end
 
   def registry_references_by_metadata_field_name(metadata_field_name)

@@ -1,4 +1,5 @@
 class Contribution < ApplicationRecord
+  include RefreshesSearchIndex
 
   # This class joins contributors and interviews, defining
   # a contribution to the Archive in a specific area (contribution_type)
@@ -17,5 +18,15 @@ class Contribution < ApplicationRecord
   ) }
 
   scope :shared, -> { where(workflow_state: 'public') }
+
+  refresh_search_index_on :interview_id, :person_id, :contribution_type_id, :workflow_state
+
+  # Refreshes names, contribution text and archive assignments on both sides.
+  #
+  # @return [Hash{String => Array<Integer>}] Person and interview documents
+  def search_index_targets
+    { 'Interview' => search_index_interview_ids,
+      'Person' => ([person_id] + Array(saved_change_to_person_id)).compact.uniq }
+  end
 
 end

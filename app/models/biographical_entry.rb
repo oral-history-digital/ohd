@@ -1,9 +1,20 @@
 class BiographicalEntry < ApplicationRecord
+  include RefreshesSearchIndex
 
   belongs_to :person, touch: true
 
   translates :text, :start_date, :end_date, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
+
+  refresh_search_index_on :person_id, translations: [:text]
+
+  # Preserves interview biography updates without indexing every Person touch.
+  #
+  # @return [Hash{String => Array<Integer>}] Interviews containing this biography
+  def search_index_targets
+    person_ids = ([person_id] + Array(saved_change_to_person_id)).compact.uniq
+    { 'Interview' => Contribution.where(person_id: person_ids).pluck(:interview_id) }
+  end
 
   scope :with_public_state, ->{ where(workflow_state: 'public') }
 
