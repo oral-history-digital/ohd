@@ -58,7 +58,7 @@ export default function InterviewTabPanel({
     isLoggedIn,
 }) {
     const pathBase = usePathBase();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const isEditor = useIsEditor();
     const { t } = useI18n();
     const { data: interviewee, isLoading: intervieweeIsLoading } =

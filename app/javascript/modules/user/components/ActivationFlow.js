@@ -16,7 +16,7 @@ import { getIsLoggedIn } from '../selectors';
 export default function ActivationFlow({ className }) {
     const isLoggedIn = useSelector(getIsLoggedIn);
     const { t, locale } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const isUmbrella = project?.is_umbrella;
     const { project: umbrellaProject } = useUmbrellaProject();
     const { projectAccessGranted, projectAccessStatus } =

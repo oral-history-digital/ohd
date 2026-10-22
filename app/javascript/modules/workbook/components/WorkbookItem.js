@@ -48,7 +48,7 @@ export default function WorkbookItem({
         project: currentProject,
         isLoading: currentProjectLoading,
         error: currentProjectError,
-    } = useProject({});
+    } = useProject();
     const projectId = project?.shortname;
     const interview = interviews[data.media_id];
 

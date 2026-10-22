@@ -34,7 +34,7 @@ import {
 export function useBreadcrumbModel({ entityLabels = {}, labels = {} } = {}) {
     const currentPage = useCurrentPage();
     const { locale, t } = useI18n();
-    const { project } = useProject({});
+    const { project } = useProject();
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(project || {});
     const currentUser = useSelector(getCurrentUser);

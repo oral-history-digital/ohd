@@ -40,7 +40,7 @@ function useVideojsLanguages() {
     const currentLanguage = useSelector(getLocale);
     const translations = useSelector(getTranslations);
     const isTranslationsView = useSelector(getTranslationsView);
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
 
     // Dynamically build LANGS from the project's available_locales.
     // We use synchronous require so bundlers can include only the referenced

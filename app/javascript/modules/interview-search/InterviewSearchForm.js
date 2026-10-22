@@ -17,7 +17,7 @@ import useInterviewSearch from './useInterviewSearch';
  */
 export default function InterviewSearchForm({ archiveId }) {
     const { fulltext, setFulltext } = useSearchParams();
-    const { project, isLoading: projectIsLoading, error } = useProject({});
+    const { project, isLoading: projectIsLoading, error } = useProject();
     const { isLoading } = useInterviewSearch(archiveId, fulltext, project);
     const disabled = Boolean(
         projectIsLoading || !project || error || isLoading

@@ -13,7 +13,7 @@ import { getSelectedColumns } from '../selectors';
 export default function useColumns(interview) {
     const { isAuthorized } = useAuthorization();
     const selectedColumns = useSelector(getSelectedColumns);
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const translationColumns = interview.translation_alpha3s.map(
         (alpha3) => `translation_${alpha3}`
     );

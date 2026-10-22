@@ -23,7 +23,7 @@ import ArchiveSearchFormInput from './ArchiveSearchFormInput';
  * @returns {React.ReactElement} Search form or its project loading/error state.
  */
 export default function ArchiveSearchForm({ projectId, hideSidebar }) {
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const { t } = useI18n();
     const formEl = useRef(null);
     const trackSiteSearch = useTrackSiteSearch();

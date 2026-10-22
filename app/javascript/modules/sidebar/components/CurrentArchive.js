@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
  * @returns {React.ReactElement|null} Project link or error; empty while loading.
  */
 export default function CurrentArchive({ className }) {
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const { t } = useI18n();
     const pathBase = usePathBase();
 

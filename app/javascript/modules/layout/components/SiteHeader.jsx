@@ -12,7 +12,7 @@ import SiteLogo from './SiteLogo';
  */
 export function SiteHeader() {
     const currentPage = useCurrentPage();
-    const { project } = useProject({});
+    const { project } = useProject();
 
     const isHome = currentPage.pageType === 'site_startpage';
     const showProjectLogo =

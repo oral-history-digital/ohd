@@ -96,7 +96,7 @@ test('does not expose bootstrap records while details load or access is denied',
     });
     useMatch.mockReturnValue({ params: { projectId: 'pilot', locale: 'en' } });
     useProjectDetail.mockReturnValue({ isLoading: true });
-    const { result, rerender } = renderHook(() => useProject({}));
+    const { result, rerender } = renderHook(() => useProject());
     expect(result.current.project).toBeUndefined();
     const error = { status: 403, message: 'Denied' };
     useProjectDetail.mockReturnValue({ error, isLoading: false });

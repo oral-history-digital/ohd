@@ -21,7 +21,7 @@ import AdminSubTab from './AdminSubTab';
  */
 export default function IndexingTabPanel() {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
 

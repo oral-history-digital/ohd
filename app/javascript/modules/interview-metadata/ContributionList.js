@@ -26,7 +26,7 @@ export default function ContributionList({
         project,
         isLoading: projectIsLoading,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const groupedContributions = useSelector((state) =>
         getGroupedContributions(

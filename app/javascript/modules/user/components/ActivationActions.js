@@ -20,7 +20,7 @@ export default function ActivationFlow({ className }) {
     const { t } = useI18n();
     const isLoggedIn = useSelector(getIsLoggedIn);
     const user = useSelector(getCurrentUser);
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const isUmbrella = project?.is_umbrella;
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(project);
