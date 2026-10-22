@@ -66,6 +66,7 @@ group :test, :development do
   gem 'bcrypt_pbkdf'
   gem 'ed25519'
   gem 'pry'
+  gem 'rubocop', require: false
 end
 
 group :development do
