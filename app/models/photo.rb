@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Photo < ApplicationRecord
+  include RefreshesSearchIndex
   belongs_to :interview, touch: true
   has_one_attached :photo
 
@@ -15,7 +16,7 @@ class Photo < ApplicationRecord
     File.join("storage", photo.blob.key.first(2), photo.blob.key.first(4).last(2), photo.blob.key)
   end
 
-  searchable auto_index: false do
+  searchable auto_index: false, auto_remove: false do
     string :archive_id, :multiple => true, :stored => true do
       interview ? interview.archive_id : nil
     end
@@ -26,6 +27,15 @@ class Photo < ApplicationRecord
         caption(locale)
       end
     end
+  end
+
+  refresh_search_index_on :interview_id, :workflow_state, translations: [:caption]
+
+  # Refreshes the caption document and the captions embedded in both parents.
+  #
+  # @return [Hash{String => Array<Integer>}] Photo and interview documents
+  def search_index_targets
+    { 'Photo' => [id], 'Interview' => search_index_interview_ids }
   end
 
   def write_iptc_metadata
