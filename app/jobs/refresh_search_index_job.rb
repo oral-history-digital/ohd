@@ -5,6 +5,12 @@ class RefreshSearchIndexJob < ActiveJob::Base
   queue_as :indexing
   queue_with_priority 50
 
+  # Reports Solr failures without including indexed content from client exceptions.
+  class IndexingError < StandardError; end
+
+  # Active Job reschedules explicitly, independently of Delayed::Worker.max_attempts.
+  retry_on IndexingError, wait: :polynomially_longer, attempts: 3
+
   # Collects affected IDs and enqueues indexing after the database transaction commits.
   # Repeated calls in the same transaction share one job; rollback skips enqueueing.
   #
@@ -76,6 +82,7 @@ class RefreshSearchIndexJob < ActiveJob::Base
   #   IDs; Project IDs request reindexing of the project's interviews
   # @return [void]
   # @raise [KeyError] If a model name other than Project is not supported
+  # @raise [IndexingError] If Solr cannot apply or commit the requested updates
   def perform(targets)
     targets.each do |name, ids|
       if name == 'Project'
@@ -98,5 +105,8 @@ class RefreshSearchIndexJob < ActiveJob::Base
     end
     # Commit the index changes to Solr; this is separate from a database commit.
     Sunspot.commit
+  rescue RSolr::Error::Http, Errno::ECONNREFUSED, Errno::ECONNRESET, Timeout::Error, SocketError => error
+    # RSolr exceptions can contain the full indexed document; do not log that payload.
+    raise IndexingError, "Solr indexing failed (#{error.class.name})", cause: nil
   end
 end
