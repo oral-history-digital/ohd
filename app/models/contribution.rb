@@ -23,10 +23,12 @@ class Contribution < ApplicationRecord
 
   # Refreshes names, contribution text and archive assignments on both sides.
   #
-  # @return [Hash{String => Array<Integer>}] Person and interview documents
+  # @return [Hash{String => Array<Integer>}] Person, biography and interview documents
   def search_index_targets
+    person_ids = ([person_id] + Array(saved_change_to_person_id)).compact.uniq
     { 'Interview' => search_index_interview_ids,
-      'Person' => ([person_id] + Array(saved_change_to_person_id)).compact.uniq }
+      'Person' => person_ids,
+      'BiographicalEntry' => BiographicalEntry.where(person_id: person_ids).pluck(:id) }
   end
 
 end

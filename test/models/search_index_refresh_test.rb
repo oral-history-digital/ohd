@@ -102,8 +102,69 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     entry = nil
     refresh { entry = BiographicalEntry.create!(person: @person, text: 'Biographyquasar', locale: :en) }
     assert_includes indexed_ids(Interview, 'Biographyquasar', :biography_en), @interview.id
+    assert_includes indexed_ids(BiographicalEntry, 'Biographyquasar', :text_en), entry.id
+    refresh { entry.update!(text: 'Revisedbiography', start_date: '1950', locale: :en) }
+    assert_not_includes indexed_ids(BiographicalEntry, 'Biographyquasar', :text_en), entry.id
+    assert_includes indexed_ids(BiographicalEntry, 'Revisedbiography', :text_en), entry.id
+    hit = BiographicalEntry.search { fulltext('Revisedbiography', fields: :text_en) }.hits.first
+    assert_equal '1950', hit.stored(:start_date)
+    refresh { entry.update!(person: @other.interviewee) }
+    assert_not_includes indexed_ids(Interview, 'Revisedbiography', :biography_en), @interview.id
+    assert_includes indexed_ids(Interview, 'Revisedbiography', :biography_en), @other.id
     refresh { entry.destroy! }
     assert_not_includes indexed_ids(Interview, 'Biographyquasar', :biography_en), @interview.id
+    assert_not_includes indexed_ids(Interview, 'Revisedbiography', :biography_en), @other.id
+    assert_not_includes indexed_ids(BiographicalEntry, 'Revisedbiography', :text_en), entry.id
+  end
+
+  test 'events refresh date ranges on creation update reassignment and deletion' do
+    type = EventType.create!(project: @project, code: 'birth', name: 'Birth')
+    event = nil
+    refresh do
+      event = Event.create!(eventable: @person, event_type: type,
+        start_date: '1950-01-01', end_date: '1950-12-31')
+    end
+    assert_includes Event.search { with(:start_date, Date.new(1950, 6, 1)) }.hits.map { |hit| hit.primary_key.to_i }, event.id
+    assert_includes event_interview_ids('birth', Date.new(1950, 6, 1)), @interview.id
+    assert_not_includes event_interview_ids('birth', Date.new(1950, 6, 1)), @other.id
+
+    refresh { event.update!(start_date: '1960-01-01', end_date: '1960-12-31') }
+    assert_not_includes event_interview_ids('birth', Date.new(1950, 6, 1)), @interview.id
+    assert_includes event_interview_ids('birth', Date.new(1960, 6, 1)), @interview.id
+
+    other_type = EventType.create!(project: @other_project, code: 'birth', name: 'Birth')
+    refresh { event.update!(eventable: @other.interviewee, event_type: other_type) }
+    assert_not_includes event_interview_ids('birth', Date.new(1960, 6, 1)), @interview.id
+    assert_includes event_interview_ids('birth', Date.new(1960, 6, 1)), @other.id
+
+    refresh { event.destroy! }
+    assert_not_includes Event.search { with(:start_date, Date.new(1960, 6, 1)) }.hits.map { |hit| hit.primary_key.to_i }, event.id
+    assert_not_includes event_interview_ids('birth', Date.new(1960, 6, 1)), @other.id
+  end
+
+  test 'registry names refresh own documents on direct edits reassignment and deletion' do
+    entry = nil
+    refresh { entry = DataHelper.registry_entry_with_names(@project, en: 'Registryquasar') }
+    assert_includes indexed_ids(RegistryEntry, 'Registryquasar', :text_en), entry.id
+    name = entry.registry_names.first
+    refresh { name.translations.find_by!(locale: 'en').update!(descriptor: 'Renamedquasar') }
+    assert_not_includes indexed_ids(RegistryEntry, 'Registryquasar', :text_en), entry.id
+    assert_includes indexed_ids(RegistryEntry, 'Renamedquasar', :text_en), entry.id
+
+    refresh { entry.update!(workflow_state: 'hidden') }
+    hidden_ids = RegistryEntry.search do
+      fulltext('Renamedquasar', fields: :text_en)
+      with(:workflow_state, 'hidden')
+    end.hits.map { |hit| hit.primary_key.to_i }
+    assert_includes hidden_ids, entry.id
+
+    destination = RegistryEntry.create!(project: @other_project, workflow_state: 'public')
+    refresh { name.update!(registry_entry: destination, registry_name_type: @other_project.registry_name_types.first) }
+    assert_not_includes indexed_ids(RegistryEntry, 'Renamedquasar', :text_en), entry.id
+    assert_includes indexed_ids(RegistryEntry, 'Renamedquasar', :text_en), destination.id
+
+    refresh { destination.destroy! }
+    assert_not_includes indexed_ids(RegistryEntry, 'Renamedquasar', :text_en), destination.id
   end
 
   test 'person deletion removes its document and refreshes dependent interviews and speakers' do
@@ -397,5 +458,13 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
   # @return [Array<Integer>] Matching indexed interviews
   def facet_ids(name, value)
     Interview.search { dynamic(:search_facets) { with(name, value) } }.hits.map { |hit| hit.primary_key.to_i }
+  end
+
+  # Queries the date ranges embedded in interview documents.
+  # @param code [String] Event type code
+  # @param date [Date] Date to intersect
+  # @return [Array<Integer>] Matching interview IDs
+  def event_interview_ids(code, date)
+    Interview.search { dynamic(:events) { with(code, date) } }.hits.map { |hit| hit.primary_key.to_i }
   end
 end

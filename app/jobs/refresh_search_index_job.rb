@@ -97,7 +97,8 @@ class RefreshSearchIndexJob < ActiveJob::Base
 
       # Resolve only the explicitly supported document models.
       model = { 'Interview' => Interview, 'Person' => Person, 'Photo' => Photo,
-                'Segment' => Segment, 'Annotation' => Annotation }.fetch(name)
+                'Segment' => Segment, 'Annotation' => Annotation, 'Event' => Event,
+                'BiographicalEntry' => BiographicalEntry, 'RegistryEntry' => RegistryEntry }.fetch(name)
       records = model.where(id: ids)
       # Requested IDs absent from the database still need their Solr documents removed.
       (ids - records.pluck(:id)).each { |id| Sunspot.remove_by_id(model, id) }

@@ -3,6 +3,7 @@ require 'tsort'
 # require 'i18n/core_ext/string/interpolate'
 
 class RegistryEntry < ApplicationRecord
+  include RefreshesSearchIndex
 
   ROOT_NODE_ID = 1
 
@@ -112,7 +113,7 @@ class RegistryEntry < ApplicationRecord
     parents && parents.map(&:touch)
   end
 
-  searchable do
+  searchable auto_index: false, auto_remove: false do
     integer :project_id, :stored => true, :references => Project
     string :archive_id, :multiple => true, :stored => true do
       registry_references.pluck(:archive_id)
@@ -128,6 +129,15 @@ class RegistryEntry < ApplicationRecord
     end
     text :names
     #text :desc
+  end
+
+  refresh_search_index_on :project_id, :workflow_state
+
+  # Schedules the registry document without making a Solr request during a save.
+  #
+  # @return [Hash{String => Array<Integer>}] Registry documents to refresh
+  def search_index_targets
+    { 'RegistryEntry' => [id] }
   end
 
   scope :with_state, -> (workflow_state) {

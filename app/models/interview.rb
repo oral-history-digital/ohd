@@ -355,7 +355,8 @@ class Interview < ApplicationRecord
         'Annotation' => annotations.pluck(:id),
         'Photo' => photos.pluck(:id),
         'Segment' => segments.pluck(:id),
-        'Person' => contributions.pluck(:person_id)
+        'Person' => contributions.pluck(:person_id),
+        'BiographicalEntry' => BiographicalEntry.where(person_id: contributions.select(:person_id)).pluck(:id)
       )
     end
     targets

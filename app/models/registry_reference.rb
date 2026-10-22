@@ -7,7 +7,7 @@ class RegistryReference < BaseRegistryReference
 
   # Refreshes affected facets, including person references previously handled by touch.
   #
-  # @return [Hash{String => Array<Integer>}] Interviews on both sides of a reassignment
+  # @return [Hash{String => Array<Integer>}] Interview and registry documents on both sides
   def search_index_targets
     old_type = saved_change_to_ref_object_type&.first || ref_object_type
     old_id = saved_change_to_ref_object_id&.first || ref_object_id
@@ -19,7 +19,8 @@ class RegistryReference < BaseRegistryReference
       else []
       end
     end
-    { 'Interview' => ids + search_index_interview_ids }
+    { 'Interview' => ids + search_index_interview_ids,
+      'RegistryEntry' => ([registry_entry_id] + Array(saved_change_to_registry_entry_id)).compact.uniq }
   end
 
   scope :for_interview, ->(interview_id) {
