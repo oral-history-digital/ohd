@@ -30,6 +30,12 @@ If search data stays outdated, check Solr and the worker consuming the `indexing
 queue. After recovery, affected data may need a
 [scoped reindex](../lib/tasks/solr_development.rake).
 
+`log/solr_indexing.log` records each `RefreshSearchIndexJob` attempt: start,
+success or failure, job ID, attempt number, requested model/project IDs, duration,
+and error class. It contains no indexed content or raw error messages. Entries
+are JSON lines, and the file rotates at approximately 10 MB. This log covers the
+refresh job; manual reindex tasks use their existing output.
+
 ## When changing code
 
 Add search-relevant fields to `refresh_search_index_on` and include dependent

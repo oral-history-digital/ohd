@@ -11,6 +11,18 @@ class RefreshSearchIndexJob < ActiveJob::Base
   # Active Job reschedules explicitly, independently of Delayed::Worker.max_attempts.
   retry_on IndexingError, wait: :polynomially_longer, attempts: 3
 
+  around_perform :log_indexing_attempt
+
+  # Returns the dedicated, size-rotated log without Rails or Solr payload logging.
+  #
+  # @return [Logger] Indexing lifecycle logger
+  def self.indexing_logger
+    @indexing_logger ||= Logger.new(
+      Rails.root.join('log/solr_indexing.log'), 5, 10.megabytes,
+      formatter: ->(_severity, _time, _program, message) { "#{message}\n" }
+    )
+  end
+
   # Collects affected IDs and enqueues indexing after the database transaction commits.
   # Repeated calls in the same transaction share one job; rollback skips enqueueing.
   #
@@ -106,8 +118,47 @@ class RefreshSearchIndexJob < ActiveJob::Base
     end
     # Commit the index changes to Solr; this is separate from a database commit.
     Sunspot.commit
-  rescue RSolr::Error::Http, Errno::ECONNREFUSED, Errno::ECONNRESET, Timeout::Error, SocketError => error
+  rescue RSolr::Error::Http, Errno::ECONNREFUSED, Errno::ECONNRESET, Timeout::Error, SocketError => e
     # RSolr exceptions can contain the full indexed document; do not log that payload.
-    raise IndexingError, "Solr indexing failed (#{error.class.name})", cause: nil
+    raise IndexingError, "Solr indexing failed (#{e.class.name})", cause: nil
+  end
+
+  private
+
+  # Records each execution attempt, including failures handled by the retry policy.
+  #
+  # @yield The indexing job execution
+  # @return [Object] Result of the job execution
+  def log_indexing_attempt
+    started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    log_indexing_event('start')
+    result = yield
+    log_indexing_event('success', started_at: started_at)
+    result
+  rescue StandardError => e
+    log_indexing_event('failure', started_at: started_at, error: e)
+    raise
+  end
+
+  # Logs only lifecycle metadata and numeric IDs; never model content or error messages.
+  #
+  # @param event [String] Execution outcome
+  # @param started_at [Float, nil] Monotonic start time for elapsed duration
+  # @param error [Exception, nil] Failure whose class can be logged safely
+  # @return [void]
+  def log_indexing_event(event, started_at: nil, error: nil)
+    targets = arguments.first.is_a?(Hash) ? arguments.first : {}
+    entry = {
+      timestamp: Time.current.utc.iso8601(3), event: event, job_id: job_id, attempt: executions,
+      targets: targets.slice(*%w[Project Interview Person Photo Segment Annotation Event BiographicalEntry RegistryEntry])
+                      .transform_values do |ids|
+                        Array(ids).grep(Integer)
+                      end
+    }
+    entry[:duration_ms] = ((Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at) * 1000).round if started_at
+    entry[:error] = error.class.name if error
+    self.class.indexing_logger.public_send(error ? :error : :info, entry.to_json)
+  rescue IOError, SystemCallError => e
+    Rails.logger.warn("Solr indexing log unavailable (#{e.class.name})")
   end
 end
