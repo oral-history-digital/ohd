@@ -4,6 +4,7 @@ import {
     SEND_TIME_CHANGE_REQUEST,
     UPDATE_IS_PLAYING,
     UPDATE_MEDIA_TIME,
+    UPDATE_PLAYBACK_RATE,
 } from './action-types';
 
 export const updateMediaTime = (time) => ({
@@ -14,6 +15,11 @@ export const updateMediaTime = (time) => ({
 export const updateIsPlaying = (isPlaying) => ({
     type: UPDATE_IS_PLAYING,
     payload: { isPlaying },
+});
+
+export const updatePlaybackRate = (playbackRate) => ({
+    type: UPDATE_PLAYBACK_RATE,
+    payload: { playbackRate },
 });
 
 export const resetMedia = () => ({ type: RESET_MEDIA });

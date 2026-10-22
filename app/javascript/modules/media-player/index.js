@@ -2,6 +2,7 @@ export {
     sendTimeChangeRequest,
     updateIsPlaying,
     updateMediaTime,
+    updatePlaybackRate,
 } from './redux/actions';
 export { default as mediaPlayerReducer } from './redux/reducer';
 export {
@@ -9,11 +10,13 @@ export {
     getIsIdle,
     getIsPlaying,
     getMediaTime,
+    getPlaybackRate,
 } from './redux/selectors';
 
 export {
     DEFAULT_AUDIO_RESOLUTION,
     DEFAULT_VIDEO_RESOLUTION,
+    PLAYBACK_RATES,
     NAME as MEDIA_PLAYER_NAME,
 } from './constants';
 

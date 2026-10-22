@@ -4,12 +4,14 @@ import {
     SEND_TIME_CHANGE_REQUEST,
     UPDATE_IS_PLAYING,
     UPDATE_MEDIA_TIME,
+    UPDATE_PLAYBACK_RATE,
 } from './action-types';
 
 export const initialState = {
     tape: 1,
     mediaTime: 0,
     isPlaying: false,
+    playbackRate: 1,
     timeChangeRequest: null,
 };
 
@@ -24,6 +26,11 @@ const mediaPlayer = (state = initialState, action) => {
             return {
                 ...state,
                 isPlaying: action.payload.isPlaying,
+            };
+        case UPDATE_PLAYBACK_RATE:
+            return {
+                ...state,
+                playbackRate: action.payload.playbackRate,
             };
         case RESET_MEDIA:
             return initialState;
