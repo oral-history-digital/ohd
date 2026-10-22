@@ -5,6 +5,8 @@ the v2 API contract: parameters, defaults, response fields, nullability, paginat
 and JSON errors. Existing UI routes and legacy API responses have separate contracts.
 
 To extend the API, follow [Add a v2 API endpoint](adding-endpoints.md).
+For the reusable concepts behind project reads and Redux ownership, see
+[API and frontend data loading](data-loading.md).
 
 The YAML is generated output. Edit the Ruby definitions, then regenerate it:
 
