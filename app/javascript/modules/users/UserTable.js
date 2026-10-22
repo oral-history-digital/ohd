@@ -2,15 +2,18 @@ import { useMemo, useState } from 'react';
 
 import {
     Fetch,
-    getCurrentProject,
     getCurrentUser,
     getRolesForCurrentProject,
     getRolesForCurrentProjectFetched,
-    useGetProjects,
+    useProjectList,
 } from 'modules/data';
 import { SelectField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { DateCell, TableWithPagination } from 'modules/tables';
+import { InlineNotification } from 'modules/ui';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import ArchiveManagementInCell from './ArchiveManagementInCell';
@@ -21,11 +24,38 @@ import UserRowActions from './UserRowActions';
 import UserRowInterviewPermissions from './UserRowInterviewPermissions';
 import useUsers from './useUsers';
 
+/**
+ * Loads project settings before initializing account and project-access filters.
+ *
+ * @returns {React.ReactElement} User table, loading indicator, or request error.
+ */
 export default function UserTable() {
-    const { t, locale } = useI18n();
-    const project = useSelector(getCurrentProject);
+    const { t } = useI18n();
+    const { project, isLoading, error } = useProject({});
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
+
+    // Initialize filters after project settings load, and reset them when changing projects.
+    return <ProjectUserTable key={project.id} project={project} />;
+}
+
+/**
+ * Keeps user filters and pagination for a loaded project.
+ * @param {Object} props - Current project display settings.
+ * @returns {React.ReactElement} User table and filter controls.
+ */
+function ProjectUserTable({ project }) {
+    const { t } = useI18n();
     const currentUser = useSelector(getCurrentUser);
-    const { projects } = useGetProjects({ all: true });
+    const { projects } = useProjectList({ all: true });
     const projectRoles = useSelector(getRolesForCurrentProject);
 
     const [page, setPage] = useState(1);
@@ -98,8 +128,6 @@ export default function UserTable() {
         sorting
     );
 
-    const getDataPath = () => dataPath;
-
     const currentUserProject = (row, project) => {
         return Object.values(row.user_projects).find(
             (p) => p.project_id === project.id
@@ -130,7 +158,7 @@ export default function UserTable() {
                 cell: MfaStatusCell,
             },
         ],
-        [locale]
+        [t]
     );
 
     const umbrellaColumns = useMemo(
@@ -155,7 +183,7 @@ export default function UserTable() {
                 cell: ArchiveManagementInCell,
             },
         ],
-        [locale, project, dataPath]
+        [t]
     );
 
     const projectColumns = useMemo(
@@ -186,7 +214,7 @@ export default function UserTable() {
             },
             {
                 header: t('activerecord.models.role.other'),
-                accessorFn: getDataPath,
+                accessorFn: () => dataPath,
                 cell: RolesCell,
             },
             //{
@@ -194,7 +222,7 @@ export default function UserTable() {
             //cell: TasksCell,
             //},
         ],
-        [locale, project, dataPath]
+        [t, project, dataPath]
     );
 
     const actionColumns = useMemo(() => {
@@ -203,7 +231,7 @@ export default function UserTable() {
                 id: 'actions',
                 enableSorting: false,
                 header: t('modules.tables.actions'),
-                accessorFn: getDataPath,
+                accessorFn: () => dataPath,
                 cell: UserRowActions,
             },
         ];
@@ -213,13 +241,13 @@ export default function UserTable() {
                 id: 'interviewPermissions',
                 enableSorting: false,
                 header: t('modules.tables.interviewPermissions'),
-                accessorFn: getDataPath,
+                accessorFn: () => dataPath,
                 cell: UserRowInterviewPermissions,
             });
         }
 
         return columns;
-    }, [locale, project, dataPath]);
+    }, [t, project, dataPath]);
 
     const columns = baseColumns
         .concat(!project.is_umbrella ? projectColumns : umbrellaColumns)
@@ -354,3 +382,11 @@ export default function UserTable() {
         </>
     );
 }
+
+ProjectUserTable.propTypes = {
+    project: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        is_umbrella: PropTypes.bool.isRequired,
+        available_locales: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }).isRequired,
+};

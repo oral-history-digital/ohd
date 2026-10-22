@@ -5,7 +5,7 @@ import ProjectFaviconForm from './ProjectFaviconForm';
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({ t: (key) => key }),
 }));
-jest.mock('modules/data', () => ({ receiveData: jest.fn() }));
+jest.mock('modules/data', () => ({ receiveMutationData: jest.fn() }));
 jest.mock('modules/routes', () => ({ usePathBase: () => '/ohd/de' }));
 jest.mock('react-redux', () => ({
     connect: () => (Component) => Component,

@@ -2,7 +2,7 @@
  * Merges translation records from persisted data and current form values.
  *
  * Behavior:
- * - Accepts `translations_attributes` in either array or object form.
+ * - Accepts API `translations` and legacy `translations_attributes`, as arrays or objects.
  * - Uses `locale` as unique key.
  * - Gives precedence to form values for the same locale.
  * - Ignores records without a locale.
@@ -12,9 +12,11 @@
  * @returns {Array<Object>} Locale-unique merged translations
  */
 export function getMergedTranslations(data, formValues) {
-    const persistedTranslations = Array.isArray(data?.translations_attributes)
-        ? data.translations_attributes
-        : Object.values(data?.translations_attributes || {});
+    const storedTranslations =
+        data?.translations_attributes ?? data?.translations;
+    const persistedTranslations = Array.isArray(storedTranslations)
+        ? storedTranslations
+        : Object.values(storedTranslations || {});
 
     const formTranslations = Array.isArray(formValues?.translations_attributes)
         ? formValues.translations_attributes

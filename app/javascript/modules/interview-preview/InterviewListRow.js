@@ -5,8 +5,9 @@ import {
 } from 'modules/constants';
 import {
     getCurrentUser,
+    getResultMetadataFields,
     useHumanReadable,
-    useHydrateProjectsByIds,
+    useProjectDetail,
 } from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
@@ -21,18 +22,30 @@ import queryString from 'query-string';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
+/**
+ * Shows an interview row with project links and access settings loaded through Redux.
+ * Metadata columns follow the current project's configuration loaded through Redux.
+ *
+ * @param {Object} props - Row properties.
+ * @param {Object} props.interview - Interview summary.
+ * @param {string[]} props.selectedArchiveIds - Interviews selected for export.
+ * @param {Function} props.setArchiveId - Selects the interview for navigation.
+ * @param {Function} props.addRemoveArchiveId - Toggles export selection.
+ * @returns {React.ReactElement} Interview table row.
+ */
 export default function InterviewListRow({
     interview,
-    projects,
     selectedArchiveIds,
     setArchiveId,
     addRemoveArchiveId,
 }) {
     const { locale } = useI18n();
     const { humanReadable } = useHumanReadable();
-    useHydrateProjectsByIds([interview.project_id]);
-    const { project } = useProject();
-    const projectOfInterview = projects[interview.project_id];
+    const { project } = useProject({ include: ['metadata_fields'] });
+    const columns = getResultMetadataFields(project?.metadata_fields, 'table');
+    const { project: projectOfInterview } = useProjectDetail(
+        interview.project_id
+    );
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(projectOfInterview);
     const { fulltext } = useArchiveSearch();
@@ -110,10 +123,10 @@ export default function InterviewListRow({
                     )}
                 </LinkOrA>
             </td>
-            {project.is_umbrella && (
+            {project?.is_umbrella && (
                 <td className="Table-cell">{projectName}</td>
             )}
-            {project.list_columns?.map((column) => {
+            {columns.map((column) => {
                 const allowedToSee =
                     !isRestricted ||
                     (isRestricted && column.display_on_landing_page) ||
@@ -172,7 +185,6 @@ export default function InterviewListRow({
 
 InterviewListRow.propTypes = {
     interview: PropTypes.object,
-    projects: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,

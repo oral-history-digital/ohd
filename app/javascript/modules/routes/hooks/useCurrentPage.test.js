@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 
-import useProject from '../useProject';
+import useProjectIdentity from '../useProjectIdentity';
 import { useCurrentPage } from './useCurrentPage';
 
 jest.mock('react-router-dom', () => ({
@@ -9,7 +9,7 @@ jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(),
 }));
 
-jest.mock('../useProject', () => ({
+jest.mock('../useProjectIdentity', () => ({
     __esModule: true,
     default: jest.fn(),
 }));
@@ -19,7 +19,7 @@ jest.mock('../useProject', () => ({
  */
 function readHookResult(location, project = null) {
     useLocation.mockReturnValue(location);
-    useProject.mockReturnValue({
+    useProjectIdentity.mockReturnValue({
         projectShortname: project?.shortname,
         projectDbId: project?.id,
         isUmbrella: project?.is_umbrella,

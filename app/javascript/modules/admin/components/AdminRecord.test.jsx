@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { registerDoi } from 'modules/archive';
-import { deleteData } from 'modules/data';
+import { AuthorizedContent } from 'modules/auth';
+import { deleteData, useProjectDetail } from 'modules/data';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
@@ -20,11 +21,11 @@ jest.mock('modules/auth', () => {
 
     AuthorizedContent.propTypes = { children: MockPropTypes.node };
 
-    return { AuthorizedContent };
+    return { AuthorizedContent: jest.fn(AuthorizedContent) };
 });
 jest.mock('modules/data', () => ({
     deleteData: jest.fn((...args) => ({ type: 'deleteData', args })),
-    useGetProject: jest.fn(),
+    useProjectDetail: jest.fn(),
     useSensitiveData: jest.fn(),
 }));
 jest.mock('modules/i18n', () => ({
@@ -82,7 +83,11 @@ jest.mock('modules/ui', () => {
     };
     AdminMenu.Item = AdminMenuItem;
 
-    return { AdminMenu };
+    function InlineNotification({ description }) {
+        return <p role="alert">{description}</p>;
+    }
+    InlineNotification.propTypes = { description: MockPropTypes.string };
+    return { AdminMenu, InlineNotification };
 });
 jest.mock('react-redux', () => ({
     connect: () => (Component) => Component,
@@ -94,7 +99,8 @@ jest.mock('./DataDetails', () => {
     function DataDetails({ detailsAttributes, data }) {
         return (
             <div data-testid="data-details">
-                {detailsAttributes.join(',')}:{data.id}
+                {detailsAttributes.join(',')}:{data.id}:
+                {data.shortname || data.title}:{data.doi_status}
             </div>
         );
     }
@@ -168,31 +174,8 @@ test('deletes the server record and removes it from Redux state', () => {
     fireEvent.click(screen.getByRole('button', { name: 'delete' }));
 
     expect(deleteData.mock.calls).toEqual([
-        [
-            {
-                locale: 'en',
-                projectId: 'test',
-                project: { id: 1, shortname: 'test' },
-            },
-            'collections',
-            7,
-            null,
-            null,
-            true,
-        ],
-        [
-            {
-                locale: 'en',
-                projectId: 'test',
-                project: { id: 1, shortname: 'test' },
-            },
-            'collections',
-            7,
-            null,
-            null,
-            null,
-            true,
-        ],
+        [{ pathBase: '/test/en' }, 'collections', 7, null, null, true],
+        [{ pathBase: '/test/en' }, 'collections', 7, null, null, null, true],
     ]);
     expect(dispatch).toHaveBeenCalledTimes(2);
 });
@@ -233,4 +216,111 @@ test('renders custom record and joined-data components', () => {
 
     expect(screen.getByText('custom-7')).toBeInTheDocument();
     expect(screen.getByTestId('joined-data')).toHaveTextContent('interviews');
+});
+
+test('project editing waits for details instead of opening a form with summary data', () => {
+    useProjectDetail.mockReturnValue({
+        project: undefined,
+        isLoading: true,
+        error: null,
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        hideShow: true,
+        data: { id: 7, type: 'Project', name: 'Archive' },
+        form,
+    });
+    expect(screen.getByText('loading')).toBeInTheDocument();
+    expect(form).not.toHaveBeenCalled();
+});
+
+test('project editing shows a loading error without falling back to summary data', () => {
+    useProjectDetail.mockReturnValue({
+        project: { id: 7, available_locales: ['en'] },
+        isLoading: false,
+        error: { status: 403, message: 'Forbidden' },
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        hideShow: true,
+        data: { id: 7, type: 'Project', name: 'Archive' },
+        form,
+    });
+    expect(screen.getByRole('alert')).toHaveTextContent('Forbidden');
+    expect(form).not.toHaveBeenCalled();
+});
+
+test('project editing retains stored translations and adapts locales without manually refetching', () => {
+    const project = {
+        id: 7,
+        type: 'Project',
+        shortname: 'archive',
+        name: 'Archive',
+        available_locales: ['de', 'en'],
+        translations: [{ id: 12, locale: 'en', name: '' }],
+    };
+    const mutate = jest.fn();
+    useProjectDetail.mockReturnValue({
+        project,
+        isLoading: false,
+        error: null,
+        mutate,
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        data: { id: 7, type: 'Project', name: 'Summary' },
+        form,
+    });
+    expect(form).toHaveBeenCalledWith(
+        { ...project, pseudo_available_locales: 'de,en' },
+        expect.any(Function),
+        expect.any(Function)
+    );
+    form.mock.calls[0][1]();
+    expect(mutate).not.toHaveBeenCalled();
+    expect(project).not.toHaveProperty('pseudo_available_locales');
+});
+
+test('project dialogs load by shortname and display the API identifier and DOI status', () => {
+    useProjectDetail.mockReturnValue({
+        project: {
+            id: 7,
+            shortname: 'project-shortname',
+            available_locales: ['en'],
+            doi_status: 'created',
+        },
+    });
+    renderAdminRecord({
+        scope: 'project',
+        data: {
+            id: 7,
+            type: 'Project',
+            shortname: 'project-shortname',
+            name: 'Summary',
+        },
+        detailsAttributes: ['shortname', 'doi_status'],
+        hideEdit: true,
+    });
+    expect(useProjectDetail).toHaveBeenCalledWith('project-shortname', {
+        profile: 'edit',
+        include: ['translations'],
+    });
+    expect(screen.getByTestId('data-details')).toHaveTextContent(
+        'project-shortname:created'
+    );
+});
+
+test('uses the resource scope for permission checks when API records omit a class name', () => {
+    renderAdminRecord({
+        scope: 'external_link',
+        data: { id: 7, name: 'Link' },
+    });
+    expect(AuthorizedContent.mock.lastCall[0].object[0]).toEqual({
+        id: 7,
+        name: 'Link',
+        type: 'ExternalLink',
+    });
 });

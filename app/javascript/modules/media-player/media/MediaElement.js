@@ -6,6 +6,7 @@ import { useI18n } from 'modules/i18n';
 import { useTimeQueryString } from 'modules/query-string';
 import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -40,11 +41,28 @@ const BACKWARD_STEP = 5;
 
 const READY_STATE_HAVE_CURRENT_DATA = 2;
 
+/**
+ * Plays interview media using project playback settings and Redux playback state.
+ *
+ * @param {Object} props - Interview and playback controls.
+ * @param {string} props.archiveId - Public interview identifier used in media routes.
+ * @param {string} [props.className] - Additional wrapper classes.
+ * @param {Object} props.interview - Interview media and subtitle metadata.
+ * @param {number} [props.tape] - Selected tape number.
+ * @param {boolean} [props.isPlaying] - Requested playback state.
+ * @param {boolean} [props.timeChangeRequestAvailable] - Whether a seek is pending.
+ * @param {number} [props.timeChangeRequest] - Requested time in seconds.
+ * @param {Function} props.updateIsPlaying - Records playback state.
+ * @param {Function} props.updateMediaTime - Records playback position.
+ * @param {Function} props.resetMedia - Resets playback state on unmount.
+ * @param {Function} props.sendTimeChangeRequest - Requests a tape and playback time.
+ * @param {Function} props.clearTimeChangeRequest - Acknowledges a pending seek.
+ * @returns {React.ReactElement} Media player, missing-media text, or project request status.
+ */
 export default function MediaElement({
     archiveId,
     className,
     interview,
-    mediaStreams,
     tape,
     isPlaying,
     timeChangeRequestAvailable,
@@ -57,7 +75,9 @@ export default function MediaElement({
 }) {
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({ include: ['playback'] });
+    const mediaStreams = project?.media_streams;
+    const hasPlayback = !!project && !isLoading && !error;
     const playerRef = useRef(null);
     const tapeRef = useRef(tape); // Used for event handler below.
     const isTranslationsView = useSelector(getTranslationsView);
@@ -70,7 +90,9 @@ export default function MediaElement({
 
     const timecodeFormat = useTimecodeFormat(interview);
 
-    const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
+    const aspectRatio = project
+        ? `${project.aspect_x}:${project.aspect_y}`
+        : undefined;
     const initialSources =
         mediaStreams &&
         mediaStreamsToSources(
@@ -218,10 +240,10 @@ export default function MediaElement({
 
     // When media becomes unavailable, drop any stale player instance reference.
     useEffect(() => {
-        if (interview.media_missing) {
+        if (!hasPlayback || interview.media_missing) {
             playerRef.current = null;
         }
-    }, [interview.media_missing]);
+    }, [hasPlayback, interview.media_missing]);
 
     // Update sources and tracks if tape has been changed.
     useEffect(() => {
@@ -517,7 +539,18 @@ export default function MediaElement({
         checkForTimeChangeRequest();
     }
 
-    const isReady = Boolean(mediaStreams);
+    const isReady = hasPlayback && Boolean(mediaStreams);
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
 
     return (
         <div
@@ -533,7 +566,7 @@ export default function MediaElement({
                 }
             )}
         >
-            {interview.media_missing ? (
+            {hasPlayback && interview.media_missing ? (
                 <p className="MediaMissing">{mediaMissingText}</p>
             ) : (
                 <>
@@ -573,10 +606,6 @@ MediaElement.propTypes = {
     archiveId: PropTypes.string.isRequired,
     className: PropTypes.string,
     interview: PropTypes.object.isRequired,
-    // mediaStreams can be undefined while data is being fetched from the store,
-    // make it optional to avoid React prop-type warnings. Component already
-    // guards against missing streams and returns null until streams are present.
-    mediaStreams: PropTypes.object,
     tape: PropTypes.number,
     isPlaying: PropTypes.bool,
     timeChangeRequestAvailable: PropTypes.bool,

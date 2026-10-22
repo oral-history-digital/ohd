@@ -10,12 +10,7 @@ import {
     hideBanner,
 } from 'modules/banner';
 import { VIEWMODE_WORKFLOW } from 'modules/constants';
-import {
-    getProjectBrandName,
-    getUmbrellaProject,
-    useCurrentProject,
-    useHydrateProjectsByIds,
-} from 'modules/data';
+import { getProjectBrandName, useUmbrellaProject } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import {
@@ -25,6 +20,7 @@ import {
 } from 'modules/routes';
 import { Sidebar, getSidebarVisible, toggleSidebar } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import {
     AfterConfirmationPopup,
     AfterEnable2FAPopup,
@@ -56,25 +52,26 @@ import {
 } from './components';
 import getFaviconUrl from './getFaviconUrl';
 
+/**
+ * Renders the page shell with project branding, navigation, account prompts, and sidebar controls.
+ * Waits for project data and reports loading errors before displaying page content.
+ *
+ * @param {Object} props - Layout content.
+ * @param {React.ReactNode} [props.children] - Current page to display.
+ * @returns {React.ReactElement|null} Page shell or request status; empty without project data.
+ */
 export default function Layout({ children }) {
     const dispatch = useDispatch();
-    const { locale } = useI18n();
+    const { locale, t } = useI18n();
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { project, projectDbId, projectShortname, isLoading } =
-        useCurrentProject();
-    // `useCurrentProject` resolves via SWR, but most children read the project
-    // from the Redux store via `useProject`. The store is seeded server-side
-    // with only the umbrella and current projects, so a client-side navigation into
-    // any other project leaves Redux one `useHydrateProjectsByIds` round-trip
-    // behind SWR. Children that render in that window see `project: undefined`.
-    const { project: hydratedProject } = useProject();
+    const { project, projectShortname, isLoading, error } = useProject({});
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
     const isEditviewActive = useIsEditor();
 
     const bannerActive = useSelector(getBannerActive);
     const currentViewMode = useSelector(getViewMode);
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project: umbrellaProject } = useUmbrellaProject();
     const sidebarVisible = useSelector(getSidebarVisible);
     const loggedInAt = useSelector(getLoggedInAt);
     const isLoggedIn = useSelector(getIsLoggedIn);
@@ -89,25 +86,9 @@ export default function Layout({ children }) {
             currentViewMode === VIEWMODE_WORKFLOW) ||
         isPeopleAdminPage;
 
-    // Temporary workaround to ensure we have all necessary project data
-    // TODO: Refactor data fetching to use SWR here, too.
-    const projectIdsToHydrate = [projectDbId, umbrellaProject?.id].filter(
-        Boolean
-    );
-    const needsFullProjectHydration = (candidateProject) =>
-        !candidateProject ||
-        !Array.isArray(candidateProject.translations_attributes) ||
-        !Object.prototype.hasOwnProperty.call(
-            candidateProject,
-            'cooperation_partner'
-        );
-
     useCheckLocaleAgainstProject();
     useFetchAccount();
     useSyncLegacyProjectId(projectShortname);
-    useHydrateProjectsByIds(projectIdsToHydrate, {
-        needsHydration: needsFullProjectHydration,
-    });
 
     // Clean up any access_token from URL after initial load
     useEffect(() => {
@@ -117,23 +98,28 @@ export default function Layout({ children }) {
         }
     }, [searchParams, setSearchParams]);
 
+    /** Hides the current banner for the rest of this browser session. */
     function handleBannerClose() {
         dispatch(hideBanner());
         doNotShowBannerAgainThisSession();
     }
 
-    let titleBase = getProjectBrandName(umbrellaProject, locale);
-    if (project) {
-        titleBase = project?.display_name?.[locale] || project?.name?.[locale];
-    }
-
+    const titleBase =
+        project?.display_name ||
+        project?.name ||
+        getProjectBrandName(umbrellaProject, locale);
     const faviconUrl = getFaviconUrl(project);
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
 
-    // Hold the children until Redux has caught up with SWR, so that `useProject`
-    // returns a project for every child that renders below this point.
-    const awaitingHydration = Boolean(project) && !hydratedProject;
-
-    if (isLoading || awaitingHydration) {
+    if (isLoading) {
         return (
             <div className="Layout Layout--loading">
                 <main className="Site-content Layout-loadingContent">

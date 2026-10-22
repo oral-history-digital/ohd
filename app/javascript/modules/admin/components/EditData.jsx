@@ -3,11 +3,16 @@ import { useState } from 'react';
 import { useHumanReadable, useSensitiveData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaPencilAlt } from 'react-icons/fa';
 
+/**
+ * Displays record fields and lets users switch to a form to edit, save, or cancel changes.
+ * @param {Object} props - Record, field definitions, form defaults, loading state, and save action.
+ * @returns {React.ReactElement} Record details or the active edit form.
+ */
 export default function EditData({
     data,
     formElements,
@@ -19,9 +24,9 @@ export default function EditData({
     submitData,
 }) {
     const [editing, setEditing] = useState(false);
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const { humanReadable } = useHumanReadable();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
 
     useSensitiveData(data, sensitiveAttributes);
 
@@ -31,7 +36,7 @@ export default function EditData({
 
     function handleSave(params) {
         submitData(
-            { locale, projectId, project },
+            { pathBase },
             params,
             { updateStateBeforeSubmit: true }, // Optimistic UI update
             () => {

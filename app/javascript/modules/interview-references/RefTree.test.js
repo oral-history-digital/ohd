@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { usePathBase } from 'modules/routes';
 import mockPropTypes from 'prop-types';
 
 import RefTree from './RefTree';
@@ -9,10 +10,7 @@ jest.mock('modules/i18n', () => ({
     useI18n: () => ({ t: (key) => key, locale: 'en' }),
 }));
 jest.mock('modules/routes', () => ({
-    useProject: () => ({
-        project: { shortname: 'archive' },
-        projectId: 'archive',
-    }),
+    usePathBase: jest.fn(),
 }));
 jest.mock('modules/spinners', () => ({ Spinner: () => null }));
 jest.mock('modules/user-agent', () => ({
@@ -32,6 +30,52 @@ jest.mock('./RefTreeChildren', () => {
 
     return RefTreeChildrenMock;
 });
+
+beforeEach(() => {
+    usePathBase.mockReturnValue('/project/en');
+});
+
+test.each(['/project/en', '/de'])(
+    'requests the public interview reference tree using route prefix %s',
+    (pathBase) => {
+        usePathBase.mockReturnValue(pathBase);
+        const fetchData = jest.fn();
+        const { rerender } = render(
+            <RefTree
+                archiveId="project001"
+                refTreeStatus="n/a"
+                fetchData={fetchData}
+            />
+        );
+        expect(fetchData).toHaveBeenCalledWith(
+            { pathBase },
+            'interviews',
+            'project001',
+            'ref_tree'
+        );
+        rerender(
+            <RefTree
+                archiveId="project001"
+                refTreeStatus="fetching"
+                fetchData={fetchData}
+            />
+        );
+        expect(fetchData).toHaveBeenCalledTimes(1);
+        rerender(
+            <RefTree
+                archiveId="project002"
+                refTreeStatus="n/a"
+                fetchData={fetchData}
+            />
+        );
+        expect(fetchData).toHaveBeenLastCalledWith(
+            { pathBase },
+            'interviews',
+            'project002',
+            'ref_tree'
+        );
+    }
+);
 
 test('renders project and umbrella references from the migrated response', () => {
     render(

@@ -1,4 +1,5 @@
 import {
+    FetchProjectResource,
     getNormDataProviders,
     getRegistryNameTypesForCurrentProject,
 } from 'modules/data';
@@ -21,4 +22,17 @@ const mapDispatchToProps = (dispatch) =>
         dispatch
     );
 
-export default connect(mapStateToProps, mapDispatchToProps)(NormDataSelect);
+const ReadyForm = connect(mapStateToProps, mapDispatchToProps)(NormDataSelect);
+
+/**
+ * Loads name-type choices before importing an authority-data name.
+ * @param {Object} props - Editor values and callbacks forwarded unchanged.
+ * @returns {React.ReactElement} Editor or resource loading indicator.
+ */
+export default function NormDataSelectContainer(props) {
+    return (
+        <FetchProjectResource resource="registry_name_types">
+            <ReadyForm {...props} />
+        </FetchProjectResource>
+    );
+}

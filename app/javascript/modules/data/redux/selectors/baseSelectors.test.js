@@ -5,7 +5,7 @@ import {
     getLanguages,
     getNormDataProviders,
     getPermissions,
-    getProjects,
+    getProjectResources,
     getRandomFeaturedInterviews,
     getRegistryEntries,
     getSegments,
@@ -39,8 +39,8 @@ test('getPermissions gets permissions object', () => {
     expect(getPermissions(state)).toEqual(state.data.permissions);
 });
 
-test('getProjects gets projects object', () => {
-    expect(getProjects(state)).toEqual(state.data.projects);
+test('getProjectResources gets projects object', () => {
+    expect(getProjectResources(state)).toEqual(state.data.projects.resources);
 });
 
 test('getRandomFeaturedInterviews gets featured interviews object', () => {

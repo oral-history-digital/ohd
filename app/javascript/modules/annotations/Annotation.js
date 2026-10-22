@@ -1,22 +1,32 @@
 import { AuthorizedContent } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import AnnotationFormContainer from './AnnotationFormContainer';
+import AnnotationForm from './AnnotationForm';
 
+/**
+ * Shows a localized annotation and authorized edit/delete controls.
+ *
+ * @param {Object} props - Annotation context and mutations.
+ * @param {Object} props.annotation - Annotation with localized text.
+ * @param {string} props.contentLocale - Content language to display.
+ * @param {Object} props.segment - Segment used by the editing form.
+ * @param {Function} props.deleteData - Deletes the annotation through Redux.
+ * @returns {React.ReactElement} Annotation and permitted controls.
+ */
 export default function Annotation({
     annotation,
     contentLocale,
     segment,
     deleteData,
 }) {
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
 
     return (
         <div className="SegmentAnnotation">
@@ -37,7 +47,7 @@ export default function Annotation({
                         }
                     >
                         {(closeModal) => (
-                            <AnnotationFormContainer
+                            <AnnotationForm
                                 annotation={annotation}
                                 segment={segment}
                                 contentLocale={contentLocale}
@@ -58,7 +68,7 @@ export default function Annotation({
                             <DeleteItemForm
                                 onSubmit={() => {
                                     deleteData(
-                                        { locale, projectId, project },
+                                        { pathBase },
                                         'annotations',
                                         annotation.id,
                                         null,

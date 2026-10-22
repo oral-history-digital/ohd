@@ -1,7 +1,7 @@
 import { deleteData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { AdminMenu } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
@@ -11,18 +11,28 @@ import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 
 const Item = AdminMenu.Item;
 
+/**
+ * Provides entry editing, creation, deletion, and parent-management actions.
+ * The caller controls authorization; mutations use the current route.
+ *
+ * @param {Object} props - Menu properties.
+ * @param {Object} props.registryEntry - Entry to edit or delete.
+ * @param {Object} props.parentRegistryEntry - Parent used for hierarchy removal.
+ * @returns {React.ReactElement} Entry administration menu.
+ */
 export default function RegistryEntryEditButtons({
     registryEntry,
     parentRegistryEntry,
 }) {
     const dispatch = useDispatch();
     const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
 
+    /** Starts entry deletion through the existing Redux mutation flow. */
     function destroy() {
         dispatch(
             deleteData(
-                { project, projectId, locale },
+                { pathBase },
                 'registry_entries',
                 registryEntry.id,
                 null,
@@ -32,10 +42,11 @@ export default function RegistryEntryEditButtons({
         );
     }
 
+    /** Removes the displayed parent relationship while keeping the entry itself. */
     function rmParent() {
         dispatch(
             deleteData(
-                { project, projectId, locale },
+                { pathBase },
                 'registry_hierarchies',
                 parentRegistryHierarchyId(),
                 null,

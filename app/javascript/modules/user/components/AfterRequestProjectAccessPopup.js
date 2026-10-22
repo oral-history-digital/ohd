@@ -1,12 +1,19 @@
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
-export default function AfterRequestProjectAccessPopup({}) {
+/**
+ * Acknowledges a recent access request for the current project.
+ * @returns {React.ReactElement|null} Registration/access content when project settings are available.
+ */
+export default function AfterRequestProjectAccessPopup() {
     const user = useSelector(getCurrentUser);
-    const project = useSelector(getCurrentProject);
+    const { project: project, isLoading, error } = useProject({});
     const { t } = useI18n();
+
+    if (!project || isLoading || error) return null;
 
     const recentlyRequestedProjectAccess =
         user?.user_projects &&

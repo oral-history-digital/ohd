@@ -4,19 +4,24 @@ import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { usePeople } from 'modules/person';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 
+/**
+ * Edits interview content through the current project and locale route.
+ * @param {Object} props - Content data and form/mutation callbacks.
+ * @returns {React.ReactElement|null} Content editor and processing feedback.
+ */
 export default function AssignSpeakersForm({
     archiveId,
     contributionTypes,
     fetchData,
     interview,
-    projectId,
-    project,
     speakerDesignationsStatus,
     submitData,
 }) {
+    const pathBase = usePathBase();
     const [showForm, setShowForm] = useState(true);
     const { t, locale } = useI18n();
     const { data: people, isLoading: peopleAreLoading } = usePeople();
@@ -29,7 +34,7 @@ export default function AssignSpeakersForm({
             )[0] === 'reload'
         ) {
             fetchData(
-                { locale, projectId, project },
+                { pathBase },
                 'interviews',
                 archiveId,
                 'speaker_designations'
@@ -98,7 +103,7 @@ export default function AssignSpeakersForm({
                 <Form
                     scope="update_speaker"
                     onSubmit={(params) => {
-                        submitData({ locale, projectId, project }, params);
+                        submitData({ pathBase }, params);
                         setShowForm(false);
                     }}
                     helpTextCode="assign_speakers_form"
@@ -129,8 +134,6 @@ AssignSpeakersForm.propTypes = {
     contributionTypes: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
     interview: PropTypes.object.isRequired,
-    projectId: PropTypes.number.isRequired,
-    project: PropTypes.object.isRequired,
     speakerDesignationsStatus: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
 };

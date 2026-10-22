@@ -147,19 +147,13 @@ class ApplicationController < ActionController::Base
 
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   def initial_redux_state
-    umbrella_project = InstanceSetting.current.umbrella_project
-    on_umbrella_portal = current_project&.umbrella?
-
     # Keep initial projects payload intentionally small.
     # We preload only the entries that are required for cross-domain routing
     # and immediate page rendering; all other project records are loaded on demand.
     initial_projects_payload = build_initial_projects_payload(
       current_project: current_project,
-      umbrella_project: umbrella_project,
-      on_umbrella_portal: on_umbrella_portal
+      umbrella_project: InstanceSetting.current.umbrella_project
     )
-    project_statuses = initial_projects_payload[:project_statuses]
-    projects_data = initial_projects_payload[:projects_data]
 
     @initial_redux_state ||= {
       archive: {
@@ -199,6 +193,7 @@ class ApplicationController < ActionController::Base
           ).to_json,
       },
       data: {
+        projects: initial_projects_payload,
         statuses: {
           users: {current: 'fetched', resultPagesCount: 1},
           interviews: {},
@@ -218,7 +213,7 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          projects: project_statuses,
+          projects: {},
           collections: {},
           institutions: {},
           languages: {all: 'fetched'},
@@ -229,7 +224,6 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: projects_data,
         instance_settings: cache_single(InstanceSetting.current),
         institutions: {},
         collections: {},
@@ -338,38 +332,41 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # Builds the minimal bootstrap slice for data.projects and data.statuses.projects.
-  def build_initial_projects_payload(current_project:, umbrella_project:, on_umbrella_portal:)
-    project_statuses = {}
-    projects_data = {}
-
-    # The umbrella project is always present because cross-project links and
-    # auth/session redirects rely on its domain context.
-    if umbrella_project
-      umbrella_project_id = umbrella_project.id.to_s
-      project_statuses[umbrella_project_id] = 'fetched'
-      projects_data[umbrella_project_id] = cache_single(
-        umbrella_project,
-        serializer_name: 'ProjectBase'
+  # Supplies authorized base display details for Redux and stable identities for routing.
+  # Uses the detail endpoint's serializer and cache without optional includes or editing data.
+  # Routing identities remain available after account changes clear project content.
+  #
+  # @param current_project [Project, nil] Project resolved for the HTML request
+  # @param umbrella_project [Project, nil] Configured umbrella project
+  # @return [Hash] Routing identities, locale, and authorized base display details
+  def build_initial_projects_payload(current_project:, umbrella_project:)
+    projects = [umbrella_project, current_project].compact.uniq(&:id)
+    identities = projects.to_h do |project|
+      [project.id.to_s, {
+        id: project.id, shortname: project.shortname,
+        archive_domain: project.archive_domain.presence,
+        is_umbrella: project.id == umbrella_project&.id,
+      }]
+    end
+    # Bootstrap runs on HTML entry points too, including denied pages. Apply the
+    # same global project scope as the list endpoint before serializing content.
+    scope = ProjectPolicy::Scope.new(
+      ProjectContext.new(current_user, nil), Project.where(id: projects.map(&:id))
+    ).resolve
+    details = scope.map do |project|
+      cache = Api::V2::ProjectDisplayCache.new(
+        projects: Project.where(id: project.id), user: current_user,
+        parameters: { project_id: project.id, locale: I18n.locale.to_s, profile: 'display',
+          includes: [], umbrella_id: umbrella_project&.id }
       )
+      payload = cache.fetch do |records, _collections|
+        record = records.includes(:translations, logos: { file_attachment: :blob }, favicon_attachment: :blob).take!
+        { data: Api::V2::ProjectDisplaySerializer.new(record,
+          requested_includes: [], umbrella_project_id: umbrella_project&.id).as_json }
+      end
+      payload.fetch(:data)
     end
-
-    # Also include the current project when it differs from the umbrella project.
-    # On the umbrella portal we can keep ProjectBase for parity with lightweight usage.
-    # On project portals we keep the richer serializer currently expected by
-    # legacy Redux consumers on initial render.
-    if current_project && (!umbrella_project || current_project.id != umbrella_project.id)
-      current_project_id = current_project.id.to_s
-      project_statuses[current_project_id] = 'fetched'
-      projects_data[current_project_id] = on_umbrella_portal ?
-        cache_single(current_project, serializer_name: 'ProjectBase') :
-        cache_single(current_project)
-    end
-
-    {
-      project_statuses: project_statuses,
-      projects_data: projects_data,
-    }
+    { locale: I18n.locale.to_s, data: details, identities: identities }
   end
 
   def country_keys

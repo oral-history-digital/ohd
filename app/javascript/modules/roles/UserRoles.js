@@ -4,9 +4,14 @@ import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
-import UserRoleContainer from './UserRoleContainer';
-import UserRoleFormContainer from './UserRoleFormContainer';
+import UserRole from './UserRole';
+import UserRoleForm from './UserRoleForm';
 
+/**
+ * Lists a user's project roles and opens the role-assignment form when permitted.
+ * @param {Object} props - Assignments, user ID, user-list cache path, and action visibility.
+ * @returns {React.ReactElement} Role list and authorized add control.
+ */
 export default function UserRoles({
     userRoles,
     userId,
@@ -24,7 +29,7 @@ export default function UserRoles({
                             key={`user-role-li-${id}`}
                             className="DetailList-item"
                         >
-                            <UserRoleContainer
+                            <UserRole
                                 userRole={userRoles[id]}
                                 userId={userId}
                                 key={`userRole-${id}`}
@@ -43,7 +48,7 @@ export default function UserRoles({
                         trigger={<FaPlus className="Icon Icon--editorial" />}
                     >
                         {(closeModal) => (
-                            <UserRoleFormContainer
+                            <UserRoleForm
                                 userId={userId}
                                 onSubmit={closeModal}
                                 dataPath={dataPath}
@@ -57,7 +62,9 @@ export default function UserRoles({
 }
 
 UserRoles.propTypes = {
-    userRoles: PropTypes.object.isRequired,
+    userRoles: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+        .isRequired,
+    dataPath: PropTypes.string,
     userId: PropTypes.number.isRequired,
     hideAdd: PropTypes.bool,
     hideEdit: PropTypes.bool,

@@ -9,8 +9,8 @@ describe('filterProjects', () => {
             shortname: 'AAP',
             description: 'Stories from the mountain region',
             introduction: 'A long-running oral history program',
-            interviews: { total: 5 },
-            collections: { total: 2 },
+            interview_counts: { total: 5 },
+            collection_counts: { total: 2 },
             institutions: [
                 {
                     id: 10,
@@ -25,8 +25,8 @@ describe('filterProjects', () => {
             shortname: 'BC',
             description: 'City memories',
             introduction: 'Urban narratives',
-            interviews: { total: 12 },
-            collections: { total: 5 },
+            interview_counts: { total: 12 },
+            collection_counts: { total: 5 },
             institutions: [
                 {
                     id: 20,
@@ -41,8 +41,8 @@ describe('filterProjects', () => {
             shortname: 'GV',
             description: 'River basin interviews',
             introduction: 'Ecology and culture',
-            interviews: { total: 0 },
-            collections: { total: 0 },
+            interview_counts: { total: 0 },
+            collection_counts: { total: 0 },
             institutions: [],
         },
     ];
@@ -175,7 +175,7 @@ describe('filterProjects', () => {
             {
                 id: 4,
                 name: 'Delta Narratives',
-                collections: { total: 1 },
+                collection_counts: { total: 1 },
                 institutions: [],
             },
         ];

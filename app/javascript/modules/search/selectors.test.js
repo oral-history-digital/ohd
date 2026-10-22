@@ -150,12 +150,6 @@ test('getCollectionsQuery retrieves collections query params', () => {
     );
 });
 
-test('getProjectsQuery retrieves projects query params', () => {
-    expect(selectors.getProjectsQuery(state)).toEqual(
-        state[NAME].projects.query
-    );
-});
-
 test('getLanguagesQuery retrieves languages query params', () => {
     expect(selectors.getLanguagesQuery(state)).toEqual(
         state[NAME].languages.query

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
-import { getCurrentUser, useCurrentProject } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
+import { useProjectIdentity } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
 import Skeleton from 'react-loading-skeleton';
@@ -10,6 +11,11 @@ import InterviewArchiveDisplay from './InterviewArchiveDisplay';
 import InterviewImage from './InterviewImage';
 import ThumbnailMetadata from './ThumbnailMetadata';
 
+/**
+ * Shows interview preview content, with project attribution on umbrella routes.
+ * @param {Object} props - Interview, owning project, locale, and expansion state.
+ * @returns {React.ReactElement} Access-aware title, preview image, and metadata.
+ */
 export default function InterviewPreviewInner({
     interview,
     project,
@@ -18,7 +24,7 @@ export default function InterviewPreviewInner({
 }) {
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const { isAuthorized } = useAuthorization();
-    const { project: currentProject } = useCurrentProject();
+    const { isUmbrella } = useProjectIdentity();
     const currentUser = useSelector(getCurrentUser);
     const permitted = currentUser?.interview_permissions.some(
         (p) => p.interview_id === interview.id
@@ -58,9 +64,7 @@ export default function InterviewPreviewInner({
                 )}
             </div>
 
-            {currentProject?.is_umbrella && (
-                <InterviewArchiveDisplay project={project} />
-            )}
+            {isUmbrella && <InterviewArchiveDisplay project={project} />}
 
             {!isExpanded && <ThumbnailMetadata interview={interview} />}
         </>

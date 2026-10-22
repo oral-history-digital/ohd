@@ -1,14 +1,9 @@
 import { cloneElement, createElement, useState } from 'react';
 
 import classNames from 'classnames';
-import { getLocale, getProjectId } from 'modules/archive';
-import {
-    deleteData,
-    getCurrentProject,
-    getData,
-    submitData,
-} from 'modules/data';
+import { deleteData, getData, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import { pluralize, underscore } from 'modules/strings';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
@@ -16,6 +11,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import NestedScopeElement from './NestedScopeElement';
 
+/**
+ * Edits saved nested records through Redux and keeps new records in the parent form.
+ * @param {Object} props - Parent record, nested form, and local-state callbacks.
+ * @returns {React.ReactElement} Nested records and add/edit controls.
+ */
 export default function NestedScope({
     onCreateNew,
     onDelete,
@@ -33,9 +33,7 @@ export default function NestedScope({
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
-    const locale = useSelector(getLocale);
-    const projectId = useSelector(getProjectId);
-    const project = useSelector(getCurrentProject);
+    const pathBase = usePathBase();
     const dataState = useSelector(getData);
 
     // Get parent from state to keep it updated
@@ -74,7 +72,7 @@ export default function NestedScope({
             return () => {
                 dispatch(
                     deleteData(
-                        { locale, projectId, project },
+                        { pathBase },
                         pluralize(scope),
                         element.id,
                         null,

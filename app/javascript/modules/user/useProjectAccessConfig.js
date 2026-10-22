@@ -1,13 +1,25 @@
 import { useI18n } from 'modules/i18n';
+import { pathBase } from 'modules/routes';
 
+/**
+ * Builds visible access-request fields from the loaded display configuration.
+ *
+ * @param {Object|undefined} project - Project with localized strings and boolean settings.
+ * @param {Object|undefined} currentUserProject - Existing access request, if any.
+ * @param {Object} currentUser - Account values used to prefill the form.
+ * @returns {Object[]} Visible fields; empty when configuration is unavailable.
+ */
 export default function useProjectAccessConfig(
     project,
     currentUserProject,
     currentUser
 ) {
     const { t, locale } = useI18n();
-    const conditionsLink = `${project.domain_with_optional_identifier}/${locale}/conditions`;
-    const tos_link = () => {
+    if (!project?.access_config) return [];
+
+    const conditionsLink = `${project.archive_domain || ''}${pathBase({ project, locale })}/conditions`;
+
+    const tosLink = () => {
         return (
             <a
                 href={conditionsLink}
@@ -20,8 +32,6 @@ export default function useProjectAccessConfig(
         );
     };
 
-    if (!project.access_config) return [];
-
     const DEFAULT_FORM_ELEMENTS = {
         organization: {
             elementType: 'input',
@@ -30,9 +40,7 @@ export default function useProjectAccessConfig(
             value: currentUser.organization,
             type: 'text',
             validate:
-                String(
-                    project.access_config.organization.obligatory
-                ).toLowerCase() === 'true' &&
+                project.access_config.organization.obligatory &&
                 function (v) {
                     return v?.length > 1;
                 },
@@ -43,17 +51,13 @@ export default function useProjectAccessConfig(
             label: t('activerecord.attributes.user.job_description'),
             optionsScope: 'user_project.job_description',
             value: currentUser.job_description,
-            values: Object.entries(
-                project.access_config.job_description.values
-            ).map(
-                ([key, value]) => String(value).toLowerCase() === 'true' && key
-            ),
+            values: Object.entries(project.access_config.job_description.values)
+                .filter(([, enabled]) => enabled)
+                .map(([key]) => key),
             keepOrder: true,
             withEmpty: true,
             validate:
-                String(
-                    project.access_config.job_description.obligatory
-                ).toLowerCase() === 'true' &&
+                project.access_config.job_description.obligatory &&
                 function (v) {
                     return v?.length > 1;
                 },
@@ -66,15 +70,13 @@ export default function useProjectAccessConfig(
             value: currentUserProject?.research_intentions,
             values: Object.entries(
                 project.access_config.research_intentions.values
-            ).map(
-                ([key, value]) => String(value).toLowerCase() === 'true' && key
-            ),
+            )
+                .filter(([, enabled]) => enabled)
+                .map(([key]) => key),
             keepOrder: true,
             withEmpty: true,
             validate:
-                String(
-                    project.access_config.research_intentions.obligatory
-                ).toLowerCase() === 'true' &&
+                project.access_config.research_intentions.obligatory &&
                 function (v) {
                     return v?.length > 1;
                 },
@@ -85,9 +87,7 @@ export default function useProjectAccessConfig(
             label: t('activerecord.attributes.user.specification'),
             value: currentUserProject?.specification,
             validate:
-                String(
-                    project.access_config.specification.obligatory
-                ).toLowerCase() === 'true' &&
+                project.access_config.specification.obligatory &&
                 function (v) {
                     return v?.length > 10;
                 },
@@ -101,17 +101,13 @@ export default function useProjectAccessConfig(
                 return v && v !== '0';
             },
             help: t('user.notes_on_tos_agreement_archive', {
-                project: project.name[locale],
-                tos_link: tos_link(),
+                project: project.name,
+                tos_link: tosLink(),
             }),
         },
     };
 
-    const formElements = [];
-    Object.entries(DEFAULT_FORM_ELEMENTS).forEach(([key, value]) => {
-        if (String(project.access_config[key].display).toLowerCase() === 'true')
-            formElements.push(DEFAULT_FORM_ELEMENTS[key]);
-    });
-
-    return formElements;
+    return Object.entries(DEFAULT_FORM_ELEMENTS)
+        .filter(([key]) => project.access_config[key].display)
+        .map(([, field]) => field);
 }

@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import { registerDoi } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
-import { deleteData, useGetProject, useSensitiveData } from 'modules/data';
+import { deleteData, useProjectDetail, useSensitiveData } from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { pluralize } from 'modules/strings';
-import { AdminMenu } from 'modules/ui';
+import { camelCase, pluralize } from 'modules/strings';
+import { AdminMenu, InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
@@ -19,25 +19,40 @@ import JoinedData from './JoinedData';
 
 const Item = AdminMenu.Item;
 
-// Project rows in archive admin come from lightweight list payload.
-// When editing a project, fetch the full payload for that single project only.
-function ProjectEditContent({ data, form }) {
-    const {
-        project: fullProject,
-        loading,
-        mutate: mutateProject,
-    } = useGetProject({ id: data?.id });
+/**
+ * Loads editable project details and stored translations for administration dialogs.
+ *
+ * @param {Object} props - Dialog properties.
+ * @param {Object} props.data - Project summary with its shortname or ID.
+ * @param {Function} props.children - Renders loaded project data.
+ * @returns {React.ReactElement} Dialog content, loading indicator, or error.
+ */
+function ProjectAdminContent({ data, children }) {
+    const { t } = useI18n();
+    const { project, isLoading, error } = useProjectDetail(
+        data?.shortname || data?.id,
+        {
+            profile: 'edit',
+            include: ['translations'],
+        }
+    );
 
-    if (loading && !fullProject) {
-        return <Spinner withPadding />;
-    }
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner withPadding />;
 
-    // Callback to refresh project data after successful form submission
-    const onSubmit = () => {
-        mutateProject();
-    };
-
-    return form(fullProject || data, onSubmit);
+    // The existing save endpoint accepts comma-separated locales; Redux retains the array.
+    return children({
+        ...project,
+        pseudo_available_locales: project.available_locales.join(','),
+    });
 }
 
 export default function AdminRecord({
@@ -61,7 +76,6 @@ export default function AdminRecord({
 }) {
     const dispatch = useDispatch();
     const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
     const pathBase = usePathBase();
 
     useSensitiveData(data, sensitiveAttributes);
@@ -77,7 +91,7 @@ export default function AdminRecord({
         // skip remove from state, only remove server-side
         dispatch(
             deleteData(
-                { locale, projectId, project },
+                { pathBase },
                 pluralize(scope),
                 data.id,
                 null,
@@ -88,7 +102,7 @@ export default function AdminRecord({
         // only remove from state
         dispatch(
             deleteData(
-                { locale, projectId, project },
+                { pathBase },
                 outerScope ? pluralize(outerScope) : pluralize(scope),
                 outerScopeId || data.id,
                 outerScope ? pluralize(scope) : null,
@@ -110,6 +124,11 @@ export default function AdminRecord({
     }
 
     const displayName = getDataDisplayName(data, locale);
+    // API records omit the Rails class name; the configured resource scope supplies it for permission checks.
+    const authorizationRecord = {
+        ...data,
+        type: data.type || camelCase(scope),
+    };
 
     return (
         <div
@@ -125,7 +144,10 @@ export default function AdminRecord({
                 showComponent={showComponent}
             />
 
-            <AuthorizedContent object={[data, task]} action="update">
+            <AuthorizedContent
+                object={[authorizationRecord, task]}
+                action="update"
+            >
                 <AdminMenu
                     disabled={disabled}
                     testIdPrefix={`${scope}-${data.id}`}
@@ -138,6 +160,19 @@ export default function AdminRecord({
                         >
                             {scope === 'person' ? (
                                 <PersonDetails data={data} />
+                            ) : scope === 'project' ? (
+                                <ProjectAdminContent data={data}>
+                                    {(fullProject) => (
+                                        <DataDetails
+                                            detailsAttributes={
+                                                detailsAttributes
+                                            }
+                                            data={fullProject}
+                                            scope={scope}
+                                            optionsScope={optionsScope}
+                                        />
+                                    )}
+                                </ProjectAdminContent>
                             ) : (
                                 <DataDetails
                                     detailsAttributes={detailsAttributes}
@@ -167,24 +202,15 @@ export default function AdminRecord({
                                         />
                                     )}
                                     {scope === 'project' ? (
-                                        <ProjectEditContent
-                                            data={data}
-                                            form={(resolvedProject, onSubmit) =>
+                                        <ProjectAdminContent data={data}>
+                                            {(resolvedProject) =>
                                                 form(
                                                     resolvedProject,
-                                                    () => {
-                                                        if (
-                                                            typeof onSubmit ===
-                                                            'function'
-                                                        ) {
-                                                            onSubmit();
-                                                        }
-                                                        close();
-                                                    },
+                                                    close,
                                                     close
                                                 )
                                             }
-                                        />
+                                        </ProjectAdminContent>
                                     ) : (
                                         form(data, close, close)
                                     )}
@@ -251,7 +277,7 @@ AdminRecord.propTypes = {
     handleDelete: PropTypes.func,
 };
 
-ProjectEditContent.propTypes = {
+ProjectAdminContent.propTypes = {
     data: PropTypes.object,
-    form: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired,
 };

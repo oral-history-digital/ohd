@@ -1,13 +1,15 @@
 import { render, screen } from '@testing-library/react';
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { useSelector } from 'react-redux';
 
 import AfterConfirmationPopup from './AfterConfirmationPopup';
 
 jest.mock('modules/data', () => ({
-    getCurrentProject: jest.fn(),
     getCurrentUser: jest.fn(),
 }));
+
+jest.mock('modules/routes', () => ({ useProject: jest.fn() }));
 
 jest.mock('react-redux', () => ({
     useSelector: jest.fn(),
@@ -42,9 +44,9 @@ describe('AfterConfirmationPopup', () => {
             pre_register_location: `${location.origin}/es`,
             user_projects: {},
         };
+        useProject.mockImplementation(() => ({ project }));
         useSelector.mockImplementation((selector) => {
             if (selector === getCurrentUser) return user;
-            if (selector === getCurrentProject) return project;
         });
     });
 
