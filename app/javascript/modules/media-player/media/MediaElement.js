@@ -9,6 +9,7 @@ import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
+import { PLAYBACK_RATES } from '../constants';
 import {
     useGetMediaMissingText,
     useMediaPlayerResize,
@@ -93,7 +94,7 @@ export default function MediaElement({
         language: locale,
         sources: initialSources,
         poster: posterUrl,
-        playbackRates: [0.6, 0.8, 1, 1.2, 2],
+        playbackRates: PLAYBACK_RATES,
         enableSourceset: false,
         controlBar: {
             volumePanel: {
