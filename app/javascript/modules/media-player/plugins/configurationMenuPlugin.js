@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import videojs from 'video.js';
 
 import ConfigurationMenu from '../components/ConfigurationMenu';
+import { PLAYBACK_RATES } from '../constants';
 import { disposeReactRoot } from '../utils/disposeReactRoot';
 
 const VjsButton = videojs.getComponent('Button');
@@ -12,7 +13,7 @@ const VjsButton = videojs.getComponent('Button');
 
 /** Resolve playback‑rate array from plugin options or player defaults */
 const getPlaybackRates = (player, opts) =>
-    opts.playbackRates || player.options_.playbackRates || [0.5, 1, 1.5, 2];
+    opts.playbackRates || player.options_.playbackRates || PLAYBACK_RATES;
 
 /** Resolve quality list */
 const getQualities = (opts) => opts.qualities || ['Default'];
