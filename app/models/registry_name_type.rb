@@ -7,9 +7,14 @@ class RegistryNameType < ApplicationRecord
 
   after_save :touch_registry_entries
 
+  # Refreshes cached and indexed registry labels after name ordering or type changes.
+  #
+  # @return [void]
   def touch_registry_entries
-    if order_priority_previously_changed?
-      RegistryEntry.where(id: registry_names.select(:registry_entry_id).distinct).touch_all
+    if order_priority_previously_changed? || code_previously_changed?
+      entries = RegistryEntry.where(id: registry_names.select(:registry_entry_id).distinct)
+      entries.touch_all
+      RefreshSearchIndexJob.enqueue_after_commit('RegistryEntry' => entries.pluck(:id))
       project&.touch
     end
   end
