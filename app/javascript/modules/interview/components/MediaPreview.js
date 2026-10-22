@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
  */
 export default function MediaPreview() {
     const { t, locale } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const interview = useSelector(getCurrentInterview);
 
     const [loadingError, setLoadingError] = useState(false);

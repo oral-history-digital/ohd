@@ -51,7 +51,7 @@ export default function RegistryReferenceForm({
         project,
         isLoading: projectIsLoading,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const pathBase = usePathBase();
     const globalTypesPath =
         project &&

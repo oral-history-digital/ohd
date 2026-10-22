@@ -31,7 +31,7 @@ import useUsers from './useUsers';
  */
 export default function UserTable() {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     if (error)
         return (
             <InlineNotification

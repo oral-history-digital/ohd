@@ -13,7 +13,7 @@ import UserProject from './UserProject';
  */
 function UserProjects() {
     const user = useSelector(getCurrentUser);
-    const { project: currentProject } = useProject({});
+    const { project: currentProject } = useProject();
     const userProjects = Object.values(user?.user_projects || {});
 
     const currentUserProject = userProjects.find(

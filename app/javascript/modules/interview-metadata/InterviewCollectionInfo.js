@@ -29,7 +29,7 @@ import CatalogLink from './CatalogLink';
  */
 export default function InterviewCollectionInfo({ interview }) {
     const { locale, t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const collections = useSelector(getCollectionsForCurrentProject);
     const { projectAccessGranted } = useProjectAccessStatus(project);
 

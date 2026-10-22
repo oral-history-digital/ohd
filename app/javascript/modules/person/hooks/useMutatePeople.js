@@ -7,7 +7,7 @@ import { useSWRConfig } from 'swr';
  * @returns {function(Function=): void} Cache updater; skips changes while project settings are unavailable.
  */
 export default function useMutatePeople() {
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const pathBase = usePathBase();
     const { mutate } = useSWRConfig();
 

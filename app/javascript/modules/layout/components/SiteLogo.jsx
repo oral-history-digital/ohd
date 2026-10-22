@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
  */
 function SiteLogo({ className }) {
     const { locale } = useI18n();
-    const { project } = useProject({});
+    const { project } = useProject();
     const dispatch = useDispatch();
     const currentAccount = useSelector(getCurrentUser);
     const { project: umbrellaProject } = useUmbrellaProject();

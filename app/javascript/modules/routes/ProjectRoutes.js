@@ -57,7 +57,7 @@ import useProject from './useProject';
  */
 export default function ProjectRoutes() {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const projectDbId = project?.id;
     const viewModes = project?.view_modes;
     const currentViewMode = useSelector(getViewMode);

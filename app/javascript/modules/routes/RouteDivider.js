@@ -16,7 +16,7 @@ import useProject from './useProject';
  */
 function RouteDivider() {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     if (error)
         return (
             <InlineNotification

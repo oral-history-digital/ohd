@@ -16,7 +16,7 @@ export function useCheckLocaleAgainstProject() {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const routeBase = usePathBase();
     const { locale } = useI18n();
 

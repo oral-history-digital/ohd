@@ -111,7 +111,7 @@ export default function PersonForm({ data: person, onSubmit, onCancel }) {
     const mutatePersonLandingPageMetadata =
         useMutatePersonLandingPageMetadata();
     const pathBase = usePathBase();
-    const { project, isLoading: projectIsLoading, error } = useProject({});
+    const { project, isLoading: projectIsLoading, error } = useProject();
     const { t } = useI18n();
 
     function showEvent(event) {
