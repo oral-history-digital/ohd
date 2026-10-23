@@ -61,6 +61,7 @@ gem 'shakapacker', '~> 8.0.2'
 
 
 group :test, :development do
+  gem 'openapi-ruby', '~> 5.0', require: false
   gem "bundler-audit", "~> 0.9.1"
   gem "byebug", "~> 11.1"
   gem 'bcrypt_pbkdf'
@@ -82,6 +83,7 @@ group :development do
 end
 
 group :test do
+  gem 'json_schemer', '~> 2.0'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'minitest-retry'
