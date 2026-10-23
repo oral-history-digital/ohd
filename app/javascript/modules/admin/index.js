@@ -28,7 +28,6 @@ export { default as Leaders } from './pages/projects/Leaders';
 export { default as Managers } from './pages/projects/Managers';
 export { default as MediaStreams } from './pages/projects/MediaStreams';
 export { default as ProjectsAdminPage } from './pages/projects/ProjectsAdminPage';
-export { default as ProjectSearchForm } from './pages/projects/ProjectSearchForm';
 export { default as SponsorLogos } from './pages/projects/SponsorLogos';
 export { default as RegistryNameTypesAdminPage } from './pages/registry/RegistryNameTypesAdminPage';
 export { default as RegistryNameTypesSearchForm } from './pages/registry/RegistryNameTypesSearchForm';

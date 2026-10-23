@@ -182,7 +182,7 @@ test.each([StatisticsAdminPage, AdminTabPanel])(
     (Page) => {
         useProject.mockReturnValue({ project: { has_newsletter: true } });
         const { rerender } = render(<Page />);
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         expect(
             screen.getByRole('link', { name: /download_newsletter_recipients/ })
         ).toHaveAttribute('href', '/pilot/de/users/newsletter_recipients.csv');

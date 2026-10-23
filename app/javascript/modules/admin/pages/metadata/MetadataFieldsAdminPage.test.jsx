@@ -24,9 +24,9 @@ jest.mock('modules/data', () => ({
     getProjectIdentities: jest.requireActual(
         '../../../data/redux/projectDetails'
     ).getProjectIdentities,
-    getProjects: jest.requireActual(
+    getProjectResources: jest.requireActual(
         '../../../data/redux/selectors/baseSelectors'
-    ).getProjects,
+    ).getProjectResources,
     useProjectDetail: jest.requireActual('../../../data/hooks/useProjectDetail')
         .useProjectDetail,
     ...jest.requireActual('../../../data/redux/actions'),

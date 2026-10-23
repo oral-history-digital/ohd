@@ -29,7 +29,7 @@ const formElements = [
 export default function EventTypeForm({ data, onSubmit, onCancel }) {
     const [isFetching, setIsFetching] = useState(false);
     const pathBase = usePathBase();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const { t } = useI18n();
     const mutateEventTypes = useMutateEventTypes();
 

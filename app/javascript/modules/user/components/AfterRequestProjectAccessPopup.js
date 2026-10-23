@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
  */
 export default function AfterRequestProjectAccessPopup() {
     const user = useSelector(getCurrentUser);
-    const { project: project, isLoading, error } = useProject({});
+    const { project: project, isLoading, error } = useProject();
     const { t } = useI18n();
 
     if (!project || isLoading || error) return null;

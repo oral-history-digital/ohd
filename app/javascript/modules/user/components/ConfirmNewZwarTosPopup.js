@@ -21,7 +21,7 @@ import { useLocation } from 'react-router-dom';
 export default function ConfirmNewZwarTosPopup() {
     const { t, locale } = useI18n();
     const dispatch = useDispatch();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const pathBase = usePathBase();
     const { pathname } = useLocation();
     const { project: umbrellaProject } = useUmbrellaProject();

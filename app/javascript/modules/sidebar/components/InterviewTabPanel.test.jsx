@@ -109,7 +109,7 @@ test('sidebar waits for project details and hides retained tools after a project
         </MemoryRouter>
     );
     expect(screen.getByText('Person metadata')).toBeInTheDocument();
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     useProject.mockReturnValue({
         project,
         error: { message: 'Access denied' },

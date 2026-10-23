@@ -41,7 +41,7 @@ jest.mock('modules/user', () => ({
     submitLogout: jest.fn(() => ({ type: 'logout' })),
 }));
 jest.mock('modules/data', () => ({
-    getProjects: () => ({}),
+    getProjectResources: () => ({}),
     getProjectIdentities: () => ({}),
     clearStateData: jest.fn(() => ({ type: 'clear' })),
 }));
@@ -128,7 +128,7 @@ test.each([
         );
         expect(screen.queryByRole('link')).not.toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         useProject.mockReturnValue({
             project: { display_name: 'Retained name' },
             error: { message: 'Access denied' },

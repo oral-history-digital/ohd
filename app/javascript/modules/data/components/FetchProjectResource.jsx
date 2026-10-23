@@ -8,15 +8,16 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-    fetchV2Data,
-    v2AccessContext,
-    v2RequestKey,
-} from '../redux/v2Requests';
+    fetchProjectData,
+    projectAccessContext,
+    projectRequestKey,
+} from '../redux/projectRequests';
 
 /**
  * Loads a complete project-owned resource list and waits before rendering its consumers.
  * Uses the shared project request flow to discard obsolete responses and refetch
- * after account changes or mutations. Records retain their existing nested storage.
+ * after account changes or mutations. Ordinary refreshes keep consumers mounted.
+ * Records retain their existing nested storage.
  *
  * @param {Object} props - Resource list and its consumers.
  * @param {string} props.resource - Resource endpoint name, such as contribution_types.
@@ -28,21 +29,21 @@ export function FetchProjectResource({ resource, children }) {
     const pathBase = usePathBase();
     const { locale, t } = useI18n();
     const dispatch = useDispatch();
-    const context = useSelector(v2AccessContext);
+    const context = useSelector(projectAccessContext);
     const generation = useSelector(
-        (state) => state.data.v2?.projects?.generation || 0
+        (state) => state.data.projects?.generation || 0
     );
     const url = `${pathBase}/${resource}.json?for_projects=${projectDbId}`;
-    const key = v2RequestKey(url, context, generation);
+    const key = projectRequestKey(url, context, generation);
     const request = useSelector((state) =>
-        state.data.v2?.projects?.context === context
-            ? state.data.v2.projects.requests[key]
+        state.data.projects?.context === context
+            ? state.data.projects.requests[key]
             : undefined
     );
     useEffect(() => {
-        if (projectDbId && !request?.status)
+        if (projectDbId && (!request?.status || request.status === 'stale'))
             dispatch(
-                fetchV2Data('projects', url, {
+                fetchProjectData('projects', url, {
                     locale,
                     projectResource: resource,
                     projectId: projectDbId,
@@ -68,7 +69,7 @@ export function FetchProjectResource({ resource, children }) {
                 isClosable={false}
             />
         );
-    if (!projectDbId || request?.status !== 'succeeded') return <Spinner />;
+    if (!projectDbId || !request?.ready) return <Spinner />;
     return children;
 }
 

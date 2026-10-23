@@ -67,7 +67,7 @@ test('keeps bounds and uses requested marker labels before the project fallback 
             markers={[marker, { ...marker, id: 2, labels: { de: 'Fallback' } }]}
         />
     );
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(MapContainer.mock.calls.at(-1)[0]).toMatchObject({
         bounds: props.bounds,
         maxZoom: 16,

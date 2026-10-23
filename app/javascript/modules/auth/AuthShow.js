@@ -39,7 +39,7 @@ export default function AuthShow({
     interview,
     children,
 }) {
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const { isAuthorized } = useAuthorization();
     // Login/account controls do not depend on project settings. Project-access
     // branches must wait, so missing settings cannot look like denied membership.

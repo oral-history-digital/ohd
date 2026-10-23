@@ -82,7 +82,7 @@ test.each([
         );
         act(() => completeAccount());
         expect(store.getState().data.users.current).toEqual({ id: 2 });
-        expect(store.getState().data.projects).toEqual({});
+        expect(store.getState().data.projects.records).toEqual({});
         expect(Loader.getJson).toHaveBeenCalledTimes(1);
     }
 );

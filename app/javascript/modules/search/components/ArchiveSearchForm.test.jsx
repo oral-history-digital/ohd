@@ -58,7 +58,7 @@ test('waits for settings and shows project errors before allowing search submiss
     const { rerender } = render(
         <ArchiveSearchForm projectId="history" hideSidebar={jest.fn()} />
     );
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText('Loading')).toBeInTheDocument();
     expect(
         screen.queryByPlaceholderText('enter_field')
