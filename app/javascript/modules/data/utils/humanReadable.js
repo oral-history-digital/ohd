@@ -14,13 +14,14 @@ import { toDateString } from './toDateString';
  * 4. Duration formatting (HH:MM:SS → "X h Y min")
  * 5. Date formatting (ISO8601 → locale-aware)
  * 6. Foreign key lookups (collection_id, *_language_id)
- * 7. Boolean translation keys
+ * 7. Boolean translations
  * 8. Array values (comma-joined)
  * 9. TranslationValue system lookups (fallback)
  *
  * @param {Object} obj - Model object containing the attribute
  * @param {string} attribute - Attribute name to render
  * @param {string} locale - Target locale code (e.g., 'en', 'de')
+ * @param {string} [defaultLocale] - Project default locale for boolean fallback
  * @param {boolean} [collapsed=false] - Truncate long strings to 500 chars
  * @param {string} [none='---'] - Fallback for nil/missing values
  * @param {Object} [translations] - TranslationValue lookup (keyed by translation key)
@@ -59,8 +60,9 @@ export function humanReadable({
     collections,
     languages,
     locale,
+    defaultLocale,
 }) {
-    // Prefer stored translations for editors; display-only records provide localized scalar fields.
+    // 1. Prefer stored translations for editors; display-only records provide localized scalar fields.
     const storedTranslations = obj.translations_attributes ?? obj.translations;
     if (storedTranslations) {
         const translation = Array.isArray(storedTranslations)
@@ -106,7 +108,13 @@ export function humanReadable({
 
     // 8. Boolean translation (boolean_value.true/false)
     if (typeof value === 'boolean') {
-        return translations[`boolean_value.${value}`][locale];
+        const key = `boolean_value.${value}`;
+        return (
+            translations[key]?.[locale] ||
+            translations[key]?.[defaultLocale] ||
+            translations[key]?.en ||
+            value.toString()
+        );
     }
 
     // 9. Join array values with commas
