@@ -1,3 +1,4 @@
+import { LOGOUT } from '../../user/action-types';
 import {
     DELETE_STATUS_MSG,
     RECEIVE_DATA,
@@ -8,6 +9,7 @@ import {
     UPDATE_DATA,
 } from './action-types';
 import { reduceProjectRecords } from './projectReducer';
+import { reduceV2Projects } from './v2ProjectReducer';
 
 const initialState = {
     users: {
@@ -45,13 +47,58 @@ const initialState = {
     },
 };
 
+/**
+ * Updates cached entities and request status. Routes v2 project actions to their
+ * own state branch while preserving the existing legacy data flow.
+ * Logout clears cached accounts; anonymous current-account responses remain null.
+ *
+ * @param {Object} [state=initialState] - Data branch of the Redux store.
+ * @param {Object} action - Request, response, mutation, or access-change action.
+ * @returns {Object} Updated data state, or the same object for ignored actions.
+ */
 export const dataReducer = (state = initialState, action) => {
+    const previousProjects = state.v2?.projects;
+    const v2Projects = reduceV2Projects(state.v2?.projects, action);
+    if (v2Projects !== state.v2?.projects)
+        state = { ...state, v2: { ...state.v2, projects: v2Projects } };
+    if (action.apiVersion === 2) {
+        if (
+            !action.projectResource ||
+            action.type !== RECEIVE_DATA ||
+            v2Projects === previousProjects
+        )
+            return state;
+        // Only accepted responses reach nested storage. Replace the complete list
+        // so records hidden by changed permissions cannot survive a fresh read.
+        action = {
+            type: RECEIVE_DATA,
+            dataType: 'projects',
+            nestedDataType: action.projectResource,
+            id: action.projectId,
+            data: action.data.data,
+            extraParams: `for_projects_${action.projectId}`,
+            page: '1',
+        };
+    }
     // Save project request progress alongside the usual data and loading updates.
     if (action.projectRequest) {
         const { key, ...request } = action.projectRequest;
         state = {
             ...state,
             projectRequests: { ...state.projectRequests, [key]: request },
+        };
+    }
+    if (
+        action.type === LOGOUT ||
+        (action.type === RECEIVE_DATA &&
+            action.dataType === 'users' &&
+            action.id === 'current' &&
+            action.data === null)
+    ) {
+        return {
+            ...state,
+            users: { current: null },
+            statuses: { ...state.statuses, users: initialState.statuses.users },
         };
     }
     switch (action.type) {

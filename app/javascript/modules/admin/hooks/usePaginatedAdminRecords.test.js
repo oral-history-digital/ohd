@@ -11,9 +11,8 @@ const defaultProps = {
     scope: 'role',
     fetchData: jest.fn(),
     setQueryParams: jest.fn(),
-    locale: 'en',
-    project: { id: 1, shortname: 'test' },
-    projectId: 'test',
+    pathBase: '/test/en',
+    projectDbId: 1,
 };
 
 function renderPaginatedAdminRecords(props = {}) {
@@ -33,28 +32,8 @@ test('fetches missing query results and supporting data on mount', () => {
     });
 
     expect(defaultProps.fetchData.mock.calls).toEqual([
-        [
-            {
-                locale: 'en',
-                project: { id: 1, shortname: 'test' },
-                projectId: 'test',
-            },
-            'roles',
-            null,
-            null,
-            'name=history&page=1',
-        ],
-        [
-            {
-                locale: 'en',
-                project: { id: 1, shortname: 'test' },
-                projectId: 'test',
-            },
-            'languages',
-            null,
-            null,
-            'all',
-        ],
+        [{ pathBase: '/test/en' }, 'roles', null, null, 'name=history&page=1'],
+        [{ pathBase: '/test/en' }, 'languages', null, null, 'all'],
     ]);
 });
 
@@ -81,11 +60,31 @@ test('requests the next page when the observer enters view', () => {
         page: 2,
     });
     expect(defaultProps.fetchData).toHaveBeenCalledWith(
-        {
-            locale: 'en',
-            project: { id: 1, shortname: 'test' },
-            projectId: 'test',
-        },
+        { pathBase: '/test/en' },
+        'roles',
+        null,
+        null,
+        'name=history&page=1'
+    );
+});
+
+test('initial requests run once per route and use the new project context after navigation', () => {
+    const props = {
+        ...defaultProps,
+        dataStatus: {},
+        pathBase: '/test/en',
+        projectDbId: 1,
+    };
+    const { rerender } = renderHook(
+        (options) => usePaginatedAdminRecords(options),
+        { initialProps: props }
+    );
+    expect(defaultProps.fetchData).toHaveBeenCalledTimes(1);
+    rerender({ ...props });
+    expect(defaultProps.fetchData).toHaveBeenCalledTimes(1);
+    rerender({ ...props, pathBase: '/other/de', projectDbId: 2 });
+    expect(defaultProps.fetchData).toHaveBeenLastCalledWith(
+        { pathBase: '/other/de' },
         'roles',
         null,
         null,

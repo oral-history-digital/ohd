@@ -6,13 +6,20 @@ import {
     getRegistryEntriesStatus,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaArrowUp } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SelectField from './SelectField';
 
+/**
+ * Browses registry entries using the project root and transcript visibility configuration.
+ * @param {Object} props - Selected value, navigation options, and form callbacks.
+ * @returns {React.ReactElement} Registry selector or project loading/error state.
+ */
 export default function RegistryEntrySelect({
     data,
     attribute,
@@ -23,22 +30,31 @@ export default function RegistryEntrySelect({
     goDeeper,
     inTranscript,
 }) {
-    const { project } = useProject();
+    const {
+        project,
+        isLoading: projectLoading,
+        error: projectError,
+    } = useProject({ include: ['registry_configuration'] });
+    const pathBase = usePathBase();
+    const projectReady = Boolean(project && !projectLoading && !projectError);
     const { locale, t } = useI18n();
 
     const registryEntriesStatus = useSelector(getRegistryEntriesStatus);
     const registryEntries = useSelector(getRegistryEntries);
     const dispatch = useDispatch();
 
-    const [selectedRegistryEntryId, setSelectedRegistryEntryId] = useState(
-        data?.[attribute] || project?.root_registry_entry_id
+    const [selectedId, setSelectedRegistryEntryId] = useState(
+        data?.[attribute]
     );
+    const selectedRegistryEntryId =
+        selectedId ?? project?.root_registry_entry_id;
 
     const selectedEntryStatus = registryEntriesStatus[selectedRegistryEntryId];
     const childrenForEntryStatus =
         registryEntriesStatus[`children_for_entry_${selectedRegistryEntryId}`];
 
     useEffect(() => {
+        if (!projectReady) return;
         if (
             selectedRegistryEntryId &&
             (!registryEntriesStatus[selectedRegistryEntryId] ||
@@ -51,7 +67,7 @@ export default function RegistryEntrySelect({
         ) {
             dispatch(
                 fetchData(
-                    { locale, project },
+                    { pathBase },
                     'registry_entries',
                     selectedRegistryEntryId,
                     null,
@@ -66,10 +82,12 @@ export default function RegistryEntrySelect({
         registryEntries,
         dispatch,
         locale,
-        project,
+        projectReady,
+        pathBase,
     ]);
 
     useEffect(() => {
+        if (!projectReady) return;
         if (
             (selectedRegistryEntryId && !childrenForEntryStatus) ||
             (registryEntriesStatus[selectedRegistryEntryId] &&
@@ -78,7 +96,7 @@ export default function RegistryEntrySelect({
         ) {
             dispatch(
                 fetchData(
-                    { locale, project },
+                    { pathBase },
                     'registry_entries',
                     null,
                     null,
@@ -92,7 +110,8 @@ export default function RegistryEntrySelect({
         registryEntriesStatus,
         dispatch,
         locale,
-        project,
+        projectReady,
+        pathBase,
     ]);
 
     const parentRegistryEntryId = () => {
@@ -126,9 +145,9 @@ export default function RegistryEntrySelect({
                 .child_ids[locale]?.filter((rid) => {
                     return (
                         !inTranscript ||
-                        project.hidden_transcript_registry_entry_ids.indexOf(
-                            rid.toString()
-                        ) === -1
+                        !(project.hidden_transcript_registry_entry_ids || [])
+                            .map(String)
+                            .includes(String(rid))
                     );
                 })
                 .map((id) => {
@@ -147,7 +166,7 @@ export default function RegistryEntrySelect({
             )
                 dispatch(
                     fetchData(
-                        { locale, project },
+                        { pathBase },
                         'registry_entries',
                         value,
                         null,
@@ -232,6 +251,17 @@ export default function RegistryEntrySelect({
             return t('edit.registry_entry.no_more_children');
         }
     };
+
+    if (projectError)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={projectError.message}
+                isClosable={false}
+            />
+        );
+    if (!projectReady) return <Spinner />;
 
     return (
         <div>

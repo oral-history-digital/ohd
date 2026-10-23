@@ -5,11 +5,14 @@ import { getProjectLabel } from '../utils';
 import { useBreadcrumbModel } from './useBreadcrumbModel';
 
 /**
- * Returns SiteHeader breadcrumb items `{ label, to? }` for the current route.
+ * Returns route breadcrumbs with the localized project display name.
+ * Hides items until the current project's details are available.
+ *
+ * @returns {Object[]} Breadcrumb items with labels, optional links, and loading flags.
  */
 export function useBreadcrumbs() {
     const { locale } = useI18n();
-    const { project } = useProject();
+    const { project } = useProject({});
     const { currentPage, items } = useBreadcrumbModel();
 
     if (!project) {

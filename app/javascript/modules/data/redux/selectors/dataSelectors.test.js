@@ -1,11 +1,11 @@
 import dotProp from 'dot-prop-immutable';
-import { DEFAULT_LOCALES } from 'modules/constants';
 
+import { v2AccessContext } from '../v2Requests';
 import {
-    DEFAULT_MAP_SECTION,
     getCollectionsForCurrentProject,
     getCollectionsStatus,
     getContributionTypesForCurrentProject,
+    getContributionTypesStatus,
     getContributionsStatus,
     getContributorsFetched,
     getCurrentInterview,
@@ -22,15 +22,10 @@ import {
     getHeadingsStatus,
     getInterviewsStatus,
     getIsCampscapesProject,
-    getIsCatalog,
     getLanguagesStatus,
-    getMapSections,
     getMarkTextStatus,
-    getMediaStreamsForCurrentProject,
     getPeopleStatus,
     getPermissionsStatus,
-    getProjectLocales,
-    getProjectTranslation,
     getProjectsStatus,
     getRefTreeStatus,
     getRegistryEntriesStatus,
@@ -142,8 +137,19 @@ test('getCurrentInterview retrieves current interview', () => {
 });
 
 describe('getGroupedContributions', () => {
+    test('hides detail-only contribution types when project access is unavailable', () => {
+        expect(getGroupedContributions(contributionState, false)).toEqual([]);
+        const publicType = dotProp.set(
+            contributionState,
+            'data.projects.1.contribution_types.3.display_on_landing_page',
+            true
+        );
+        expect(getGroupedContributions(publicType, false)).toEqual([
+            { type: 'interviewer', contributions: [interviewer] },
+        ]);
+    });
     test('returns contributions of current interview, ordered and grouped by type, without interviewee', () => {
-        const actual = getGroupedContributions(contributionState);
+        const actual = getGroupedContributions(contributionState, true);
         const expected = [
             {
                 type: 'interviewer',
@@ -160,7 +166,7 @@ describe('getGroupedContributions', () => {
     test('also returns quality managers when edit view is true', () => {
         const _state = dotProp.set(contributionState, 'archive.editView', true);
 
-        const actual = getGroupedContributions(_state);
+        const actual = getGroupedContributions(_state, true);
         const expected = [
             {
                 type: 'interviewer',
@@ -252,12 +258,6 @@ describe('getshowStartPageVideo', () => {
     });
 });
 
-test('getProjectTranslation gets project translation for current locale', () => {
-    const actual = getProjectTranslation(projectState);
-    const expected = projectState.data.projects[1].translations_attributes[0];
-    expect(actual).toEqual(expected);
-});
-
 describe('getIsCampscapesProject', () => {
     test('is true when set to campscapes', () => {
         const _state = dotProp.set(
@@ -271,80 +271,6 @@ describe('getIsCampscapesProject', () => {
 
     test('is false otherwise', () => {
         expect(getIsCampscapesProject(projectState)).toBeFalsy();
-    });
-});
-
-describe('getIsCatalog', () => {
-    test('returns is_catalog value', () => {
-        expect(getIsCatalog(projectState)).toEqual(
-            projectState.data.projects[1].is_catalog
-        );
-    });
-
-    test('is false otherwise', () => {
-        const _state = dotProp.set(
-            projectState,
-            'data.projects.1.is_catalog',
-            null
-        );
-
-        expect(getIsCatalog(_state)).toBe(false);
-    });
-});
-
-describe('getMapSections', () => {
-    test('returns map sections as ordered array', () => {
-        const actual = getMapSections(projectState);
-        const expected = [
-            {
-                id: 2,
-                type: 'MapSection',
-                name: 'usa',
-                order: 0,
-            },
-            {
-                id: 1,
-                type: 'MapSection',
-                name: 'europe',
-                order: 1,
-            },
-        ];
-        expect(actual).toEqual(expected);
-    });
-
-    test('returns default section if map sections are blank', () => {
-        const _state = dotProp.set(
-            projectState,
-            'data.projects.1.map_sections',
-            {}
-        );
-        const actual = getMapSections(_state);
-        const expected = [DEFAULT_MAP_SECTION];
-        expect(actual).toEqual(expected);
-    });
-
-    test('returns default section if map sections is undefined', () => {
-        const _state = dotProp.set(
-            projectState,
-            'data.projects.1.map_sections',
-            undefined
-        );
-        const actual = getMapSections(_state);
-        const expected = [DEFAULT_MAP_SECTION];
-        expect(actual).toEqual(expected);
-    });
-});
-
-describe('getProjectLocales', () => {
-    test('gets project locales', () => {
-        expect(getProjectLocales(projectState)).toEqual(
-            projectState.data.projects[1].available_locales
-        );
-    });
-
-    test('gets default locales if no project is selected', () => {
-        const _state = dotProp.set(projectState, 'archive.projectId', null);
-        expect(getProjectLocales(_state)).toEqual(DEFAULT_LOCALES);
     });
 });
 
@@ -363,12 +289,6 @@ test('getTaskTypesForCurrentProject gets task_types object', () => {
 test('getRolesForCurrentProject gets roles object', () => {
     expect(getRolesForCurrentProject(projectState)).toEqual(
         projectState.data.projects[1].roles
-    );
-});
-
-test('getMediaStreamsForCurrentProject retrieves media streams', () => {
-    expect(getMediaStreamsForCurrentProject(projectState)).toEqual(
-        projectState.data.projects[1].media_streams
     );
 });
 
@@ -498,5 +418,34 @@ test('getCurrentUser gets user object of current user', () => {
 test('getCurrentUserIsAdmin gets admin status of current user', () => {
     expect(getCurrentUserIsAdmin(state)).toEqual(
         state.data.users.current.admin
+    );
+});
+
+test('finds nested contribution types through modern project identity without a legacy project summary', () => {
+    const types = { 4: { id: 4, code: 'interviewer' } };
+    const modern = {
+        ...projectState,
+        data: {
+            ...projectState.data,
+            projects: { 1: { contribution_types: types } },
+            v2: {
+                projects: {
+                    context: v2AccessContext(projectState),
+                    records: { 1: { id: 1, shortname: 'cdoh' } },
+                },
+            },
+            statuses: {
+                contribution_types: { for_projects_1: 'fetched' },
+                registry_reference_types: { other: 'fetching' },
+            },
+        },
+    };
+    expect(getContributionTypesForCurrentProject(modern)).toEqual(types);
+    expect(getCurrentProject(modern).id).toBe(1);
+    expect(getContributionTypesStatus(modern)).toEqual({
+        for_projects_1: 'fetched',
+    });
+    expect(getContributionTypesStatus(projectState)).toBe(
+        getContributionTypesStatus(projectState)
     );
 });

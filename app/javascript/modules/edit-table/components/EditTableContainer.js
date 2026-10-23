@@ -1,8 +1,7 @@
-import { getArchiveId, getLocale, getProjectId } from 'modules/archive';
+import { getArchiveId } from 'modules/archive';
 import {
     fetchData,
     getCurrentInterview,
-    getCurrentProject,
     getSegmentsStatus,
 } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
@@ -13,9 +12,6 @@ import { getFilter } from '../selectors';
 import EditTable from './EditTable';
 
 const mapStateToProps = (state) => ({
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    project: getCurrentProject(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     tape: getCurrentTape(state),

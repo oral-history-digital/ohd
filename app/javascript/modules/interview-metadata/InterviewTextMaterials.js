@@ -2,19 +2,38 @@ import { AuthShowContainer, useAuthorization } from 'modules/auth';
 import { SingleValueWithForm, StatusForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
 import InterviewDownloads from './InterviewDownloads';
 
-export default function InterviewTextMaterials({
-    interview,
-    isCatalog,
-    editView,
-}) {
+/**
+ * Shows permitted observation and transcript downloads and their editing controls.
+ *
+ * @param {Object} props - Interview materials context.
+ * @param {Object} props.interview - Interview text and publication settings.
+ * @param {boolean} [props.editView] - Whether observation editing is visible.
+ * @returns {React.ReactElement|null} Materials, project request status, or nothing without an interview language.
+ */
+export default function InterviewTextMaterials({ interview, editView }) {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({});
 
     const { isAuthorized } = useAuthorization();
+
+    if (!interview.language_id) return null;
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     const canEditInterview = isAuthorized(interview, 'update');
     const isObservationsPublic =
@@ -36,10 +55,6 @@ export default function InterviewTextMaterials({
               return content?.trim();
           })
         : [];
-
-    if (!interview.language_id) {
-        return null;
-    }
 
     return (
         <>
@@ -70,8 +85,7 @@ export default function InterviewTextMaterials({
                     noLabel
                 />
             )}
-            {!isCatalog &&
-                showTranscriptPDF &&
+            {showTranscriptPDF &&
                 interview.alpha3s_with_transcript?.length > 0 && (
                     <AuthShowContainer hasProjectAccess>
                         <p key="transcript-downloads" id="transcript-downloads">
@@ -107,6 +121,5 @@ export default function InterviewTextMaterials({
 
 InterviewTextMaterials.propTypes = {
     interview: PropTypes.object.isRequired,
-    isCatalog: PropTypes.bool,
     editView: PropTypes.bool,
 };

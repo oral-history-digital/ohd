@@ -2,11 +2,15 @@ import { useState } from 'react';
 
 import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Creates or edits a person or organization, with translated name fields.
+ * @param {Object} props - Affiliate record, resource scope, initial values, and save/cancel callbacks.
+ * @returns {React.ReactElement} Affiliate form with fields for the selected name type.
+ */
 export default function AffiliateForm({
     data,
     scope,
@@ -14,8 +18,7 @@ export default function AffiliateForm({
     onCancel,
     values,
 }) {
-    const { locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
     const dispatch = useDispatch();
 
     const [isPersonal, setIsPersonal] = useState(
@@ -32,7 +35,7 @@ export default function AffiliateForm({
             onSubmit={(params) => {
                 dispatch(
                     submitData(
-                        { locale, projectId, project },
+                        { pathBase },
                         params,
                         {},
                         typeof onSubmit === 'function' ? onSubmit : undefined

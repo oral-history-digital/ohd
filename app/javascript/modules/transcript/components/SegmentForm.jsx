@@ -7,6 +7,7 @@ import {
 } from 'modules/forms/utils/validators';
 import { useI18n } from 'modules/i18n';
 import { useInterviewContributors } from 'modules/person';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { detectTimecodeFormat } from 'modules/utils';
 import PropTypes from 'prop-types';
@@ -14,10 +15,12 @@ import PropTypes from 'prop-types';
 import { useSegmentSaveNotification } from '../hooks';
 import { getTimecodeHelpText } from '../utils';
 
+/**
+ * Edits interview content through the current project and locale route.
+ * @param {Object} props - Content data and form/mutation callbacks.
+ * @returns {React.ReactElement|null} Content editor and processing feedback.
+ */
 export default function SegmentForm({
-    locale,
-    projectId,
-    project,
     contentLocale,
     segment,
     submitData,
@@ -27,6 +30,7 @@ export default function SegmentForm({
     prevSegmentTimecode,
     nextSegmentTimecode,
 }) {
+    const pathBase = usePathBase();
     const interviewId = segment?.interview_id;
     const { data: people, isLoading } = useInterviewContributors(interviewId);
     const { t } = useI18n();
@@ -95,7 +99,7 @@ export default function SegmentForm({
 
     const submitHandler = (params) => {
         handleSaveStart(); // Set saving state and clear notifications before dispatching save action
-        submitData({ locale, projectId, project }, params, () => {
+        submitData({ pathBase }, params, () => {
             onSubmit();
         });
     };
@@ -171,9 +175,6 @@ export default function SegmentForm({
 }
 
 SegmentForm.propTypes = {
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
     segment: PropTypes.object,
     submitData: PropTypes.func.isRequired,

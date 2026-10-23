@@ -1,19 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
 
 import UpdateRegistryEntryAttributesModal from './UpdateRegistryEntryAttributesModal';
 
+/**
+ * Searches authority data for a descriptor and offers results for import.
+ *
+ * @param {Object} props - Search and import properties.
+ * @param {Function} props.setRegistryEntryAttributes - Updates entry attributes.
+ * @param {Object} props.registryEntryAttributes - Current entry attributes.
+ * @param {Object} props.registryNameTypes - Available name types by ID.
+ * @param {Object} props.normDataProviders - Authority data providers by ID.
+ * @param {string} props.descriptor - Registry name to search for.
+ * @param {Function} props.setShowElementsInForm - Shows fields after import.
+ * @param {Function} props.setResultsFromNormDataSet - Marks imported values.
+ * @param {Function} props.replaceNestedFormValues - Updates nested form values.
+ * @returns {React.ReactElement} Search form or authority data results.
+ */
 function NormDataForDescriptor({
     setRegistryEntryAttributes,
     registryEntryAttributes,
     registryNameTypes,
     normDataProviders,
     descriptor,
-    onSubmitCallback,
     setShowElementsInForm,
     setResultsFromNormDataSet,
     replaceNestedFormValues,
@@ -257,5 +271,16 @@ function NormDataForDescriptor({
         />
     );
 }
+
+NormDataForDescriptor.propTypes = {
+    setRegistryEntryAttributes: PropTypes.func.isRequired,
+    registryEntryAttributes: PropTypes.object.isRequired,
+    registryNameTypes: PropTypes.object.isRequired,
+    normDataProviders: PropTypes.object.isRequired,
+    descriptor: PropTypes.string.isRequired,
+    setShowElementsInForm: PropTypes.func.isRequired,
+    setResultsFromNormDataSet: PropTypes.func.isRequired,
+    replaceNestedFormValues: PropTypes.func.isRequired,
+};
 
 export default NormDataForDescriptor;

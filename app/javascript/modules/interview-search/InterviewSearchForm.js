@@ -8,10 +8,20 @@ import { FaSearch, FaTimesCircle } from 'react-icons/fa';
 
 import useInterviewSearch from './useInterviewSearch';
 
+/**
+ * Edits the interview search term stored in the URL.
+ *
+ * @param {Object} props - Search target.
+ * @param {string} props.archiveId - Public interview identifier.
+ * @returns {React.ReactElement} Search form, disabled while project settings or results load.
+ */
 export default function InterviewSearchForm({ archiveId }) {
     const { fulltext, setFulltext } = useSearchParams();
-    const { project } = useProject();
+    const { project, isLoading: projectIsLoading, error } = useProject({});
     const { isLoading } = useInterviewSearch(archiveId, fulltext, project);
+    const disabled = Boolean(
+        projectIsLoading || !project || error || isLoading
+    );
 
     const [searchTerm, setSearchTerm] = useState(fulltext);
     const { t } = useI18n();
@@ -51,7 +61,7 @@ export default function InterviewSearchForm({ archiveId }) {
                 <button
                     type="button"
                     className="Button Button--transparent Button--icon search-button"
-                    disabled={isLoading}
+                    disabled={disabled}
                     onClick={handleClear}
                 >
                     <FaTimesCircle className="Icon Icon--primary" />
@@ -59,7 +69,7 @@ export default function InterviewSearchForm({ archiveId }) {
                 <button
                     type="submit"
                     className="Button Button--transparent Button--icon search-button"
-                    disabled={isLoading}
+                    disabled={disabled}
                 >
                     <FaSearch className="Icon Icon--primary" />
                 </button>

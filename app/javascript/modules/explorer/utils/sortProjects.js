@@ -9,6 +9,14 @@ export const SORT_OPTIONS = [
 
 export const DEFAULT_SORT = 'name_asc';
 
+/**
+ * Sorts project summaries by display name or count without changing the input.
+ * Missing counts are treated as zero; names ignore leading punctuation.
+ *
+ * @param {Object[]} projects - Project summaries.
+ * @param {string} [sort='name_asc'] - Existing catalog sort value, such as interviews_desc.
+ * @returns {Object[]} Sorted copy of the list.
+ */
 export const sortProjects = (projects, sort) => {
     const [field, dir] = (sort || DEFAULT_SORT).split('_');
     const asc = dir === 'asc';
@@ -31,11 +39,11 @@ export const sortProjects = (projects, sort) => {
             return asc ? originalComparison : -originalComparison;
         }
         if (field === 'interviews') {
-            av = a.interviews?.total ?? 0;
-            bv = b.interviews?.total ?? 0;
+            av = a.interview_counts?.total ?? 0;
+            bv = b.interview_counts?.total ?? 0;
         } else {
-            av = a.collections?.total ?? 0;
-            bv = b.collections?.total ?? 0;
+            av = a.collection_counts?.total ?? 0;
+            bv = b.collection_counts?.total ?? 0;
         }
         return asc ? av - bv : bv - av;
     });

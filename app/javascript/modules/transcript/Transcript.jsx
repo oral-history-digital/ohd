@@ -13,7 +13,7 @@ import { isRtlLanguage, useI18n } from 'modules/i18n';
 import { getAutoScroll } from 'modules/interview';
 import { getCurrentTape, getIsIdle } from 'modules/media-player';
 import { useInterviewContributors } from 'modules/person';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -29,14 +29,23 @@ import {
 } from './hooks';
 import { getContributorInformation, getSegmentTimecodeBounds } from './utils';
 
+/**
+ * Loads interview segments and displays the selected transcript with editing and bookmarks.
+ *
+ * @param {Object} props - Transcript display options.
+ * @param {string} [props.transcriptLocale] - Content language code.
+ * @param {boolean} [props.originalLocale=false] - Uses the original-transcript empty message.
+ * @param {boolean} [props.loadSegments] - Requests segments when not already loaded.
+ * @returns {React.ReactElement|string} Transcript, loading skeleton, or empty-language message.
+ */
 export default function Transcript({
     transcriptLocale,
     originalLocale = false,
     loadSegments,
 }) {
     const dispatch = useDispatch();
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
     const isEditviewActive = useIsEditor();
 
     // Redux state
@@ -79,23 +88,10 @@ export default function Transcript({
     useEffect(() => {
         if (loadSegments && !transcriptFetched) {
             dispatch(
-                fetchData(
-                    { locale, projectId, project },
-                    'interviews',
-                    archiveId,
-                    'segments'
-                )
+                fetchData({ pathBase }, 'interviews', archiveId, 'segments')
             );
         }
-    }, [
-        loadSegments,
-        transcriptFetched,
-        archiveId,
-        locale,
-        projectId,
-        project,
-        dispatch,
-    ]);
+    }, [loadSegments, transcriptFetched, archiveId, pathBase, dispatch]);
 
     const processedSegments = useProcessedSegments(
         interview,

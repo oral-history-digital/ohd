@@ -1,14 +1,13 @@
 import { useTrackPageView } from 'modules/analytics';
-import { getProjectBrandName, getUmbrellaProject } from 'modules/data';
+import { getProjectBrandName, useUmbrellaProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
 
 import RegisterForm from './RegisterForm';
 
 export default function RegisterPage() {
     const { t, locale } = useI18n();
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project: umbrellaProject } = useUmbrellaProject();
     const title = t('modules.registration.title', {
         umbrella_project_name: getProjectBrandName(umbrellaProject, locale),
     });

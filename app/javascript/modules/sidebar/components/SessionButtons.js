@@ -5,15 +5,22 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { clearStateData, getProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { pathWithoutInternalSessionFlag } from 'modules/query-string';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase, useProjectIdentity } from 'modules/routes';
 import { getIsLoggedIn, submitLogout } from 'modules/user';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+/**
+ * Shows account navigation and starts logout without clearing the account early.
+ *
+ * @param {Object} props - Navigation properties.
+ * @param {string} [props.className] - Additional wrapper classes.
+ * @returns {React.ReactElement} Account controls or login and registration links.
+ */
 export default function SessionButtons({ className }) {
     const { t, locale } = useI18n();
-    const { projectId } = useProject();
+    const { projectShortname } = useProjectIdentity();
     const pathBase = usePathBase();
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(getIsLoggedIn);
@@ -24,7 +31,7 @@ export default function SessionButtons({ className }) {
         location.search
     );
 
-    const loginURL = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${encodeURIComponent(loginReturnPath)}&project=${projectId}`;
+    const loginURL = `${OHD_DOMAINS[railsMode]}/${locale}/users/sign_in?path=${encodeURIComponent(loginReturnPath)}&project=${projectShortname}`;
 
     const handleRegisterClick = () => {
         // Store the current path for redirect after successful registration
@@ -85,8 +92,6 @@ export default function SessionButtons({ className }) {
                             dispatch(clearStateData('projects', pid, 'people'));
                         });
                     }
-                    dispatch(clearStateData('users'));
-                    dispatch(clearStateData('users'));
                     dispatch(submitLogout(`${pathBase}/users/sign_out`));
                 }}
             >

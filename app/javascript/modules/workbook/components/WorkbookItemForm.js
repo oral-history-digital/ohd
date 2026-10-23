@@ -11,6 +11,8 @@ import {
 import { useWorkbookApi } from 'modules/api';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { formatTimecode } from 'modules/utils';
 import PropTypes from 'prop-types';
 
@@ -18,6 +20,29 @@ import useMutateWorkbook from '../useMutateWorkbook';
 import CitationInfo from './CitationInfo';
 import SegmentLink from './SegmentLink';
 
+/**
+ * Creates or edits a workbook entry using the supplied project or current project details.
+ * Waits for current project data only when no project was supplied.
+ *
+ * @param {Object} props - Entry data and form callbacks.
+ * @param {Object} [props.project] - Entry's project; takes precedence over the current project.
+ * @param {number} [props.id] - Existing entry ID; omit to create an entry.
+ * @param {string} [props.title] - Saved title; otherwise derived from the entry type.
+ * @param {Object} props.interview - Interview used for titles and citations.
+ * @param {string} [props.description] - Saved note.
+ * @param {Object} [props.properties] - Saved search or segment parameters.
+ * @param {number} [props.reference_id] - Referenced record ID.
+ * @param {string} [props.reference_type] - Referenced record type.
+ * @param {string} [props.media_id] - Public interview identifier.
+ * @param {string} [props.type] - Workbook entry type.
+ * @param {number} [props.segmentIndex] - Referenced segment index.
+ * @param {string} [props.workflow_state] - Entry's publication state.
+ * @param {boolean} [props.shared] - Whether the entry is shared.
+ * @param {string} [props.submitLabel] - Custom save button label.
+ * @param {Function} props.onSubmit - Called after starting the save.
+ * @param {Function} [props.onCancel] - Closes the form without saving.
+ * @returns {React.ReactElement} Entry form, loading indicator, or project error.
+ */
 export default function WorkbookItemForm({
     project: suppliedProject,
     id,
@@ -36,7 +61,7 @@ export default function WorkbookItemForm({
     onSubmit,
     onCancel,
 }) {
-    const { project: currentProject } = useProject();
+    const { project: currentProject, isLoading, error } = useProject({});
     const project = suppliedProject ? suppliedProject : currentProject;
     const trackEvent = useTrackEventFunction();
     const { t, locale } = useI18n();
@@ -162,6 +187,20 @@ export default function WorkbookItemForm({
     }
 
     const actualSubmitLabel = submitLabel ? submitLabel : t('save');
+
+    if (!suppliedProject) {
+        if (error) {
+            return (
+                <InlineNotification
+                    variant="error"
+                    title={t('error')}
+                    description={error.message}
+                    isClosable={false}
+                />
+            );
+        }
+        if (isLoading || !project) return <Spinner />;
+    }
 
     return (
         <div>

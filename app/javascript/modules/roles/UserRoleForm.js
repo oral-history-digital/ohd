@@ -1,41 +1,50 @@
 import { useEffect } from 'react';
 
 import { submitDataWithFetch } from 'modules/api';
-import { useMutateData, useMutateDatum } from 'modules/data';
-import { Form } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
-import PropTypes from 'prop-types';
-
-export default function UserRoleForm({
-    dataPath,
-    userId,
-    projectId,
-    project,
-    locale,
-    roles,
-    rolesStatus,
+import {
     fetchData,
-    onSubmit,
-}) {
+    getRolesForCurrentProject,
+    getRolesStatus,
+    useMutateData,
+    useMutateDatum,
+} from 'modules/data';
+import { Form } from 'modules/forms';
+import { usePathBase, useProjectIdentity } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+
+/**
+ * Assigns a role using choices loaded for the current project route.
+ * @param {Object} props - User ID, user-list cache path, and successful-save callback.
+ * @returns {React.ReactElement} Role form or pending project identity.
+ */
+export default function UserRoleForm({ dataPath, userId, onSubmit }) {
     const mutateData = useMutateData('users', dataPath);
     const mutateDatum = useMutateDatum();
     const pathBase = usePathBase();
 
+    const { projectDbId } = useProjectIdentity();
+    const dispatch = useDispatch();
+    const roles = useSelector(getRolesForCurrentProject);
+    const rolesStatus = useSelector(getRolesStatus);
+    const status = rolesStatus?.[`for_projects_${projectDbId}`];
+
     useEffect(() => {
-        if (
-            !rolesStatus[`for_projects_${project?.id}`] ||
-            rolesStatus[`for_projects_${project?.id}`].split('-')[0] ===
-                'reload'
-        ) {
-            fetchData(
-                { locale, projectId, project },
-                'roles',
-                null,
-                null,
-                `for_projects=${project?.id}`
+        if (projectDbId && (!status || status.split('-')[0] === 'reload')) {
+            dispatch(
+                fetchData(
+                    { pathBase },
+                    'roles',
+                    null,
+                    null,
+                    `for_projects=${projectDbId}`
+                )
             );
         }
-    });
+    }, [dispatch, pathBase, projectDbId, status]);
+
+    if (!projectDbId) return <Spinner />;
 
     return (
         <div>
@@ -89,12 +98,7 @@ export default function UserRoleForm({
 }
 
 UserRoleForm.propTypes = {
-    rolesStatus: PropTypes.object.isRequired,
-    roles: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    fetchData: PropTypes.func.isRequired,
-    submitData: PropTypes.func.isRequired,
+    userId: PropTypes.number.isRequired,
+    dataPath: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
 };

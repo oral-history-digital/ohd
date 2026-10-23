@@ -6,14 +6,21 @@ import { useProjectAccessStatus } from 'modules/auth';
 import { getCurrentUser, submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { underscore } from 'modules/strings';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaAngleDown, FaAngleUp, FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ContentField from '../display/ContentField';
 
+/**
+ * Displays and edits one field using localized metadata settings from project details.
+ * @param {Object} props - Field display, editing, validation, and publication options.
+ * @returns {React.ReactElement|null} Visible field, edit form, or loading/error state.
+ */
 export default function SingleValueWithForm({
     readOnly,
     elementType,
@@ -41,20 +48,34 @@ export default function SingleValueWithForm({
     const [collapsed, setCollapsed] = useState(collapse);
     const isStringValue = typeof value === 'string';
 
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
+    const { project, isLoading, error } = useProject({
+        include: ['metadata_fields'],
+    });
     const { projectAccessGranted } = useProjectAccessStatus(project);
 
     const user = useSelector(getCurrentUser);
     const editView = useSelector(getEditView);
     const dispatch = useDispatch();
 
-    const metadataField = Object.values(project.metadata_fields).find(
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
+
+    const metadataField = (project?.metadata_fields || []).find(
         (m) => m.name === attribute
     );
 
     const label =
-        metadataField?.label?.[locale] ||
+        metadataField?.label ||
         t(`activerecord.attributes.${underscore(obj.type)}.${attribute}`);
 
     const formElements = [];
@@ -104,7 +125,7 @@ export default function SingleValueWithForm({
             scope={underscore(obj.type)}
             onSubmit={(params) => {
                 dispatch(
-                    submitData({ project, projectId, locale }, params, {
+                    submitData({ pathBase }, params, {
                         updateStateBeforeSubmit: true,
                     })
                 );

@@ -3,72 +3,95 @@ import { useEffect } from 'react';
 import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
 import { getCurrentInterview, getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { underscore } from 'modules/strings';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import RegistryReferencesContainer from './RegistryReferencesContainer';
 
+/**
+ * Shows configured registry reference fields for a person or interview.
+ * Loads project metadata and registry configuration through Redux, preserving access-based visibility.
+ *
+ * @param {Object} props - Component properties.
+ * @param {boolean} [props.editView] - Shows configured fields even without existing references.
+ * @param {Function} props.fetchData - Dispatches legacy registry entry requests.
+ * @param {Object} props.refObject - Record whose references are displayed.
+ * @param {Object} props.registryEntriesStatus - Registry entry and query request status.
+ * @returns {React.ReactNode} Reference fields or their project loading/error state.
+ */
 export default function SelectedRegistryReferences({
     editView,
     fetchData,
-    locale,
-    project,
-    projectId,
     refObject,
     registryEntriesStatus,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
+    const { project, isLoading, error } = useProject({
+        include: ['metadata_fields', 'registry_configuration'],
+    });
+    const pathBase = usePathBase();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const { isAuthorized } = useAuthorization();
     const user = useSelector(getCurrentUser);
     const interview = useSelector(getCurrentInterview);
 
     useEffect(() => {
-        loadRegistryEntries();
-        loadRootRegistryEntry();
-    });
+        if (!project || error) return;
 
-    function loadRegistryEntries() {
-        if (
-            !registryEntriesStatus[
+        const queryStatus =
+            registryEntriesStatus[
                 `ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`
-            ]
-        ) {
+            ];
+        if (!queryStatus) {
             fetchData(
-                { projectId, locale, project },
+                { pathBase },
                 'registry_entries',
                 null,
                 null,
                 `ref_object_type=${refObject.type}&ref_object_id=${refObject.id}`
             );
         }
-    }
 
-    function loadRootRegistryEntry() {
-        if (
-            !registryEntriesStatus[project.root_registry_entry_id] ||
-            registryEntriesStatus[project.root_registry_entry_id].split(
-                '-'
-            )[0] === 'reload'
-        ) {
-            fetchData(
-                { projectId, locale, project },
-                'registry_entries',
-                project.root_registry_entry_id
-            );
+        const rootId = project.root_registry_entry_id;
+        const rootStatus = registryEntriesStatus[rootId];
+        if (rootId && (!rootStatus || rootStatus.split('-')[0] === 'reload')) {
+            fetchData({ pathBase }, 'registry_entries', rootId);
         }
+    }, [
+        project,
+        error,
+        pathBase,
+        refObject.type,
+        refObject.id,
+        registryEntriesStatus,
+        fetchData,
+    ]);
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
     }
+    if (isLoading || !project) return <Spinner />;
 
     const hasInterviewPermission =
-        interview.workflow_state === 'public' ||
+        interview?.workflow_state === 'public' ||
         isAuthorized(interview, 'show') ||
-        (interview.workflow_state === 'restricted' &&
+        (interview?.workflow_state === 'restricted' &&
             user?.interview_permissions?.some(
                 (perm) => perm.interview_id === interview.id
             ));
 
-    const fields = Object.values(project.metadata_fields)
+    const fields = project.metadata_fields
         .filter((field) => field.registry_entry_id)
         .filter((field) => field.ref_object_type === refObject.type)
         .filter(
@@ -93,7 +116,7 @@ export default function SelectedRegistryReferences({
             return (
                 <div key={field.id} className="RegistryReferences u-mb-small">
                     <span className="RegistryReferences-label flyout-content-label">
-                        {field.label[locale] ||
+                        {field.label ||
                             t(
                                 `activerecord.attributes.${underscore(refObject.type)}.${field.name}`
                             )}
@@ -121,9 +144,6 @@ export default function SelectedRegistryReferences({
 SelectedRegistryReferences.propTypes = {
     editView: PropTypes.bool,
     fetchData: PropTypes.func.isRequired,
-    locale: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     refObject: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
 };

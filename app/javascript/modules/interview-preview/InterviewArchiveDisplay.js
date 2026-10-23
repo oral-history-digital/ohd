@@ -48,6 +48,6 @@ export default function InterviewArchiveDisplay({ project, className }) {
 }
 
 InterviewArchiveDisplay.propTypes = {
-    project: PropTypes.object.isRequired,
+    project: PropTypes.object,
     className: PropTypes.string,
 };

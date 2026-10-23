@@ -4,8 +4,17 @@ import { usePathBase, useProject } from 'modules/routes';
 import { useSelector } from 'react-redux';
 import useSWRImmutable from 'swr/immutable';
 
+/**
+ * Combines project and global reference types after the current project role is known.
+ * @returns {Object} Visible reference types and combined project/resource request status.
+ */
 export default function useCombinedRegistryReferenceTypes() {
-    const { isUmbrella } = useProject();
+    const {
+        project,
+        isLoading: projectLoading,
+        error: projectError,
+    } = useProject({});
+    const projectReady = Boolean(project && !projectLoading && !projectError);
     const projectRegistryReferenceTypes = useSelector(
         getRegistryReferenceTypesForCurrentProject
     );
@@ -17,23 +26,24 @@ export default function useCombinedRegistryReferenceTypes() {
         isValidating,
         data: globalRegistryReferenceTypes,
         error,
-    } = useSWRImmutable(path, fetcher);
+    } = useSWRImmutable(projectReady ? path : null, fetcher);
 
     let combinedRegistryReferenceTypes;
-    if (isUmbrella) {
+    if (project?.is_umbrella) {
         combinedRegistryReferenceTypes = Object.values(
-            projectRegistryReferenceTypes
+            projectRegistryReferenceTypes || {}
         );
     } else {
         combinedRegistryReferenceTypes = Object.values(
-            projectRegistryReferenceTypes
+            projectRegistryReferenceTypes || {}
         ).concat(globalRegistryReferenceTypes || []);
     }
 
     return {
-        isLoading,
-        isValidating,
-        registryReferenceTypes: combinedRegistryReferenceTypes,
-        error,
+        isLoading: projectLoading || (!project && !projectError) || isLoading,
+        isValidating: projectLoading || isValidating,
+        registryReferenceTypes:
+            projectReady && !error ? combinedRegistryReferenceTypes : [],
+        error: projectError || error,
     };
 }

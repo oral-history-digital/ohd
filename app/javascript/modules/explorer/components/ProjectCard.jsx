@@ -11,6 +11,17 @@ import { CollectionList } from './CollectionList';
 import { HighlightText } from './HighlightText';
 import { InterviewLanguages, InterviewStats, RichtextDetail } from './details';
 
+/**
+ * Displays a project summary and expands its introduction, interview statistics,
+ * languages, and separately fetched collection list.
+ *
+ * @param {Object} props - Project data and accordion controls.
+ * @param {Object} props.project - Summary with interview_counts, collection_counts, and interview_languages.
+ * @param {string} [props.query] - Search text to highlight.
+ * @param {boolean} props.expanded - Whether the detail section is visible.
+ * @param {Function} props.onToggle - Toggles this card's expanded state.
+ * @returns {import('react').ReactElement} Expandable catalog card.
+ */
 export function ProjectCard({ project, query, expanded, onToggle }) {
     const cardRef = useScrollToExpandedCard(expanded);
     const { t, locale } = useI18n();
@@ -24,8 +35,8 @@ export function ProjectCard({ project, query, expanded, onToggle }) {
     const { url: projectUrl, isExternalUrl: isExternalProjectLink } =
         getProjectUrl(project, locale);
 
-    const countCollections = project.collections?.total || 0;
-    const countInterviews = project.interviews?.total || 0;
+    const countCollections = project.collection_counts?.total || 0;
+    const countInterviews = project.interview_counts?.total || 0;
 
     const formatNum = (num) => formatNumber(num, 0, locale);
     const numCollections = formatNum(countCollections);
@@ -92,9 +103,9 @@ export function ProjectCard({ project, query, expanded, onToggle }) {
                         richtext={project.introduction}
                         highlightString={query}
                     />
-                    <InterviewStats counts={project.interviews} />
+                    <InterviewStats counts={project.interview_counts} />
                     <InterviewLanguages
-                        languages={project.languages_interviews}
+                        languages={project.interview_languages}
                     />
 
                     <div className="ProjectCard-pageButton">

@@ -6,7 +6,7 @@ import {
     getTranslations,
     getTranslationsView,
 } from 'modules/archive';
-import { getCurrentProject } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { useSelector } from 'react-redux';
 import videojs from 'video.js';
 
@@ -40,7 +40,7 @@ function useVideojsLanguages() {
     const currentLanguage = useSelector(getLocale);
     const translations = useSelector(getTranslations);
     const isTranslationsView = useSelector(getTranslationsView);
-    const project = useSelector(getCurrentProject);
+    const { project, isLoading, error } = useProject({});
 
     // Dynamically build LANGS from the project's available_locales.
     // We use synchronous require so bundlers can include only the referenced
@@ -73,7 +73,13 @@ function useVideojsLanguages() {
 
     // Create custom language strings with i18n overrides
     const customLanguageStrings = useMemo(() => {
-        if (!translationKey || !translations) {
+        if (
+            !project ||
+            isLoading ||
+            error ||
+            !translationKey ||
+            !translations
+        ) {
             return null;
         }
 
@@ -136,6 +142,9 @@ function useVideojsLanguages() {
         translations,
         isTranslationsView,
         LANGS,
+        project,
+        isLoading,
+        error,
     ]);
 
     // Apply the custom language strings to Video.js globally
