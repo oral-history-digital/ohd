@@ -37,7 +37,7 @@ test('waits for project settings, propagates denial, and hides cached data while
         () => usePersonWithAssociations(7),
         { wrapper: Provider }
     );
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(result.current.isLoading).toBe(true);
     expect(fetcher).not.toHaveBeenCalled();
 

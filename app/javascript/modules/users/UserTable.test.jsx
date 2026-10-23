@@ -126,7 +126,7 @@ test('waits for project settings before querying users, initializes the project 
         project: { id: 2, is_umbrella: false, available_locales: ['en', 'de'] },
     });
     rerender(<UserTable />);
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(useUsers.mock.lastCall[2]).toBe('project_access_requested');
     fireEvent.change(
         screen.getByRole('combobox', {

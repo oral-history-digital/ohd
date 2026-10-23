@@ -64,7 +64,7 @@ test('delayed project details select the translated transcript, then preserve th
     );
     useProject.mockReturnValue({ project });
     rerender(<InterviewTabs interview={interview} />);
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByRole('tab', { name: 'translation' })).toHaveAttribute(
         'aria-selected',
         'true'

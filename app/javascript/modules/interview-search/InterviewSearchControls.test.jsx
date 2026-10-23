@@ -112,7 +112,7 @@ test('trims submitted terms, clears the query, and disables actions while settin
     rerender(<InterviewSearchForm archiveId="pilot001" />);
     expect(screen.getAllByRole('button')[0]).toBeDisabled();
     expect(screen.getAllByRole('button')[1]).toBeDisabled();
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
 });
 
 test('keeps original and available translated transcript results separate', () => {

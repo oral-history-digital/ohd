@@ -54,7 +54,7 @@ test('person creation waits for project settings and hides editing on access fai
     expect(Form).not.toHaveBeenCalled();
     useProject.mockReturnValue({ project: { id: 7 } });
     rerender(<PersonForm />);
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(Form.mock.calls.at(-1)[0].values).toEqual({ project_id: 7 });
     useProject.mockReturnValue({
         project: { id: 7 },
