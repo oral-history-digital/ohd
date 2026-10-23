@@ -71,7 +71,7 @@ test.each([
             'title',
             `Sammlung im ${expectedName}-Katalog`
         );
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         expect(useUmbrellaProject).toHaveBeenCalledWith();
         expect(screen.getByRole('link')).toHaveAttribute(
             'href',

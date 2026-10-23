@@ -30,7 +30,7 @@ test('columns wait for loaded project locales and disappear after an access fail
     expect(result.current.columns).toEqual([]);
     useProject.mockReturnValue({ project: { available_locales: ['de'] } });
     rerender();
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(result.current.columns).toEqual([
         'timecode',
         'transcript',

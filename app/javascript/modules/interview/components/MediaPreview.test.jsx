@@ -34,7 +34,7 @@ beforeEach(() => {
 test('waits for display settings and hides retained previews on error', () => {
     useProject.mockReturnValue({ isLoading: true });
     const { rerender } = render(<MediaPreview />);
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText('Loading')).toBeInTheDocument();
     useProject.mockReturnValue({
         project: { show_preview_img: true },

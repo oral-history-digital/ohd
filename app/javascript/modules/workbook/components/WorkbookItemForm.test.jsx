@@ -63,7 +63,7 @@ test('form waits for current project details, retains edits while loading, and h
     ).not.toBeInTheDocument();
     useProject.mockReturnValue({ project: currentProject });
     rerender(<WorkbookItemForm {...props} />);
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText(/Current project,/)).toBeInTheDocument();
     fireEvent.change(screen.getByRole('textbox', { name: 'title' }), {
         target: { value: 'My note' },

@@ -84,7 +84,7 @@ beforeEach(() => {
 
 test('uses display details for the page title and favicon', () => {
     const { rerender } = render(<Layout>Page content</Layout>);
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText('Page content')).toBeInTheDocument();
     expect(Helmet.mock.lastCall[0].defaultTitle).toBe('Display title');
     expect(

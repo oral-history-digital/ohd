@@ -80,6 +80,6 @@ test.each([
 ])('project catalog flag %s selects the existing view', (isCatalog, view) => {
     useProject.mockReturnValue({ project: { is_catalog: isCatalog } });
     render(<Interview {...props} />);
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText(view)).toBeInTheDocument();
 });

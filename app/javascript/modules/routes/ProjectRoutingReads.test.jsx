@@ -105,7 +105,7 @@ test.each([
     (project, routeLabel) => {
         useProject.mockReturnValue({ project });
         render(<RouteDivider />);
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         expect(screen.getByText(routeLabel)).toBeInTheDocument();
     }
 );
