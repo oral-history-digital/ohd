@@ -148,6 +148,8 @@ describe('Loader', () => {
             expect(consoleErrorSpy).toHaveBeenCalledWith(
                 'Loading JSON from /api/projects failed: Server error'
             );
+            expect(mockCallback).not.toHaveBeenCalled();
+            expect(mockDispatch).not.toHaveBeenCalled();
 
             consoleErrorSpy.mockRestore();
         });
@@ -156,6 +158,111 @@ describe('Loader', () => {
             Loader.getJson('/api/projects', {}, mockDispatch, undefined);
 
             expect(mockDispatch).not.toHaveBeenCalled();
+        });
+
+        test('returns the request handle and dispatches only success on a successful GET', () => {
+            const errorCallback = jest.fn();
+            mockCallback.mockReturnValue({ type: 'read/success' });
+
+            const handle = Loader.getJson(
+                '/api/projects',
+                {},
+                mockDispatch,
+                mockCallback,
+                errorCallback
+            );
+
+            expect(handle).toBe(mockRequestInstance);
+            expect(mockCallback).toHaveBeenCalledTimes(1);
+            expect(mockDispatch).toHaveBeenCalledWith({ type: 'read/success' });
+            expect(errorCallback).not.toHaveBeenCalled();
+        });
+
+        test.each([
+            ['network failure', new Error('Network failure'), null],
+            [
+                'denied HTTP response',
+                null,
+                { status: 403, text: '{"error":"denied"}' },
+            ],
+            [
+                'HTTP error with a transport error',
+                Object.assign(new Error('Forbidden'), { status: 403 }),
+                { status: 403, text: '{"error":"denied"}' },
+            ],
+            ['server failure', null, { status: 503, text: 'Unavailable' }],
+            ['response error flag', null, { error: 'Server error' }],
+        ])(
+            'dispatches only failure for %s when opted in',
+            (_, error, response) => {
+                const errorCallback = jest.fn(() => ({ type: 'read/failure' }));
+                const consoleErrorSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation();
+                mockRequestInstance.end.mockImplementationOnce((callback) => {
+                    callback(error, response);
+                    return mockRequestInstance;
+                });
+
+                Loader.getJson(
+                    '/api/projects',
+                    {},
+                    mockDispatch,
+                    mockCallback,
+                    errorCallback
+                );
+
+                expect(mockCallback).not.toHaveBeenCalled();
+                expect(errorCallback).toHaveBeenCalledTimes(1);
+                expect(errorCallback).toHaveBeenCalledWith(error || response);
+                expect(mockDispatch).toHaveBeenCalledTimes(1);
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'read/failure',
+                });
+                consoleErrorSpy.mockRestore();
+            }
+        );
+
+        test('dispatches JSON parse failures through the error callback', () => {
+            const errorCallback = jest.fn(() => ({ type: 'read/failure' }));
+            mockRequestInstance.end.mockImplementationOnce((callback) => {
+                callback(null, { status: 200, text: 'Not JSON' });
+                return mockRequestInstance;
+            });
+
+            Loader.getJson(
+                '/api/projects',
+                {},
+                mockDispatch,
+                mockCallback,
+                errorCallback
+            );
+
+            expect(mockCallback).not.toHaveBeenCalled();
+            expect(errorCallback).toHaveBeenCalledTimes(1);
+            expect(errorCallback).toHaveBeenCalledWith(expect.any(SyntaxError));
+            expect(mockDispatch).toHaveBeenCalledTimes(1);
+            expect(mockDispatch).toHaveBeenCalledWith({ type: 'read/failure' });
+        });
+
+        test('preserves HTTP failure delivery for legacy callers', () => {
+            const response = { status: 403, text: '{"error":"denied"}' };
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation();
+            mockCallback.mockReturnValue({ type: 'legacy/response' });
+            mockRequestInstance.end.mockImplementationOnce((callback) => {
+                callback(null, response);
+                return mockRequestInstance;
+            });
+
+            Loader.getJson('/api/projects', {}, mockDispatch, mockCallback);
+
+            expect(mockCallback).toHaveBeenCalledWith(response);
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'legacy/response',
+            });
+            consoleErrorSpy.mockRestore();
         });
     });
 
