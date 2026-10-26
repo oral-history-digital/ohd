@@ -145,6 +145,72 @@ yarn test
 - Run the production Shakapacker build when frontend asset compilation is affected.
 - Do not claim a command passed unless it completed successfully.
 
+## Code Documenation
+
+### YARD Documentation (Ruby on Rails Backend)
+
+- Always add YARD documentation comments when creating new methods, classes, modules, service objects, and concerns in Ruby/Rails.
+- Place documentation immediately above the corresponding declaration.
+- Briefly describe the purpose and behavior, focusing on what the code does rather than how it works.
+- Document method parameters using `@param`, including their types.
+- Document return values using `@return`, including their types, unless the method returns nothing meaningful.
+- Document exceptions using `@raise` when a method explicitly raises errors that callers should handle.
+- For classes and modules, describe their responsibilities and relevant usage constraints.
+- For service objects, document their purpose, expected inputs, outputs, and important side effects.
+- For Rails controllers, document non-obvious actions, parameters, and response behavior.
+- For ActiveRecord models, document custom business logic, callbacks, and non-obvious associations or validations.
+- Document important side effects, assumptions, constraints, and edge cases when relevant.
+- Use standard YARD syntax (`#` comments with `@param`, `@return`, etc.).
+- Avoid redundant descriptions that merely repeat method names or Ruby types.
+- When modifying existing code, update its documentation if its behavior or signature changes.
+- Keep documentation short, concise, accurate, and consistent with existing project conventions.
+
+#### Example
+
+```ruby
+# Filters records by a case-insensitive search query.
+#
+# @param records [ActiveRecord::Relation] Records to filter
+# @param query [String] Search query
+# @return [ActiveRecord::Relation] Matching records
+
+def filter_records(records, query)
+  records.where("name ILIKE ?", "%#{query}%")
+end
+```
+
+### JSDoc Documentation (React Frontend)
+
+- Always add JSDoc comments when creating new functions, React components, custom hooks, utility functions, and methods.
+- Place the JSDoc comment immediately above the declaration.
+- Briefly describe the function's purpose and behavior.
+- Document all parameters with `@param`, including their types.
+- Document return values with `@returns`, including their types, unless the function returns nothing.
+- For React components, document the component's purpose and its props.
+- For custom hooks, document their purpose, parameters, return values, and relevant side effects.
+- Document important assumptions, constraints, and edge cases when relevant.
+- Use standard JSDoc syntax (`/** ... */`).
+- Avoid redundant or overly verbose descriptions.
+- When modifying existing functions, update their JSDoc to reflect changes in behavior or signatures.
+- Follow existing project conventions for JSDoc type definitions.
+
+#### Example
+
+```js
+/**
+ * Filters a list of items by a case-insensitive search query.
+ *
+ * @param {Array<{name: string}>} items - Items to filter.
+ * @param {string} query - Search query.
+ * @returns {Array<{name: string}>} Matching items.
+ */
+function filterItems(items, query) {
+    return items.filter((item) =>
+        item.name.toLowerCase().includes(query.toLowerCase())
+    );
+}
+```
+
 ## Things to avoid
 
 - Do not rely on route parameters alone for authorization or project membership.
@@ -166,4 +232,4 @@ yarn test
 - Check downstream effects appropriate to the change, including schema, translations, serializers/API contracts, background jobs, and search indexing when affected.
 - Review `git status` and `git diff` for unintended files.
 - Report changed behavior, tests run, failures, skipped checks, and remaining limitations accurately.
-- Include a proposed short commit message in the final report using fix:(scope): concise description and a short description of the changes. Do not create the commit unless explicitly requested.
+- Include a proposed short commit message using the appropriate Conventional Commit type, such as `feat(scope): ...` or `fix(scope): ....` and a short description of the changes after a newline. Do not create the commit unless explicitly requested.

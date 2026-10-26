@@ -1,4 +1,11 @@
 class SegmentPolicy < ApplicationPolicy
+  # Requires access to the segment's actual parent interview before serialization.
+  #
+  # @return [Boolean, nil] Whether the logged-in user may read the segment
+  def show?
+    user && InterviewPolicy.new(ProjectContext.new(user, project), record.interview).content?
+  end
+
   class Scope < Scope
     attr_reader :user, :segment, :project
 
@@ -8,13 +15,17 @@ class SegmentPolicy < ApplicationPolicy
       @segment = segment
     end
 
+    # Checks parent-interview access before reading cached segment contents.
+    #
+    # @return [Hash] Serialized segments grouped by tape
+    # @raise [Pundit::NotAuthorizedError] When interview contents are inaccessible
     def resolve
-      if user && (user.admin? || user.project_ids.include?(project.id))
+      if user && InterviewPolicy.new(ProjectContext.new(user, project), segment.interview).content?
         interview = segment.interview
         transcript_coupled = interview.transcript_coupled
         max_updated_at = interview.segments.maximum(:updated_at)
-        allowed_to_see_all = user.admin? || user.roles?(project, Segment, :update) ||
-          user.task_permissions?(project, interview.segments.first, :update)
+        allowed_to_see_all = user.admin? || user.roles?(interview.project, 'Segment', 'update') ||
+          user.task_permissions?(interview.project, interview.segments.first, :update)
 
         Rails.cache.fetch(
           "interview-segments-#{allowed_to_see_all ? 'admin' : 'restricted'}-#{interview.id}-#{max_updated_at}"
@@ -37,7 +48,7 @@ class SegmentPolicy < ApplicationPolicy
           end
         end
       else
-        []
+        raise Pundit::NotAuthorizedError
       end
     end
   end

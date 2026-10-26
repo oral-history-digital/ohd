@@ -48,6 +48,10 @@ Use the **Development Environment** for development work.
 - Webpack dev server
 - All development dependencies
 
+### Production frontend checks
+
+Run `bin/check_frontend_build` inside the development container. It builds production assets under `tmp/frontend-production-check` without overwriting the development manifest in `public/packs`. Running `RAILS_ENV=production bin/shakapacker` directly while the dev server is active can leave Rails requesting chunks that the dev server does not serve.
+
 ### Network Mode
 
 - Bridge mode (Docker services work normally)

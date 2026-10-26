@@ -209,6 +209,17 @@ describe('Loader', () => {
             expect(mockCb).toHaveBeenCalledWith(expectedJson);
         });
 
+        test('completes logout after an empty successful DELETE response', () => {
+            mockRequestInstance.end.mockImplementation((callback) => {
+                callback(null, { status: 204, text: '' });
+                return mockRequestInstance;
+            });
+            Loader.delete('/logout', mockDispatch, null, mockCb);
+            expect(mockCb).toHaveBeenCalledTimes(1);
+            expect(mockCb).toHaveBeenCalledWith({});
+            expect(mockDispatch).not.toHaveBeenCalled();
+        });
+
         test('handles error response', () => {
             mockRequestInstance.end = jest.fn((callback) => {
                 const error = new Error('Delete failed');

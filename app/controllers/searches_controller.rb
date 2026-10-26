@@ -1,6 +1,6 @@
 class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
-  skip_after_action :verify_authorized
+  skip_after_action :verify_authorized, except: :interview
   skip_after_action :verify_policy_scoped
 
   def facets
@@ -72,7 +72,7 @@ class SearchesController < ApplicationController
       with(:workflow_state, (
         current_user && (
           current_user.admin? ||
-          current_user.roles?(current_project, 'General', 'edit') ||
+          current_user.roles?(interview.project, 'General', 'edit') ||
           current_user.interview_permissions.pluck(:interview_id).include?(interview.id)
         )
       ) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
@@ -98,7 +98,8 @@ class SearchesController < ApplicationController
       [Annotation, :id],
     ]
 
-    interview = Interview.find_by_archive_id(params[:id])
+    interview = Interview.find_by!(archive_id: params[:id])
+    authorize interview, :search_fulltext?
 
     models_and_order.each do |model, order|
       instance_variable_set "@#{model.name.underscore}_search", search(interview, model, order)
@@ -144,7 +145,8 @@ class SearchesController < ApplicationController
         cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
         scope = map_scope
 
-        json = Rails.cache.fetch "#{current_project.cache_key}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}" do
+        # Full-text matches depend on individual grants absent from this shared key.
+        json = Rails.cache.fetch "#{current_project.cache_key}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}", force: params[:fulltext].present? do
           search = Interview.archive_search(current_user, current_project, locale, params, 10_000)
           repository = RegistryEntryRepository.new(current_project.id,
             map_interviewee_ids(search), map_interview_ids(search), scope)

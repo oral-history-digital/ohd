@@ -23,7 +23,7 @@ class SegmentsController < ApplicationController
   end
 
   def index
-    @interview = Interview.find_by_archive_id(params[:interview_id])
+    @interview = Interview.find_by!(archive_id: params[:interview_id])
 
     respond_to do |format|
       format.json do

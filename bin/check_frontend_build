@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'tempfile'
+require 'yaml'
+
+# Verify the production build without overwriting the running development server's manifest.
+app_root = File.expand_path('..', __dir__)
+Dir.chdir(app_root)
+
+configuration = YAML.load_file('config/shakapacker.yml', aliases: true)
+output_root = File.join(app_root, 'tmp', 'frontend-production-check')
+production = configuration.fetch('production').merge(
+  'public_root_path' => output_root,
+  'public_output_path' => 'packs',
+  'manifest_path' => File.join(output_root, 'packs', 'manifest.json'),
+  'cache_path' => File.join(output_root, 'cache')
+)
+
+FileUtils.mkdir_p(File.join(app_root, 'tmp'))
+Tempfile.create(['shakapacker-check', '.yml'], File.join(app_root, 'tmp')) do |file|
+  file.write(YAML.dump('production' => production))
+  file.flush
+  success = system(
+    { 'RAILS_ENV' => 'production', 'NODE_ENV' => 'production', 'SHAKAPACKER_CONFIG' => file.path },
+    'bin/shakapacker', *ARGV
+  )
+  exit(success ? 0 : 1)
+end

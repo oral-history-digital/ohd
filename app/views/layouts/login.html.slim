@@ -28,6 +28,8 @@ html
           main.Site-content
             .wrapper-content.u-line-length
               .notification-container
+                - if flash[:success]
+                  p.success = flash[:success]
                 - if notice
                   p.notice = notice
                 - if alert

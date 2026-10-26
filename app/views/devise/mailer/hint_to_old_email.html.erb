@@ -1,0 +1,47 @@
+<%
+  case (@resource.default_locale || I18n.locale).to_sym
+  when :en
+-%>
+  <p>Hello <%= @resource.display_name %>,</p>
+  <p>You have changed the e-mail address for your account in the application <%= @project_name %>.</p>
+  <p>If you did not initiate the email change, please notify the <%= @project_name %> team immediately.</p>
+  <p>With best regards</p>
+  <p><%= @project_name %></p>
+<% when :ru -%>
+  <p>Добрый день <%= @resource.display_name %>,</p>
+  <p>Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту <%= @project_name %>.</p>
+  <p>Если вы не инициировали изменение адреса электронной почты, пожалуйста, немедленно сообщите об этом команде <%= @project_name %>.</p>
+  <p>С уважением,</p>
+  <p><%= @project_name %></p>
+<% when :uk -%>
+  <p>Доброго дня <%= @resource.display_name %>,</p>
+  <p>Ви змінили адресу електронної пошти для свого облікового запису в додатку <%= @project_name %>.</p>
+  <p>Якщо ви не ініціювали зміну адреси електронної пошти, будь ласка, негайно повідомте про це команду <%= @project_name %>.</p>
+  <p>З найкращими побажаннями</p>
+  <p><%= @project_name %></p>
+<% when :el -%>
+  <p>Καλημέρα <%= @resource.display_name %>,</p>
+  <p>έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή <%= @project_name %>.</p>
+  <p>Εάν δεν έχετε ζητήσει την αλλαγή της διεύθυνσης ηλεκτρονικού ταχυδρομείου, παρακαλούμε να ενημερώσετε αμέσως την ομάδα του <%= @project_name %>.</p>
+  <p>Με εκτίμηση,</p>
+  <p><%= @project_name %></p>
+<% when :es -%>
+  <p>Hola <%= @resource.display_name %>,</p>
+  <p>Usted ha cambiado el correo electrónico de su cuenta para la aplicación <%= @project_name %>.</p>
+  <p>Si usted no ha solicitado el cambio de correo electrónico, le rogamos que se ponga en contacto con el equipo de <%= @project_name %> lo antes posible.</p>
+  <p>Saludos cordiales</p>
+  <p><%= @project_name %></p>
+<% when :ar -%>
+  <p>مرحبًا <%= @resource.display_name %>,</p>
+  <p>لقد قمت بتغيير عنوان البريد الإلكتروني الخاص بحسابك في تطبيق <%= @project_name %>.</p>
+  <p>إذا لم تكن أنت من قام بتغيير عنوان البريد الإلكتروني، فيرجى إبلاغ فريق <%= @project_name %> بذلك على الفور.</p>
+  <p>مع أطيب التحيات</p>
+  <p><%= @project_name %></p>
+<% else -%>
+  <p>Guten Tag <%= @resource.display_name %>,</p>
+  <p>Sie haben die E-Mail Adresse für Ihren Account in der Anwendung <%= @project_name %> geändert.</p>
+  <p>Falls Sie die E-Mail-Änderung nicht veranlasst haben, informieren Sie bitte umgehend das Team von <%= @project_name %>.</p>
+  <p>Mit freundlichen Grüßen,</p>
+  <p><%= @project_name %></p>
+<% end -%>
+

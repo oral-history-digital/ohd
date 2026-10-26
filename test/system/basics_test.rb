@@ -330,7 +330,6 @@ class BasicsTest < ApplicationSystemTestCase
 
     # click_on 'Registereintrag verknüpfen'
     # -> booom!
-    # binding.pry
   end
 
   test 'modify segment' do

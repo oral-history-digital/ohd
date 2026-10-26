@@ -897,6 +897,10 @@ class Interview < ApplicationRecord
     end
 
     def archive_search(user, project, locale, params, per_page = 12)
+      # Apply the same content gate to matches, counts, facets, maps and exports.
+      content_search = user && params[:fulltext].present?
+      searchable_archive_ids = InterviewPolicy::Scope.new(ProjectContext.new(user, project), self)
+        .search_fulltext.pluck(:archive_id) if content_search
       search = Interview.search do
 
         if user
@@ -905,15 +909,16 @@ class Interview < ApplicationRecord
 
         with(
           :workflow_state,
-          user && (user.admin? || user.roles?(project, 'General', 'edit')) ?
+          content_search || user && (user.admin? || user.roles?(project, 'General', 'edit')) ?
           ['public', 'restricted', 'unshared'] :
           ['restricted', 'public']
         )
         # the follwing is a really restrictive approach
         # it allows only users with project-access to find interviews of those projects
         #with(:project_access, user && (user.admin? || user.projects.include?(project)) ? ['free', 'restricted'] : 'free')
-        if project.umbrella? && user && params[:fulltext]
-          with(:project_id, user&.accessible_projects&.pluck(:id))
+        if content_search
+          # Sunspot treats an empty array as any existing value, not no matches.
+          with(:archive_id, searchable_archive_ids.presence || '__no_authorized_interviews__')
         elsif project.umbrella? && !params[:fulltext]
           with(:project_id, Project.where(workflow_state: 'public').pluck(:id))
         else

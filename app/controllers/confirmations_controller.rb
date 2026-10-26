@@ -19,6 +19,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     return fallback_path if resource.pre_register_location.blank?
 
     uri = URI.parse(resource.pre_register_location)
+    return fallback_path if uri.scheme.present? && !%w[http https].include?(uri.scheme)
 
     # Allow absolute redirects only for trusted tenant hosts.
     if uri.host.present? && !trusted_redirect_host?(uri.host)
@@ -28,15 +29,19 @@ class ConfirmationsController < Devise::ConfirmationsController
     # Require an absolute-path component to block malformed or scheme-only URLs.
     return fallback_path if uri.path.blank? || !uri.path.start_with?('/')
 
-    if uri.host.present?
-      # Drop query/fragment so untrusted params do not survive the redirect.
-      uri.query = nil
-      uri.fragment = nil
-      return uri.to_s
+    # Preserve search sorting without forwarding tokens or redirect parameters.
+    query = if uri.path.end_with?('/searches/archive')
+      Rack::Utils.parse_query(uri.query.to_s).slice('sort', 'order').select do |_key, value|
+        value.is_a?(String)
+      end
+    else
+      {}
     end
+    uri.query = query.to_query.presence
+    uri.fragment = nil
 
-    uri.path
-  rescue URI::InvalidURIError
+    uri.host.present? ? uri.to_s : [uri.path, uri.query].compact.join('?')
+  rescue URI::InvalidURIError, ArgumentError
     fallback_path
   end 
 
