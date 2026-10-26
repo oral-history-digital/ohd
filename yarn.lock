@@ -8225,6 +8225,13 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
+pack-config-diff@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/pack-config-diff/-/pack-config-diff-0.1.0.tgz#c15025e196ff85009806890cca0841e96aaa6a1b"
+  integrity sha512-gx60G4pnT4GFQ7WECdf7SCq9vdsvBhodLXXzwisy37/t0zkAZ3hMgLCdOGivudF1l0gcLZhIWVYreS89be15QA==
+  dependencies:
+    js-yaml "^4.1.0"
+
 package-json-from-dist@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/package-json-from-dist/-/package-json-from-dist-1.0.0.tgz#e501cd3094b278495eb4258d4c9f6d5ac3019f00"
@@ -9860,7 +9867,7 @@ schema-utils@^4.0.0, schema-utils@^4.2.0:
     ajv-formats "^2.1.1"
     ajv-keywords "^5.1.0"
 
-schema-utils@^4.5.0, schema-utils@^4.6.0:
+schema-utils@^4.6.0, schema-utils@^4.8.1:
   version "4.8.1"
   resolved "https://registry.npmjs.org/schema-utils/-/schema-utils-4.8.1.tgz#d005632a0ca18522d903d82e1dcccbddcd57e7bb"
   integrity sha512-x39pYlJPyH7Uge5QO64B9XGP9zLDc9WNmiQZc+CE3IzZPvMu3lHOuAMGpYNoPixEL7MSWlGhYTg5UlLSL8G6iw==
@@ -9979,12 +9986,13 @@ setprototypeof@1.2.0, setprototypeof@~1.2.0:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
 
-shakapacker@9.7.0:
-  version "9.7.0"
-  resolved "https://registry.npmjs.org/shakapacker/-/shakapacker-9.7.0.tgz#e8e1b2cb58e54678942698d9071b14aff58b517e"
-  integrity sha512-/6Y/hioWAchUYDcH8pbIQdSLS63QI+Tb26mDGDR6wLO+QFFcxiv906/hqJTTUcW9Xrp5sFV5LwfdctQSSII5ig==
+shakapacker@10.3.2:
+  version "10.3.2"
+  resolved "https://registry.npmjs.org/shakapacker/-/shakapacker-10.3.2.tgz#cc8047b8fa67e0b141c8c1a428bc7992967ce62a"
+  integrity sha512-W4LV0MFS1c6ayODF/Ra4RM5xS3DljBc9XGLqz04WGSap97U5gJ7FjBTChPmoJ/7VDiTYmL1w+vh+D360e9qK7Q==
   dependencies:
     js-yaml "^4.1.0"
+    pack-config-diff "^0.1.0"
     path-complete-extname "^1.0.0"
     webpack-merge "^5.8.0"
     yargs "^17.7.2"
@@ -11018,7 +11026,7 @@ walker@^1.0.8:
   dependencies:
     makeerror "1.0.12"
 
-watchpack@^2.6.1:
+watchpack@^2.6.3:
   version "2.6.3"
   resolved "https://registry.npmjs.org/watchpack/-/watchpack-2.6.3.tgz#880d8c437c425104b2da58bee6bd8fbc33bf78d3"
   integrity sha512-s3NZy0QpTY9qGqzc0wtz4qI28z3+5qKbbAec4MV4G9N3CfgZ9wgvQRr0cl2jh/tqkWG1NWHkmVMHZpCamev5Wg==
@@ -11150,10 +11158,10 @@ webpack-sources@^3.6.0:
   resolved "https://registry.npmjs.org/webpack-sources/-/webpack-sources-3.6.0.tgz#b2e4a4f1aef1a0d60f3011eb47736c5bf7f1ed7f"
   integrity sha512-EIMmPVvNI0CYXyRPp34F2Qk7W37/BZVZIofS6LAUnrNjCVahS+hO4mxwFJDjQjODTGZDtVzLYoN2+1dYkhk9qA==
 
-webpack@^5.93.0:
-  version "5.112.0"
-  resolved "https://registry.npmjs.org/webpack/-/webpack-5.112.0.tgz#e8710dcc0329ef076bd3b5c3bd6cf78e971c009a"
-  integrity sha512-NIBpsRuCll036haDDt/CfcTDfsWNR9Z782nMRMI9D377BsGcYzZDTNU5TyzhCJzPIcihAxMBaMAhq2WSaDrH8Q==
+webpack@^5.112.0:
+  version "5.112.2"
+  resolved "https://registry.npmjs.org/webpack/-/webpack-5.112.2.tgz#6548b28310dc57d971aadb31a582c8aadb9ec880"
+  integrity sha512-B2tp1LI9D8GVpPDqprdt12ukTkXXahj9MzqSWJq4faSPgOUM7CdZaGAB6HrL/8E6UwbBpdj4vzWDbKoFnVoU6g==
   dependencies:
     "@types/estree" "^1.0.8"
     "@types/json-schema" "^7.0.15"
@@ -11168,9 +11176,9 @@ webpack@^5.93.0:
     graceful-fs "^4.2.11"
     mime-db "^1.54.0"
     minimizer-webpack-plugin "^5.13.0"
-    schema-utils "^4.5.0"
+    schema-utils "^4.8.1"
     tapable "^2.3.0"
-    watchpack "^2.6.1"
+    watchpack "^2.6.3"
     webpack-sources "^3.6.0"
 
 websocket-driver@0.7.5, websocket-driver@>=0.5.1, websocket-driver@^0.7.4:
