@@ -366,6 +366,15 @@
     - :name: Annotation update
       :klass: Annotation
       :action_name: update
+    - :name: EventType create
+      :klass: EventType
+      :action_name: create
+    - :name: EventType destroy
+      :klass: EventType
+      :action_name: destroy
+    - :name: EventType update
+      :klass: EventType
+      :action_name: update
     - :name: BiographicalEntry show
       :klass: BiographicalEntry
       :action_name: show
