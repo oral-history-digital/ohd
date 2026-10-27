@@ -375,6 +375,21 @@
     - :name: EventType update
       :klass: EventType
       :action_name: update
+    - :name: EventType show
+      :klass: EventType
+      :action_name: show
+    - :name: Event create
+      :klass: Event
+      :action_name: create
+    - :name: Event destroy
+      :klass: Event
+      :action_name: destroy
+    - :name: Event update
+      :klass: Event
+      :action_name: update
+    - :name: Event show
+      :klass: Event
+      :action_name: show
     - :name: BiographicalEntry show
       :klass: BiographicalEntry
       :action_name: show
