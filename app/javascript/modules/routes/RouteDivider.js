@@ -3,7 +3,10 @@ import { useI18n } from 'modules/i18n';
 import { Layout } from 'modules/layout';
 import { Spinner } from 'modules/spinners';
 import { InlineNotification } from 'modules/ui';
+import { useSelector } from 'react-redux';
 
+import { getIsRedirectingAfterLogout } from '../user/selectors';
+import NotFoundPage from './NotFoundPage';
 import {
     MemoizedRoutesWithProjectId,
     MemoizedRoutesWithoutProjectId,
@@ -16,7 +19,29 @@ import useProject from './useProject';
  */
 function RouteDivider() {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject();
+    const { project, projectShortname, isLoading, error } = useProject();
+    const isRedirecting = useSelector(getIsRedirectingAfterLogout);
+    const loading = (
+        <div
+            style={{
+                position: 'fixed',
+                inset: 0,
+                display: 'grid',
+                placeItems: 'center',
+            }}
+        >
+            <Spinner />
+        </div>
+    );
+    if (isRedirecting) return loading;
+    if (error?.status === 403 || error?.status === 404)
+        return (
+            <NotFoundPage
+                status={error.status}
+                projectShortname={projectShortname}
+                publicHome
+            />
+        );
     if (error)
         return (
             <InlineNotification
@@ -26,7 +51,7 @@ function RouteDivider() {
                 isClosable={false}
             />
         );
-    if (isLoading || !project) return <Spinner withPadding />;
+    if (isLoading || !project) return loading;
 
     const useRoutesWithoutProjectId =
         Boolean(project?.archive_domain) || Boolean(project?.is_umbrella);
