@@ -80,6 +80,7 @@ Frontend CI runs this command in `.github/workflows/jest.yml`. The Docker image 
 
 ## Architecture and implementation conventions
 
+- For `/api/v2` endpoints, follow [Add a v2 API endpoint](doc/api/v2/adding-endpoints.md) for controller/serializer boundaries, authorization, Ruby OpenAPI contracts, caching, and tests.
 - Follow the affected feature's conventions before adding a service, repository, hook, serializer, or other abstraction. Service constructors vary; do not impose one signature on unrelated classes.
 - Keep Pundit policy changes aligned with the records they protect. Inspect the existing scope for the affected resource rather than assuming direct `project_id` ownership; some records are scoped indirectly through related records.
 - Preserve `/:locale` and `/:project_id/:locale` routing and dedicated archive-domain routes in `config/routes.rb`. React Router has corresponding route shapes in `app/javascript/modules/routes`. Use existing route helpers and hooks instead of manually assembling paths where an established mechanism exists.
