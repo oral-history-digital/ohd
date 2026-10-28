@@ -16,7 +16,7 @@ export default function usePersonWithAssociations(id) {
         isLoading: projectIsLoading,
         isValidating: projectIsValidating,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const pathBase = usePathBase();
     const { projectAccessGranted } = useProjectAccessStatus(project);
 

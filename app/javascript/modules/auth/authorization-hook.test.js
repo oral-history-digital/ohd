@@ -42,5 +42,5 @@ test('permissions wait for current project details and remain scoped to that pro
     });
     rerender();
     expect(result.current.isAuthorized(interview, 'update')).toBe(false);
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
 });

@@ -18,7 +18,7 @@ import InterviewDownloads from './InterviewDownloads';
  */
 export default function InterviewTextMaterials({ interview, editView }) {
     const { t, locale } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
 
     const { isAuthorized } = useAuthorization();
 

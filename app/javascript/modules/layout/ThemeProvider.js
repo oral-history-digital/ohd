@@ -31,7 +31,7 @@ export function useTheme() {
  * @returns {React.ReactElement} Theme context and CSS variables.
  */
 export default function ThemeProvider({ children }) {
-    const { project } = useProject({});
+    const { project } = useProject();
 
     const primaryColor = project?.primary_color || DEFAULT_PRIMARY_COLOR;
     const secondaryColor = project?.secondary_color || DEFAULT_SECONDARY_COLOR;

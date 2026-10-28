@@ -49,7 +49,7 @@ test('shows only current-project references and their count, preserving selectio
             onSubmit={onSubmit}
         />
     );
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(useEntryReferences).toHaveBeenCalledWith(registryEntry);
     expect(screen.getByRole('heading')).toHaveTextContent(
         '1 activerecord.models.registry_reference.one'

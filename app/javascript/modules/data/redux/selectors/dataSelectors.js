@@ -1,4 +1,3 @@
-import shuffle from 'lodash.shuffle';
 import { getArchiveId, getEditView, getProjectId } from 'modules/archive';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
 import { findProjectByDomain } from 'modules/routes/domainUtils';
@@ -7,7 +6,7 @@ import { createSelector } from 'reselect';
 import { getProjectIdentities } from '../projectDetails';
 import {
     getInterviews,
-    getProjects,
+    getProjectResources,
     getStatuses,
     getUsers,
 } from './baseSelectors';
@@ -27,7 +26,7 @@ const EMPTY_STATUSES = {};
  * @returns {Object|null} Nested-resource holder with its project ID, or null before identity resolves.
  */
 export const getCurrentProject = createSelector(
-    [getProjectId, getProjectIdentities, getProjects],
+    [getProjectId, getProjectIdentities, getProjectResources],
     (projectId, identities, projects) => {
         const identity =
             Object.values(identities).find(
@@ -44,16 +43,16 @@ export const getCurrentInterview = createSelector(
     }
 );
 
-export const getUmbrellaProject = createSelector([getProjects], (projects) => {
-    return Object.values(projects).find((project) => project.is_umbrella);
-});
-
-export const getPublicProjects = createSelector(
-    getProjects,
-    (projectObject) => {
-        return Object.values(projectObject).filter(
-            (project) => project.workflow_state === 'public'
-        );
+/**
+ * Selects the umbrella routing identity from current records or bootstrap identities.
+ *
+ * @param {Object} state - Root Redux state.
+ * @returns {Object|undefined} Umbrella identity, without project content or settings.
+ */
+export const getUmbrellaProject = createSelector(
+    [getProjectIdentities],
+    (projects) => {
+        return Object.values(projects).find((project) => project.is_umbrella);
     }
 );
 
@@ -284,16 +283,6 @@ export const getIsCampscapesProject = (state) => {
     return projectId === 'campscapes';
 };
 
-export const getStartpageProjects = createSelector(
-    [getPublicProjects],
-    (projects) => {
-        const projectsWithoutUmbrella = projects.filter(
-            (project) => !project.is_umbrella
-        );
-        return shuffle(projectsWithoutUmbrella);
-    }
-);
-
 export const getCollectionsForCurrentProject = createSelector(
     [getCurrentProject],
     (currentProject) => {
@@ -358,14 +347,6 @@ export const getRegistryNameTypesStatus = (state) =>
 
 export const getContributionTypesStatus = (state) =>
     getStatuses(state)?.contribution_types || EMPTY_STATUSES;
-
-export const getRootRegistryEntryReload = createSelector(
-    [getRegistryEntriesStatus, getCurrentProject],
-    (status, currentProject) => {
-        const reload = /^reload/;
-        return reload.test(status[currentProject.root_registry_entry_id]);
-    }
-);
 
 export const getRegistryReferenceTypesForCurrentProject = createSelector(
     [getCurrentProject],

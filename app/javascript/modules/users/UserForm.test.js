@@ -50,7 +50,7 @@ let preview;
 beforeEach(() => {
     jest.clearAllMocks();
     preview = { project };
-    useProject.mockImplementation((options) =>
+    useProject.mockImplementation((options = {}) =>
         options.include ? preview : { project }
     );
 });

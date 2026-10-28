@@ -12,7 +12,7 @@ import originalAdmin from './admin';
 export function useAuthorization() {
     const user = useSelector(getCurrentUser);
     const editView = useSelector(getEditView);
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
 
     const curriedAdmin = (obj, action) =>
         Boolean(

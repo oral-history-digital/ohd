@@ -3,7 +3,7 @@ import { pluralizeKey, useI18n } from 'modules/i18n';
 import { LinkButton } from 'modules/ui';
 import { formatNumber } from 'modules/utils';
 import PropTypes from 'prop-types';
-import { FaExternalLinkAlt, FaMinus, FaPlus } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaLock, FaMinus, FaPlus } from 'react-icons/fa';
 
 import { useScrollToExpandedCard, useSelectableHeaderToggle } from '../hooks';
 import { getProjectUrl } from '../utils';
@@ -73,6 +73,12 @@ export function ProjectCard({ project, query, expanded, onToggle }) {
                             text={project.display_name || project.name}
                             query={query}
                         />
+                        {project.workflow_state === 'unshared' && (
+                            <span className="ProjectCard-publicationStatus">
+                                <FaLock aria-hidden="true" />
+                                {t('explorer.project_not_public')}
+                            </span>
+                        )}
                     </h3>
                     <div className="ProjectCard-meta">
                         {institutionNames && (

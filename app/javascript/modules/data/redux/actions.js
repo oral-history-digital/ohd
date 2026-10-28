@@ -4,6 +4,7 @@ import { pluralize } from 'modules/strings';
 
 import {
     DELETE_STATUS_MSG,
+    INITIALIZE_PROJECTS,
     RECEIVE_DATA,
     RECEIVE_ERROR,
     REMOVE_DATA,
@@ -11,7 +12,32 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
-import { fetchProject } from './projectRequests';
+import { projectAccessContext } from './projectRequests';
+
+/**
+ * Seeds authorized base display details from HTML in the initial account context.
+ * Uses the API record merge and marks only the bootstrap locale's base detail queries as loaded.
+ *
+ * @param {Object} payload - Bootstrap detail envelope.
+ * @param {string} payload.locale - Locale of the serialized display fields.
+ * @param {Object[]} payload.data - Base display details without includes or editing data.
+ * @param {Object} [payload.identities={}] - Public routing fields by project ID.
+ * @param {Object} state - Initial root state supplying the account and access context.
+ * @returns {Object} Initialization action for normalizing project data before store creation.
+ */
+export const initializeProjects = (
+    { locale, data, identities = {} },
+    state
+) => ({
+    type: INITIALIZE_PROJECTS,
+    apiVersion: 2,
+    dataType: 'projects',
+    context: projectAccessContext(state),
+    generation: state.data.projects?.generation || 0,
+    locale,
+    data: { data },
+    identities,
+});
 
 function receiveError(dataType, id, error) {
     return {
@@ -64,7 +90,7 @@ export const receiveData = (json) => ({
 });
 
 /**
- * Builds the usual receive action and marks it as a completed mutation so v2
+ * Builds the usual receive action and marks it as a completed mutation so project
  * caches can be invalidated without changing legacy response merging.
  *
  * @param {Object} json - Legacy mutation response envelope.
@@ -82,19 +108,18 @@ export const replaceInstanceSettings = (data) => ({
     data,
 });
 
-/** Loads data. Single-project requests also share pending requests and track errors. */
+/**
+ * Loads a legacy resource through its project/locale route into Redux.
+ * Project records use useProjectDetail/useProjectList and the shared request flow.
+ *
+ * @param {Object} props - Request context, including pathBase or project and locale.
+ * @param {string} dataType - Resource endpoint name.
+ * @param {number|string} [id] - Optional record identifier.
+ * @param {string} [nestedDataType] - Optional nested endpoint name.
+ * @param {string} [extraParams] - Query string without the leading question mark.
+ * @returns {function(Function): void} Thunk dispatching resource loading and results.
+ */
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
-    // Share duplicate requests and track errors for single-project reads.
-    // Apply these changes to projects first; keep other data loading unchanged.
-    // TODO: Consider moving this logic into Loader.getJson() to share across all data types.
-    if (dataType === 'projects' && id && !nestedDataType) {
-        return fetchProject(props, id, extraParams, {
-            requestData,
-            receiveData,
-            receiveError,
-        });
-    }
-
     let url = `${props.pathBase || pathBase(props)}/${dataType}`;
     if (id) {
         url += `/${id}`;
@@ -123,7 +148,7 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
 /**
  * Saves a record through the legacy API, using PUT when an ID is present or POST
  * otherwise. Dispatches loading, success, and error actions; successful responses
- * also invalidate affected v2 caches.
+ * also invalidate affected project caches.
  *
  * @param {Object} props - Request path or legacy project and locale context.
  * @param {string} [props.pathBase] - Route-based prefix; overrides project-based path construction.
@@ -197,7 +222,7 @@ export function submitData(props, params, opts = {}, callback) {
 }
 
 /**
- * Deletes a record through the legacy API and invalidates affected v2 caches.
+ * Deletes a record through the legacy API and invalidates affected project caches.
  * By default, removes the cached legacy record before sending the request.
  *
  * @param {Object} props - Request path or legacy project and locale context.
@@ -231,7 +256,10 @@ export function deleteData(
             Loader.delete(
                 url,
                 dispatch,
-                (json) => receiveMutationData(json, dataType),
+                (json) => ({
+                    ...receiveMutationData(json, dataType),
+                    mutationDeleted: true,
+                }),
                 callback
             );
         };
@@ -245,7 +273,10 @@ export function deleteData(
             Loader.delete(
                 url,
                 dispatch,
-                (json) => receiveMutationData(json, dataType),
+                (json) => ({
+                    ...receiveMutationData(json, dataType),
+                    mutationDeleted: true,
+                }),
                 callback
             );
         };

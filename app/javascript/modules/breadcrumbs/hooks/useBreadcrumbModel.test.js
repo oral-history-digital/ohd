@@ -10,7 +10,7 @@ import {
 import { useI18n } from 'modules/i18n';
 import { useSelector } from 'react-redux';
 
-import { v2AccessContext } from '../../data/redux/v2Requests';
+import { projectAccessContext } from '../../data/redux/projectRequests';
 import { useCurrentPage } from '../../routes/hooks/useCurrentPage';
 import useProject from '../../routes/useProject';
 import { useBreadcrumbModel } from './useBreadcrumbModel';
@@ -98,10 +98,10 @@ function getHookResult({
         cached.translations.display[id] = { de: { name, display_name } };
     }
     const state = {
-        data: { users: { current: currentUser }, v2: { projects: cached } },
+        data: { users: { current: currentUser }, projects: cached },
         user: {},
     };
-    cached.context = v2AccessContext(state);
+    cached.context = projectAccessContext(state);
     useSelector.mockImplementation((selector) => selector(state));
 
     return renderHook(() => useBreadcrumbModel()).result.current;

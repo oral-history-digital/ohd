@@ -17,6 +17,7 @@ export function Explorer() {
         instProjectMax,
         institutionIds,
         institutionLevel,
+        showUnpublished,
     } = useExplorerParams();
 
     const explorerTitle = isInstitutionsList
@@ -45,6 +46,7 @@ export function Explorer() {
                     ) : (
                         <ProjectList
                             query={query}
+                            showUnpublished={showUnpublished}
                             interviewMin={interviewMin}
                             interviewMax={interviewMax}
                             collectionMin={collectionMin}

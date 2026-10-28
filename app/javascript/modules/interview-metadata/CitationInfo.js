@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
  */
 export default function CitationInfo({ interview, collections }) {
     const { t, locale } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const pathBase = usePathBase();
 
     if (error) {

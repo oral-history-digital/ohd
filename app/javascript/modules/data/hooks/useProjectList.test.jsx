@@ -10,14 +10,15 @@ import userReducer from '../../user/reducer';
 import { RECEIVE_DATA } from '../redux/action-types';
 import {
     deleteData,
+    initializeProjects,
     receiveData,
     receiveMutationData,
     submitData,
 } from '../redux/actions';
 import { makeProjectSelector, projectDetailUrl } from '../redux/projectDetails';
 import { makeProjectListSelector, projectListUrl } from '../redux/projectLists';
+import { fetchProjectData } from '../redux/projectRequests';
 import { dataReducer } from '../redux/reducer';
-import { fetchV2Data } from '../redux/v2Requests';
 import { useProjectDetail } from './useProjectDetail';
 import { useProjectList } from './useProjectList';
 
@@ -50,10 +51,13 @@ function makeStore() {
             data: {
                 ...state,
                 projects: {
-                    7: {
-                        id: 7,
-                        name: { en: 'Legacy name' },
-                        collections: { 99: { id: 99 } },
+                    ...dataReducer(undefined, {}).projects,
+                    resources: {
+                        7: {
+                            id: 7,
+                            name: { en: 'Legacy name' },
+                            collections: { 99: { id: 99 } },
+                        },
                     },
                 },
             },
@@ -124,7 +128,7 @@ function completeDetail(data, index = Loader.getJson.mock.calls.length - 1) {
  * @param {string} [language='de'] - Requested display locale.
  * @param {import('../redux/projectLists').ProjectListOptions} [options={all: true}] - List query.
  * @param {boolean} [refresh=false] - Force a new fetch for a completed list.
- * @returns {Promise<import('../redux/v2Requests').V2ReadResult>} Shared request result.
+ * @returns {Promise<import('../redux/projectRequests').ProjectReadResult>} Shared request result.
  */
 function load(
     store,
@@ -134,7 +138,7 @@ function load(
 ) {
     const url = projectListUrl(language, options);
     return store.dispatch(
-        fetchV2Data('projects', url, { locale: language, refresh })
+        fetchProjectData('projects', url, { locale: language, refresh })
     );
 }
 
@@ -190,7 +194,9 @@ test('legacy save and delete callbacks invalidate catalog data after the server 
     act(() =>
         put[2](put[3]({ data_type: 'projects', id: 7, data: { id: 7 } }))
     );
-    expect(result.current.projects).toEqual([]);
+    expect(result.current.projects[0].name).toBe('Projekt');
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isValidating).toBe(true);
     act(() => complete([project(7, { name: 'Edited' })]));
     act(() => store.dispatch(deleteData(props, 'projects', 7)));
     act(() =>
@@ -223,10 +229,10 @@ test('normalizes query identity, shares concurrent requests, and keeps stores in
     expect(Loader.getJson).toHaveBeenCalledTimes(2);
     complete([project()], 0);
     await first;
-    expect(other.getState().data.v2.projects.records).toEqual({});
+    expect(other.getState().data.projects.records).toEqual({});
     complete([project(8)], 1);
     await separate;
-    expect(store.getState().data.projects[7].name).toEqual({
+    expect(store.getState().data.projects.resources[7].name).toEqual({
         en: 'Legacy name',
     });
 });
@@ -270,8 +276,8 @@ test('keeps locales, list order, and unrelated records separate while merging op
     expect(
         select(state, projectListUrl('en', { all: true }), 'en').projects[0]
     ).toMatchObject({ name: 'English', logo: null });
-    expect(state.data.v2.projects.records[7]).not.toHaveProperty('name');
-    expect(state.data.v2.projects.translations.stored).toEqual({});
+    expect(state.data.projects.records[7]).not.toHaveProperty('name');
+    expect(state.data.projects.translations.stored).toEqual({});
 });
 
 test('catalog callers share v2 records without aliases or filtering unpublished projects', async () => {
@@ -312,7 +318,7 @@ test('switches locale, keeps results during refresh, and reuses a completed requ
     const before = Loader.getJson.mock.calls.length;
     await act(async () => {
         await store.dispatch(
-            fetchV2Data('projects', projectListUrl('de'), { locale: 'de' })
+            fetchProjectData('projects', projectListUrl('de'), { locale: 'de' })
         );
     });
     expect(Loader.getJson).toHaveBeenCalledTimes(before);
@@ -374,7 +380,7 @@ test.each([LOGOUT, LOGGED_IN])(
             }),
         ]);
         await pending;
-        expect(store.getState().data.v2.projects.records).toEqual({});
+        expect(store.getState().data.projects.records).toEqual({});
         expect(
             makeProjectListSelector()(
                 store.getState(),
@@ -437,7 +443,7 @@ test('saving an annotation updates its segment without clearing project views or
         complete([project()], 0);
         completeDetail(project(7, { root_registry_entry_id: 9 }), 1);
     });
-    const cachedProjects = store.getState().data.v2.projects;
+    const cachedProjects = store.getState().data.projects;
     const segment = {
         id: 3,
         annotations: { 12: { id: 12, text: { ger: 'New annotation' } } },
@@ -472,7 +478,7 @@ test('saving an annotation updates its segment without clearing project views or
     expect(store.getState().data.interviews.pilot001.segments[1][3]).toEqual(
         segment
     );
-    expect(store.getState().data.v2.projects).toBe(cachedProjects);
+    expect(store.getState().data.projects).toBe(cachedProjects);
     expect(result.current.detail).toMatchObject({
         isLoading: false,
         project: { id: 7, root_registry_entry_id: 9 },
@@ -495,7 +501,7 @@ test.each(['mark_text', 'speaker_designations'])(
             complete([project()], 0);
             completeDetail(project(7, { root_registry_entry_id: 9 }), 1);
         });
-        const cachedProjects = store.getState().data.v2.projects;
+        const cachedProjects = store.getState().data.projects;
         act(() =>
             store.dispatch(
                 receiveMutationData({
@@ -511,7 +517,7 @@ test.each(['mark_text', 'speaker_designations'])(
             store.getState().data.statuses[nestedDataType]
                 .for_interviews_pilot001
         ).toBe('processing');
-        expect(store.getState().data.v2.projects).toBe(cachedProjects);
+        expect(store.getState().data.projects).toBe(cachedProjects);
         expect(result.current.detail).toMatchObject({
             isLoading: false,
             project: { id: 7, root_registry_entry_id: 9 },
@@ -528,8 +534,9 @@ test.each(['mark_text', 'speaker_designations'])(
                 })
             )
         );
-        expect(result.current.detail.project).toBeUndefined();
-        expect(result.current.list.projects).toEqual([]);
+        expect(result.current.detail.project.id).toBe(7);
+        expect(result.current.detail.isLoading).toBe(false);
+        expect(result.current.list.projects).toHaveLength(1);
         expect(Loader.getJson).toHaveBeenCalledTimes(4);
     }
 );
@@ -552,8 +559,8 @@ test('detail callers share a normalized request and keep query results out of li
     );
     expect(result.current[0].project).toEqual(result.current[1].project);
     expect(result.current[0].project.more_text).toBe('Details');
-    expect(store.getState().data.v2.projects.lists).toEqual({});
-    expect(store.getState().data.projects[7].name).toEqual({
+    expect(store.getState().data.projects.lists).toEqual({});
+    expect(store.getState().data.projects.resources[7].name).toEqual({
         en: 'Legacy name',
     });
 });
@@ -606,7 +613,7 @@ test('loads details after a summary and preserves localized details when later s
         more_text: 'Mehr',
         domain: 'https://archive.test',
     });
-    const saved = store.getState().data.v2.projects;
+    const saved = store.getState().data.projects;
     expect(saved.records[8]).toBeDefined();
     for (const field of [
         'more_text',
@@ -729,7 +736,7 @@ test.each([null, [], { id: '7' }, { id: -1 }])(
     async (data) => {
         const store = makeStore();
         const promise = store.dispatch(
-            fetchV2Data('projects', projectDetailUrl(7, 'de'), {
+            fetchProjectData('projects', projectDetailUrl(7, 'de'), {
                 locale: 'de',
                 single: true,
             })
@@ -738,7 +745,7 @@ test.each([null, [], { id: '7' }, { id: -1 }])(
         await expect(promise).resolves.toMatchObject({
             error: { message: 'Invalid record response.' },
         });
-        expect(store.getState().data.v2.projects.records).toEqual({});
+        expect(store.getState().data.projects.records).toEqual({});
     }
 );
 
@@ -757,7 +764,7 @@ test('cached project selection updates from list and detail responses without st
     expect(Loader.getJson).toHaveBeenCalledTimes(1);
 
     store.dispatch(
-        fetchV2Data('projects', projectDetailUrl(7, 'de'), {
+        fetchProjectData('projects', projectDetailUrl(7, 'de'), {
             locale: 'de',
             single: true,
         })
@@ -896,7 +903,7 @@ test('display and footer responses preserve full editing data without exposing i
     ];
     rerender();
     expect(result.current.project).toEqual(full);
-    expect(store.getState().data.v2.projects.translations.stored[7]).toEqual(
+    expect(store.getState().data.projects.translations.stored[7]).toEqual(
         translations
     );
 });
@@ -923,7 +930,7 @@ test('form and registry configuration stays shared across display and edit reads
             })
         )
     );
-    const record = store.getState().data.v2.projects.records[7];
+    const record = store.getState().data.projects.records[7];
     expect(record).toMatchObject(initial);
     expect(record.edit).toEqual({ contact_email: 'editor@example.org' });
 
@@ -1035,7 +1042,7 @@ test('new localized includes retain their language and editing translations inde
     expect(result.current.project.texts[0].translations).toEqual([
         { locale: 'en', text: '' },
     ]);
-    const records = store.getState().data.v2.projects.records[7];
+    const records = store.getState().data.projects.records[7];
     for (const field of Object.keys(fields))
         expect(records).not.toHaveProperty(field);
 });
@@ -1070,7 +1077,7 @@ test.each([
     'texts',
     'map_sections',
 ])(
-    '%s delete completion clears edit data and rejects responses from before invalidation',
+    '%s deletion refreshes data and rejects responses from before the save',
     (resource) => {
         const store = makeStore();
         const { result } = mount(store, () =>
@@ -1102,7 +1109,11 @@ test.each([
             )
         );
         expect(Loader.getJson).toHaveBeenCalledTimes(3);
-        expect(result.current.project).toBeUndefined();
+        const clearsData = resource === 'access_configs';
+        expect(result.current.project?.contact_email).toBe(
+            clearsData ? undefined : 'old@example.org'
+        );
+        expect(result.current.isLoading).toBe(clearsData);
         act(() =>
             old[2](
                 old[3]({
@@ -1110,7 +1121,9 @@ test.each([
                 })
             )
         );
-        expect(store.getState().data.v2.projects.records).toEqual({});
+        expect(
+            store.getState().data.projects.records[7]?.edit?.contact_email
+        ).toBe(clearsData ? undefined : 'old@example.org');
         act(() =>
             completeDetail(project(7, { contact_email: 'fresh@example.org' }))
         );
@@ -1159,9 +1172,7 @@ test.each(['logout', 'permission change'])(
             )
         );
         expect(result.current.project).toBeUndefined();
-        expect(store.getState().data.v2.projects.translations.stored).toEqual(
-            {}
-        );
+        expect(store.getState().data.projects.translations.stored).toEqual({});
     }
 );
 
@@ -1196,12 +1207,175 @@ test('reads a recipient locale without changing the UI locale and keeps preview 
     expect(makeProjectSelector()(store.getState(), 7, 'en')).not.toHaveProperty(
         'contact_email'
     );
-    expect(
-        store.getState().data.v2.projects.records[7].edit.contact_email
-    ).toBe('contact@example.org');
+    expect(store.getState().data.projects.records[7].edit.contact_email).toBe(
+        'contact@example.org'
+    );
     mockLocale = 'ru';
     rerender();
     expect(result.current[0].project).toBeUndefined();
     expect(result.current[1].project.name).toBe('Project EN');
     expect(Loader.getJson).toHaveBeenCalledTimes(3);
 });
+
+test('bootstrap details satisfy base reads by shortname and ID only for the bootstrap locale', () => {
+    const store = makeStore();
+    store.dispatch(
+        initializeProjects(
+            {
+                locale: 'en',
+                data: [
+                    project(7, {
+                        name: 'Bootstrap name',
+                        more_text: 'Details',
+                    }),
+                ],
+            },
+            store.getState()
+        )
+    );
+    const initialized = store.getState().data.projects;
+    expect(initialized.records[7]).not.toHaveProperty('name');
+    expect(initialized.translations.display[7].en.name).toBe('Bootstrap name');
+    expect(initialized.lists).toEqual({});
+    expect(initialized.resources[7].collections).toEqual({ 99: { id: 99 } });
+
+    const { result } = mount(store, () => [
+        useProjectDetail('project7', { locale: 'en' }),
+        useProjectDetail(7, { locale: 'en' }),
+    ]);
+    expect(result.current[0].project.more_text).toBe('Details');
+    expect(result.current[1].project).toEqual(result.current[0].project);
+    expect(result.current[0].isLoading).toBe(false);
+    expect(Loader.getJson).not.toHaveBeenCalled();
+
+    mount(store, () => [
+        useProjectDetail(7, { locale: 'de' }),
+        useProjectDetail(7, { locale: 'en', include: ['footer'] }),
+        useProjectDetail(7, { locale: 'en', profile: 'edit' }),
+        useProjectList({ locale: 'en' }),
+    ]);
+    expect(Loader.getJson).toHaveBeenCalledTimes(4);
+    act(() => store.dispatch({ type: LOGOUT }));
+    expect(result.current[0].project).toBeUndefined();
+    expect(store.getState().data.projects.records).toEqual({});
+});
+
+test('affiliate saves refresh only that project include and keep the page shell, other panels, and cached queries ready', () => {
+    const store = makeStore();
+    const { result } = mount(store, () => ({
+        shell: useProjectDetail(7),
+        umbrella: useProjectDetail(1),
+        form: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['translations'],
+        }),
+        affiliates: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        sharedAffiliates: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        managers: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        funders: useProjectDetail(7, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        footer: useProjectDetail(7, { include: ['footer'] }),
+        other: useProjectDetail(8, {
+            profile: 'edit',
+            include: ['affiliates'],
+        }),
+        list: useProjectList({ all: true }),
+    }));
+    act(() => {
+        completeDetail(project(7), 0);
+        completeDetail(project(1), 1);
+        completeDetail(project(7, { translations: [] }), 2);
+        completeDetail(project(7, { cooperation_partners: [] }), 3);
+        completeDetail(project(7), 4);
+        completeDetail(project(8, { cooperation_partners: [] }), 5);
+        complete([project(7)], 6);
+    });
+    const generation = store.getState().data.projects.generation;
+    act(() =>
+        store.dispatch(
+            receiveMutationData(
+                {
+                    data_type: 'projects',
+                    id: 7,
+                    nested_data_type: 'cooperation_partners',
+                    nested_id: 42,
+                    data: { id: 42, name: { de: 'Partner' } },
+                },
+                'cooperation_partners'
+            )
+        )
+    );
+    expect(Loader.getJson).toHaveBeenCalledTimes(8);
+    expect(Loader.getJson.mock.lastCall[0]).toBe(
+        projectDetailUrl(7, 'de', { profile: 'edit', include: ['affiliates'] })
+    );
+    expect(result.current.affiliates).toMatchObject({
+        isLoading: false,
+        isValidating: true,
+        project: { id: 7, cooperation_partners: [] },
+    });
+    for (const panel of ['shell', 'umbrella', 'form', 'footer', 'other']) {
+        expect(result.current[panel].project).toBeDefined();
+        expect(result.current[panel].isLoading).toBe(false);
+        expect(result.current[panel].isValidating).toBe(false);
+    }
+    expect(result.current.list.projects).toHaveLength(1);
+    expect(store.getState().data.projects.generation).toBe(generation + 1);
+    act(() =>
+        completeDetail(
+            project(7, { cooperation_partners: [{ id: 42, name: 'Partner' }] })
+        )
+    );
+    expect(result.current.affiliates.project.cooperation_partners).toEqual([
+        { id: 42, name: 'Partner' },
+    ]);
+});
+
+test.each([
+    ['name', 'New title', false],
+    ['workflow_state', 'unshared', true],
+    ['grant_access_without_login', false, true],
+])(
+    'project save of %s refreshes in place unless access changed',
+    (field, value, clearsData) => {
+        const store = makeStore();
+        const { result } = mount(store, () => useProjectDetail(7));
+        act(() =>
+            completeDetail(
+                project(7, {
+                    workflow_state: 'public',
+                    grant_access_without_login: true,
+                })
+            )
+        );
+        act(() =>
+            store.dispatch(
+                receiveMutationData(
+                    {
+                        data_type: 'projects',
+                        id: 7,
+                        data: { id: 7, [field]: value },
+                    },
+                    'projects'
+                )
+            )
+        );
+        expect(Loader.getJson).toHaveBeenCalledTimes(2);
+        expect(result.current).toMatchObject({
+            isLoading: clearsData,
+            isValidating: true,
+        });
+        expect(result.current.project?.id).toBe(clearsData ? undefined : 7);
+    }
+);

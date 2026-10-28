@@ -1,5 +1,3 @@
-import { projectRequestKey } from '../projectRequests';
-
 /**
  * Base selectors to get data from the redux state
  * These selectors do not use reselect and are used by other selectors
@@ -21,23 +19,13 @@ export const getNormDataProviders = (state) =>
 
 export const getPermissions = (state) => getData(state).permissions;
 
-export const getProjects = (state) => getData(state).projects;
-
-/** Returns project request progress, or an empty map before the first request. */
-export const getProjectRequests = (state) =>
-    getData(state).projectRequests || {};
-
-/** Returns loading progress and errors for the requested project and context. */
-export const getProjectRequest = (state, props, id, extraParams) =>
-    id
-        ? getProjectRequests(state)[
-              projectRequestKey(props, id, state, extraParams)
-          ]
-        : undefined;
-
-/** Distinguishes base project data from loaded details. */
-export const getProjectRepresentations = (state) =>
-    getData(state).projectRepresentations || {};
+/**
+ * Selects project-owned resource maps still served through legacy resource contracts.
+ * @param {Object} state - Root Redux state.
+ * @returns {Object} Nested resources by owning project ID.
+ */
+export const getProjectResources = (state) =>
+    getData(state).projects?.resources || {};
 
 export const getRandomFeaturedInterviews = (state) =>
     getData(state).random_featured_interviews;

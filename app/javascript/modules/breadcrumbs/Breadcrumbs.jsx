@@ -30,7 +30,7 @@ export function selectBreadcrumbLogo({
  * @returns {React.ReactElement|null} Breadcrumb navigation when items are available.
  */
 export default function Breadcrumbs({ logoSrc }) {
-    const { project } = useProject({});
+    const { project } = useProject();
     const { locale } = useI18n();
     const crumbs = useBreadcrumbs();
     const instanceSettings = useSelector(

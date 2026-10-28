@@ -65,7 +65,7 @@ test('waits for project locales and blocks imports after a denied read', () => {
     const { rerender } = render(
         <UpdateRegistryEntryAttributesModal {...props} />
     );
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText('Loading project')).toBeInTheDocument();
     expect(
         screen.queryByRole('button', { name: 'ok' })

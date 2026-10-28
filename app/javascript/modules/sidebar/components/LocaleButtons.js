@@ -20,7 +20,7 @@ import { useMatch, useNavigate, useSearchParams } from 'react-router-dom';
  */
 export default function LocaleButtons({ className }) {
     const dispatch = useDispatch();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const { t, locale: currentLocale } = useI18n();
     const navigate = useNavigate();
     const matchWithProject = useMatch('/:projectId/:locale/*');

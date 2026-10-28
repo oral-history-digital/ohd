@@ -61,7 +61,7 @@ export default function WorkbookItemForm({
     onSubmit,
     onCancel,
 }) {
-    const { project: currentProject, isLoading, error } = useProject({});
+    const { project: currentProject, isLoading, error } = useProject();
     const project = suppliedProject ? suppliedProject : currentProject;
     const trackEvent = useTrackEventFunction();
     const { t, locale } = useI18n();

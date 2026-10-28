@@ -12,7 +12,7 @@ import RegisterForm from './RegisterForm';
 export default function RegisterPopupLink() {
     const { t, locale } = useI18n();
     const isOpen = /open_register_popup/.test(location.search);
-    const { project: currentProject, isLoading, error } = useProject({});
+    const { project: currentProject, isLoading, error } = useProject();
     const { project: umbrellaProject } = useUmbrellaProject();
 
     if (!currentProject || isLoading || error) return null;

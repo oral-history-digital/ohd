@@ -50,15 +50,24 @@ const authError = (json) => ({
     email: json.email,
 });
 
-const logout = () => ({
+const logout = (redirecting = false) => ({
     type: LOGOUT,
+    ...(redirecting ? { redirecting: true } : {}),
 });
 
-export function submitLogout(url) {
+/**
+ * Clears authentication-dependent data after server logout, then runs navigation.
+ * @param {string} url - Logout endpoint.
+ * @param {Function} [onSuccess] - Optional navigation after successful logout.
+ * @returns {Function} Redux thunk.
+ */
+export function submitLogout(url, onSuccess) {
     return (dispatch) => {
         Loader.delete(url, dispatch, null, () => {
-            dispatch(logout());
-            return invalidateAuthDependentCache();
+            dispatch(logout(Boolean(onSuccess)));
+            const result = invalidateAuthDependentCache();
+            onSuccess?.();
+            return result;
         });
     };
 }

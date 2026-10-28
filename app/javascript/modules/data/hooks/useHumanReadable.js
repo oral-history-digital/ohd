@@ -1,10 +1,16 @@
 import { getTranslations } from 'modules/archive';
 import { SYSTEM_LOCALES } from 'modules/constants';
 import { getCollections, getLanguages, humanReadable } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
+/**
+ * Formats values using the route locale and loaded project default language.
+ * @returns {Object} Localized value formatter.
+ */
 export function useHumanReadable() {
+    const { project } = useProject();
     const matchWithProject = useMatch('/:projectId/:locale/*');
     const matchWOProject = useMatch('/:locale/*');
 
@@ -25,6 +31,7 @@ export function useHumanReadable() {
     const translations = useSelector(getTranslations);
     const languages = useSelector(getLanguages);
     const collections = useSelector(getCollections);
+    const defaultLocale = project?.default_locale;
 
     const curriedHumanReadable = ({
         obj,
@@ -43,6 +50,7 @@ export function useHumanReadable() {
             collections,
             languages,
             locale,
+            defaultLocale,
         });
 
     return {

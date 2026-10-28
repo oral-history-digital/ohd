@@ -36,7 +36,7 @@ export default function EditTable({
 }) {
     const pathBase = usePathBase();
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     useEffect(() => {
         if (!segmentsStatus[`for_interviews_${archiveId}`]) {
             fetchData({ pathBase }, 'interviews', archiveId, 'segments');

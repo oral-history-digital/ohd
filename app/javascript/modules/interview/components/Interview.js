@@ -30,7 +30,7 @@ export default function Interview({
 }) {
     const { archiveId } = useParams();
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
 
     useTrackPageView();
 
