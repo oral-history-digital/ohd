@@ -47,6 +47,7 @@ Use the **Development Environment** for development work.
 - Solr search engine
 - Webpack dev server
 - All development dependencies
+- Gitleaks for the pre-commit secret scan
 
 ### Production frontend checks
 

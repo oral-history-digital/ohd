@@ -51,3 +51,7 @@ docker-compose.override.yml
 /docker/nginx/certs/*
 !/docker/nginx/certs/.gitkeep
 .aider*
+
+# Private keys and certificates must never be committed
+*.pem
+*.key
