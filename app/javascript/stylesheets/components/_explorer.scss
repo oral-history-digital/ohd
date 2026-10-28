@@ -119,23 +119,6 @@
   gap: $base-unit * 0.5;
   padding: $base-unit * 4;
   color: $gray-medium;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 2rem;
-    height: 2rem;
-    border: 3px solid $gray-lighter;
-    border-top-color: var(--primary-color, $gray-dark);
-    border-radius: 50%;
-    animation: explorer-spin 0.75s linear infinite;
-  }
-}
-
-@keyframes explorer-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .ProjectList--error {
