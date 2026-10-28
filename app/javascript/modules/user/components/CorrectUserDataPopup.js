@@ -1,14 +1,21 @@
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
 import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
 
-export default function CorrectUserDataPopup({}) {
+/**
+ * Opens the correction form for a rejected access request when requested in the URL.
+ * @returns {React.ReactElement|null} Registration/access content when project settings are available.
+ */
+export default function CorrectUserDataPopup() {
     const { t } = useI18n();
     const user = useSelector(getCurrentUser);
-    const project = useSelector(getCurrentProject);
+    const { project: project, isLoading, error } = useProject({});
+
+    if (!project || isLoading || error) return null;
 
     const rejectedProjectAccess =
         user?.user_projects &&

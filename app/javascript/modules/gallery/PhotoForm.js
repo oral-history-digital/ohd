@@ -1,17 +1,21 @@
 import { Form } from 'modules/forms';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 
+/**
+ * Edits translated photo metadata and uploads through the current project route.
+ * @param {Object} props - Record data, form options, and mutation callbacks.
+ * @returns {React.ReactElement|null} Editing controls and request feedback.
+ */
 export default function PhotoForm({
     interview,
     photo,
     withUpload,
-    locale,
-    projectId,
-    project,
     submitData,
     onSubmit,
     onCancel,
 }) {
+    const pathBase = usePathBase();
     function elements() {
         let elements = [
             {
@@ -68,7 +72,7 @@ export default function PhotoForm({
             scope="photo"
             helpTextCode="photo_form"
             onSubmit={(params) => {
-                submitData({ projectId, project, locale }, params);
+                submitData({ pathBase }, params);
                 if (onSubmit) {
                     onSubmit();
                 }
@@ -88,9 +92,6 @@ PhotoForm.propTypes = {
     interview: PropTypes.object,
     photo: PropTypes.object,
     withUpload: PropTypes.bool,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,

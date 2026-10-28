@@ -53,8 +53,6 @@ export default function SelectColumnsForm({
 SelectColumnsForm.propTypes = {
     interview: PropTypes.object.isRequired,
     selectedColumns: PropTypes.array.isRequired,
-    user: PropTypes.object.isRequired,
-    editView: PropTypes.bool.isRequired,
     setColumnsWithCookie: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,

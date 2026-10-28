@@ -2,18 +2,21 @@ import { useState } from 'react';
 
 import { getCountryKeys } from 'modules/archive';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { getCurrentProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 import { FaDownload } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
 
+/**
+ * Shows administration links using current project display settings.
+ * @returns {React.ReactElement|null} Authorized administration controls.
+ */
 export default function StatisticsAdminPage() {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
-    const project = useSelector(getCurrentProject);
+    const { project, isLoading, error } = useProject({});
     const countryKeys = useSelector(getCountryKeys);
     const [selectedCountries, setSelectedCountries] = useState([]);
 
@@ -90,7 +93,7 @@ export default function StatisticsAdminPage() {
                         </a>
                     </div>
 
-                    {project?.has_newsletter && (
+                    {!isLoading && !error && project?.has_newsletter && (
                         <div className="u-mt">
                             <a
                                 href={`${pathBase}/users/newsletter_recipients.csv`}

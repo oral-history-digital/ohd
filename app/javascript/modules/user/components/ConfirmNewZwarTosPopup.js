@@ -1,26 +1,31 @@
 /* global railsMode */
 import { OHD_DOMAINS } from 'modules/constants';
 import {
-    getCurrentProject,
     getCurrentUser,
     getProjectBrandName,
-    getUmbrellaProject,
     submitData,
+    useUmbrellaProject,
 } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { usePathBase, useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
-// TODO: Check if this is still needed or if it can be removed
+/**
+ * Requests updated terms and privacy consent from older ZWAR/MOG project memberships.
+ * Keeps the existing cutoff date and mandatory confirmation flow.
+ * @returns {React.ReactElement|null} Confirmation popup when loaded project and account data require it.
+ */
 export default function ConfirmNewZwarTosPopup() {
     const { t, locale } = useI18n();
     const dispatch = useDispatch();
-    const project = useSelector(getCurrentProject);
-    const umbrellaProject = useSelector(getUmbrellaProject);
+    const { project, isLoading, error } = useProject({});
+    const pathBase = usePathBase();
+    const { pathname } = useLocation();
+    const { project: umbrellaProject } = useUmbrellaProject();
 
-    const projectId = 'za';
     const currentUser = useSelector(getCurrentUser);
     const currentProjectAccess =
         currentUser?.user_projects &&
@@ -28,11 +33,16 @@ export default function ConfirmNewZwarTosPopup() {
             return up.project_id === project?.id;
         });
 
-    if (!project || ['za', 'mog'].indexOf(project.shortname) === -1) {
+    if (
+        isLoading ||
+        error ||
+        !project ||
+        ['za', 'mog'].indexOf(project.shortname) === -1
+    ) {
         return null;
     }
     if (!currentProjectAccess) return null;
-    if (location.pathname.match(/\/conditions$/)) return null;
+    if (pathname.match(/\/conditions$/)) return null;
 
     const newProjectAccess =
         new Date(currentProjectAccess.created_at).getTime() >
@@ -43,7 +53,10 @@ export default function ConfirmNewZwarTosPopup() {
     if (confirmedNewTos) return null;
 
     const conditionsLink = `${OHD_DOMAINS[railsMode]}/${locale}/conditions`;
-    const conditionsLinkZWAR = `${project.domain_with_optional_identifier}/${locale}/conditions`;
+    const projectBaseUrl =
+        project.archive_domain ||
+        `${OHD_DOMAINS[railsMode]}/${project.shortname}`;
+    const projectConditionsLink = `${projectBaseUrl}/${locale}/conditions`;
     const privacyLink = `${OHD_DOMAINS[railsMode]}/${locale}/privacy_protection`;
     const umbrellaProjectLabel = getProjectBrandName(umbrellaProject, locale);
 
@@ -60,7 +73,7 @@ export default function ConfirmNewZwarTosPopup() {
                     <h2>{t('update.zwar.tos.title')}</h2>
                     <p>
                         {t('update.zwar.tos.content_one', {
-                            archive_name: project.name[locale],
+                            archive_name: project.name,
                             umbrella_project_name: umbrellaProjectLabel,
                         })}
                     </p>
@@ -69,12 +82,7 @@ export default function ConfirmNewZwarTosPopup() {
                     <Form
                         scope="user_project"
                         onSubmit={(params) => {
-                            dispatch(
-                                submitData(
-                                    { locale, projectId, project },
-                                    params
-                                )
-                            );
+                            dispatch(submitData({ pathBase }, params));
                             close();
                         }}
                         data={currentProjectAccess}
@@ -115,11 +123,11 @@ export default function ConfirmNewZwarTosPopup() {
                                     return v && v !== '0';
                                 },
                                 help: t('update.zwar.tos.tos_agreement_zwar', {
-                                    project: project.name[locale],
+                                    project: project.name,
                                     tos_link: (
                                         <a
                                             className="Link"
-                                            href={conditionsLinkZWAR}
+                                            href={projectConditionsLink}
                                             target="_blank"
                                             title="Externer Link"
                                             rel="noreferrer"

@@ -4,12 +4,19 @@ import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { MediaIcon } from 'modules/interview-helpers';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { sanitizeHtml } from 'modules/utils';
 import { useSelector } from 'react-redux';
 
+/**
+ * Shows the public interview preview allowed by the project's display settings.
+ *
+ * @returns {React.ReactElement} Preview, access message, or project request status.
+ */
 export default function MediaPreview() {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({});
     const interview = useSelector(getCurrentInterview);
 
     const [loadingError, setLoadingError] = useState(false);
@@ -26,6 +33,18 @@ export default function MediaPreview() {
     if (interview.workflow_state === 'unshared') {
         return <>{t('unauthorized')}</>;
     }
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <div className="MediaPreview u-mb-large">

@@ -1,3 +1,4 @@
+import { RECEIVE_DATA } from '../data/redux/action-types';
 import {
     AUTH_ERROR,
     CHANGED_PASSWORD,
@@ -36,6 +37,14 @@ const user = (state = { isLoggedIn: false }, action) => {
                 active: action.active,
                 email: action.email,
             };
+        case RECEIVE_DATA:
+            if (
+                action.dataType !== 'users' ||
+                action.id !== 'current' ||
+                action.data !== null
+            )
+                return state;
+        // Falls through: a null current account confirms an anonymous session.
         case LOGOUT:
             return Object.assign({}, state, {
                 isLoggedIn: false,

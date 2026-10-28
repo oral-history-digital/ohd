@@ -1,11 +1,22 @@
 import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { useSegmentSaveNotification } from 'modules/transcript/hooks';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Edits segment headings and reports their save status.
+ *
+ * @param {Object} props - Heading form properties.
+ * @param {Object} props.segment - Segment with stored heading translations.
+ * @param {Function} [props.onSubmit] - Called after a successful save.
+ * @param {Function} [props.onCancel] - Cancels editing.
+ * @param {Function} [props.onChange] - Handles form changes.
+ * @param {string} [props.submitText] - Submit label key.
+ * @param {string} [props.cancelText] - Cancel label key.
+ * @returns {React.ReactElement} Heading form with save notifications.
+ */
 export default function SegmentHeadingForm({
     segment,
     onSubmit,
@@ -14,8 +25,7 @@ export default function SegmentHeadingForm({
     submitText,
     cancelText,
 }) {
-    const { locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
     const dispatch = useDispatch();
     const {
         isSaving,
@@ -30,14 +40,7 @@ export default function SegmentHeadingForm({
         const afterSubmitCallback =
             typeof onSubmit === 'function' ? onSubmit : undefined;
 
-        dispatch(
-            submitData(
-                { locale, projectId, project },
-                params,
-                {},
-                afterSubmitCallback
-            )
-        );
+        dispatch(submitData({ pathBase }, params, {}, afterSubmitCallback));
     };
 
     return (

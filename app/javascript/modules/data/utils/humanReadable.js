@@ -8,7 +8,7 @@ import { toDateString } from './toDateString';
  * Converts a model attribute value to a human-readable, localized string.
  *
  * Handles multiple value formats in order of precedence:
- * 1. Globalize translations_attributes (Rails Globalize gem)
+ * 1. Stored translations from API records or Rails-style translation attributes
  * 2. Direct localized objects ({ de: "...", en: "..." })
  * 3. Pass-through identifiers (archive_id, signature_original, shortname)
  * 4. Duration formatting (HH:MM:SS → "X h Y min")
@@ -60,11 +60,12 @@ export function humanReadable({
     languages,
     locale,
 }) {
-    // 1. Globalize translations_attributes (nested translations)
-    if (obj.translations_attributes) {
-        const translation = Array.isArray(obj.translations_attributes)
-            ? obj.translations_attributes.find((t) => t.locale === locale)
-            : Object.values(obj.translations_attributes).find(
+    // Prefer stored translations for editors; display-only records provide localized scalar fields.
+    const storedTranslations = obj.translations_attributes ?? obj.translations;
+    if (storedTranslations) {
+        const translation = Array.isArray(storedTranslations)
+            ? storedTranslations.find((t) => t.locale === locale)
+            : Object.values(storedTranslations).find(
                   (t) => t.locale === locale
               );
         const v = translation?.[attribute];

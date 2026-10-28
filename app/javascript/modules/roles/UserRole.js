@@ -1,5 +1,3 @@
-import { Component } from 'react';
-
 import { useDataApi } from 'modules/api';
 import { useAuthorization } from 'modules/auth';
 import { useMutateData, useMutateDatum } from 'modules/data';
@@ -8,16 +6,13 @@ import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaEye, FaTrash } from 'react-icons/fa';
 
-export default function UserRole({
-    userRole,
-    hideEdit,
-    projects,
-    projectId,
-    deleteData,
-    userId,
-    dataPath,
-}) {
-    const { t, locale } = useI18n();
+/**
+ * Shows a user role and its authorized deletion control.
+ * @param {Object} props - Role assignment, user ID, user-list cache path, and edit visibility.
+ * @returns {React.ReactElement} Role name and available actions.
+ */
+export default function UserRole({ userRole, hideEdit, userId, dataPath }) {
+    const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const { deleteDatum } = useDataApi();
     const mutateData = useMutateData('users', dataPath);
@@ -99,7 +94,6 @@ export default function UserRole({
 UserRole.propTypes = {
     userRole: PropTypes.object.isRequired,
     hideEdit: PropTypes.bool,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    deleteData: PropTypes.func.isRequired,
+    userId: PropTypes.number.isRequired,
+    dataPath: PropTypes.string,
 };

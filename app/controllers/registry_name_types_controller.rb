@@ -37,6 +37,10 @@ class RegistryNameTypesController < ApplicationController
     end
   end
 
+  # Lists the current project's name types, optionally paginated for administration.
+  # Names are translated, so ordering must use the translations table.
+  #
+  # @return [void] Renders the React page or the existing JSON list envelope
   def index
     policy_scope RegistryNameType
 
@@ -47,13 +51,15 @@ class RegistryNameTypesController < ApplicationController
         json = Rails.cache.fetch "#{current_project.shortname}-registry_name_types-#{cache_key_params}-#{RegistryNameType.count}-#{RegistryNameType.maximum(:updated_at)}" do
           if params[:for_projects]
             data = current_project.registry_name_types.
-              order("name ASC")
+              includes(:translations).
+              order("registry_name_type_translations.name ASC")
             extra_params = "for_projects_#{current_project.id}"
           else
             page = params[:page] || 1
             data = current_project.registry_name_types.
+              includes(:translations).
               where(search_params).
-              order("name ASC").
+              order("registry_name_type_translations.name ASC").
               paginate(page: page)
             paginate = true
             extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")

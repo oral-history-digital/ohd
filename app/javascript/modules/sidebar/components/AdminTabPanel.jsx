@@ -2,22 +2,26 @@ import { useState } from 'react';
 
 import { getCountryKeys } from 'modules/archive';
 import { useAuthorization } from 'modules/auth';
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { FaDownload } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
 
 import AdminSubTab from './AdminSubTab';
 
+/**
+ * Shows administration links using current project display settings.
+ * @returns {React.ReactElement|null} Authorized administration controls.
+ */
 export default function AdminTabPanel() {
     const { t, locale } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const user = useSelector(getCurrentUser);
-    const project = useSelector(getCurrentProject);
+    const { project, isLoading, error } = useProject({});
     const countryKeys = useSelector(getCountryKeys);
 
     const [selectedCountries, setSelectedCountries] = useState([]);
@@ -51,14 +55,17 @@ export default function AdminTabPanel() {
         <ErrorBoundary small>
             <h3 className="SidebarTabs-title">{t('edit.administration')}</h3>
             <div className="flyout-sub-tabs-container flyout-video">
-                {project?.is_umbrella && user?.admin && (
-                    <AdminSubTab
-                        title="edit.instance.title"
-                        url={`${pathBase}/admin/instance`}
-                        obj={{ type: 'InstanceSetting' }}
-                        action="update"
-                    />
-                )}
+                {!isLoading &&
+                    !error &&
+                    project?.is_umbrella &&
+                    user?.admin && (
+                        <AdminSubTab
+                            title="edit.instance.title"
+                            url={`${pathBase}/admin/instance`}
+                            obj={{ type: 'InstanceSetting' }}
+                            action="update"
+                        />
+                    )}
                 <AdminSubTab
                     title="edit.users.admin"
                     url={`${pathBase}/users`}
@@ -88,7 +95,7 @@ export default function AdminTabPanel() {
                             }}
                             placeholder={t('filter_by_countries')}
                         />
-                        {project?.has_newsletter && (
+                        {!isLoading && !error && project?.has_newsletter && (
                             <div>
                                 <a
                                     href={`${pathBase}/users/newsletter_recipients.csv`}

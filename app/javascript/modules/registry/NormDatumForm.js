@@ -1,7 +1,22 @@
 import { Form } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
 
+/**
+ * Edits manual authority identifiers while preserving nested-form placement.
+ *
+ * @param {Object} props - Authority data form properties.
+ * @param {number} [props.index] - Position used when adding nested authority data.
+ * @param {Function} props.submitData - Saves through Redux or updates the parent form.
+ * @param {Function} [props.onSubmitCallback] - Callback forwarded to the shared form.
+ * @param {Function} [props.onCancel] - Closes the form without saving.
+ * @param {string} [props.formClasses] - Additional form classes.
+ * @param {Object} [props.data] - Existing authority identifier.
+ * @param {boolean} [props.nested] - Enables nested-form behavior.
+ * @param {number} [props.registryEntryId] - Entry receiving the identifier.
+ * @param {Object} props.normDataProviders - Available authority providers keyed by ID.
+ * @returns {React.ReactElement} Provider and identifier form.
+ */
 export default function NormDatumForm({
     index,
     submitData,
@@ -13,8 +28,7 @@ export default function NormDatumForm({
     registryEntryId,
     normDataProviders,
 }) {
-    const { locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
 
     return (
         <Form
@@ -25,7 +39,7 @@ export default function NormDatumForm({
                 // to insert new items at the correct array position. For existing
                 // items (Redux action), the index parameter is ignored.
                 // Routing between handlers is managed by the forms module.
-                submitData({ projectId, locale, project }, params, index);
+                submitData({ pathBase }, params, index);
             }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}
@@ -34,7 +48,6 @@ export default function NormDatumForm({
             nested={nested}
             values={{
                 registry_entry_id: data?.registry_entry_id || registryEntryId,
-                value: data?.norm_data_provider_id,
                 value: data?.nid,
             }}
             submitText="submit"
@@ -58,3 +71,15 @@ export default function NormDatumForm({
         />
     );
 }
+
+NormDatumForm.propTypes = {
+    index: PropTypes.number,
+    submitData: PropTypes.func.isRequired,
+    onSubmitCallback: PropTypes.func,
+    onCancel: PropTypes.func,
+    formClasses: PropTypes.string,
+    data: PropTypes.object,
+    nested: PropTypes.bool,
+    registryEntryId: PropTypes.number,
+    normDataProviders: PropTypes.object.isRequired,
+};

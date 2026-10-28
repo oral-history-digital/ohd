@@ -4,7 +4,6 @@ import {
     getRegistryEntriesStatus,
     getRegistryReferenceTypesForCurrentProject,
     getRegistryReferenceTypesStatus,
-    getUmbrellaProject,
     submitData,
 } from 'modules/data';
 import { connect } from 'react-redux';
@@ -13,7 +12,6 @@ import { bindActionCreators } from 'redux';
 import RegistryReferenceForm from './RegistryReferenceForm';
 
 const mapStateToProps = (state) => ({
-    umbrellaProject: getUmbrellaProject(state),
     registryEntries: getRegistryEntries(state),
     registryReferenceTypes: getRegistryReferenceTypesForCurrentProject(state),
     registryReferenceTypesStatus: getRegistryReferenceTypesStatus(state),

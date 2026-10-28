@@ -1,21 +1,42 @@
 import {
-    getCurrentProject,
     getRegistryReferenceTypesForCurrentProject,
     getRegistryReferenceTypesStatus,
 } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { getRegistryReferenceTypesQuery } from 'modules/search';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
+/**
+ * Lists registry reference types using the current project's root-entry configuration.
+ * @returns {React.ReactElement} Administration list, loading indicator, or request error.
+ */
 export default function RegistryReferenceTypesAdminPage() {
-    const project = useSelector(getCurrentProject);
+    const { t } = useI18n();
+    const { project, isLoading, error } = useProject({
+        include: ['registry_configuration'],
+    });
     const data = useSelector(getRegistryReferenceTypesForCurrentProject);
     const dataStatus = useSelector(getRegistryReferenceTypesStatus);
     const query = useSelector(getRegistryReferenceTypesQuery);
     const { fetchData, deleteData, submitData, setQueryParams } =
         useAdminDataActions();
+
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <PaginatedAdminRecordList
@@ -39,7 +60,7 @@ export default function RegistryReferenceTypesAdminPage() {
                     validate: function (v) {
                         return (
                             /^\d+$/.test(v) &&
-                            v !== parseInt(project?.root_registry_entry_id)
+                            Number(v) !== project.root_registry_entry_id
                         );
                     },
                 },

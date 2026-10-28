@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { receiveData } from 'modules/data';
+import { receiveMutationData } from 'modules/data';
 import { FileInputField } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -18,6 +18,14 @@ const ACCEPTED_FILE_TYPES = [
     'image/vnd.microsoft.icon',
 ];
 
+/**
+ * Uploads or removes a project's favicon and displays validation/request feedback.
+ * Successful responses update the legacy project and invalidate v2 project data.
+ *
+ * @param {Object} props - Project whose favicon is edited.
+ * @param {{id: number|string, favicon_url?: ?string}} props.project - Project identity and current favicon URL.
+ * @returns {import('react').ReactElement} Upload form and optional removal dialog.
+ */
 export default function ProjectFaviconForm({ project }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
@@ -36,6 +44,13 @@ export default function ProjectFaviconForm({ project }) {
         return `edit.project.favicon.${normalizedError}`;
     }
 
+    /**
+     * Sends a favicon mutation and updates Redux or displays the server error.
+     *
+     * @param {'PUT'|'DELETE'} method - Favicon operation.
+     * @param {FormData} [body] - Upload payload; omitted when removing the favicon.
+     * @returns {Promise<boolean>} Whether the API accepted the mutation.
+     */
     async function request(method, body) {
         setIsLoading(true);
         setNotification(null);
@@ -68,7 +83,7 @@ export default function ProjectFaviconForm({ project }) {
                 return false;
             }
 
-            dispatch(receiveData(payload));
+            dispatch(receiveMutationData(payload));
             return true;
         } catch (_error) {
             setNotification({

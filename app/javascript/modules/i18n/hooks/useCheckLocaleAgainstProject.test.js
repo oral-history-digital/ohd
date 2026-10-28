@@ -14,8 +14,14 @@ jest.mock('modules/archive', () => ({
 jest.mock('modules/i18n', () => ({ useI18n: jest.fn() }));
 jest.mock('modules/routes', () => ({
     useProject: jest.fn(),
-    pathBase: ({ project, projectId, locale }) =>
-        project.archive_domain ? `/${locale}` : `/${projectId}/${locale}`,
+    usePathBase: () => {
+        const path = jest
+            .requireMock('react-router-dom')
+            .useLocation().pathname;
+        return path.startsWith('/test/')
+            ? path.split('/').slice(0, 3).join('/')
+            : path.split('/').slice(0, 2).join('/');
+    },
 }));
 jest.mock('react-redux', () => ({ useDispatch: jest.fn() }));
 jest.mock('react-router-dom', () => ({
@@ -91,4 +97,28 @@ test('still redirects project content to its supported locale and preserves the 
             { replace: true }
         )
     );
+});
+
+test('project-prefixed locale redirects retain the project path', async () => {
+    useLocation.mockReturnValue({
+        pathname: '/test/de/searches/archive',
+        search: '?sort=random',
+    });
+    renderHook(useCheckLocaleAgainstProject);
+    expect(fetchTranslationsForLocale).toHaveBeenCalledWith('en', '/test/en');
+    await waitFor(() =>
+        expect(navigate).toHaveBeenCalledWith(
+            '/test/en/searches/archive?sort=random',
+            { replace: true }
+        )
+    );
+});
+
+test('does not change locales from retained data after a project read fails', () => {
+    useProject.mockReturnValue({
+        project,
+        error: { message: 'Access denied' },
+    });
+    renderHook(useCheckLocaleAgainstProject);
+    expect(dispatch).not.toHaveBeenCalled();
 });

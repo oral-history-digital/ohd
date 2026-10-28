@@ -1,13 +1,26 @@
 import { useAuthorization } from 'modules/auth';
+import { getResultMetadataFields } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { InterviewListRowContainer } from 'modules/interview-preview';
 import { useSearchParams } from 'modules/query-string';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
+/**
+ * Shows search results with the current project's configured metadata columns.
+ *
+ * @param {Object} props - Component properties.
+ * @param {Object[]} props.interviews - Interview summaries.
+ * @returns {React.ReactElement} Results table or its loading/error state.
+ */
 export default function ResultTable({ interviews }) {
-    const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { t } = useI18n();
+    const { project, isLoading, error } = useProject({
+        include: ['metadata_fields'],
+    });
+    const columns = getResultMetadataFields(project?.metadata_fields, 'table');
     const { fulltext } = useSearchParams();
     const { isAuthorized } = useAuthorization();
 
@@ -17,6 +30,18 @@ export default function ResultTable({ interviews }) {
             isAuthorized({ type: 'General' }, 'edit')
         );
     }
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <table className="Table Table--searchResults">
@@ -29,11 +54,10 @@ export default function ResultTable({ interviews }) {
                             {t('activerecord.models.project.one')}
                         </th>
                     )}
-                    {project.list_columns?.map((column) => (
+                    {columns.map((column) => (
                         <th key={column.name} className="Table-header">
-                            {project.metadata_fields?.[column.id]?.label?.[
-                                locale
-                            ] || t(`metadata_labels.${column.name}`)}
+                            {column.label ||
+                                t(`metadata_labels.${column.name}`)}
                         </th>
                     ))}
                     {fulltext && (

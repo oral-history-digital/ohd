@@ -13,16 +13,14 @@ jest.mock('modules/constants', () => ({
 }));
 jest.mock('modules/data', () => ({
     getCurrentUser: (state) => state.currentAccount,
-    getProjectBrandName: (project, locale) => {
-        const name = project?.name?.[locale] || project?.display_name?.[locale];
-
-        if (!name) return null;
-
-        return project.display_shortname
-            ? `${name} (${project.display_shortname})`
-            : name;
-    },
-    getUmbrellaProject: (state) => state.umbrellaProject,
+    getProjectBrandName: jest.requireActual(
+        '../../data/utils/getProjectBrandName'
+    ).getProjectBrandName,
+    useUmbrellaProject: () => ({
+        project: jest
+            .requireMock('react-redux')
+            .useSelector((state) => state.umbrellaProject),
+    }),
 }));
 jest.mock('modules/i18n', () => ({ useI18n: () => ({ locale: 'en' }) }));
 jest.mock('modules/routes', () => ({
@@ -62,10 +60,10 @@ function renderSiteLogo(umbrellaProject) {
 
 test('uses the configured umbrella project logo and name', () => {
     renderSiteLogo({
-        name: { en: 'Portal archive' },
+        name: 'Portal archive',
         display_shortname: 'portal',
         default_locale: 'en',
-        logos: { 1: { locale: 'en', src: '/logos/portal.svg' } },
+        logo: { url: '/logos/portal.svg' },
     });
 
     expect(screen.getByRole('img')).toHaveAttribute('src', '/logos/portal.svg');
@@ -75,7 +73,7 @@ test('uses the configured umbrella project logo and name', () => {
 });
 
 test('uses the built-in logo when the umbrella project has no logo', () => {
-    renderSiteLogo({ name: { en: 'Portal archive' }, logos: {} });
+    renderSiteLogo({ name: 'Portal archive', logos: {} });
 
     expect(screen.getByRole('img')).toHaveAttribute('src', '/logo-ohd.svg');
 });

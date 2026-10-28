@@ -2,13 +2,20 @@ import { useState } from 'react';
 
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProjectIdentity } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 import CommentsContainer from './CommentsContainer';
 
+/**
+ * Edits task assignments, workflow state, and comments using existing permission checks.
+ * @param {Object} props - Task, interview, user choices, scope, and Redux save action.
+ * @returns {React.ReactElement} Task workflow form.
+ */
 export default function Task({ task, interview, users, scope, submitData }) {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const pathBase = usePathBase();
+    const { projectDbId } = useProjectIdentity();
     const { isAuthorized } = useAuthorization();
 
     const [thisTask, setThisTask] = useState({
@@ -31,7 +38,7 @@ export default function Task({ task, interview, users, scope, submitData }) {
                                         'QM',
                                         'Archivmanagement',
                                     ].indexOf(r.name) > -1 &&
-                                    r.project_id === project.id
+                                    r.project_id === projectDbId
                                 );
                             })) ||
                         // assigned-user-select
@@ -40,7 +47,7 @@ export default function Task({ task, interview, users, scope, submitData }) {
                                 return (
                                     ['Redaktion', 'Archivmanagement'].indexOf(
                                         r.name
-                                    ) > -1 && r.project_id === project.id
+                                    ) > -1 && r.project_id === projectDbId
                                 );
                             }))
                     );
@@ -120,7 +127,7 @@ export default function Task({ task, interview, users, scope, submitData }) {
                     // strange issue: state.task.id gets lost on second update
                     // therefore it is set again here
                     //
-                    onChange={() =>
+                    onChange={(event) =>
                         setThisTask(
                             Object.assign({}, thisTask, {
                                 [event.target.name]: event.target.value,
@@ -158,9 +165,9 @@ export default function Task({ task, interview, users, scope, submitData }) {
             <form
                 className={'task-form'}
                 key={`form-${task.id}`}
-                onSubmit={() => {
+                onSubmit={(event) => {
                     event.preventDefault();
-                    submitData({ locale, project }, { task: thisTask });
+                    submitData({ pathBase }, { task: thisTask });
                 }}
             >
                 {box(task.task_type.name[locale])}
@@ -194,7 +201,7 @@ export default function Task({ task, interview, users, scope, submitData }) {
                             supervisor_id: null,
                         });
                         submitData(
-                            { locale, project },
+                            { pathBase },
                             {
                                 task: {
                                     id: task.id,
@@ -225,3 +232,11 @@ export default function Task({ task, interview, users, scope, submitData }) {
         </div>
     );
 }
+
+Task.propTypes = {
+    task: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
+    users: PropTypes.array,
+    scope: PropTypes.string,
+    submitData: PropTypes.func.isRequired,
+};

@@ -79,3 +79,20 @@ describe('getMergedTranslations', () => {
         ]);
     });
 });
+
+test('merges API translations with live edits without losing IDs, stored blanks, or other locales', () => {
+    const data = {
+        translations: [
+            { id: 3, locale: 'de', text: '' },
+            { id: 4, locale: 'en', text: 'English' },
+        ],
+    };
+    expect(
+        getMergedTranslations(data, {
+            translations_attributes: [{ locale: 'en', text: 'Updated' }],
+        })
+    ).toEqual([
+        { id: 3, locale: 'de', text: '' },
+        { id: 4, locale: 'en', text: 'Updated' },
+    ]);
+});

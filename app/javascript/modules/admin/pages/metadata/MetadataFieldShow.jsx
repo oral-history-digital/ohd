@@ -1,18 +1,23 @@
-import { getLocale, getTranslations } from 'modules/archive';
+import { getTranslations } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
+import { localizedValue } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
+/**
+ * Shows a built-in facet name or the field's localized label.
+ * @param {Object} props - Metadata definition with a current or legacy label value.
+ * @returns {React.ReactElement} Field label.
+ */
 function MetadataFieldShow({ data }) {
-    const locale = useSelector(getLocale);
     const translations = useSelector(getTranslations);
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     let name;
     if (translations[`search_facets.${data.name}`]) {
         name = t(`search_facets.${data.name}`);
     } else {
-        name = data.label && data.label[locale];
+        name = localizedValue(data.label, locale);
     }
 
     return (
@@ -27,6 +32,9 @@ export default MetadataFieldShow;
 MetadataFieldShow.propTypes = {
     data: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        label: PropTypes.objectOf(PropTypes.string),
+        label: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.objectOf(PropTypes.string),
+        ]),
     }).isRequired,
 };

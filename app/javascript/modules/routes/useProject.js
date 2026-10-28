@@ -1,35 +1,36 @@
-import { getProjects } from 'modules/data';
-import { useSelector } from 'react-redux';
-import { useMatch } from 'react-router-dom';
+import { useProjectDetail } from 'modules/data';
 
-import { findProjectByDomain } from './domainUtils';
-import isLocaleValid from './isLocaleValid';
+import useProjectIdentity from './useProjectIdentity';
 
-export default function useProject() {
-    const projects = useSelector(getProjects);
-    const projectArray = Object.values(projects || {});
-    const matchWithProject = useMatch('/:projectId/:locale/*');
+/**
+ * @typedef {import('../data/hooks/useProjectDetail').ProjectDetailOptions} ProjectDetailOptions
+ * @typedef {import('../data/hooks/useProjectDetail').ProjectDetailResult} ProjectDetailResult
+ * @typedef {Object} ProjectIdentity
+ * @property {Object|undefined} project - Current project, if available.
+ * @property {string|undefined} projectShortname - Public identifier used in project URLs.
+ * @property {string|undefined} projectId - Deprecated alias for projectShortname.
+ * @property {number|undefined} projectDbId - Internal ID for relationships and mutations.
+ * @property {boolean|undefined} isUmbrella - Whether this is the umbrella project.
+ */
 
-    let currentProject;
-    if (matchWithProject && isLocaleValid(matchWithProject.params.locale)) {
-        // Archive is running on the umbrella project's domain.
-        currentProject = projectArray.find(
-            (project) => project.shortname === matchWithProject.params.projectId
-        );
-    } else {
-        // Archive is running on its own domain.
-        currentProject = findProjectByDomain(projects);
-    }
-
+/**
+ * Loads the current project's display or editing details through Redux, using its route or domain.
+ * Bootstrap supplies routing identity only; project data stays unavailable until the requested details load.
+ *
+ * @param {ProjectDetailOptions} [options={}] - Locale, profile, and optional includes.
+ * @returns {ProjectIdentity & ProjectDetailResult} Project identity, requested details, request status, and refresh.
+ */
+export default function useProject(options = {}) {
+    const { projectShortname, projectDbId, isUmbrella } = useProjectIdentity();
+    const details = useProjectDetail(projectShortname, options);
+    const project = details.project;
     return {
-        project: currentProject,
-        // `projectShortname` is the backend "shortname" identifier used in URLs.
-        projectShortname: currentProject?.shortname,
-        // Keep `projectId` as a backward-compatible alias for now (maps to shortname).
-        // TODO: Refactor code to use `projectShortname` and remove `projectId` to avoid confusion with numeric database ID.
-        projectId: currentProject?.shortname,
-        // Numeric database id when available — useful for API calls that require the real id.
-        projectDbId: currentProject?.id,
-        isUmbrella: currentProject?.is_umbrella,
+        ...details,
+        projectShortname,
+        // TODO: Replace this shortname alias with projectShortname in remaining callers.
+        projectId: projectShortname,
+        projectDbId: project?.id ?? projectDbId,
+        isUmbrella: project?.is_umbrella ?? isUmbrella,
+        isLoading: !projectShortname || details.isLoading,
     };
 }

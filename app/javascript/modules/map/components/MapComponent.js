@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import 'leaflet/dist/leaflet.css';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { CircleMarker, MapContainer, TileLayer } from 'react-leaflet';
 
@@ -9,6 +11,17 @@ import MapPopup from './MapPopup';
 import MapResizeHandler from './MapResizeHandler';
 import MapTooltip from './MapTooltip';
 
+/**
+ * Shows map markers with labels in the UI locale, falling back to the project locale.
+ *
+ * @param {Object} props - Map display properties.
+ * @param {string} [props.className] - Additional map classes.
+ * @param {Object[]} [props.markers=[]] - Marker positions, colors, labels, and reference counts.
+ * @param {number[][]} [props.bounds] - Initial map bounds.
+ * @param {React.ComponentType} props.popupComponent - Marker popup content component.
+ * @param {React.ReactNode} [props.children] - Map controls or overlays.
+ * @returns {React.ReactElement} Map or project loading/error status.
+ */
 export default function MapComponent({
     className,
     markers = [],
@@ -16,8 +29,20 @@ export default function MapComponent({
     popupComponent,
     children,
 }) {
-    const { locale } = useI18n();
-    const { project } = useProject();
+    const { t, locale } = useI18n();
+    const { project, isLoading, error } = useProject({});
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
     const defaultLocale = project.default_locale;
 
     function getMarkerName(marker) {

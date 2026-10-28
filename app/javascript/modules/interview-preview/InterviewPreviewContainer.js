@@ -3,7 +3,7 @@ import {
     getSelectedArchiveIds,
     setArchiveId,
 } from 'modules/archive';
-import { getInterviewsStatus, getProjects } from 'modules/data';
+import { getInterviewsStatus } from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,7 +11,6 @@ import { bindActionCreators } from 'redux';
 import InterviewPreview from './InterviewPreview';
 
 const mapStateToProps = (state) => ({
-    projects: getProjects(state),
     selectedArchiveIds: getSelectedArchiveIds(state),
     statuses: getInterviewsStatus(state),
     isLoggedIn: getIsLoggedIn(state),

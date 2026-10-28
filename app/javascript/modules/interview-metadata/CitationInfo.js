@@ -1,12 +1,34 @@
 import { OHD_LOCATION } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
+/**
+ * Shows an interview citation with its localized project name and permanent links.
+ *
+ * @param {Object} props - Citation data.
+ * @param {Object} props.interview - Interview identified by its public archive ID.
+ * @param {Object} props.collections - Collection records by ID.
+ * @returns {React.ReactElement} Citation or project request status.
+ */
 export default function CitationInfo({ interview, collections }) {
     const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { project, isLoading, error } = useProject({});
     const pathBase = usePathBase();
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
     const collection = collections?.[interview.collection_id];
 
     const domain = project.archive_domain || OHD_LOCATION;
@@ -17,7 +39,7 @@ export default function CitationInfo({ interview, collections }) {
     let doiLink;
     if (interview.doi_status === 'created') {
         if (interview.used_doi_prefix) {
-            doiLink = `https://doi.org/${interview.used_doi_prefix}/${projectId}.${interview.archive_id}`;
+            doiLink = `https://doi.org/${interview.used_doi_prefix}/${project.shortname}.${interview.archive_id}`;
         } else {
             console.warn(
                 `Interview ${interview.id} has DOI status 'created' but no used_doi_prefix. Cannot generate DOI link.`
@@ -43,7 +65,7 @@ export default function CitationInfo({ interview, collections }) {
                         `${interview.anonymous_title?.[locale]}, `}
                     {t('interview')} {`${interview.archive_id}, `}
                     {`${interview.interview_date}, `}
-                    {`${project?.name[locale]}, `}
+                    {`${project.name}, `}
                     {collectionName}
                     {selfLink && <a href={selfLink}>{selfLink}</a>}
                     {doiLink && (

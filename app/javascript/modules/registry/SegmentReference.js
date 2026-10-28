@@ -41,7 +41,7 @@ export default function SegmentReference({ project, segmentRef, onSubmit }) {
 }
 
 SegmentReference.propTypes = {
-    project: PropTypes.object.isRequired,
+    project: PropTypes.object,
     segmentRef: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
 };
