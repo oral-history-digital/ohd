@@ -1,9 +1,6 @@
 import { pluralize } from 'modules/strings';
 
-const headerOptions = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-};
+import fetchHeaders from './fetchHeaders';
 
 export default function submitDataWithFetch(pathBase, params) {
     const dataType = Object.keys(params)[0];
@@ -16,7 +13,7 @@ export default function submitDataWithFetch(pathBase, params) {
         const path = `${pathBase}/${pluralizedDataType}/${id}`;
         const options = {
             method: 'PUT',
-            headers: headerOptions,
+            headers: fetchHeaders,
             body: JSON.stringify(params),
         };
 
@@ -25,7 +22,7 @@ export default function submitDataWithFetch(pathBase, params) {
         const path = `${pathBase}/${pluralizedDataType}`;
         const options = {
             method: 'POST',
-            headers: headerOptions,
+            headers: fetchHeaders,
             body: JSON.stringify(params),
         };
 

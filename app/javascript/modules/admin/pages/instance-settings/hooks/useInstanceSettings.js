@@ -6,6 +6,8 @@ import { usePathBase } from 'modules/routes';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
+import { getCsrfToken } from '../../../../../utils';
+
 export function useInstanceSettings() {
     const dispatch = useDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,6 +25,7 @@ export function useInstanceSettings() {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',
+                'X-CSRF-Token': getCsrfToken(),
             },
             body: formData,
         });
@@ -56,7 +59,10 @@ export function useInstanceSettings() {
             `${pathBase}/admin/instance-settings/breadcrumb-logo/${variant}.json`,
             {
                 method: 'PUT',
-                headers: { Accept: 'application/json' },
+                headers: {
+                    Accept: 'application/json',
+                    'X-CSRF-Token': getCsrfToken(),
+                },
                 body: formData,
             }
         );
@@ -76,7 +82,13 @@ export function useInstanceSettings() {
 
         const res = await fetch(
             `${pathBase}/admin/instance-settings/breadcrumb-logo/${variant}.json`,
-            { method: 'DELETE', headers: { Accept: 'application/json' } }
+            {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/json',
+                    'X-CSRF-Token': getCsrfToken(),
+                },
+            }
         );
 
         setIsSubmitting(false);

@@ -14,6 +14,16 @@ class ConfirmationsController < Devise::ConfirmationsController
 
   protected
 
+  # Devise redirects to the confirmed user's tenant host without passing
+  # allow_other_host. The target is already restricted to trusted hosts in
+  # after_confirmation_path_for, so allow the cross-host redirect only then.
+  def redirect_to(options = {}, response_options = {})
+    if options.is_a?(String) && (host = cross_host_for(options)) && trusted_redirect_host?(host)
+      response_options = response_options.merge(allow_other_host: true)
+    end
+    super(options, response_options)
+  end
+
   def after_confirmation_path_for(resource_name, resource)
     fallback_path = "/#{resource.default_locale || I18n.default_locale}"
     return fallback_path if resource.pre_register_location.blank?
@@ -44,6 +54,12 @@ class ConfirmationsController < Devise::ConfirmationsController
   rescue URI::InvalidURIError, ArgumentError
     fallback_path
   end 
+
+  def cross_host_for(location)
+    URI.parse(location).host.presence
+  rescue URI::InvalidURIError
+    nil
+  end
 
   def trusted_redirect_host?(host)
     trusted_hosts = [request.host]

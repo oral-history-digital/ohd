@@ -31,15 +31,14 @@ class UserRegistration < ApplicationRecord
     end
     @@registration_field_names.each do |field|
       next if [:email, :first_name, :last_name, :tos_agreement, :priv_agreement].include?(field)
-      class_eval <<EVAL
-              def #{field}
-                @#{field}
-              end
+      # Use define_method instead of eval for safety
+      define_method(field) do
+        instance_variable_get("@#{field}")
+      end
 
-              def #{field}=(value)
-                @#{field} = value
-              end
-EVAL
+      define_method("#{field}=") do |value|
+        instance_variable_set("@#{field}", value)
+      end
     end
   end
 
@@ -69,8 +68,11 @@ EVAL
                              ]
 
   def after_initialize
-    (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
-      self.send(attr.to_s + "=", value)
+    (YAML.safe_load(read_attribute(:application_info) || '', permitted_classes: [Symbol], aliases: true) || {}).each_pair do |attr, value|
+      # Only set attributes that are in the registration fields whitelist
+      if @@registration_field_names.include?(attr.to_sym)
+        self.public_send("#{attr}=", value)
+      end
     end
     @skip_mail_delivery = false
   end
@@ -101,7 +103,7 @@ EVAL
 
   def user_attributes
     require 'yaml'
-    YAML.load(read_attribute(:application_info)).stringify_keys
+    YAML.safe_load(read_attribute(:application_info), permitted_classes: [Symbol], aliases: true).stringify_keys
   end
 
   def update!

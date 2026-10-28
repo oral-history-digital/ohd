@@ -47,6 +47,26 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_not query.key?('checked_ohd_session')
   end
 
+  test 'JSON sign-in rejects a missing or invalid CSRF token and accepts the page token' do
+    original_protection = SessionsController.allow_forgery_protection
+    SessionsController.allow_forgery_protection = true
+    get '/en/users/sign_in'
+    token = Nokogiri::HTML(response.body).at_css('meta[name="csrf-token"]')['content']
+    credentials = { user: { email: @user.email, password: 'Password123!' }, path: '/en' }
+
+    post '/en/users/sign_in', params: credentials, as: :json
+    assert_response :unprocessable_entity
+    post '/en/users/sign_in', params: credentials, as: :json, headers: { 'X-CSRF-Token' => 'invalid' }
+    assert_response :unprocessable_entity
+
+    post '/en/users/sign_in', params: credentials, as: :json, headers: { 'X-CSRF-Token' => token }
+
+    assert_response :redirect
+    assert_redirected_to "#{@umbrella.archive_domain}/en?access_token=#{@token}"
+  ensure
+    SessionsController.allow_forgery_protection = original_protection
+  end
+
   private
 
   def sign_in_to_project(params = {})

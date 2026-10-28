@@ -1,0 +1,97 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "2a918b29bbc9e1d1dba32d69e54b4810f6a2305e1c84854914f2891764f2a8a6",
+      "check_name": "FileAccess",
+      "message": "Model attribute used in file name",
+      "file": "app/models/usage_report.rb",
+      "line": 422,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "File.open(File.join(UsageReport.report_file_path, name), \"w\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "UsageReport",
+        "method": "UsageReport.save_report_file"
+      },
+      "user_input": "UsageReport.report_file_path",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "ad28dadd5abf026c2c0977d66166695fe854391a67b1ecaae4596ea3c34bc1bb",
+      "check_name": "SendFile",
+      "message": "Model attribute used in file name",
+      "file": "app/controllers/admin/user_statistics_controller.rb",
+      "line": 61,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "send_file(File.expand_path(UsageReport.report_file_path(params[\"filename\"])), :disposition => \"inline\", :type => \"text/csv\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::UserStatisticsController",
+        "method": "usage_report"
+      },
+      "user_input": "UsageReport.report_file_path(params[\"filename\"])",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "bcb19ae715abcbf7fe0ba7c0af09d2a848deb66ead7677299d423e8fc0fdc468",
+      "check_name": "FileAccess",
+      "message": "Model attribute used in file name",
+      "file": "app/models/usage_report.rb",
+      "line": 413,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "FileUtils.mkdir(UsageReport.report_file_path)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "UsageReport",
+        "method": "UsageReport.save_report_file"
+      },
+      "user_input": "UsageReport.report_file_path",
+      "confidence": "Medium",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "cd7e8422b96026131b62c7b3deae9e86ac09a5c829f886fd4ba426c289be3efd",
+      "check_name": "FileAccess",
+      "message": "Model attribute used in file name",
+      "file": "app/models/usage_report.rb",
+      "line": 421,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "FileUtils.rm(File.join(UsageReport.report_file_path, name))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "UsageReport",
+        "method": "UsageReport.save_report_file"
+      },
+      "user_input": "UsageReport.report_file_path",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    }
+  ],
+  "brakeman_version": "8.0.6"
+}
