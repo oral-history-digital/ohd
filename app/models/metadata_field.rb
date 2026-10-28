@@ -1,5 +1,6 @@
 require 'globalize'
 class MetadataField < ApplicationRecord
+  include RefreshesSearchIndex
 
   belongs_to :project, touch: true
   belongs_to :registry_reference_type
@@ -32,11 +33,25 @@ class MetadataField < ApplicationRecord
                 end
   end
 
-  after_commit do
-    if use_as_facet_previously_changed?
-      # commentedout because it makes the rake task maintenance:create_ohd_project run eternally
-      #Sunspot.index!(project.umbrella? ? Interview.all : project.interviews)
+  refresh_search_index_on :project_id, :name, :source, :ref_object_type,
+    :registry_reference_type_id, :use_as_facet, :use_in_details_view
+
+  # Refreshes only projects whose facet definition or observation indexing changed.
+  #
+  # @return [Hash{String => Array<Integer>}] Facet-owning projects to reindex
+  def search_index_targets
+    old_attributes = attributes.merge(saved_changes.transform_values(&:first))
+    definitions = [attributes, old_attributes]
+    facet_change = @destroying_search_index ||
+                   (saved_changes.keys & %w[id project_id name source ref_object_type registry_reference_type_id 
+                                            use_as_facet]).any?
+    project_ids = definitions.filter_map do |definition|
+      facet = definition['use_as_facet'] && facet_change &&
+              %w[Interview Person RegistryReferenceType].include?(definition['source'])
+      observations = definition['source'] == 'Interview' && definition['name'] == 'observations'
+      definition['project_id'] if facet || observations
     end
+    { 'Project' => project_ids }
   end
 
 end
