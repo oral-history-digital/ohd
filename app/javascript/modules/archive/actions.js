@@ -1,6 +1,7 @@
 import { setCookie } from 'modules/persistence';
 import request from 'superagent';
 
+import { getCsrfToken } from '../../utils';
 import {
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
@@ -138,6 +139,7 @@ export function submitSelectedArchiveIds(
                 .post(`${pathBase}/interviews/${action}`)
                 .send({ archive_ids: archiveIds })
                 .set('Accept', 'application/json')
+                .set('X-CSRF-Token', getCsrfToken())
                 .then((res) => {
                     if (res) {
                         dispatch(receiveResult(JSON.parse(res.text)));
@@ -229,6 +231,7 @@ export function registerDoi(pathBase, dataType, id) {
             .post(`${pathBase}/${dataType}/${id}/doi`)
             //.send({})
             .set('Accept', 'application/json')
+            .set('X-CSRF-Token', getCsrfToken())
             .then((res) => {
                 if (res) {
                     dispatch(receiveResult(JSON.parse(res.text)));

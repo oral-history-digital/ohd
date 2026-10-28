@@ -37,6 +37,16 @@ class InterviewStoredLocaleHashTest < ActiveSupport::TestCase
                  Interview.parse_stored_locale_hash(stored))
   end
 
+  test 'round trips Ruby string escapes without evaluating interpolation' do
+    values = {
+      en: "First\nLast\t\u0001\a\b\e\f\r\v",
+      de: 'literal #{raise "must not execute"} #@name #$name',
+      ru: "Фомин\nДавид 😀"
+    }
+
+    assert_equal values, Interview.parse_stored_locale_hash(values.to_s)
+  end
+
   test 'rejects stored values that are not a plain locale hash' do
     assert_raises(ArgumentError) { Interview.parse_stored_locale_hash('{:en=>system("id")}') }
     assert_raises(ArgumentError) { Interview.parse_stored_locale_hash('{:en=>1}') }

@@ -875,7 +875,11 @@ class Interview < ApplicationRecord
     end
 
     # Solr stores locale hashes as Ruby's Hash#to_s, e.g. {:en=>"Name", :de=>nil}.
-    # Parse only that literal shape (symbol keys, string/nil values); never eval.
+    # Parses symbol keys and string/nil values without evaluating Ruby code.
+    #
+    # @param stored [String, nil] Stored locale hash
+    # @return [Hash{Symbol => String, nil}] Decoded locale values
+    # @raise [ArgumentError] If the stored value is not a supported literal hash
     def parse_stored_locale_hash(stored)
       return {} if stored.blank?
 
@@ -889,7 +893,12 @@ class Interview < ApplicationRecord
         match = rest.match(/\A#{pair}/)
         raise ArgumentError, "unexpected stored locale hash: #{stored.truncate(80)}" unless match
 
-        value = match[2] == 'nil' ? nil : match[3].gsub(/\\(.)/) { Regexp.last_match(1) }
+        value = if match[2] == 'nil'
+          nil
+        else
+          # String#undump decodes Ruby escapes but requires ASCII input.
+          match[2].gsub(/[^\x00-\x7f]/) { |character| character.dump[1...-1] }.undump
+        end
         result[match[1].to_sym] = value
         rest = match.post_match
       end

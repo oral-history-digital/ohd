@@ -15,6 +15,9 @@ module Archive
     # -- all .rb files in that directory are automatically loaded.
 
     config.load_defaults "8.1"
+    # Existing deterministic OTP secrets use SHA1 key derivation. Keep their keys
+    # stable until the encrypted data can be migrated to a new scheme.
+    config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA1
     # 8.1 defaults drop the implicit YAML coder for `serialize`. Existing columns
     # are stored as YAML, so keep that explicitly to avoid changing their format.
     config.active_record.default_column_serializer = ActiveRecord::Coders::YAMLColumn

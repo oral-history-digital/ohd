@@ -3,6 +3,27 @@ require "test_helper"
 class UserTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
+  test 'authenticates with an OTP secret encrypted before Rails 8.1 defaults' do
+    secret = ROTP::Base32.random
+    legacy_provider = ActiveRecord::Encryption::DerivedSecretKeyProvider.new(
+      ActiveRecord::Encryption.config.deterministic_key,
+      key_generator: ActiveRecord::Encryption::KeyGenerator.new(hash_digest_class: OpenSSL::Digest::SHA1)
+    )
+    ciphertext = ActiveRecord::Encryption.encryptor.encrypt(
+      secret, key_provider: legacy_provider, cipher_options: { deterministic: true }
+    )
+    user = User.find_by!(email: 'john@example.com')
+    user.update!(otp_required_for_login: true, consumed_timestep: nil)
+    # Write the old ciphertext directly so the current attribute coder cannot re-encrypt it.
+    User.connection.execute("UPDATE users SET otp_secret = #{User.connection.quote(ciphertext)} WHERE id = #{user.id}")
+    user.reload
+
+    assert_equal secret, user.otp_secret
+    assert_not user.validate_and_consume_otp!('invalid')
+    assert user.validate_and_consume_otp!(ROTP::TOTP.new(secret).now)
+    assert_equal secret, user.reload.otp_secret
+  end
+
   test 'email OTP is stored as a hash and only accepts the matching unexpired code' do
     user = User.find_by!(email: 'john@example.com')
     code = user.generate_email_otp!
