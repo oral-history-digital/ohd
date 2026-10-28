@@ -43,3 +43,20 @@ test('displays v2 project counts and expanded interview languages', () => {
         screen.getByText(/12 activerecord.models.interview.other/)
     ).toBeInTheDocument();
 });
+
+test('marks unpublished projects even while collapsed and leaves public projects unbadged', () => {
+    const project = {
+        id: 1,
+        name: 'Archive',
+        shortname: 'archive',
+        workflow_state: 'unshared',
+    };
+    const { rerender } = render(<ProjectCard project={project} />);
+    expect(screen.getByText('explorer.project_not_public')).toBeInTheDocument();
+    rerender(
+        <ProjectCard project={{ ...project, workflow_state: 'public' }} />
+    );
+    expect(
+        screen.queryByText('explorer.project_not_public')
+    ).not.toBeInTheDocument();
+});
