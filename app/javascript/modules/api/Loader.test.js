@@ -356,6 +356,28 @@ describe('Loader', () => {
             expect(mockDispatch).not.toHaveBeenCalled();
         });
 
+        test('sends the current Rails CSRF token with DELETE requests', () => {
+            const meta = document.createElement('meta');
+            meta.name = 'csrf-token';
+            meta.content = 'logout-csrf-token';
+            document.head.appendChild(meta);
+            try {
+                Loader.delete('/logout', mockDispatch, null, mockCb);
+                expect(mockRequestInstance.set).toHaveBeenCalledWith(
+                    'X-CSRF-Token',
+                    'logout-csrf-token'
+                );
+                meta.content = 'renewed-csrf-token';
+                Loader.delete('/logout', mockDispatch, null, mockCb);
+                expect(mockRequestInstance.set).toHaveBeenCalledWith(
+                    'X-CSRF-Token',
+                    'renewed-csrf-token'
+                );
+            } finally {
+                meta.remove();
+            }
+        });
+
         test('handles error response', () => {
             mockRequestInstance.end = jest.fn((callback) => {
                 const error = new Error('Delete failed');

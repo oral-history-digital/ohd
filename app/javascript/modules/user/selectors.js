@@ -6,6 +6,9 @@ export const getIsLoggedIn = (state) => getAccount(state).isLoggedIn;
 
 export const getIsLoggedOut = (state) => getAccount(state).isLoggedOut;
 
+export const getIsRedirectingAfterLogout = (state) =>
+    Boolean(getAccount(state).isRedirectingAfterLogout);
+
 export const getIsLoggingIn = (state) => getAccount(state).isLoggingIn;
 
 export const getFirstName = (state) => getAccount(state).firstName;

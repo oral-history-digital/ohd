@@ -26,6 +26,7 @@ const user = (state = { isLoggedIn: false }, action) => {
                 isLoggingIn: false,
                 isLoggedIn: true,
                 isLoggedOut: false,
+                isRedirectingAfterLogout: false,
                 loggedInAt: Date.now(),
                 firstName: action.firstName,
                 lastName: action.lastName,
@@ -49,6 +50,9 @@ const user = (state = { isLoggedIn: false }, action) => {
             return Object.assign({}, state, {
                 isLoggedIn: false,
                 isLoggedOut: true,
+                isRedirectingAfterLogout:
+                    Boolean(action.redirecting) ||
+                    Boolean(state.isRedirectingAfterLogout),
                 loggedInAt: false,
                 firstName: false,
                 lastName: false,
