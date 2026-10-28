@@ -13,6 +13,7 @@ import { FaToggleOff, FaToggleOn } from 'react-icons/fa';
  * @param {('sm'|'md'|'lg')} [props.size='md'] - Label and icon size; md preserves the standard size.
  * @param {boolean} [props.disabled=false] - Prevents interaction when true.
  * @param {string} [props.className] - Additional button classes.
+ * @param {Object} props... - Additional HTML button attributes, such as title and data attributes.
  * @returns {React.ReactElement} Keyboard-accessible switch button.
  */
 export default function Switch({
@@ -23,11 +24,13 @@ export default function Switch({
     size = 'md',
     disabled = false,
     className,
+    ...buttonProps
 }) {
     const Icon = checked ? FaToggleOn : FaToggleOff;
 
     return (
         <button
+            {...buttonProps}
             type="button"
             role="switch"
             aria-checked={checked}
