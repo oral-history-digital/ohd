@@ -11,13 +11,21 @@ import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { useSidebar } from 'modules/sidebar';
+import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 
 import ResultGrid from './ResultGrid';
 import ResultTable from './ResultTable';
 import WorkflowResultsContainer from './WorkflowResultsContainer';
 
+/**
+ * Displays result tabs and mounts pagination only after their metadata is ready.
+ *
+ * @param {Object} props - Results, tab controls and pagination content.
+ * @returns {JSX.Element} Result tabs or a centered metadata loading indicator.
+ */
 export default function ArchiveSearchTabs({
+    children,
     interviews,
     empty,
     loading,
@@ -31,6 +39,11 @@ export default function ArchiveSearchTabs({
     const { isAuthorized } = useAuthorization();
     const { project } = useProject();
     const { hide, show } = useSidebar();
+    const loadingFallback = (
+        <div className="u-align-center">
+            <Spinner withPadding />
+        </div>
+    );
 
     function handleTabClick(tabIndex) {
         const nextViewMode = viewModes[tabIndex];
@@ -86,11 +99,13 @@ export default function ArchiveSearchTabs({
                 ]}
                 testDataType="projects"
                 testIdOrDesc={project.is_umbrella ? 'all' : project.id}
+                fallback={loadingFallback}
             >
                 <Fetch
                     fetchParams={['collections', null, null, 'all']}
                     testDataType="collections"
                     testIdOrDesc={'all'}
+                    fallback={loadingFallback}
                 >
                     <TabPanels className="u-mt">
                         {viewModes?.map((viewMode) => {
@@ -143,6 +158,7 @@ export default function ArchiveSearchTabs({
                             );
                         })}
                     </TabPanels>
+                    {children}
                 </Fetch>
             </Fetch>
         </Tabs>
@@ -150,6 +166,7 @@ export default function ArchiveSearchTabs({
 }
 
 ArchiveSearchTabs.propTypes = {
+    children: PropTypes.node,
     interviews: PropTypes.array,
     empty: PropTypes.bool.isRequired,
     loading: PropTypes.bool.isRequired,

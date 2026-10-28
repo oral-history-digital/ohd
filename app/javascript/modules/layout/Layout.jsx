@@ -137,7 +137,7 @@ export default function Layout({ children }) {
         return (
             <div className="Layout Layout--loading">
                 <main className="Site-content Layout-loadingContent">
-                    <Spinner size={200} color="#f1f1f1" withPadding />
+                    <Spinner size={200} withPadding />
                 </main>
             </div>
         );

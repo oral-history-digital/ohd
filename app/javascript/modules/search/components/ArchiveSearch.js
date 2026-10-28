@@ -11,6 +11,11 @@ import SearchActions from './SearchActions';
 
 const PAGE_SIZE = 12;
 
+/**
+ * Displays search results.
+ *
+ * @returns {JSX.Element} Search results, pagination and request errors.
+ */
 function ArchiveSearch() {
     const { t, locale } = useI18n();
 
@@ -25,8 +30,7 @@ function ArchiveSearch() {
 
     const isLoadingInitialData = !data && !error;
     const isLoadingMore =
-        isLoadingInitialData ||
-        (size > 0 && data && typeof data[size - 1] === 'undefined');
+        size > 1 && data && typeof data[size - 1] === 'undefined';
     const isEmpty = data?.[0]?.interviews?.length === 0;
     const isReachingEnd =
         isEmpty ||
@@ -53,19 +57,23 @@ function ArchiveSearch() {
                 interviews={interviews}
                 empty={isEmpty}
                 loading={isLoading}
-            />
+            >
+                {!isLoadingInitialData && !isLoadingMore && !isReachingEnd && (
+                    <Observer onChange={handleScroll} />
+                )}
+
+                {isLoadingMore && (
+                    <div className="u-align-center">
+                        <Spinner withPadding />
+                    </div>
+                )}
+            </ArchiveSearchTabsContainer>
 
             {error && (
                 <ErrorMessage className="u-mt">
                     {error.message} ({error.status})
                 </ErrorMessage>
             )}
-
-            {!isLoadingMore && !isReachingEnd && (
-                <Observer onChange={handleScroll} />
-            )}
-
-            {isLoadingMore && <Spinner />}
         </>
     );
 }

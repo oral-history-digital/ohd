@@ -1,5 +1,6 @@
 import { useGetProjects } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 
 import {
@@ -51,6 +52,7 @@ export function ProjectList({
     if (isLoading) {
         return (
             <div className="ProjectList--loading">
+                <Spinner size="small" />
                 {t('explorer.project_list.loading')}
             </div>
         );

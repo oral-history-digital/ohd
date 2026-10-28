@@ -3,6 +3,7 @@ import { useTrackPageView } from 'modules/analytics';
 import { useGetProject } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useCurrentPage } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
 import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
@@ -12,6 +13,11 @@ import ProjectLogo from './ProjectLogo';
 import StartPageVideo from './StartPageVideo';
 import getProjectLogoSrc from './utils/getProjectLogoSrc';
 
+/**
+ * Displays the project homepage.
+ *
+ * @returns {JSX.Element|null} The homepage, loading indicator, or no content if unavailable.
+ */
 export default function ProjectHome() {
     const currentPage = useCurrentPage();
     const { project, loading } = useGetProject({
@@ -21,7 +27,15 @@ export default function ProjectHome() {
     const { locale } = useI18n();
     useTrackPageView();
 
-    if (!project || loading) return null;
+    if (loading) {
+        return (
+            <div className="wrapper-content ProjectHome ProjectHome--loading">
+                <Spinner withPadding />
+            </div>
+        );
+    }
+
+    if (!project) return null;
 
     const showProjectLogo = project && project?.display_ohd_link === true;
     const hasLogo = Boolean(getProjectLogoSrc(project, locale));

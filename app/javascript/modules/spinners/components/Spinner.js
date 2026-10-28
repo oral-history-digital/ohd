@@ -1,7 +1,18 @@
+import classNames from 'classnames';
 import { useTheme } from 'modules/layout/ThemeProvider';
 import PropTypes from 'prop-types';
-import { ColorRing } from 'react-loader-spinner';
 
+/**
+ * Displays a themed CSS loading ring with the catalog's border animation.
+ *
+ * @param {Object} props - Spinner appearance.
+ * @param {'small'|'medium'|'large'|number} [props.size='medium'] - Size in pixels or a preset.
+ * @param {boolean} [props.withPadding=false] - Adds space around the ring.
+ * @param {string} [props.color] - Overrides the current project's primary color.
+ * @param {string} [props.className] - Additional wrapper classes.
+ * @param {Object} [props.style] - Additional wrapper styles.
+ * @returns {JSX.Element} An accessible loading indicator.
+ */
 export default function Spinner({
     size = 'medium', // 'small' | 'medium' | 'large' or custom size in px
     withPadding = false,
@@ -9,7 +20,7 @@ export default function Spinner({
     className,
     style,
 }) {
-    const { secondaryColor } = useTheme();
+    const { primaryColor } = useTheme();
 
     const smallPx = 32,
         mediumPx = 96,
@@ -17,7 +28,8 @@ export default function Spinner({
 
     let sizeInPx = mediumPx; // default size for 'medium'
 
-    const ringColor = color || secondaryColor;
+    // ThemeProvider publishes the current project's colors as CSS variables.
+    const ringColor = color || `var(--primary-color, ${primaryColor})`;
 
     if (
         typeof size === 'string' &&
@@ -33,25 +45,26 @@ export default function Spinner({
         );
     }
 
-    const isSmall = sizeInPx <= smallPx;
-
     return (
-        <>
-            <ColorRing
-                visible={true}
-                height={sizeInPx}
-                width={sizeInPx}
-                ariaLabel="color-ring-loading"
-                wrapperStyle={style}
-                wrapperClass={`color-ring-wrapper ${className} ${
-                    withPadding ? 'color-ring-wrapper--withPadding' : ''
-                } ${isSmall ? 'color-ring-wrapper--small' : ''}`}
-                // Some versions of the loader ignore `color` and render the default
-                // 5-color gradient. Provide a 5-item `colors` array where every
-                // entry is the same color to guarantee a solid appearance.
-                colors={[ringColor, ringColor, ringColor, ringColor, ringColor]}
+        <span
+            className={classNames('Spinner', className, {
+                'Spinner--withPadding': withPadding,
+            })}
+            style={style}
+            role="progressbar"
+            aria-label="color-ring-loading"
+            aria-busy="true"
+        >
+            <span
+                className="Spinner-ring"
+                aria-hidden="true"
+                style={{
+                    width: sizeInPx,
+                    height: sizeInPx,
+                    borderTopColor: ringColor,
+                }}
             />
-        </>
+        </span>
     );
 }
 
