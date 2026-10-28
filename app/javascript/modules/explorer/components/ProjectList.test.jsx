@@ -29,6 +29,7 @@ const projects = [
     {
         id: 1,
         name: 'First',
+        workflow_state: 'public',
         interview_counts: { total: 1 },
         collection_counts: { total: 1 },
         institutions: [
@@ -99,4 +100,24 @@ test('preserves loading error and empty states', () => {
     expect(
         screen.getByText('explorer.project_list.no_results')
     ).toBeInTheDocument();
+});
+
+test('hides unpublished projects when the catalog filter is off and includes them when enabled', () => {
+    const { rerender } = render(<ProjectList showUnpublished={false} />);
+    expect(screen.getByRole('button', { name: 'First' })).toBeInTheDocument();
+    expect(
+        screen.queryByRole('button', { name: 'Unpublished' })
+    ).not.toBeInTheDocument();
+    rerender(<ProjectList showUnpublished />);
+    expect(
+        screen.getByRole('button', { name: 'Unpublished' })
+    ).toBeInTheDocument();
+    useCatalogProjects.mockReturnValue({
+        projects: [projects[0]],
+        isLoading: false,
+    });
+    rerender(<ProjectList showUnpublished />);
+    expect(
+        screen.queryByRole('button', { name: 'Unpublished' })
+    ).not.toBeInTheDocument();
 });

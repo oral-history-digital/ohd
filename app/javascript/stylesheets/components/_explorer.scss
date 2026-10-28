@@ -1126,3 +1126,17 @@ h4.CollectionList-collectionsTitle {
     flex-shrink: 0;
   }
 }
+
+.ProjectCard-publicationStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-inline-start: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: #fef3c7;
+  color: #78350f;
+  font-size: $font-size-small;
+  font-weight: 400;
+  vertical-align: middle;
+}
