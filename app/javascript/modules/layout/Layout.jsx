@@ -65,7 +65,7 @@ export default function Layout({ children }) {
     const { locale, t } = useI18n();
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { project, projectShortname, isLoading, error } = useProject({});
+    const { project, projectShortname, isLoading, error } = useProject();
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
     const isEditviewActive = useIsEditor();
 

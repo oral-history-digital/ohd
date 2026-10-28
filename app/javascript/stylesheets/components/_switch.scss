@@ -1,0 +1,32 @@
+.Switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  color: inherit;
+  text-align: start;
+}
+
+.Switch-icon {
+  flex-shrink: 0;
+}
+
+.Switch--sm {
+  font-size: 0.875rem;
+
+  .Switch-icon {
+    font-size: 1.25rem;
+  }
+}
+
+.Switch--md .Switch-icon {
+  font-size: 1.5rem;
+}
+
+.Switch--lg {
+  font-size: 1.125rem;
+
+  .Switch-icon {
+    font-size: 2rem;
+  }
+}

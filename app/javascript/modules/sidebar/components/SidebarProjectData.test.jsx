@@ -128,7 +128,7 @@ test.each([
         );
         expect(screen.queryByRole('link')).not.toBeInTheDocument();
         expect(screen.queryByRole('button')).not.toBeInTheDocument();
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         useProject.mockReturnValue({
             project: { display_name: 'Retained name' },
             error: { message: 'Access denied' },

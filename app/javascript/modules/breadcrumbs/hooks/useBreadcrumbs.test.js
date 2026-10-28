@@ -42,7 +42,7 @@ describe('useBreadcrumbs', () => {
         });
         const { result, rerender } = renderHook(() => useBreadcrumbs());
         expect(result.current).toEqual([]);
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
 
         useProject.mockReturnValue({
             project: { shortname: 'pilot', display_name: 'Projekt Alpha' },

@@ -25,7 +25,7 @@ export default function EventTypesAdminPage() {
         project,
         isLoading: projectLoading,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const {
         data,
         isLoading,

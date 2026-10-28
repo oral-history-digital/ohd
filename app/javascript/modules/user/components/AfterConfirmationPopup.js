@@ -11,7 +11,7 @@ import RequestProjectAccessFormContainer from './RequestProjectAccessFormContain
  */
 export default function AfterConfirmationPopup() {
     const currentUser = useSelector(getCurrentUser);
-    const { project: currentProject, isLoading, error } = useProject({});
+    const { project: currentProject, isLoading, error } = useProject();
     const currentProjectAccess =
         currentUser?.user_projects &&
         Object.values(currentUser.user_projects).find((up) => {

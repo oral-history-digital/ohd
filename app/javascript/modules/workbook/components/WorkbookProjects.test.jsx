@@ -137,7 +137,7 @@ test('lists wait for the current project and hide cached entries after an access
     useProject.mockReturnValue({ project: { id: 7, is_umbrella: false } });
     rerender(<WorkbookItemList type="saved_interviews" contents={contents} />);
     expect(screen.getByText('Saved interview')).toBeInTheDocument();
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     useProject.mockReturnValue({
         project: { id: 7, is_umbrella: false },
         error: { message: 'Access denied' },

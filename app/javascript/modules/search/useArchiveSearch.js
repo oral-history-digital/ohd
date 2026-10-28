@@ -34,7 +34,7 @@ export default function useArchiveSearch() {
         isLoading: projectIsLoading,
         isValidating: projectIsValidating,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const isLoggedIn = useSelector(getIsLoggedIn);
     const loggedInAt = useSelector(getLoggedInAt);
     const {

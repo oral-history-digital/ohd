@@ -109,7 +109,7 @@ test('interview search waits for project settings, reports denial, and hides ret
     const { result, rerender } = renderHook(useArchiveSearch, {
         wrapper: Provider,
     });
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(fetcher).not.toHaveBeenCalled();
     expect(result.current.isLoading).toBe(true);
 

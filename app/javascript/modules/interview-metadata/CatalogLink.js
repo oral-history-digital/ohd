@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
  */
 export default function CatalogLink({ id, type }) {
     const { t, locale } = useI18n();
-    const { project, isLoading, error: projectError } = useProject({});
+    const { project, isLoading, error: projectError } = useProject();
     const {
         project: umbrellaProject,
         isLoading: umbrellaIsLoading,

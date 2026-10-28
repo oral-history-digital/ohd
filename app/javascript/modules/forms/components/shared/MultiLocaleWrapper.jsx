@@ -17,7 +17,7 @@ import { InputField, RichTextarea, Textarea } from '../input';
  */
 export default function MultiLocaleWrapper(props) {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const locales = project?.available_locales || [];
 
     const {

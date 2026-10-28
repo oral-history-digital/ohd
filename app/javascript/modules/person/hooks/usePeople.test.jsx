@@ -35,7 +35,7 @@ test.each(['/pilot/en', '/de'])(
             mutate: useMutatePeople(),
         }));
         const key = `${pathBase}/people.json?for_projects=7`;
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         expect(useSWRImmutable).toHaveBeenCalledWith(key, fetcher);
         expect(result.current.people.data).toEqual(people);
         result.current.mutate();

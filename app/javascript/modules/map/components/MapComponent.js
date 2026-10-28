@@ -30,7 +30,7 @@ export default function MapComponent({
     children,
 }) {
     const { t, locale } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
 
     if (error) {
         return (

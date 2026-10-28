@@ -34,7 +34,7 @@ beforeEach(() => {
 
 test('registers project locales with UI overrides and preserves translation-key view', () => {
     const { result, rerender } = renderHook(() => useVideojsLanguages());
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(result.current.strings.Play).toBe('Custom play');
     expect(videojs.addLanguage).toHaveBeenCalledWith(
         'en',
