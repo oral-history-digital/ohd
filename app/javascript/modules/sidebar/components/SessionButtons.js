@@ -5,7 +5,7 @@ import { OHD_DOMAINS } from 'modules/constants';
 import { clearStateData, getProjectResources } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { pathWithoutInternalSessionFlag } from 'modules/query-string';
-import { usePathBase, useProjectIdentity } from 'modules/routes';
+import { usePathBase, useProject, useProjectIdentity } from 'modules/routes';
 import { getIsLoggedIn, submitLogout } from 'modules/user';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +26,7 @@ export default function SessionButtons({ className }) {
     const isLoggedIn = useSelector(getIsLoggedIn);
     const archiveId = useSelector(getArchiveId);
     const projects = useSelector(getProjectResources);
+    const { project } = useProject();
     const loginReturnPath = pathWithoutInternalSessionFlag(
         location.pathname,
         location.search
@@ -92,7 +93,15 @@ export default function SessionButtons({ className }) {
                             dispatch(clearStateData('projects', pid, 'people'));
                         });
                     }
-                    dispatch(submitLogout(`${pathBase}/users/sign_out`));
+                    dispatch(
+                        project?.workflow_state === 'unshared'
+                            ? submitLogout(`${pathBase}/users/sign_out`, () => {
+                                  window.location.assign(
+                                      `${OHD_DOMAINS[railsMode]}/${locale}`
+                                  );
+                              })
+                            : submitLogout(`${pathBase}/users/sign_out`)
+                    );
                 }}
             >
                 {t('logout')}

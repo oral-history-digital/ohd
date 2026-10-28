@@ -258,7 +258,7 @@ test('search panel uses the project role for its title and help', () => {
     expect(screen.getByText('search_page')).toBeInTheDocument();
 });
 
-test('session links use the project shortname without loading details and retain logout', () => {
+test('session links use the project shortname and retain public-project logout', () => {
     const { rerender } = render(
         <MemoryRouter>
             <SessionButtons />
@@ -273,7 +273,6 @@ test('session links use the project shortname without loading details and retain
         'href',
         '/pilot/en/register'
     );
-    expect(useProject).not.toHaveBeenCalled();
     getIsLoggedIn.mockReturnValue(true);
     rerender(
         <MemoryRouter>
@@ -287,4 +286,19 @@ test('session links use the project shortname without loading details and retain
     fireEvent.click(screen.getByRole('button', { name: 'logout' }));
     expect(submitLogout).toHaveBeenCalledWith('/pilot/en/users/sign_out');
     expect(mockDispatch).toHaveBeenLastCalledWith({ type: 'logout' });
+});
+
+test('unshared-project logout supplies navigation after server success', () => {
+    getIsLoggedIn.mockReturnValue(true);
+    useProject.mockReturnValue({ project: { workflow_state: 'unshared' } });
+    render(
+        <MemoryRouter>
+            <SessionButtons />
+        </MemoryRouter>
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'logout' }));
+    expect(submitLogout).toHaveBeenCalledWith(
+        '/pilot/en/users/sign_out',
+        expect.any(Function)
+    );
 });
