@@ -117,9 +117,18 @@ export const replaceInstanceSettings = (data) => ({
  * @param {number|string} [id] - Optional record identifier.
  * @param {string} [nestedDataType] - Optional nested endpoint name.
  * @param {string} [extraParams] - Query string without the leading question mark.
- * @returns {function(Function): void} Thunk dispatching resource loading and results.
+ * @param {Object} [options={}] - Optional request behavior.
+ * @param {boolean} [options.handleErrors=false] - Record failure status instead of passing errors to the legacy success handler.
+ * @returns {function(Function): void} Thunk dispatching loading, results, and optional failure status.
  */
-export function fetchData(props, dataType, id, nestedDataType, extraParams) {
+export function fetchData(
+    props,
+    dataType,
+    id,
+    nestedDataType,
+    extraParams,
+    { handleErrors = false } = {}
+) {
     let url = `${props.pathBase || pathBase(props)}/${dataType}`;
     if (id) {
         url += `/${id}`;
@@ -141,7 +150,15 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
                 extraParams?.replace(/[=&]/g, '_')
             )
         );
-        Loader.getJson(url, null, dispatch, receiveData);
+        Loader.getJson(
+            url,
+            null,
+            dispatch,
+            receiveData,
+            handleErrors
+                ? (error) => receiveError(dataType, id, error)
+                : undefined
+        );
     };
 }
 

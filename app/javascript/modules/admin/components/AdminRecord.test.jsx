@@ -6,6 +6,16 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import AdminRecord from './AdminRecord';
+import DataList from './DataList';
+
+jest.mock('./EditViewOrRedirect', () => {
+    const MockPropTypes = jest.requireActual('prop-types');
+    function EditViewOrRedirect({ children }) {
+        return children;
+    }
+    EditViewOrRedirect.propTypes = { children: MockPropTypes.node };
+    return EditViewOrRedirect;
+});
 
 jest.mock('modules/archive', () => ({
     getProjectId: (state) => state.archive?.projectId,
@@ -29,7 +39,14 @@ jest.mock('modules/data', () => ({
     useSensitiveData: jest.fn(),
 }));
 jest.mock('modules/i18n', () => ({
-    useI18n: () => ({ t: (key) => key, locale: 'en' }),
+    useI18n: () => ({
+        t: (key) =>
+            ({
+                'activerecord.models.logo.one': 'Logo',
+                'activerecord.models.sponsor_logo.one': 'Sponsor logo',
+            })[key] || key,
+        locale: 'en',
+    }),
 }));
 jest.mock('modules/person', () => {
     const MockPropTypes = jest.requireActual('prop-types');
@@ -44,6 +61,7 @@ jest.mock('modules/person', () => {
 });
 jest.mock('modules/routes', () => ({
     usePathBase: () => '/test/en',
+    useProjectIdentity: () => ({ projectDbId: 1 }),
     useProject: () => ({
         project: { id: 1, shortname: 'test' },
         projectId: 'test',
@@ -158,6 +176,76 @@ test('renders the record and its configured actions', () => {
     expect(screen.getByTestId('action-edit')).toBeInTheDocument();
     expect(screen.getByTestId('action-delete')).toBeInTheDocument();
     expect(screen.queryByTestId('action-register_doi')).not.toBeInTheDocument();
+});
+
+test.each([
+    [
+        'logo',
+        { id: 4, type: 'Logo', filename: 'archive.svg', locale: 'en' },
+        'Logo en',
+    ],
+    [
+        'logo',
+        { id: 4, type: 'Logo', filename: 'archive-de.svg', locale: 'de' },
+        'Logo de',
+    ],
+    [
+        'sponsor_logo',
+        {
+            id: 4,
+            type: 'SponsorLogo',
+            filename: 'sponsor.png',
+            locale: 'de',
+            title: 'Sponsor title',
+        },
+        'Sponsor title',
+    ],
+    [
+        'logo',
+        { id: 4, type: 'Logo', filename: null, url: null, locale: 'en' },
+        'Logo en',
+    ],
+    [
+        'logo',
+        { id: 4, type: 'Logo', filename: null, url: null, locale: null },
+        'Logo #4',
+    ],
+    [
+        'media_stream',
+        { id: 4, media_type: 'video', resolution: '720p', path: '/media/{id}' },
+        'video 720p',
+    ],
+    [
+        'external_link',
+        {
+            id: 4,
+            name: null,
+            internal_name: 'Project website',
+            url: 'https://example.org',
+        },
+        'Project website',
+    ],
+    [
+        'external_link',
+        { id: 4, name: '', internal_name: '', url: 'https://example.org' },
+        'https://example.org',
+    ],
+])('renders a visible label in the real %s list', (scope, data, label) => {
+    render(
+        <DataList
+            data={[data]}
+            scope={scope}
+            hideAdd
+            hideShow
+            hideEdit
+            hideDelete
+            fetchData={jest.fn()}
+            submitData={jest.fn()}
+        />
+    );
+    expect(
+        screen.getByText(label, { selector: '.base-data .name' })
+    ).toBeInTheDocument();
 });
 
 test('respects hidden action configuration', () => {
