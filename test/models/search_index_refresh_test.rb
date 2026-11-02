@@ -36,6 +36,31 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     assert_not_includes indexed_ids(Interview, created.archive_id, :archive_id_fulltext), created.id
   end
 
+  test 'nonpublic transcripts are searchable only with owning-project content permission' do
+    user = User.find_by!(email: 'john@example.com')
+    permission = Permission.find_or_create_by!(klass: 'General', action_name: 'edit')
+    role = Role.create!(project: @project, name: 'Transcript editor')
+    RolePermission.create!(role: role, permission: permission)
+    assignment = UserRole.create!(user: user, role: role)
+    create_segment
+
+    %w[restricted unshared].each do |state|
+      refresh { @interview.update!(workflow_state: state) }
+      assert_includes indexed_ids(Interview, 'Originaltranscript', :transcript), @interview.id
+      # Search results are filtered by project, so the user must have a role in the project to see the interview.
+      assert_includes Interview.archive_search(user.reload, @project, :en,
+        { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
+      # The user has no role in the other project, so they cannot see the interview even though it is indexed.
+      assert_not_includes Interview.archive_search(user, @other_project, :en,
+        { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
+    end
+
+    assignment.destroy!
+    # The user no longer has a role in the project, so they cannot see the interview even though it is indexed.
+    assert_not_includes Interview.archive_search(user.reload, @project, :en,
+      { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
+  end
+
   test 'jobs wait for commit, merge nested saves and discard rolled back work' do
     assert_no_enqueued_jobs(only: RefreshSearchIndexJob) do
       Interview.transaction do

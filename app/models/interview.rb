@@ -233,10 +233,11 @@ class Interview < ApplicationRecord
     # string :birth_location, :stored => true
 
     text :transcript, stored: true do
-      workflow_state == 'public' ? segments.inject([]) do |all, segment|
+      # Content access is enforced by InterviewPolicy::Scope in archive_search.
+      segments.inject([]) do |all, segment|
         all << segment.translations.where("locale like '%-public'").inject([]){|mem, t| mem << t.text; mem}.join(' ')
         all
-      end.join(' ') : ''
+      end.join(' ')
     end
 
     text :headings do
