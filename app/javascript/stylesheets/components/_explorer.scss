@@ -1110,7 +1110,8 @@ h4.CollectionList-collectionsTitle {
   }
 }
 
-.ProjectCard-publicationStatus {
+.ProjectCard-publicationStatus,
+.CollectionPublicationStatus {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
