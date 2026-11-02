@@ -114,6 +114,43 @@
     }
   }
 
+  .SegmentTabs-previewSpeed {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-inline-start: 1rem;
+    padding-inline-start: 0.5rem;
+    border: $base-unit * 0.083333 solid var(--primary-color);
+    border-radius: 3px;
+    color: var(--primary-color);
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    &:focus-within {
+      background-color: color-mix(
+        in srgb,
+        var(--primary-color) 12%,
+        transparent
+      );
+    }
+  }
+
+  .SegmentTabs-previewSpeedSelect {
+    height: 2rem;
+    padding-inline: 0.5rem;
+    border: none;
+    background-color: transparent;
+    color: var(--primary-color);
+    font: inherit;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
   .SegmentTabs-previewTime {
     display: flex;
     align-items: center;
