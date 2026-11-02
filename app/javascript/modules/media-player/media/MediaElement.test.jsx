@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import { render, screen } from '@testing-library/react';
 import { useProject } from 'modules/routes';
+import { useDispatch } from 'react-redux';
 
+import { updatePlaybackRate } from '../redux/actions';
 import MediaElement from './MediaElement';
 import VideoJS from './VideoJS';
 
@@ -10,7 +12,11 @@ jest.mock('modules/routes', () => ({
     usePathBase: () => '/pilot/en',
 }));
 jest.mock('modules/archive', () => ({ getTranslationsView: jest.fn() }));
-jest.mock('react-redux', () => ({ useSelector: () => false }));
+jest.mock('react-redux', () => ({
+    useDispatch: jest.fn(),
+    useSelector: (selector) =>
+        selector({ 'media-player': { playbackRate: 1.5 } }),
+}));
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({ t: (key) => key, locale: 'en' }),
 }));
@@ -36,6 +42,7 @@ const project = {
     aspect_y: 9,
     media_streams: [{ media_type: 'video', resolution: 'hls', suffix: 'm3u8' }],
 };
+const dispatch = jest.fn();
 const props = {
     archiveId: 'pilot001',
     interview: {
@@ -54,6 +61,7 @@ const props = {
 
 beforeEach(() => {
     jest.clearAllMocks();
+    useDispatch.mockReturnValue(dispatch);
     useProject.mockReturnValue({ project });
 });
 
@@ -72,6 +80,7 @@ test('waits for playback settings, then initializes sources, aspect ratio, and t
         sources: [{ src: '/pilot/en/media_streams/pilot001/1/hls.m3u8' }],
     });
     const player = {
+        playbackRate: jest.fn(() => 1.5),
         configurationMenuPlugin: jest.fn(),
         toggleSizePlugin: jest.fn(),
         customSkipButtonsPlugin: jest.fn(),
@@ -84,6 +93,13 @@ test('waits for playback settings, then initializes sources, aspect ratio, and t
         src: jest.fn(),
     };
     playerProps.onReady(player);
+    expect(player.playbackRate).toHaveBeenCalledWith(1.5);
+    player.playbackRate.mockReturnValue(0.8);
+    const rateChange = player.on.mock.calls.find(
+        ([event]) => event === 'ratechange'
+    )[1];
+    rateChange();
+    expect(dispatch).toHaveBeenCalledWith(updatePlaybackRate(0.8));
     expect(player.addRemoteTextTrack).toHaveBeenCalledWith(
         expect.objectContaining({
             src: '/pilot/en/interviews/pilot001.vtt?lang=eng&tape_number=1',
