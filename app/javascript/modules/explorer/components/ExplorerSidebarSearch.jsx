@@ -202,6 +202,7 @@ export function ExplorerSidebarSearch() {
                 {isProjectsList && hasUnpublishedProjects && (
                     <div className="ExplorerSidebarSearch-rangeSection">
                         <Switch
+                            data-testid="show-unpublished-projects"
                             checked={showUnpublished}
                             onChange={handleShowUnpublishedChange}
                             label={t(

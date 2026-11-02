@@ -28,13 +28,33 @@ class CatalogProjectLoadingTest < ApplicationSystemTestCase
     find('.ProjectCard-header', text: 'Catalog migration public').click
     assert_text 'Visible catalog introduction'
 
+    visit '/en/catalog?explorer_q=Catalog%20migration&explorer_show_unpublished=true&checked_ohd_session=true'
+    assert_selector '.ProjectCard-title', text: 'Catalog migration public'
+    assert_no_selector '.ProjectCard-title', text: 'Catalog migration unpublished'
+    assert_no_selector '[data-testid="show-unpublished-projects"]'
+
     visit '/en/catalog?explorer_q=Catalog%20search%20needle&checked_ohd_session=true'
     assert_selector '.ProjectCard-title', text: 'Catalog migration public'
 
     login_as 'alice@example.com'
     visit '/en/catalog?explorer_q=Catalog%20migration'
     assert_selector '.ProjectCard-title', text: 'Catalog migration public'
+    assert_no_selector '.ProjectCard-title', text: 'Catalog migration unpublished'
+
+    assert_selector '[data-testid="show-unpublished-projects"][aria-checked="false"]'
+    click_test_id 'show-unpublished-projects'
+    assert_selector '[data-testid="show-unpublished-projects"][aria-checked="true"]'
+    assert_selector '.ProjectCard-title', text: 'Catalog migration public'
     assert_selector '.ProjectCard-title', text: 'Catalog migration unpublished'
+
+    refresh
+    assert_selector '[data-testid="show-unpublished-projects"][aria-checked="true"]'
+    assert_selector '.ProjectCard-title', text: 'Catalog migration unpublished'
+
+    click_test_id 'show-unpublished-projects'
+    assert_selector '[data-testid="show-unpublished-projects"][aria-checked="false"]'
+    assert_selector '.ProjectCard-title', text: 'Catalog migration public'
+    assert_no_selector '.ProjectCard-title', text: 'Catalog migration unpublished'
   end
 
   test 'catalog details load directly and from the list with localized content and access checks' do
