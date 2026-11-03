@@ -3,6 +3,8 @@ export const NAME = 'media-player';
 export const DEFAULT_VIDEO_RESOLUTION = '480p';
 export const DEFAULT_AUDIO_RESOLUTION = '192k';
 
+export const PLAYBACK_RATES = [0.6, 0.8, 1, 1.2, 1.5, 2];
+
 // Video player sizes (must match SCSS variables in app/javascript/stylesheets/_variables.scss)
 export const VIDEO_MAX_WIDTH_SMALL = '20rem'; // $media-player-video-max-width-small
 export const VIDEO_MAX_WIDTH_MEDIUM = '50rem'; // $media-player-video-max-width

@@ -1,5 +1,10 @@
 import { useI18n } from 'modules/i18n';
 import {
+    PLAYBACK_RATES,
+    getPlaybackRate,
+    updatePlaybackRate,
+} from 'modules/media-player';
+import {
     detectTimecodeFormat,
     formatTimecode,
     timecodeToSeconds,
@@ -12,11 +17,22 @@ import {
     FaPlay,
     FaStepBackward,
 } from 'react-icons/fa';
+import { FaGaugeHigh } from 'react-icons/fa6';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useSegmentPreview } from '../hooks';
 
+/**
+ * Provides segment playback, seeking, and shared speed controls.
+ * @param {object} props - Component props.
+ * @param {object} props.segment - Segment to preview.
+ * @param {string} [props.nextSegmentTimecode] - Preview end timecode.
+ * @returns {JSX.Element} Segment preview controls.
+ */
 export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
     const { t } = useI18n();
+    const dispatch = useDispatch();
+    const playbackRate = useSelector(getPlaybackRate);
 
     const {
         isPreviewPlaying,
@@ -123,6 +139,24 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
                         </span>
                     </>
                 )}
+            </span>
+            <span className="SegmentTabs-previewSpeed">
+                <FaGaugeHigh aria-hidden="true" />
+                <select
+                    className="SegmentTabs-previewSpeedSelect"
+                    aria-label={t('media_player.playback_rate')}
+                    title={t('media_player.playback_rate')}
+                    value={playbackRate}
+                    onChange={(event) =>
+                        dispatch(updatePlaybackRate(Number(event.target.value)))
+                    }
+                >
+                    {PLAYBACK_RATES.map((rate) => (
+                        <option key={rate} value={rate}>
+                            {rate}x
+                        </option>
+                    ))}
+                </select>
             </span>
         </div>
     );
