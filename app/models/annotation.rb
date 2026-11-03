@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Annotation < ApplicationRecord
+  include RefreshesSearchIndex
 
   belongs_to :interview
   belongs_to :user_content
@@ -20,7 +21,7 @@ class Annotation < ApplicationRecord
                             :less_than => 0,
                             :unless => Proc.new{|i| i.interview_id.nil?}
 
-  searchable do
+  searchable auto_index: false, auto_remove: false do
     string :archive_id do
       interview ? interview.archive_id : nil
     end
@@ -34,5 +35,14 @@ class Annotation < ApplicationRecord
         text(locale)
       end
     end
+  end
+
+  refresh_search_index_on :interview_id, :segment_id, :workflow_state, translations: [:text]
+
+  # Updates annotation text embedded in the current and previous interviews.
+  #
+  # @return [Hash{String => Array<Integer>}] Annotation and interview documents
+  def search_index_targets
+    { 'Annotation' => [id], 'Interview' => search_index_interview_ids }
   end
 end

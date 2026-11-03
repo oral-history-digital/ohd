@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22'
           cache: 'yarn'
 
       - name: Install dependencies
@@ -45,7 +45,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22'
           cache: 'yarn'
 
       - name: Setup Ruby and gems
@@ -54,7 +54,7 @@ jobs:
           bundler-cache: true
 
       - name: Install production dependencies
-        run: yarn install --production --frozen-lockfile --ignore-engines --network-timeout 600000
+        run: yarn install --production --frozen-lockfile --network-timeout 600000
 
       - name: Compile assets with Shakapacker (production)
         run: RAILS_ENV=production bin/shakapacker

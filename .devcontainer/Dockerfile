@@ -27,6 +27,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# Match the pinned, checksum-verified version used by the CI secret scan.
+ARG GITLEAKS_VERSION=8.28.0
+RUN set -eu; \
+    case "$(dpkg --print-architecture)" in \
+      amd64) gitleaks_arch=x64 ;; \
+      arm64) gitleaks_arch=arm64 ;; \
+      *) echo "Unsupported gitleaks architecture" >&2; exit 1 ;; \
+    esac; \
+    gitleaks_tmp=$(mktemp -d); \
+    cd "$gitleaks_tmp"; \
+    archive="gitleaks_${GITLEAKS_VERSION}_linux_${gitleaks_arch}.tar.gz"; \
+    base="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"; \
+    curl -fsSL -o "$archive" "$base/$archive"; \
+    curl -fsSL -o checksums.txt "$base/gitleaks_${GITLEAKS_VERSION}_checksums.txt"; \
+    grep " $archive\$" checksums.txt | sha256sum -c -; \
+    tar -xzf "$archive" gitleaks; \
+    install -m 0755 gitleaks /usr/local/bin/gitleaks; \
+    cd /; \
+    rm -rf "$gitleaks_tmp"; \
+    gitleaks version
+
 # Create the vscode user matching devcontainer.json remoteUser
 ARG USERNAME=vscode
 ARG USER_UID=1000

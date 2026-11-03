@@ -40,6 +40,35 @@ jest.mock('superagent', () => ({
 jest.mock('superagent-no-cache', () => jest.fn());
 
 describe('Loader', () => {
+    afterEach(() => {
+        document.querySelector('meta[name="csrf-token"]')?.remove();
+    });
+
+    test.each(['post', 'put', 'delete'])(
+        '%s sends the page CSRF token',
+        (method) => {
+            document.head.insertAdjacentHTML(
+                'beforeend',
+                '<meta name="csrf-token" content="page-token">'
+            );
+
+            if (method === 'delete') {
+                Loader.delete('/ohd/en/people/1', jest.fn());
+            } else {
+                Loader[method](
+                    '/ohd/en/people',
+                    { person: { first_name: 'Jane' } },
+                    jest.fn()
+                );
+            }
+
+            expect(mockRequestInstance.set).toHaveBeenCalledWith(
+                'X-CSRF-Token',
+                'page-token'
+            );
+        }
+    );
+
     beforeEach(() => {
         // Reset all mocks before each test
         jest.clearAllMocks();

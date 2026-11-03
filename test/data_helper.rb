@@ -595,11 +595,11 @@ module DataHelper
   end
 
   def self.test_media
-    system(
-      'cp', 
-      "#{Rails.root}/test/fixtures/45-minutes-of-silence.mp3",
-      "#{Rails.root}/public/test/"
-    )
+    # Create the target directory here instead of relying on the test setup
+    # having run, and fail loudly if the copy does not happen.
+    target_dir = Rails.root.join('public', 'test')
+    FileUtils.mkdir_p(target_dir)
+    FileUtils.cp(Rails.root.join('test', 'fixtures', '45-minutes-of-silence.mp3'), target_dir)
   end
 
   def self.grant_access(project, user, attribs = {})

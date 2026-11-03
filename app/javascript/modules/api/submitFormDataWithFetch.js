@@ -1,8 +1,7 @@
 import { pluralize } from 'modules/strings';
 
+import { getCsrfToken } from '../../utils';
 import buildFormData from './buildFormData';
-
-const headerOptions = { Accept: 'application/json' };
 
 export default function submitFormDataWithFetch(pathBase, params) {
     const dataType = Object.keys(params)[0];
@@ -24,7 +23,10 @@ export default function submitFormDataWithFetch(pathBase, params) {
 
     const options = {
         method: isUpdate ? 'PUT' : 'POST',
-        headers: headerOptions,
+        headers: {
+            Accept: 'application/json',
+            'X-CSRF-Token': getCsrfToken(),
+        },
         body: formData,
     };
 

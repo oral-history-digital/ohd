@@ -1,8 +1,7 @@
 import { create, get } from '@github/webauthn-json';
 import { Controller } from '@hotwired/stimulus';
 
-import { alertMessage } from '../utils/alert';
-import { getCsrfToken } from '../utils/csrfToken';
+import { alertMessage, getCsrfToken } from '../utils';
 
 export default class extends Controller {
     static targets = ['email', 'nickname'];
@@ -37,7 +36,6 @@ export default class extends Controller {
             const optionsResponse = await fetch(registrationUrl, {
                 headers: { Accept: 'application/json' },
                 credentials: 'same-origin',
-                csrfToken: getCsrfToken(),
             });
 
             if (!optionsResponse.ok) {
@@ -52,9 +50,11 @@ export default class extends Controller {
             // Step 3: Send the credential to the server for verification
             const verificationResponse = await fetch(verificationUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': getCsrfToken(),
+                },
                 credentials: 'same-origin',
-                csrfToken: getCsrfToken(),
                 body: JSON.stringify({
                     credential: credential,
                     nickname: nickname,
@@ -92,8 +92,10 @@ export default class extends Controller {
             // Step 1: Get challenge from server
             const challengeResponse = await fetch(challengeUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                csrfToken: getCsrfToken(),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': getCsrfToken(),
+                },
                 body: JSON.stringify({ email }),
             });
 
@@ -109,8 +111,10 @@ export default class extends Controller {
             // Step 3: Send to server for verification
             const verifyResponse = await fetch(verificationUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                csrfToken: getCsrfToken(),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': getCsrfToken(),
+                },
                 body: JSON.stringify({
                     credential: credential,
                     path: document.querySelector('input[name="path"]')?.value,
