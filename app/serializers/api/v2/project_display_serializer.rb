@@ -18,7 +18,7 @@ module Api
 
       attributes :domain, :more_text, :primary_color, :secondary_color, :editorial_color,
         :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :show_preview_img, :oai_doi_identifier,
-        :view_modes, :default_search_order, :aspect_x, :aspect_y
+        :view_modes, :default_search_order, :aspect_x, :aspect_y, :has_visible_registry_entries
 
       attribute :media_types, if: :include_media_types?
       attribute :interview_year_range, if: :include_year_ranges?
@@ -126,6 +126,13 @@ module Api
       # @return [Integer, nil] Root entry ID, or nil when none is configured
       def root_registry_entry_id
         object.root_registry_entry&.id
+      end
+
+      # Indicates whether the registry tab is available to visitors without loading its configuration.
+      #
+      # @return [Boolean] Whether any registry entries are visible while logged out
+      def has_visible_registry_entries
+        object.logged_out_visible_registry_entry_ids.present?
       end
 
       # Describes sources for the authorized media route without exposing path templates.

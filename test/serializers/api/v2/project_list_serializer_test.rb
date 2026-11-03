@@ -11,6 +11,15 @@ class Api::V2::ProjectListSerializerTest < ActiveSupport::TestCase
     @project.translations.find_or_initialize_by(locale: 'en').update!(name: 'Archive', display_name: 'English archive', introduction: 'Introduction')
   end
 
+  test 'base display details expose registry tab visibility without registry configuration' do
+    @project.logged_out_visible_registry_entry_ids = []
+    data = Api::V2::ProjectDisplaySerializer.new(@project, umbrella_project_id: nil).as_json
+    assert_equal false, data[:has_visible_registry_entries]
+    assert_not data.key?(:logged_out_visible_registry_entry_ids)
+    @project.logged_out_visible_registry_entry_ids = ['7']
+    assert_equal true, Api::V2::ProjectDisplaySerializer.new(@project, umbrella_project_id: nil).as_json[:has_visible_registry_entries]
+  end
+
   test 'declares only the agreed list fields with localized scalar values' do
     I18n.with_locale(:en) do
       data = serialize

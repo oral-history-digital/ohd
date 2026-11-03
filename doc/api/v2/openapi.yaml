@@ -734,6 +734,7 @@ components:
       - favicon_url
       - grant_access_without_login
       - grant_project_access_instantly
+      - has_visible_registry_entries
       - domain
       - more_text
       - primary_color
@@ -862,6 +863,8 @@ components:
           - string
           - 'null'
           description: Localized rich text; sanitize before rendering HTML
+        has_visible_registry_entries:
+          type: boolean
         primary_color:
           type:
           - string
@@ -1052,6 +1055,7 @@ components:
       - favicon_url
       - grant_access_without_login
       - grant_project_access_instantly
+      - has_visible_registry_entries
       - domain
       - more_text
       - primary_color
@@ -1190,6 +1194,8 @@ components:
           - string
           - 'null'
           description: Localized rich text; sanitize before rendering HTML
+        has_visible_registry_entries:
+          type: boolean
         primary_color:
           type:
           - string

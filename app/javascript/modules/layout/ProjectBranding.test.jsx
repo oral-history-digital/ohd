@@ -6,6 +6,7 @@ import { MemoryRouter, useNavigate } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
+import { RECEIVE_DATA } from '../data/redux/action-types';
 import { dataReducer } from '../data/redux/reducer';
 import ThemeProvider from './ThemeProvider';
 import SiteHeader from './components/SiteHeader';
@@ -65,7 +66,7 @@ function renderBranding() {
         combineReducers({ data: dataReducer }),
         applyMiddleware(thunk)
     );
-    return render(
+    const result = render(
         <Provider store={store}>
             <MemoryRouter initialEntries={['/pilot/en/interviews/pilot0001']}>
                 <ThemeProvider>
@@ -74,6 +75,7 @@ function renderBranding() {
             </MemoryRouter>
         </Provider>
     );
+    return { store, ...result };
 }
 
 /**
@@ -175,4 +177,44 @@ test('retains home navigation and default theme after a denied display read', ()
     );
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
     expect(Loader.getJson).toHaveBeenCalledTimes(1);
+});
+
+test('retains only public theme values during account reload and isolates other projects', () => {
+    const { store, container } = renderBranding();
+    act(() => complete());
+    act(() =>
+        store.dispatch({
+            type: RECEIVE_DATA,
+            dataType: 'users',
+            id: 'current',
+            data: { id: 42 },
+        })
+    );
+    expect(store.getState().data.projects.records).toEqual({});
+    expect(store.getState().data.projects).not.toHaveProperty('branding');
+    expect(container.querySelector('style')).toHaveTextContent(
+        '--primary-color: #123456'
+    );
+    act(() => navigate('/other/en'));
+    expect(container.querySelector('style')).toHaveTextContent(
+        '--primary-color: #e01217'
+    );
+});
+
+test('discards the previous theme after navigating away and back while details are unavailable', () => {
+    const { store, container } = renderBranding();
+    act(() => complete());
+    act(() =>
+        store.dispatch({
+            type: RECEIVE_DATA,
+            dataType: 'users',
+            id: 'current',
+            data: { id: 42 },
+        })
+    );
+    act(() => navigate('/other/en'));
+    act(() => navigate('/pilot/en'));
+    expect(container.querySelector('style')).toHaveTextContent(
+        '--primary-color: #e01217'
+    );
 });

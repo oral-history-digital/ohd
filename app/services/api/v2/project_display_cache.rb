@@ -2,7 +2,7 @@ module Api
   module V2
     class ProjectDisplayCache < ProjectReadCache
       ENDPOINT = 'projects/show'
-      REVISION = 14
+      REVISION = 15
 
       private
 
@@ -10,7 +10,7 @@ module Api
         result = super.merge(
           display_fields: fingerprint(@projects, :domain, :primary_color, :secondary_color,
             :editorial_color, :has_map, :is_catalog, :has_newsletter, :display_ohd_link, :show_preview_img, :doi_status,
-            :view_modes, :default_search_order, :aspect_x, :aspect_y),
+            :view_modes, :default_search_order, :aspect_x, :aspect_y, :logged_out_visible_registry_entry_ids),
           more_text: fingerprint(Project.translation_class.where(project_id: @project_ids), :project_id, :locale, :more_text),
           doi_prefix: Rails.configuration.datacite['prefix']
         )
