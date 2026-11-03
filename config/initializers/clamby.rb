@@ -1,17 +1,22 @@
-# Virus scanning for uploads. In production the scan is delegated to the
-# `clamav` service (clamd over TCP) so the app container needs no local
-# signature database. See docker/clamav/clamd-client.conf.
+# Virus scanning for uploads (Clamby wraps the clamscan binary).
+#
+# Default behaviour (source/Capistrano deployments on the host) is unchanged:
+# clamscan uses the system signature database and no extra config file.
+#
+# Containerised deployments set CLAMAV_CONFIG to a clamscan config file that
+# points DatabaseDirectory at the `clamav-db` volume maintained by freshclam
+# in the `clamav` compose service. See docker/clamav/clamscan.conf and
+# docker-compose.yml.
 Clamby.configure({
   :check => true,
-  :daemonize => ENV.fetch('CLAMAV_DAEMONIZE', 'true') == 'true',
-  :config_file => ENV.fetch('CLAMAV_CLIENT_CONFIG', '/app/config/clamav/clamd-client.conf'),
+  :daemonize => false,
+  :config_file => ENV['CLAMAV_CONFIG'].presence,
   :error_clamscan_missing => true,
   :error_clamscan_client_error => false,
   :error_file_missing => true,
   :error_file_virus => true,
-  # fdpass needs a unix socket; with TCP we stream the file instead.
-  :fdpass => false,
-  :stream => true,
+  :fdpass => true,
+  :stream => false,
   :reload => false,
   :output_level => 'medium', # one of 'off', 'low', 'medium', 'high'
   :executable_path_clamscan => 'clamscan',
