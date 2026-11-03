@@ -392,6 +392,16 @@ class Api::V2::ProjectsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'repository sorting quotes locale values and rejects unknown fields and directions' do
+    project = new_project(default_locale: 'de')
+    translate(project, 'de', name: 'Fallback', display_name: 'Label')
+    repository = ProjectListRepository.new(Project.where(id: project.id), locale: "en' OR 1=1 --")
+
+    assert_equal [project.id], repository.ordered(field: 'name', direction: :asc).pluck(:id)
+    assert_raises(KeyError) { repository.ordered(field: 'id; DROP TABLE projects', direction: :asc) }
+    assert_raises(KeyError) { repository.ordered(field: 'id', direction: :'asc; DROP TABLE projects') }
+  end
+
   test 'sorting preserves the project policy scope' do
     hidden = new_project(workflow_state: 'unshared')
     get '/api/v2/projects', params: { sort: 'name', all: true, workflow_state: 'public,unshared' }

@@ -18,42 +18,51 @@ class ProjectListRepository
   # Returns a relation without loading records. Direction is :asc or :desc.
   # Missing names and publication dates sort last in either direction.
   # When sort values match, sort by ID too so page boundaries stay consistent.
+  #
+  # @param field [String] Allowlisted sort field
+  # @param direction [Symbol] :asc or :desc
+  # @return [ActiveRecord::Relation] Ordered projects within the supplied scope
   def ordered(field:, direction:)
-    expression = SORT_COLUMNS.fetch(field) || localized_name
-    sql_direction = { asc: 'ASC', desc: 'DESC' }.fetch(direction)
+    column = SORT_COLUMNS.fetch(field)
+    expression = column ? @projects.klass.arel_table[field] : localized_name
+    ordering = { asc: Arel::Nodes::Ascending, desc: Arel::Nodes::Descending }.fetch(direction)
     clauses = []
-    clauses << "#{expression} IS NULL ASC" if %w[name publication_date].include?(field)
-    clauses << "#{expression} #{sql_direction}"
-    clauses << "projects.id #{sql_direction}" unless field == 'id'
-    @projects.reorder(Arel.sql(clauses.join(', ')))
+    clauses << expression.eq(nil).asc if %w[name publication_date].include?(field)
+    clauses << ordering.new(expression)
+    clauses << ordering.new(@projects.klass.arel_table[:id]) unless field == 'id'
+    @projects.reorder(*clauses)
   end
 
   private
 
   # Sort by the displayed label, falling back to the name as consumers do.
   # Ignore leading punctuation and whitespace only for sorting; preserve the label.
+  #
+  # @return [Arel::Nodes::NamedFunction] Normalized localized label
   def localized_name
-    name = "COALESCE(#{localized_attribute('display_name')}, #{localized_attribute('name')})"
-    pattern = @projects.klass.connection.quote('^[\p{P}\p{Z}\s]+')
-    "REGEXP_REPLACE(#{name}, #{pattern}, '')"
+    name = Arel::Nodes::NamedFunction.new('COALESCE', [localized_attribute('display_name'), localized_attribute('name')])
+    pattern = Arel::Nodes.build_quoted('^[\p{P}\p{Z}\s]+')
+    Arel::Nodes::NamedFunction.new('REGEXP_REPLACE', [name, pattern, Arel::Nodes.build_quoted('')])
   end
 
   # Match the serializer: requested locale, project default, then the first
   # nonblank translation by ID. Each attribute uses this fallback independently.
+  #
+  # @param attribute [String] Translation column to select
+  # @return [Arel::Nodes::Grouping] Correlated scalar translation subquery
   def localized_attribute(attribute)
-    locale = @projects.klass.connection.quote(@locale.to_s)
+    projects = @projects.klass.arel_table
+    translations = Arel::Table.new(:project_translations)
+    priority = Arel::Nodes::Case.new
+      .when(translations[:locale].eq(@locale.to_s)).then(0)
+      .when(translations[:locale].eq(projects[:default_locale])).then(1)
+      .else(2)
     # The subquery selects one value per project without duplicating project rows.
-    <<~SQL.squish
-      (SELECT project_translations.#{attribute}
-       FROM project_translations
-       WHERE project_translations.project_id = projects.id
-         AND project_translations.#{attribute} REGEXP '[^[:space:]]'
-       ORDER BY CASE
-         WHEN project_translations.locale = #{locale} THEN 0
-         WHEN project_translations.locale = projects.default_locale THEN 1
-         ELSE 2
-       END, project_translations.id ASC
-       LIMIT 1)
-    SQL
+    query = translations.project(translations[attribute])
+      .where(translations[:project_id].eq(projects[:id]))
+      .where(Arel::Nodes::InfixOperation.new('REGEXP', translations[attribute], Arel::Nodes.build_quoted('[^[:space:]]')))
+      .order(priority, translations[:id].asc)
+      .take(1)
+    Arel::Nodes::Grouping.new(query.ast)
   end
 end
