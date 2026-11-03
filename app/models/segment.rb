@@ -1,6 +1,7 @@
 require 'globalize'
 
 class Segment < ApplicationRecord
+  include RefreshesSearchIndex
   include EncipheredText
 
   belongs_to :interview, touch: true
@@ -55,7 +56,7 @@ class Segment < ApplicationRecord
      .limit(1)
   }
 
-  searchable auto_index: false do
+  searchable auto_index: false, auto_remove: false do
     string :archive_id, stored: true do
       interview&.archive_id
     end
@@ -95,6 +96,16 @@ class Segment < ApplicationRecord
   translates :mainheading, :subheading, :text, touch: true
   accepts_nested_attributes_for :translations, :registry_references
 
+  refresh_search_index_on :interview_id, :speaker_id, :media_id, :timecode,
+                          :tape_id, :has_heading, translations: %i[text mainheading subheading]
+
+  # Updates segment text and the transcript/headings embedded in both parents.
+  #
+  # @return [Hash{String => Array<Integer>}] Segment and interview documents
+  def search_index_targets
+    { 'Segment' => [id], 'Interview' => search_index_interview_ids }
+  end
+
   class Translation
     belongs_to :segment
     validates :locale, uniqueness: { scope: :segment_id }
@@ -103,21 +114,19 @@ class Segment < ApplicationRecord
       # run this only after commit of original e.g. 'de' version!
       #if (locale.length == 3 || locale == :'ukr-rus')
       if text_previously_changed? && (locale.length == 3 || locale == :'ukr-rus')
-        segment.write_other_versions(locale)
+        segment.reload.write_other_versions(locale)
       end
       segment.translations.where(text: nil).where("char_length(locale) = 2").destroy_all # where do these empty translations come from?
     end
   end
 
+  # Regenerates public and subtitle text; search refreshes wait for the transaction.
+  #
+  # @param locale [String, Symbol] Original transcript locale
+  # @return [Array<Symbol>] Generated text versions
   def write_other_versions(locale)
     [:public, :subtitle].each do |version|
       update(text: enciphered_text(version, locale), locale: "#{locale}-#{version}")
-      if version == :public
-        # do not re-index after each version update
-        # push indexing to delayed job
-        # index only if segment was not recently created, like e.g. with transcript-upload (it will be indexed after this)
-        delay.solr_index! if Time.now - created_at > 1.hour
-      end
     end
   end
 
