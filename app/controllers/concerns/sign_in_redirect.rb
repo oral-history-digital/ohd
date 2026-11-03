@@ -35,12 +35,12 @@ module SignInRedirect
       # domain with an access token for session handover.
       if is_cross_domain_project_redirect?
         @path = path
-        respond_with resource, location: url_with_access_token
+        redirect_to url_with_access_token, allow_other_host: true
       else
         respond_with resource, location: path
       end
     else
-      respond_with resource, location: url_with_access_token
+      redirect_to url_with_access_token, allow_other_host: true
     end
   end
 

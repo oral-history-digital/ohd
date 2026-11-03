@@ -3,6 +3,11 @@ module ProjectLoadingHelper
   include ActiveJob::TestHelper
   # Builds distinct projects without the legacy fixture's portal/domain collision.
   def setup_project_loading_records
+    # Earlier requests leave I18n.locale on their request locale (German), and
+    # records created under it keep only that translation. Build these records
+    # in English so English pages and test bodies see the names and labels.
+    I18n.locale = :en
+    Globalize.locale = :en
     @portal = Project.find_by!(shortname: 'ohd')
     @portal.update!(available_locales: %w[en de])
     Project.find_by!(shortname: 'test').update!(archive_domain: nil)

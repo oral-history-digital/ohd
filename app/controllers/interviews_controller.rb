@@ -16,7 +16,14 @@ class InterviewsController < ApplicationController
     @interview = Interview.create interview_params
     @interview.find_or_create_tapes(interview_params[:tape_count])
 
-    @interview.send("#{params[:interview][:workflow_state]}!") if params[:interview][:workflow_state]
+    # Whitelist allowed workflow state transitions
+    if params[:interview][:workflow_state].present?
+      allowed_states = %w[public unshared restricted]
+      state = params[:interview][:workflow_state]
+      if allowed_states.include?(state)
+        @interview.public_send("#{state}!")
+      end
+    end
 
     respond_to do |format|
       format.json do

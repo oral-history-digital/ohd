@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { create } from '@github/webauthn-json';
 
+import { getCsrfToken } from '../../../utils';
+
 const PasskeyRegistration = ({
     registrationUrl = '/de/passkeys/new',
     verificationUrl = '/de/passkeys',
@@ -11,11 +13,6 @@ const PasskeyRegistration = ({
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
-
-    const getCsrfToken = () => {
-        const token = document.querySelector('meta[name="csrf-token"]');
-        return token ? token.content : '';
-    };
 
     const handleRegisterPasskey = async () => {
         setIsLoading(true);
@@ -32,7 +29,6 @@ const PasskeyRegistration = ({
             const optionsResponse = await fetch(registrationUrl, {
                 headers: { Accept: 'application/json' },
                 credentials: 'same-origin',
-                csrfToken: getCsrfToken(),
             });
 
             if (!optionsResponse.ok) {
@@ -47,9 +43,11 @@ const PasskeyRegistration = ({
             // Step 3: Send the credential to the server for verification
             const verificationResponse = await fetch(verificationUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': getCsrfToken(),
+                },
                 credentials: 'same-origin',
-                csrfToken: getCsrfToken(),
                 body: JSON.stringify({ credential: credential }),
             });
 

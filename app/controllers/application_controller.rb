@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  #protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  protect_from_forgery with: :exception # See ActionController::RequestForgeryProtection for details
 
   respond_to :html, :json
 
@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
           project: project.identifier,
           path: request.fullpath,
         )
-        redirect_to "#{OHD_DOMAIN}#{path}"
+        redirect_to "#{OHD_DOMAIN}#{path}", allow_other_host: true
     end
   end
 

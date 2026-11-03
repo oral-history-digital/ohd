@@ -87,7 +87,12 @@ class MaterialsController < ApplicationController
   end
 
   def pdf?(file)
-    file.content_type == "application/pdf" && `file --mime-type --brief #{file.tempfile.path}`.strip == 'application/pdf'
+    return false unless file.content_type == "application/pdf"
+    
+    # Use proper shell escaping to prevent command injection
+    require 'shellwords'
+    mime_type = `file --mime-type --brief #{Shellwords.escape(file.tempfile.path)}`.strip
+    mime_type == 'application/pdf'
   end
 
   def safe?(file)

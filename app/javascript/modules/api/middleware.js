@@ -1,3 +1,5 @@
+import fetchHeaders from './fetchHeaders';
+
 export const CALL_API = 'CALL_API';
 
 const apiMiddleware = (store) => (next) => async (action) => {
@@ -16,10 +18,7 @@ const apiMiddleware = (store) => (next) => async (action) => {
     try {
         const responseBody = await fetch(callApi.endpoint, {
             method,
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
+            headers: fetchHeaders,
             body: requestBody,
         }).then((res) => res.json());
 

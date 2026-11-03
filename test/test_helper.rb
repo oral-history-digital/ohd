@@ -12,6 +12,13 @@ if ENV['COVERAGE'] == 'true'
 end
 
 require File.expand_path('../../config/environment', __FILE__)
+
+# Routes are lazy-loaded in the test environment, and Devise only registers its
+# Warden default strategies for :user when routes are loaded. Without this, the
+# first sign-in POST of a process can be rejected with no strategy to run, and
+# which test hits it depends on random order. Load routes before any test runs.
+Rails.application.reload_routes_unless_loaded
+
 require 'rails/test_help'
 require "#{Rails.root}/test/data_helper.rb"
 
@@ -84,6 +91,16 @@ class ActiveSupport::TestCase
     Capybara.reset_sessions!
     visit '/en/users/sign_in'
 
+    # A session still signed in on the server makes Devise redirect the sign-in
+    # page to the archive. Log out through the UI, then open the form again.
+    if page.has_no_selector?('input[name="user[email]"]', wait: 1)
+      visit '/'
+      click_on 'Account'
+      click_on 'Logout'
+      visit '/en/users/sign_in'
+    end
+
+    assert_selector 'input[name="user[email]"]', wait: 10
     fill_in 'user[email]', with: user_or_email
     fill_in 'user[password]', with: password
     click_on 'Login'

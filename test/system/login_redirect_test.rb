@@ -115,7 +115,7 @@ class LoginRedirectTest < ApplicationSystemTestCase
     fill_in 'user[password]', with: PASSWORD
     click_on 'Login'
 
-    assert_current_path users_otp_path(locale: I18n.locale), ignore_query: true
+    assert_current_path users_otp_path(locale: :en), ignore_query: true
 
     # Verify redirect context is present on OTP form before submitting.
     assert_selector "input[name='path'][value='/en/searches/archive?sort=random']", visible: false

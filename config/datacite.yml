@@ -1,13 +1,13 @@
 development:
   prefix: <%= ENV.fetch('DATACITE_PREFIX_DEVELOPMENT', '10.5072') %>
   client_id: <%= ENV.fetch('DATACITE_CLIENT_ID_DEVELOPMENT', 'TIB.FUB') %>
-  password: <%= ENV.fetch('DATACITE_PASSWORD_DEVELOPMENT', 'Epub_test!') %>
+  password: <%= ENV['DATACITE_PASSWORD_DEVELOPMENT'] %>
   url: <%= ENV.fetch('DATACITE_URL_DEVELOPMENT', 'https://api.test.datacite.org/dois') %>
 
 test:
   prefix: <%= ENV.fetch('DATACITE_PREFIX_TEST', '10.5072') %>
   client_id: <%= ENV.fetch('DATACITE_CLIENT_ID_TEST', 'TIB.FUB') %>
-  password: <%= ENV.fetch('DATACITE_PASSWORD_TEST', 'Epub_test!') %>
+  password: <%= ENV['DATACITE_PASSWORD_TEST'] %>
   url: <%= ENV.fetch('DATACITE_URL_TEST', 'https://api.test.datacite.org/dois') %>
 
 staging:

@@ -1,6 +1,7 @@
 import request from 'superagent';
 import noCache from 'superagent-no-cache';
 
+import { getCsrfToken } from '../../utils';
 import { flattenNestedObject } from './flattenNestedObject';
 import { parseResponseJson } from './utils';
 
@@ -50,6 +51,7 @@ const Loader = {
         request
             .delete(url)
             .set('Accept', 'application/json')
+            .set('X-CSRF-Token', getCsrfToken())
             .end((error, res) => {
                 if (error) {
                     console.error(
@@ -194,6 +196,7 @@ const Loader = {
             }
         });
         req.set('Accept', 'application/json');
+        req.set('X-CSRF-Token', getCsrfToken());
         req.end((error, res) => {
             if (error) {
                 console.error('Loading JSON from ' + url + ' failed: ' + error);

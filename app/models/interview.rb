@@ -565,7 +565,7 @@ class Interview < ApplicationRecord
     heading_count = segments
       .with_heading
       .joins(:translations)
-      .where("segment_translations.locale = '#{locale}-public' OR segment_translations.locale = '#{locale}'")
+      .where("segment_translations.locale = ? OR segment_translations.locale = ?", "#{locale}-public", locale)
       .count
     heading_count > 0
   end
@@ -865,13 +865,44 @@ class Interview < ApplicationRecord
         end
 
         {
-          all_interviews_titles: search.hits.map{|hit| eval hit.stored(:title)},
+          all_interviews_titles: search.hits.map{|hit| parse_stored_locale_hash(hit.stored(:title))},
           # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
           #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
           #    ...]
-          all_interviews_pseudonyms: search.hits.map{|hit| eval hit.stored(:alias_names)}
+          all_interviews_pseudonyms: search.hits.map{|hit| parse_stored_locale_hash(hit.stored(:alias_names))}
         }
       end
+    end
+
+    # Solr stores locale hashes as Ruby's Hash#to_s, e.g. {:en=>"Name", :de=>nil}.
+    # Parses symbol keys and string/nil values without evaluating Ruby code.
+    #
+    # @param stored [String, nil] Stored locale hash
+    # @return [Hash{Symbol => String, nil}] Decoded locale values
+    # @raise [ArgumentError] If the stored value is not a supported literal hash
+    def parse_stored_locale_hash(stored)
+      return {} if stored.blank?
+
+      inner = stored.strip[/\A\{(.*)\}\z/m, 1]
+      raise ArgumentError, "unexpected stored locale hash: #{stored.truncate(80)}" if inner.nil?
+
+      pair = /\s*:(\w+)\s*=>\s*(nil|"((?:[^"\\]|\\.)*)")\s*(?:,|\z)/
+      result = {}
+      rest = inner
+      until rest.strip.empty?
+        match = rest.match(/\A#{pair}/)
+        raise ArgumentError, "unexpected stored locale hash: #{stored.truncate(80)}" unless match
+
+        value = if match[2] == 'nil'
+          nil
+        else
+          # String#undump decodes Ruby escapes but requires ASCII input.
+          match[2].gsub(/[^\x00-\x7f]/) { |character| character.dump[1...-1] }.undump
+        end
+        result[match[1].to_sym] = value
+        rest = match.post_match
+      end
+      result
     end
 
     def archive_search(user, project, locale, params, per_page = 12)

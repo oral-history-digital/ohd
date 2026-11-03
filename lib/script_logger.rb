@@ -8,7 +8,10 @@ class ScriptLogger
   end
 
   def log(msg)
-    system "echo '[#{Time.now.strftime('%d.%m.%Y %H:%M')}] #{msg.sub(/\n$/,'')}' >> #{@log_file}"
+    # Use File.open instead of shell command to prevent injection
+    File.open(@log_file, 'a') do |f|
+      f.puts "[#{Time.now.strftime('%d.%m.%Y %H:%M')}] #{msg.sub(/\n$/,'')}"
+    end
     puts msg
   end
 

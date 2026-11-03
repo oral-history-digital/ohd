@@ -97,7 +97,7 @@
     "rtl-detect": "^1.1.2",
     "sass": "1.77.6",
     "sass-loader": "^16.0.0",
-    "shakapacker": "8.0.2",
+    "shakapacker": "10.3.2",
     "slick-carousel": "^1.8.1",
     "style-loader": "^4.0.0",
     "superagent": "^5.0.2",
@@ -105,7 +105,7 @@
     "swr": "^2.2.5",
     "terser-webpack-plugin": "^5.3.9",
     "video.js": "^8.24.1",
-    "webpack": "^5.93.0",
+    "webpack": "^5.112.0",
     "webpack-assets-manifest": "^5.2.1",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^6.0.1"
@@ -139,10 +139,14 @@
   "resolutions": {
     "@xmldom/xmldom": "0.8.15",
     "form-data": "3.0.5",
-    "shell-quote": "1.10.0",
+    "shell-quote": "1.12.0",
     "websocket-driver": "0.7.5",
     "react-rte-18support/**/immutable": "3.8.4",
-    "sass/immutable": "4.3.9"
+    "sass/immutable": "4.3.9",
+    "postcss": "8.5.31",
+    "underscore": "1.13.8",
+    "proxy-addr": "2.0.8",
+    "styled-components/postcss": "8.5.31"
   },
   "scripts": {
     "lint": "eslint app/javascript",
