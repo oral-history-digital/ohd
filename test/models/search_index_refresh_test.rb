@@ -49,16 +49,16 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
       assert_includes indexed_ids(Interview, 'Originaltranscript', :transcript), @interview.id
       # Search results are filtered by project, so the user must have a role in the project to see the interview.
       assert_includes Interview.archive_search(user.reload, @project, :en,
-        { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
+                                               { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
       # The user has no role in the other project, so they cannot see the interview even though it is indexed.
       assert_not_includes Interview.archive_search(user, @other_project, :en,
-        { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
+                                                   { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
     end
 
     assignment.destroy!
     # The user no longer has a role in the project, so they cannot see the interview even though it is indexed.
     assert_not_includes Interview.archive_search(user.reload, @project, :en,
-      { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
+                                                 { fulltext: 'Originaltranscript' }).results.map(&:id), @interview.id
   end
 
   test 'jobs wait for commit, merge nested saves and discard rolled back work' do
@@ -110,7 +110,7 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
 
     refresh do
       @person.update!(use_pseudonym: true, pseudonym_first_name: 'Hiddenquasar',
-        pseudonym_last_name: 'Alphafamily', locale: :en)
+                      pseudonym_last_name: 'Alphafamily', locale: :en)
     end
     assert_includes indexed_ids(Interview, 'Hiddenquasar', :alias_names_en), @interview.id
     assert_includes indexed_ids(Segment, 'Hiddenquasar', :speaker), segment.id
@@ -147,9 +147,11 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     event = nil
     refresh do
       event = Event.create!(eventable: @person, event_type: type,
-        start_date: '1950-01-01', end_date: '1950-12-31')
+                            start_date: '1950-01-01', end_date: '1950-12-31')
     end
-    assert_includes Event.search { with(:start_date, Date.new(1950, 6, 1)) }.hits.map { |hit| hit.primary_key.to_i }, event.id
+    assert_includes Event.search {
+      with(:start_date, Date.new(1950, 6, 1))
+    }.hits.map { |hit| hit.primary_key.to_i }, event.id
     assert_includes event_interview_ids('birth', Date.new(1950, 6, 1)), @interview.id
     assert_not_includes event_interview_ids('birth', Date.new(1950, 6, 1)), @other.id
 
@@ -163,7 +165,9 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     assert_includes event_interview_ids('birth', Date.new(1960, 6, 1)), @other.id
 
     refresh { event.destroy! }
-    assert_not_includes Event.search { with(:start_date, Date.new(1960, 6, 1)) }.hits.map { |hit| hit.primary_key.to_i }, event.id
+    assert_not_includes Event.search {
+      with(:start_date, Date.new(1960, 6, 1))
+    }.hits.map { |hit| hit.primary_key.to_i }, event.id
     assert_not_includes event_interview_ids('birth', Date.new(1960, 6, 1)), @other.id
   end
 
@@ -216,14 +220,14 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     assert_equal [@interview.id], facet_ids('gender', 'female')
 
     type = RegistryReferenceType.create!(project: @project, code: 'search_place',
-      registry_entry: @project.root_registry_entry)
+                                         registry_entry: @project.root_registry_entry)
     MetadataField.create!(project: @project, source: 'RegistryReferenceType',
-      registry_reference_type: type, ref_object_type: 'Person', use_as_facet: true)
+                          registry_reference_type: type, ref_object_type: 'Person', use_as_facet: true)
     entry = DataHelper.registry_entry_with_names(@project)
     reference = nil
     refresh do
       reference = RegistryReference.create!(interview: @interview, ref_object: @person,
-        registry_entry: entry, registry_reference_type: type, workflow_state: 'checked', ref_position: 0)
+                                            registry_entry: entry, registry_reference_type: type, workflow_state: 'checked', ref_position: 0)
     end
     assert_equal [@interview.id], facet_ids('search_place', entry.id.to_s)
     refresh { reference.destroy! }
@@ -246,7 +250,7 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     tape = Tape.create!(interview: @interview, number: 1, media_id: "#{@interview.archive_id}_01_01")
     assert_enqueued_jobs 1, only: RefreshSearchIndexJob do
       ReadTranscriptFileJob.new.perform(interview: @interview, tape_id: tape.id, locale: 'ger',
-        file_path: Rails.root.join('test/files/transcript_de.vtt').to_s)
+                                        file_path: Rails.root.join('test/files/transcript_de.vtt').to_s)
     end
     targets = enqueued_jobs.select { |job| job[:job] == RefreshSearchIndexJob }.last.fetch(:args).first
     assert_equal [@interview.id], targets.fetch('Interview')
@@ -310,7 +314,7 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     field = nil
     refresh do
       field = MetadataField.create!(project: Project.umbrella, source: 'Interview',
-        name: 'duration', use_as_facet: true)
+                                    name: 'duration', use_as_facet: true)
     end
     @extra_fields << field
     assert_includes facet_ids('duration', '12.0'), @interview.id
@@ -323,7 +327,7 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
 
   test 'observation visibility configuration refreshes interview text' do
     field = MetadataField.create!(project: @project, source: 'Interview',
-      name: 'observations', use_in_details_view: true)
+                                  name: 'observations', use_in_details_view: true)
     refresh { @interview.update!(observations: 'Observationquasar', locale: :en) }
     assert_includes indexed_ids(Interview, 'Observationquasar', :observations_en), @interview.id
 
@@ -390,7 +394,7 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     annotation = nil
     refresh do
       annotation = Annotation.create!(segment: segment, interview: @interview,
-        text: 'Annotationquasar', locale: :en)
+                                      text: 'Annotationquasar', locale: :en)
     end
     assert_includes indexed_ids(Annotation, 'Annotationquasar', :text_en), annotation.id
     assert_includes indexed_ids(Interview, 'Annotationquasar', :annotations_en), @interview.id
@@ -412,8 +416,8 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     assert_equal [old_person.id, new_person.id].sort, last_targets.fetch('Person').sort
     assert_equal [@interview.id], last_targets.fetch('Interview')
     assert_equal [@other.archive_id, @interview.archive_id].sort,
-      Person.search { fulltext(new_person.first_name, fields: :text_en) }.hits
-        .find { |hit| hit.primary_key.to_i == new_person.id }.stored(:archive_id).sort
+                 Person.search { fulltext(new_person.first_name, fields: :text_en) }.hits
+                       .find { |hit| hit.primary_key.to_i == new_person.id }.stored(:archive_id).sort
   end
 
   private
@@ -424,12 +428,12 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
   # @return [Interview] Persisted interview
   def create_interview(project, number = 1)
     person = Person.create!(project: project, first_name: "Person#{SecureRandom.hex(3)}",
-      last_name: 'Initialfamily', locale: :en)
+                            last_name: 'Initialfamily', locale: :en)
     type = project.contribution_types.find_or_create_by!(code: 'interviewee')
     Interview.create!(project: project, collection: Collection.create!(project: project, name: 'Search'),
-      archive_id: "#{project.shortname}#{format('%03d', number)}", media_type: 'video',
-      duration: 12, workflow_state: 'public',
-      contributions: [Contribution.new(person: person, contribution_type: type)])
+                      archive_id: "#{project.shortname}#{format('%03d', number)}", media_type: 'video',
+                      duration: 12, workflow_state: 'public',
+                      contributions: [Contribution.new(person: person, contribution_type: type)])
   end
 
   # Creates a segment with a real language-backed public translation.
@@ -437,7 +441,7 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
   def create_segment
     tape = Tape.create!(interview: @interview, number: 1, media_id: "#{@interview.archive_id}_01_01")
     Segment.create!(interview: @interview, tape: tape, speaking_person: @person,
-      timecode: '00:00:01.000', text: 'Originaltranscript', locale: :eng)
+                    timecode: '00:00:01.000', text: 'Originaltranscript', locale: :eng)
   end
 
   # Performs only search refresh jobs generated by the given write.
@@ -457,9 +461,7 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
 
   # Reads requested IDs from the last executed search update.
   # @return [Hash] Affected document IDs
-  def last_targets
-    @last_targets
-  end
+  attr_reader :last_targets
 
   # Searches real Solr hits, including orphan documents that cannot load from SQL.
   # @param model [Class] Searchable model
@@ -477,12 +479,16 @@ class SearchIndexRefreshTest < ActiveSupport::TestCase
     Interview.search { with(:archive_id, interview.archive_id) }.hits.first
   end
 
-  # Queries a dynamic interview facet across archives to expose scoping mistakes.
+  # Queries a facet across both test archives without including unrelated Solr documents.
   # @param name [String] Facet name
   # @param value [String] Facet value
   # @return [Array<Integer>] Matching indexed interviews
   def facet_ids(name, value)
-    Interview.search { dynamic(:search_facets) { with(name, value) } }.hits.map { |hit| hit.primary_key.to_i }
+    project_ids = @projects.map(&:id)
+    Interview.search do
+      with(:project_id, project_ids)
+      dynamic(:search_facets) { with(name, value) }
+    end.hits.map { |hit| hit.primary_key.to_i }
   end
 
   # Queries the date ranges embedded in interview documents.
