@@ -650,6 +650,10 @@ class Api::V2::ProjectsControllerTest < ActionDispatch::IntegrationTest
     project.translations.find_or_initialize_by(locale: locale).update!(attributes)
   end
 
+  # Counts database reads without query-cache reuse between measured requests.
+  #
+  # @param parameters [Hash] Project-list request parameters
+  # @return [Array<String>] Executed SELECT statements
   def list_queries(**parameters)
     queries = []
     subscriber = lambda do |*event|
@@ -657,7 +661,11 @@ class Api::V2::ProjectsControllerTest < ActionDispatch::IntegrationTest
       queries << payload[:sql] if payload[:name] != 'SCHEMA' && !payload[:cached] && payload[:sql].match?(/\ASELECT/i)
     end
     ActiveSupport::Notifications.subscribed(subscriber, 'sql.active_record') do
-      get '/api/v2/projects', params: parameters
+      # Request executor hooks can re-enable caching; discard the warm-up entries too.
+      ActiveRecord::Base.connection_pool.clear_query_cache
+      ActiveRecord::Base.uncached do
+        get '/api/v2/projects', params: parameters
+      end
     end
     assert_response :success
     assert_api_response_schema('/api/v2/projects')
