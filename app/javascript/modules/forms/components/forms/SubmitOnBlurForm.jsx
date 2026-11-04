@@ -1,10 +1,15 @@
 import { createElement, useState } from 'react';
 
-import { getProjectId } from 'modules/archive';
-import { getCurrentProject, submitData } from 'modules/data';
+import { submitData } from 'modules/data';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
+/**
+ * Saves one stored translation on blur; the content locale is separate from the route locale.
+ * @param {Object} props - Record, translated attribute, content locale, and validation.
+ * @returns {React.ReactElement} Input that saves valid edits on blur.
+ */
 export default function SubmitOnBlurForm({
     attribute,
     scope,
@@ -13,8 +18,7 @@ export default function SubmitOnBlurForm({
     data,
     locale,
 }) {
-    const projectId = useSelector(getProjectId);
-    const project = useSelector(getCurrentProject);
+    const pathBase = usePathBase();
     const dispatch = useDispatch();
 
     const translation = data.translations_attributes.find(
@@ -43,7 +47,7 @@ export default function SubmitOnBlurForm({
         if (valid) {
             dispatch(
                 submitData(
-                    { locale: 'de', project, projectId },
+                    { pathBase },
                     {
                         [scope]: {
                             id: data.id,

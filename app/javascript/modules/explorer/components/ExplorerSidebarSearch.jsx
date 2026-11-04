@@ -1,10 +1,11 @@
-import { useGetInstitutionsList, useGetProjects } from 'modules/data';
+import { useGetInstitutionsList } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useCurrentPage } from 'modules/routes';
-import { ResetFiltersButton } from 'modules/ui';
+import { ResetFiltersButton, Switch } from 'modules/ui';
 import { useSearchParams } from 'react-router-dom';
 
 import {
+    useCatalogProjects,
     useExplorerInterviewRange,
     useExplorerProjectInstitutions,
     useProjectsAndCollectionsRange,
@@ -23,14 +24,17 @@ import { ExplorerInstitutionLevelFilter } from './ExplorerInstitutionLevelFilter
 import { ExplorerRangeFilter } from './ExplorerRangeFilter';
 import { ExplorerSearchInput } from './ExplorerSearchInput';
 
+/**
+ * Displays catalog filters and writes changes to the URL query parameters.
+ * The sidebar stays mounted on other pages, where project fetching is disabled
+ * and no filter UI is rendered. Institution fetching remains a separate SWR read.
+ *
+ * @returns {import('react').ReactElement|null} Catalog filters, or null outside list views.
+ */
 export function ExplorerSidebarSearch() {
     const { t } = useI18n();
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { projects } = useGetProjects({
-        all: true,
-        workflowState: 'public',
-    });
     const { institutions: institutionsList } = useGetInstitutionsList({
         all: true,
     });
@@ -43,19 +47,30 @@ export function ExplorerSidebarSearch() {
         currentPage.params.catalogType === 'institutions' &&
         !currentPage.params.id;
     const showSidebarFilters = isCatalogRoot || isInstitutionsIndex;
+    const { projects } = useCatalogProjects({ enabled: showSidebarFilters });
 
     const isInstitutionsList =
         isCatalogPage && currentPage.params.catalogType === 'institutions';
     const isProjectsList = !isInstitutionsList;
 
+    const showUnpublished =
+        searchParams.get('explorer_show_unpublished') === 'true';
+    const hasUnpublishedProjects = projects.some(
+        (project) => project.workflow_state === 'unshared'
+    );
+    const visibleProjects = showUnpublished
+        ? projects
+        : projects.filter((project) => project.workflow_state === 'public');
+
     const projectInstitutions = useExplorerProjectInstitutions({
-        projects: projects,
+        projects: visibleProjects,
     });
     const { globalMin, globalMax } = useExplorerInterviewRange({
-        items: isProjectsList ? projects : (institutionsList ?? []),
+        items: isProjectsList ? visibleProjects : (institutionsList ?? []),
+        countField: isProjectsList ? 'interview_counts' : 'interviews',
     });
     const { globalCollectionMin, globalCollectionMax } =
-        useProjectsAndCollectionsRange({ items: projects });
+        useProjectsAndCollectionsRange({ items: visibleProjects });
 
     const query = searchParams.get('explorer_q') || '';
     const interviewMin = searchParams.has('explorer_interviews_min')
@@ -145,6 +160,26 @@ export function ExplorerSidebarSearch() {
         ? 'explorer.search_placeholder.projects'
         : 'explorer.search_placeholder.institutions';
 
+    /**
+     * Updates the publication filter while preserving other catalog filters.
+     *
+     * @param {boolean} checked - Whether to include unpublished projects.
+     * @returns {void}
+     */
+    const handleShowUnpublishedChange = (checked) => {
+        setSearchParams(
+            (prev) => {
+                if (checked) {
+                    prev.set('explorer_show_unpublished', 'true');
+                } else {
+                    prev.delete('explorer_show_unpublished');
+                }
+                return prev;
+            },
+            { replace: true }
+        );
+    };
+
     const handleResetAll = () =>
         setSearchParams((prev) => resetExplorerFilters(prev), {
             replace: true,
@@ -163,6 +198,19 @@ export function ExplorerSidebarSearch() {
                     onClear={handleClear}
                     placeholderKey={searchPlaceholderKey}
                 />
+
+                {isProjectsList && hasUnpublishedProjects && (
+                    <div className="ExplorerSidebarSearch-rangeSection">
+                        <Switch
+                            data-testid="show-unpublished-projects"
+                            checked={showUnpublished}
+                            onChange={handleShowUnpublishedChange}
+                            label={t(
+                                'explorer.filter.show_unpublished_projects'
+                            )}
+                        />
+                    </div>
+                )}
 
                 <ExplorerRangeFilter
                     label={t('explorer.filter.interviews')}

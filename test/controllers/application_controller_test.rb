@@ -1,8 +1,10 @@
 require 'test_helper'
 require 'minitest/mock'
 require 'securerandom'
+require_relative '../support/api_schema_assertions'
 
 class ApplicationControllerTest < ActiveSupport::TestCase
+  include ApiSchemaAssertions
   test 'cached project and interview responses hide unshared collection identity from readers' do
     project = DataHelper.test_project(shortname: "vis#{SecureRandom.hex(3)}a", workflow_state: 'public')
     collection = Collection.create!(project: project, name: 'Hidden collection', workflow_state: 'unshared')
@@ -62,26 +64,64 @@ class ApplicationControllerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'initial projects payload includes configured umbrella project' do
-    umbrella_project = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a")
-    current_project = DataHelper.test_project(shortname: "cur#{SecureRandom.hex(2)}a")
-    InstanceSetting.current.update!(umbrella_project: umbrella_project)
+  test 'bootstrap uses localized base display details and retains only stable routing fields outside them' do
+    umbrella = DataHelper.test_project(shortname: "umb#{SecureRandom.hex(2)}a", workflow_state: 'public')
+    project = DataHelper.test_project(shortname: "cur#{SecureRandom.hex(2)}a", workflow_state: 'public')
+    project.translations.find_or_initialize_by(locale: 'en').update!(name: 'English project', more_text: 'English details')
     controller = ApplicationController.new
-    controller.define_singleton_method(:cache_single) do |project, serializer_name: nil|
-      { id: project.id, serializer_name: serializer_name }
+    controller.define_singleton_method(:current_user) { nil }
+
+    payload = I18n.with_locale(:en) do
+      controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: umbrella)
     end
+    assert_equal 'en', payload[:locale]
+    details = JSON.parse(payload[:data].to_json)
+    assert_equal [umbrella.id, project.id].sort, details.map { |record| record['id'] }.sort
+    details.each { |record| assert api_schema.schema('ProjectDisplay').valid?(record) }
+    detail = details.find { |record| record['id'] == project.id }
+    assert_equal 'English project', detail['name']
+    assert_equal 'English details', detail['more_text']
+    assert_not detail.key?('contact_email')
+    assert_not detail.key?('access_config')
+    assert_equal({ id: umbrella.id, shortname: umbrella.shortname, archive_domain: umbrella.archive_domain.presence, is_umbrella: true },
+      payload[:identities][umbrella.id.to_s])
+    assert_equal %i[archive_domain id is_umbrella shortname], payload[:identities][project.id.to_s].keys.sort
+    assert_not payload.key?(:project_representations)
+  end
 
-    payload = controller.send(
-      :build_initial_projects_payload,
-      current_project: current_project,
-      umbrella_project: InstanceSetting.current.umbrella_project,
-      on_umbrella_portal: false
-    )
+  test 'bootstrap excludes denied details and separates authorized cached content' do
+    project = DataHelper.test_project(shortname: "prv#{SecureRandom.hex(2)}a", workflow_state: 'unshared')
+    controller = ApplicationController.new
+    account = User.find_by!(email: 'alice@example.com')
+    controller.define_singleton_method(:current_user) { account }
 
-    assert_equal 'fetched', payload[:project_statuses][umbrella_project.id.to_s]
-    assert_equal umbrella_project.id, payload[:projects_data][umbrella_project.id.to_s][:id]
-    assert_equal 'ProjectBase', payload[:projects_data][umbrella_project.id.to_s][:serializer_name]
-    assert_equal current_project.id, payload[:projects_data][current_project.id.to_s][:id]
+    Rails.stub(:cache, ActiveSupport::Cache::MemoryStore.new) do
+      payload = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+      assert_equal [project.id], payload[:data].map { |record| record[:id] }
+      assert_equal 1, payload[:identities].size
+      account = nil
+      payload = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+      assert_empty payload[:data]
+      assert_equal project.id, payload[:identities][project.id.to_s][:id]
+    end
+  end
+
+  test 'bootstrap reuses display details and refreshes them after localized text changes' do
+    project = DataHelper.test_project(shortname: "bsc#{SecureRandom.hex(2)}a", workflow_state: 'public')
+    controller = ApplicationController.new
+    controller.define_singleton_method(:current_user) { nil }
+
+    I18n.with_locale(:en) do
+      Rails.stub(:cache, ActiveSupport::Cache::MemoryStore.new) do
+        first = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+        Api::V2::ProjectDisplaySerializer.stub(:new, ->(*) { flunk 'Cached bootstrap serialized details again' }) do
+          assert_equal first, controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+        end
+        project.translations.find_or_initialize_by(locale: 'en').update!(more_text: 'Changed details')
+        refreshed = controller.send(:build_initial_projects_payload, current_project: project, umbrella_project: project)
+        assert_equal 'Changed details', refreshed[:data].first[:more_text]
+      end
+    end
   end
 
   test 'project serialization cache changes with umbrella setting' do

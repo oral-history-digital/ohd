@@ -1,18 +1,28 @@
 import { Fetch, getTaskTypesForCurrentProjectFetched } from 'modules/data';
 import { HelpText } from 'modules/help-text';
+import { useProjectIdentity } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import PropTypes from 'prop-types';
 
 import WorkflowHeader from './WorkflowHeader';
 
-export default function WorkflowResults({ interviews, project }) {
+/**
+ * Loads workflow task types separately using the current project identity.
+ * @param {Object} props - Workflow results.
+ * @param {Object[]} [props.interviews] - Interviews to display.
+ * @returns {React.ReactElement} Workflow rows after their task-type resource loads.
+ */
+export default function WorkflowResults({ interviews }) {
+    const { projectDbId } = useProjectIdentity();
+    if (!projectDbId) return <Spinner />;
     return (
         <Fetch
             fetchParams={[
                 'task_types',
                 null,
                 null,
-                `for_projects=${project?.id}`,
+                `for_projects=${projectDbId}`,
             ]}
             testSelector={getTaskTypesForCurrentProjectFetched}
         >
@@ -57,6 +67,5 @@ export default function WorkflowResults({ interviews, project }) {
 }
 
 WorkflowResults.propTypes = {
-    project: PropTypes.object.isRequired,
     interviews: PropTypes.array,
 };

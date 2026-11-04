@@ -6,14 +6,25 @@ import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Uses configured upload types and locales for imports through the current project route.
+
+ * @returns {React.ReactElement} Form, processing feedback, or project loading/error state.
+ */
 export default function UploadsForm() {
     const dispatch = useDispatch();
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const pathBase = usePathBase();
     const { isAuthorized } = useAuthorization();
-    const { project, projectId } = useProject();
+    const {
+        project,
+        isLoading: projectLoading,
+        error: projectError,
+    } = useProject({ include: ['form_options'] });
     const locales = project ? project.available_locales : DEFAULT_LOCALES;
     const uploadTypes = project?.upload_types;
 
@@ -27,6 +38,17 @@ export default function UploadsForm() {
     function returnToForm() {
         setShowForm(true);
     }
+
+    if (projectError)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={projectError.message}
+                isClosable={false}
+            />
+        );
+    if (projectLoading || !project) return <Spinner />;
 
     if (!isAuthorized({ type: 'Upload' }, 'create')) {
         return null;
@@ -77,9 +99,7 @@ export default function UploadsForm() {
             <Form
                 scope="upload"
                 onSubmit={(params) => {
-                    dispatch(
-                        submitData({ locale, projectId, project }, params)
-                    );
+                    dispatch(submitData({ pathBase }, params));
                     setShowForm(false);
                 }}
                 submitText="edit.upload.upload"

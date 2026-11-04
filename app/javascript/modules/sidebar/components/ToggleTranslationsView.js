@@ -1,11 +1,17 @@
-import classNames from 'classnames';
 import { changeToTranslationsView, getTranslationsView } from 'modules/archive';
 import { getCurrentUser } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { Switch } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { FaToggleOff, FaToggleOn } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
+/**
+ * Toggles the sidebar's translations view while preserving the existing access rules.
+ *
+ * @param {Object} props - Component properties.
+ * @param {string} [props.className] - Additional wrapper classes.
+ * @returns {React.ReactElement|null} Sidebar switch when available.
+ */
 export default function ToggleTranslationsView({ className }) {
     const { t } = useI18n();
     const user = useSelector(getCurrentUser);
@@ -20,28 +26,20 @@ export default function ToggleTranslationsView({ className }) {
 
     return (
         <div className={className}>
-            <button
-                type="button"
-                className="Button Button--transparent Button--icon"
-                onClick={() =>
-                    dispatch(changeToTranslationsView(!translationsView))
+            <Switch
+                checked={Boolean(translationsView)}
+                onChange={(checked) =>
+                    dispatch(changeToTranslationsView(checked))
                 }
+                color="var(--editorial-color)"
+                size="md"
+                className={
+                    translationsView ? 'u-color-editorial' : 'u-color-text'
+                }
+                label={t('admin.change_to_translations_view')}
                 title="Switch translations view"
                 aria-label="Switch translations view"
-            >
-                {translationsView ? (
-                    <FaToggleOn className="Icon Icon--large u-vertical-align-bottom u-color-editorial" />
-                ) : (
-                    <FaToggleOff className="Icon Icon--large u-vertical-align-bottom u-color-text" />
-                )}{' '}
-                <span
-                    className={classNames(
-                        translationsView ? 'u-color-editorial' : 'u-color-text'
-                    )}
-                >
-                    {t('admin.change_to_translations_view')}
-                </span>
-            </button>
+            />
         </div>
     );
 }

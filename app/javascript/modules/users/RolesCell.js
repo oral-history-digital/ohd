@@ -1,16 +1,21 @@
-import { getCurrentProject } from 'modules/data';
 import { UserRoles } from 'modules/roles';
+import { useProjectIdentity } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
+/**
+ * Shows the user's roles for the current project.
+ * @param {Object} props - Table row and cell accessors.
+ * @returns {React.ReactElement|null} Project-scoped assignments, or nothing until identity is available.
+ */
 export default function RolesCell({ row, getValue }) {
     const dataPath = getValue();
-    const project = useSelector(getCurrentProject);
+    const { projectDbId } = useProjectIdentity();
     const user = row.original;
-    const roles =
-        Object.values(user.user_roles).filter(
-            (u) => u.project_id === project.id
-        ) || [];
+    const roles = Object.values(user.user_roles).filter(
+        (role) => role.project_id === projectDbId
+    );
+
+    if (!projectDbId) return null;
 
     return (
         <UserRoles
@@ -24,5 +29,6 @@ export default function RolesCell({ row, getValue }) {
 }
 
 RolesCell.propTypes = {
-    getValue: PropTypes.object.isRequired,
+    row: PropTypes.shape({ original: PropTypes.object.isRequired }).isRequired,
+    getValue: PropTypes.func.isRequired,
 };

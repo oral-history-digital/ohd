@@ -72,6 +72,21 @@ test('creates citation string for segments', () => {
     expect(actual).toEqual(expected);
 });
 
+test('accepts the localized project name returned by display details', () => {
+    const actual = interviewCitation(
+        interview,
+        { ...project, name: 'Localized project' },
+        pathBase,
+        undefined,
+        undefined,
+        { t, locale }
+    );
+    expect(actual).toContain(
+        'Localized project, http://www.example.com:3000/de/interviews/da001'
+    );
+    expect(actual).not.toContain('undefined');
+});
+
 test('works for projects without archive domain', () => {
     const projectWithoutDomain = {
         ...project,

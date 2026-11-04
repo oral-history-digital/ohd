@@ -39,6 +39,36 @@ test('clears authentication-dependent caches after a successful login', () => {
     expect(invalidateAuthDependentCache).toHaveBeenCalledTimes(1);
 });
 
+test('navigates only after successful logout has cleared protected state', () => {
+    const dispatch = jest.fn();
+    const onSuccess = jest.fn(() => {
+        expect(dispatch).toHaveBeenCalledWith({
+            type: LOGOUT,
+            redirecting: true,
+        });
+        expect(invalidateAuthDependentCache).toHaveBeenCalledTimes(1);
+    });
+    submitLogout('/logout', onSuccess)(dispatch);
+    expect(onSuccess).not.toHaveBeenCalled();
+    Loader.delete.mock.calls[0][3]();
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+});
+
+test('keeps the logout redirect pending through anonymous account refreshes', () => {
+    const state = userReducer(
+        { isLoggedIn: true },
+        { type: LOGOUT, redirecting: true }
+    );
+    expect(state.isLoggedIn).toBe(false);
+    expect(state.isRedirectingAfterLogout).toBe(true);
+    expect(userReducer(state, { type: LOGOUT }).isRedirectingAfterLogout).toBe(
+        true
+    );
+    expect(
+        userReducer(undefined, { type: LOGOUT }).isRedirectingAfterLogout
+    ).toBe(false);
+});
+
 describe('user registration error flow', () => {
     afterEach(() => {
         jest.clearAllMocks();

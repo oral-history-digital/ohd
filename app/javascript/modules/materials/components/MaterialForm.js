@@ -2,25 +2,32 @@ import { useState } from 'react';
 
 import { submitFormDataWithFetch } from 'modules/api';
 import { getArchiveId } from 'modules/archive';
-import { getCurrentInterview, submitData } from 'modules/data';
+import { getCurrentInterview } from 'modules/data';
 import { Form } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import useMutateMaterials from '../hooks/useMutateMaterials';
 
+/**
+ * Creates or edits interview materials and updates their existing SWR cache.
+ * Uploads use the current project and locale route without loading project details.
+ *
+ * @param {Object} props - Material form settings.
+ * @param {Object} [props.material] - Existing material; omit to create one.
+ * @param {boolean} [props.withUpload=false] - Adds a required PDF upload field.
+ * @param {Function} [props.onSubmit] - Called after starting the save.
+ * @param {Function} [props.onCancel] - Closes the form without saving.
+ * @returns {React.ReactElement} Material editing form.
+ */
 export default function MaterialForm({
     material,
     withUpload = false,
     onSubmit,
     onCancel,
 }) {
-    const dispatch = useDispatch();
-    const { locale } = useI18n();
     const pathBase = usePathBase();
-    const { projectId, project } = useProject();
     const archiveId = useSelector(getArchiveId);
     const interview = useSelector(getCurrentInterview);
     const mutateMaterials = useMutateMaterials(archiveId);
@@ -88,9 +95,6 @@ export default function MaterialForm({
         <Form
             scope="material"
             helpTextCode="material_form"
-            oldOnSubmit={(params) => {
-                dispatch(submitData({ projectId, project, locale }, params));
-            }}
             onSubmit={createOrUpdateMaterial}
             onCancel={onCancel}
             data={material}

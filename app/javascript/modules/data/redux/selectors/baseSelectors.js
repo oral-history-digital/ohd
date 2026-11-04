@@ -19,7 +19,13 @@ export const getNormDataProviders = (state) =>
 
 export const getPermissions = (state) => getData(state).permissions;
 
-export const getProjects = (state) => getData(state).projects;
+/**
+ * Selects project-owned resource maps still served through legacy resource contracts.
+ * @param {Object} state - Root Redux state.
+ * @returns {Object} Nested resources by owning project ID.
+ */
+export const getProjectResources = (state) =>
+    getData(state).projects?.resources || {};
 
 export const getRandomFeaturedInterviews = (state) =>
     getData(state).random_featured_interviews;

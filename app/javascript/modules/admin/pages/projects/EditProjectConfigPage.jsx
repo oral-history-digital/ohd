@@ -2,20 +2,71 @@ import AuthShowContainer from 'modules/auth/AuthShowContainer';
 import { getCurrentUser, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { EditData, EditViewOrRedirect } from '../../components';
 
+/**
+ * Edits project settings from the authorized edit profile.
+ * @returns {React.ReactElement} Settings form, loading indicator, or request error.
+ */
 export default function EditProjectConfigPage() {
     const { t } = useI18n();
-    const { project } = useProject();
+    const {
+        project,
+        error,
+        isLoading: projectLoading,
+    } = useProject({ profile: 'edit' });
     const dispatch = useDispatch();
     const user = useSelector(getCurrentUser);
 
+    /**
+     * Saves settings before invalidating the project read.
+     * @param {Object} props - Route context.
+     * @param {Object} params - Form values.
+     * @param {Object} opts - Submission options.
+     * @param {Function} callback - Successful save callback.
+     */
     function submitHandler(props, params, opts, callback) {
-        dispatch(submitData(props, params, opts, callback));
+        // Refetch only after the server saves, so an optimistic write cannot replace the draft.
+        dispatch(
+            submitData(
+                props,
+                params,
+                { ...opts, updateStateBeforeSubmit: false },
+                callback
+            )
+        );
     }
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (projectLoading || !project) return <Spinner />;
+
+    // The legacy save endpoint still accepts comma-separated setters; Redux keeps arrays.
+    const formProject = { ...project };
+    [
+        'available_locales',
+        'view_modes',
+        'upload_types',
+        'logged_out_visible_registry_entry_ids',
+        'hidden_registry_entry_ids',
+        'hidden_transcript_registry_entry_ids',
+        'pdf_registry_entry_ids',
+    ].forEach((field) => {
+        formProject[`pseudo_${field}`] = (project[field] || []).join(', ');
+    });
 
     const formElements = [
         {
@@ -150,9 +201,8 @@ export default function EditProjectConfigPage() {
                         {t(`edit.project.config`)}
                     </h1>
                     <EditData
-                        data={project}
+                        data={formProject}
                         scope="project"
-                        sensitiveAttributes={['contact_email']}
                         helpTextCode="archive_config_form"
                         formElements={formElements}
                         submitData={submitHandler}

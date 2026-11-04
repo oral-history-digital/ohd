@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import { useTrackPageView } from 'modules/analytics';
-import { useGetProject } from 'modules/data';
+import { useProjectDetail } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useCurrentPage } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { RedirectOnLogin } from 'modules/user';
 import { ScrollToTop } from 'modules/user-agent';
 import { isEmptyHtml, sanitizeHtml } from 'modules/utils';
@@ -12,16 +13,40 @@ import ProjectLogo from './ProjectLogo';
 import StartPageVideo from './StartPageVideo';
 import getProjectLogoSrc from './utils/getProjectLogoSrc';
 
+/**
+ * Displays localized project home content from Redux with institution names and a logo.
+ * Keeps loaded content during refresh and the login redirect mounted while data reloads.
+ * Shows the shared spinner during initial loading; featured interviews are fetched separately.
+ *
+ * @returns {import('react').ReactElement} Home content or its loading/error state.
+ */
 export default function ProjectHome() {
     const currentPage = useCurrentPage();
-    const { project, loading } = useGetProject({
-        shortname: currentPage.params.projectShortname,
-        lite: true,
-    });
-    const { locale } = useI18n();
+    const { project, isLoading, error } = useProjectDetail(
+        currentPage.params.projectShortname,
+        {
+            include: ['institutions'],
+        }
+    );
+    const { t, locale } = useI18n();
     useTrackPageView();
 
-    if (!project || loading) return null;
+    if (!project || error)
+        return (
+            <ScrollToTop>
+                <RedirectOnLogin path="/searches/archive" />
+                {isLoading && !error && (
+                    <div className="wrapper-content ProjectHome ProjectHome--loading">
+                        <Spinner withPadding />
+                    </div>
+                )}
+                {error && (
+                    <p className="wrapper-content ProjectHome" role="alert">
+                        {t('error')}: {error.message}
+                    </p>
+                )}
+            </ScrollToTop>
+        );
 
     const showProjectLogo = project && project?.display_ohd_link === true;
     const hasLogo = Boolean(getProjectLogoSrc(project, locale));
@@ -32,8 +57,8 @@ export default function ProjectHome() {
 
     return (
         <ScrollToTop>
+            <RedirectOnLogin path="/searches/archive" />
             <div className="wrapper-content ProjectHome">
-                <RedirectOnLogin path="/searches/archive" />
                 {showStartPageVideo && <StartPageVideo />}
                 <div
                     className={classNames('ProjectHome--hero', {

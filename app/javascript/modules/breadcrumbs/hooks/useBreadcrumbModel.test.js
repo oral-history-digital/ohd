@@ -6,11 +6,11 @@ import {
     getUsersStatus,
     useGetCollection,
     useGetInstitution,
-    useGetProject,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useSelector } from 'react-redux';
 
+import { projectAccessContext } from '../../data/redux/projectRequests';
 import { useCurrentPage } from '../../routes/hooks/useCurrentPage';
 import useProject from '../../routes/useProject';
 import { useBreadcrumbModel } from './useBreadcrumbModel';
@@ -44,7 +44,8 @@ jest.mock('modules/data', () => ({
     getUsersStatus: jest.fn(),
     useGetCollection: jest.fn(),
     useGetInstitution: jest.fn(),
-    useGetProject: jest.fn(),
+    makeProjectSelector: jest.requireActual('../../data/redux/projectDetails')
+        .makeProjectSelector,
 }));
 
 /**
@@ -89,17 +90,19 @@ function getHookResult({
         institution:
             (id && (institutions?.[id] || institutions?.[Number(id)])) || null,
     }));
-    useGetProject.mockImplementation((params = {}) => {
-        const projectIdentifier = params.id || params.shortname;
-        return {
-            project:
-                (projectIdentifier &&
-                    (projects?.[projectIdentifier] ||
-                        projects?.[Number(projectIdentifier)])) ||
-                null,
-        };
-    });
-    useSelector.mockImplementation((selector) => selector({}));
+    const cached = { records: {}, translations: { display: {} } };
+    for (const [id, { name, display_name, ...record }] of Object.entries(
+        projects || {}
+    )) {
+        cached.records[id] = record;
+        cached.translations.display[id] = { de: { name, display_name } };
+    }
+    const state = {
+        data: { users: { current: currentUser }, projects: cached },
+        user: {},
+    };
+    cached.context = projectAccessContext(state);
+    useSelector.mockImplementation((selector) => selector(state));
 
     return renderHook(() => useBreadcrumbModel()).result.current;
 }
@@ -150,7 +153,7 @@ describe('useBreadcrumbModel', () => {
             project: {
                 shortname: 'mog',
                 default_locale: 'de',
-                display_name: { de: 'Archiv Alpha' },
+                display_name: 'Archiv Alpha',
             },
             interview: {
                 id: 101,
@@ -209,7 +212,7 @@ describe('useBreadcrumbModel', () => {
             project: {
                 shortname: 'mog',
                 default_locale: 'de',
-                display_name: { de: 'Archiv Alpha' },
+                display_name: 'Archiv Alpha',
             },
             interview: null,
             collections: {},
@@ -301,7 +304,7 @@ describe('useBreadcrumbModel', () => {
                     id: 456146,
                     shortname: 'fvv',
                     default_locale: 'de',
-                    name: { de: 'Zeitzeugenarchiv FVV' },
+                    name: 'Zeitzeugenarchiv FVV',
                 },
             },
             translations: {
@@ -363,7 +366,7 @@ describe('useBreadcrumbModel', () => {
                     id: 456146,
                     shortname: 'fvv',
                     default_locale: 'de',
-                    name: { de: 'Zeitzeugenarchiv FVV' },
+                    name: 'Zeitzeugenarchiv FVV',
                 },
             },
             translations: {
@@ -473,7 +476,7 @@ describe('useBreadcrumbModel', () => {
             project: {
                 shortname: 'mog',
                 default_locale: 'de',
-                display_name: { de: 'Archiv Alpha' },
+                display_name: 'Archiv Alpha',
             },
             interview: {
                 id: 101,
@@ -530,7 +533,7 @@ describe('useBreadcrumbModel', () => {
             project: {
                 shortname: 'mog',
                 default_locale: 'de',
-                display_name: { de: 'Archiv Alpha' },
+                display_name: 'Archiv Alpha',
             },
             interview: {
                 id: 101,
@@ -679,7 +682,7 @@ describe('useBreadcrumbModel', () => {
                 shortname: 'adg',
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+                display_name: 'Archiv Deutsches Gedaechtnis',
             },
             interview: null,
             currentUser: null,
@@ -764,7 +767,7 @@ describe('useBreadcrumbModel', () => {
                 shortname: 'adg',
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+                display_name: 'Archiv Deutsches Gedaechtnis',
             },
             interview: null,
             currentUser: null,
@@ -841,7 +844,7 @@ describe('useBreadcrumbModel', () => {
                 shortname: 'adg',
                 is_umbrella: false,
                 default_locale: 'de',
-                display_name: { de: 'Archiv Deutsches Gedaechtnis' },
+                display_name: 'Archiv Deutsches Gedaechtnis',
             },
             interview: null,
             currentUser: null,

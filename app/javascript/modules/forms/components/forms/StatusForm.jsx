@@ -4,11 +4,16 @@ import { AuthorizedContent } from 'modules/auth';
 import { submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Edits a publication flag through the current route with optimistic Redux updates.
+ * @param {Object} props - Record, scope, flag, and label.
+ * @returns {React.ReactElement} Authorized edit button or checkbox form.
+ */
 export default function StatusForm({
     data,
     scope,
@@ -16,8 +21,8 @@ export default function StatusForm({
     value,
     labelKey = 'activerecord.attributes.default.publish',
 }) {
-    const { project, projectId } = useProject();
-    const { t, locale } = useI18n();
+    const pathBase = usePathBase();
+    const { t } = useI18n();
     const dispatch = useDispatch();
 
     const [editing, setEditing] = useState(false);
@@ -27,7 +32,7 @@ export default function StatusForm({
             scope={scope}
             onSubmit={(params) => {
                 dispatch(
-                    submitData({ project, projectId, locale }, params, {
+                    submitData({ pathBase }, params, {
                         updateStateBeforeSubmit: true,
                     })
                 );

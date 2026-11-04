@@ -1,8 +1,9 @@
 import { useTrackPageView } from 'modules/analytics';
 import { useIsEditor } from 'modules/archive';
-import { useGetProject } from 'modules/data';
+import { useProjectDetail } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
+import { Spinner } from 'modules/spinners';
 import { LinkButton, SmartImage } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
@@ -29,18 +30,43 @@ import {
     YearRange,
 } from './details';
 
+const include = [
+    'counts',
+    'institutions',
+    'interview_languages',
+    'media_types',
+    'year_ranges',
+    'subjects',
+    'levels_of_indexing',
+    'affiliates',
+];
+
+/**
+ * Displays catalog project details from Redux and a separately fetched collection list.
+ * Requests the catalog's display fields and shows loading or request errors before rendering details.
+ *
+ * @returns {import('react').ReactElement} Project details or their loading/error state.
+ */
 export function ProjectPage() {
     const { t, locale } = useI18n();
-    const id = Number(useParams().id);
-    const { project } = useGetProject({ id, lite: true });
+    const { id } = useParams();
+    const { project, error, isLoading } = useProjectDetail(id, { include });
     const isEditviewActive = useIsEditor();
     useTrackPageView();
 
-    if (!project) {
+    if (error || !project) {
         return (
             <ScrollToTop>
                 <ErrorBoundary>
-                    <div className="wrapper-content ProjectDetails" />
+                    <div className="wrapper-content ProjectDetails">
+                        {error ? (
+                            <p role="alert">
+                                {t('error')}: {error.message}
+                            </p>
+                        ) : isLoading ? (
+                            <Spinner />
+                        ) : null}
+                    </div>
                 </ErrorBoundary>
             </ScrollToTop>
         );
@@ -101,7 +127,9 @@ export function ProjectPage() {
                                 <ProjectDomain
                                     domain={project.archive_domain}
                                 />
-                                <InterviewStats counts={project.interviews} />
+                                <InterviewStats
+                                    counts={project.interview_counts}
+                                />
                                 <MediaTypes mediaTypes={project?.media_types} />
                                 <YearRange
                                     years={project.birth_year_range}
@@ -112,7 +140,7 @@ export function ProjectPage() {
                                     labelKey="modules.catalog.period"
                                 />
                                 <InterviewLanguages
-                                    languages={project.languages_interviews}
+                                    languages={project.interview_languages}
                                 />
                                 <IndexingLevels
                                     levels={project.levels_of_indexing}
@@ -151,7 +179,10 @@ export function ProjectPage() {
                                     type="project"
                                     institutions={project.institutions}
                                     primary_institution={
-                                        project.primary_institution
+                                        project.institutions?.find(
+                                            (institution) =>
+                                                institution.is_primary
+                                        )?.id
                                     }
                                     projectName={title}
                                     projectId={project.id}

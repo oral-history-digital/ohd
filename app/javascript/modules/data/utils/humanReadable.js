@@ -8,19 +8,20 @@ import { toDateString } from './toDateString';
  * Converts a model attribute value to a human-readable, localized string.
  *
  * Handles multiple value formats in order of precedence:
- * 1. Globalize translations_attributes (Rails Globalize gem)
+ * 1. Stored translations from API records or Rails-style translation attributes
  * 2. Direct localized objects ({ de: "...", en: "..." })
  * 3. Pass-through identifiers (archive_id, signature_original, shortname)
  * 4. Duration formatting (HH:MM:SS → "X h Y min")
  * 5. Date formatting (ISO8601 → locale-aware)
  * 6. Foreign key lookups (collection_id, *_language_id)
- * 7. Boolean translation keys
+ * 7. Boolean translations
  * 8. Array values (comma-joined)
  * 9. TranslationValue system lookups (fallback)
  *
  * @param {Object} obj - Model object containing the attribute
  * @param {string} attribute - Attribute name to render
  * @param {string} locale - Target locale code (e.g., 'en', 'de')
+ * @param {string} [defaultLocale] - Project default locale for boolean fallback
  * @param {boolean} [collapsed=false] - Truncate long strings to 500 chars
  * @param {string} [none='---'] - Fallback for nil/missing values
  * @param {Object} [translations] - TranslationValue lookup (keyed by translation key)
@@ -59,12 +60,14 @@ export function humanReadable({
     collections,
     languages,
     locale,
+    defaultLocale,
 }) {
-    // 1. Globalize translations_attributes (nested translations)
-    if (obj.translations_attributes) {
-        const translation = Array.isArray(obj.translations_attributes)
-            ? obj.translations_attributes.find((t) => t.locale === locale)
-            : Object.values(obj.translations_attributes).find(
+    // 1. Prefer stored translations for editors; display-only records provide localized scalar fields.
+    const storedTranslations = obj.translations_attributes ?? obj.translations;
+    if (storedTranslations) {
+        const translation = Array.isArray(storedTranslations)
+            ? storedTranslations.find((t) => t.locale === locale)
+            : Object.values(storedTranslations).find(
                   (t) => t.locale === locale
               );
         const v = translation?.[attribute];
@@ -105,7 +108,13 @@ export function humanReadable({
 
     // 8. Boolean translation (boolean_value.true/false)
     if (typeof value === 'boolean') {
-        return translations[`boolean_value.${value}`][locale];
+        const key = `boolean_value.${value}`;
+        return (
+            translations[key]?.[locale] ||
+            translations[key]?.[defaultLocale] ||
+            translations[key]?.en ||
+            value.toString()
+        );
     }
 
     // 9. Join array values with commas

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { useGetProjects } from 'modules/data';
+import { useProjectList } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useIsMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
@@ -9,10 +9,19 @@ import ProjectTile from './ProjectTile';
 
 const CARDS_PER_SCROLL = 3;
 
+/**
+ * Displays a carousel of the 21 public projects with the most interviews, shuffled for display.
+ * Fetches project summaries with counts and institutions through Redux; the umbrella is excluded.
+ *
+ * @param {Object} props - Carousel styling.
+ * @param {string} [props.className] - Additional class for the carousel wrapper.
+ * @returns {import('react').ReactElement} Project tiles with scrolling controls.
+ */
 export function HomepageProjects({ className }) {
-    const { projects } = useGetProjects({
+    const { projects } = useProjectList({
         all: true,
         workflowState: 'public',
+        include: ['counts', 'institutions'],
     });
     const { t } = useI18n();
     const isMobile = useIsMobile();
@@ -26,8 +35,8 @@ export function HomepageProjects({ className }) {
     const sortedProjects = useMemo(
         () =>
             [...projects].sort((a, b) => {
-                const aCount = a.interviews?.total || 0;
-                const bCount = b.interviews?.total || 0;
+                const aCount = a.interview_counts?.total || 0;
+                const bCount = b.interview_counts?.total || 0;
                 return bCount - aCount;
             }),
         [projects]

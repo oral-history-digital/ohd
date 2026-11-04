@@ -220,6 +220,29 @@ describe('humanReadable', () => {
 
     // Test #8: Boolean translation
     describe('Boolean translation', () => {
+        test.each([true, false])(
+            'falls back through project default, English, and value for %s',
+            (value) => {
+                const key = `boolean_value.${value}`;
+                const options = {
+                    obj: { public: value },
+                    attribute: 'public',
+                    locale: 'tr',
+                    defaultLocale: 'de',
+                    translations: {
+                        [key]: { tr: 'Türkçe', de: 'Deutsch', en: 'English' },
+                    },
+                };
+                expect(humanReadable(options)).toEqual('Türkçe');
+                delete options.translations[key].tr;
+                expect(humanReadable(options)).toEqual('Deutsch');
+                delete options.translations[key].de;
+                expect(humanReadable(options)).toEqual('English');
+                delete options.translations[key];
+                expect(humanReadable(options)).toEqual(value.toString());
+            }
+        );
+
         test('should translate true boolean', () => {
             const obj = { public: true };
             const translations = {
@@ -348,4 +371,18 @@ describe('humanReadable', () => {
             expect(actual).toEqual('unknown');
         });
     });
+});
+
+test('reads the editor locale from stored API translations rather than the display projection', () => {
+    expect(
+        humanReadable({
+            obj: {
+                name: 'Display projection',
+                translations: [{ locale: 'en', name: 'Stored name' }],
+            },
+            attribute: 'name',
+            locale: 'en',
+            translations: {},
+        })
+    ).toBe('Stored name');
 });

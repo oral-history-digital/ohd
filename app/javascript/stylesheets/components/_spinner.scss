@@ -1,11 +1,30 @@
 .Spinner {
-  display: block;
-}
-
-.Spinner--small {
-  width: 1.5rem !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Spinner--withPadding {
   padding: 1.25rem;
+}
+
+.Spinner-ring {
+  display: block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border: 3px solid $gray-lighter;
+  border-radius: 50%;
+  animation: spinner-spin 0.75s linear infinite;
+}
+
+@keyframes spinner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Spinner-ring {
+    animation: none;
+  }
 }

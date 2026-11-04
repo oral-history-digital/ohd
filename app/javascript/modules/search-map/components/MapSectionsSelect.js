@@ -1,16 +1,28 @@
 import { Listbox, ListboxOption } from '@reach/listbox';
 import '@reach/listbox/styles.css';
 import classNames from 'classnames';
-import { getMapSections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
-export default function MapSectionsSelect({ className, section, onChange }) {
-    const mapSections = useSelector(getMapSections);
-    const { t, locale } = useI18n();
+/**
+ * Selects among the localized map sections loaded by the search page.
+ *
+ * @param {Object} props - Section selection properties.
+ * @param {string} [props.className] - Additional wrapper classes.
+ * @param {Object[]} props.sections - Ordered sections with localized labels.
+ * @param {string} props.section - Selected section name.
+ * @param {Function} props.onChange - Selects a section by name.
+ * @returns {React.ReactElement|null} Section selector, or nothing for fewer than two sections.
+ */
+export default function MapSectionsSelect({
+    className,
+    sections,
+    section,
+    onChange,
+}) {
+    const { t } = useI18n();
 
-    if (mapSections.length < 2) {
+    if (sections.length < 2) {
         return null;
     }
 
@@ -24,13 +36,13 @@ export default function MapSectionsSelect({ className, section, onChange }) {
                 value={section}
                 onChange={onChange}
             >
-                {mapSections.map((section) => (
+                {sections.map((section) => (
                     <ListboxOption
                         key={section.name}
                         value={section.name}
-                        label={section.label[locale]}
+                        label={section.label || section.name}
                     >
-                        {section.label[locale]}
+                        {section.label || section.name}
                     </ListboxOption>
                 ))}
             </Listbox>
@@ -40,6 +52,7 @@ export default function MapSectionsSelect({ className, section, onChange }) {
 
 MapSectionsSelect.propTypes = {
     className: PropTypes.string,
+    sections: PropTypes.array.isRequired,
     section: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
 };

@@ -1,15 +1,8 @@
-import { getLocale, getProjectId } from 'modules/archive';
-import { getCurrentProject, submitData } from 'modules/data';
+import { submitData } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import PhotoForm from './PhotoForm';
-
-const mapStateToProps = (state) => ({
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    project: getCurrentProject(state),
-});
 
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
@@ -19,4 +12,4 @@ const mapDispatchToProps = (dispatch) =>
         dispatch
     );
 
-export default connect(mapStateToProps, mapDispatchToProps)(PhotoForm);
+export default connect(null, mapDispatchToProps)(PhotoForm);

@@ -70,21 +70,27 @@ bin/start_search
 bin/shakapacker-dev-server
 ```
 
-- When asset compilation is affected, verify the production frontend build with:
+- When asset compilation is affected, run the isolated production frontend check inside the development container as the `vscode` user in `/workspace`:
 
 ```sh
-RAILS_ENV=production bin/shakapacker
+bin/check_frontend_build
 ```
 
-Frontend CI runs this command in `.github/workflows/jest.yml`. The Docker image uses a separate `assets:precompile` path.
+- Use this wrapper for all local production frontend build checks. It writes assets, the manifest, and the build cache under `tmp/frontend-production-check`, preserving the development manifest in `public/packs`.
+- Do not run `RAILS_ENV=production bin/shakapacker` directly in the development container. It overwrites the development manifest and can leave Rails requesting production chunks that the active dev server does not serve.
+- See `.devcontainer/README.md` for the development build workflow. Frontend CI uses a direct production build in `.github/workflows/jest.yml`; that CI command is not the local verification command. The Docker image uses a separate `assets:precompile` path.
 
 ## Architecture and implementation conventions
 
+- For `/api/v2` endpoints, follow [Add a v2 API endpoint](doc/api/v2/adding-endpoints.md) for controller/serializer boundaries, authorization, Ruby OpenAPI contracts, caching, and tests.
 - Follow the affected feature's conventions before adding a service, repository, hook, serializer, or other abstraction. Service constructors vary; do not impose one signature on unrelated classes.
 - Keep Pundit policy changes aligned with the records they protect. Inspect the existing scope for the affected resource rather than assuming direct `project_id` ownership; some records are scoped indirectly through related records.
 - Preserve `/:locale` and `/:project_id/:locale` routing and dedicated archive-domain routes in `config/routes.rb`. React Router has corresponding route shapes in `app/javascript/modules/routes`. Use existing route helpers and hooks instead of manually assembling paths where an established mechanism exists.
 - Preserve existing Redux/thunk and API-middleware flows when changing legacy code.
-- For new frontend code, prefer hooks where possible, including `useSelector`, `useDispatch`, route hooks, and focused SWR/`useSWRImmutable` hooks.
+- Standardize project data loading in Redux. Redux is the intended sole owner of project records, project query results, and their existing nested resources; do not pursue a Redux-to-SWR migration.
+- Expose project loading through Redux-backed consumer hooks. Reuse existing public hook interfaces where practical so components do not need to know how records are stored or requested.
+- Centralize request deduplication, loading/error states, refresh, and mutation/access invalidation in the Redux request flow. Load projects on demand; distinguish summaries from complete details and keep list membership/pagination separate from records.
+- For new frontend code, prefer hooks, including `useSelector`, `useDispatch`, and route hooks. Retain SWR for independently owned resources that already use it; do not introduce duplicate Redux/SWR ownership or new project hydration bridges.
 - Do not create new legacy `connect` / `mapStateToProps` / `mapDispatchToProps` container wrappers. Preserve existing containers unless the task explicitly includes their refactor.
 - Avoid feature-wide state migrations for task-scoped work.
 - Write new frontend code in JavaScript (`.js`/`.jsx`), not TypeScript.
@@ -141,8 +147,9 @@ yarn test
 - Test service/repository changes for business behavior, query correctness, and project isolation.
 - Test UI changes for visible behavior and interaction.
 - Test locale/project paths when routing changes.
+- For data-loading changes, test concurrent request deduplication, summary-to-detail loading, mutation freshness, denied access, and logout/permission changes during in-flight requests. Obsolete responses must not restore protected data or data from another project or access context.
 - Run migration checks when schema behavior changes.
-- Run the production Shakapacker build when frontend asset compilation is affected.
+- Run `bin/check_frontend_build` inside the development container when frontend asset compilation is affected. Do not overwrite the development manifest with a direct production build.
 - Do not claim a command passed unless it completed successfully.
 
 ## Code Documenation
@@ -219,7 +226,7 @@ function filterItems(items, query) {
 - Do not change JSON envelopes or cross-layer constants on one side only.
 - Do not add runtime translations to `config/locales`.
 - Do not treat `config/translations` as the runtime translation source.
-- Do not introduce a new frontend stack, TypeScript migration, or broad Redux conversion without an explicit request.
+- Do not introduce a new frontend stack, TypeScript migration, state-management library, or broad data-ownership migration without an explicit request.
 - Do not rewrite large files for style.
 - Do not add abstractions without a current use.
 - Do not undo unrelated developer changes.

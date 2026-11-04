@@ -5,6 +5,11 @@ import { useCurrentPage, useProject } from 'modules/routes';
 
 import SiteLogo from './SiteLogo';
 
+/**
+ * Shows home navigation, the project logo, or breadcrumbs using project display details.
+ *
+ * @returns {React.ReactElement} Header for the current page.
+ */
 export function SiteHeader() {
     const currentPage = useCurrentPage();
     const { project } = useProject();

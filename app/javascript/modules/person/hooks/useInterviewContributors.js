@@ -1,26 +1,23 @@
 import { fetcher } from 'modules/api';
+import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import useSWRImmutable from 'swr/immutable';
 
 /**
- * Fetch all people who contributed to a specific interview (interviewees, interviewers, etc.).
+ * Loads the people who contributed to an interview, using the current route or its owning project.
+ * Contributor responses share the existing immutable SWR cache; failed reads hide retained people.
  *
- * Uses SWR immutable caching since interview contributors rarely change during a session.
- * Data is cached globally by interview ID, so multiple components can call this hook
- * without triggering redundant API requests.
- *
- * To manually refresh data after contributor updates, use SWR's mutate function:
- * `mutate(pathBase + '/people.json?contributors_for_interview=' + interviewId)`
- *
- * @param {number|string|null} interviewId - The interview ID to fetch contributors for
- * @returns {Object} SWR response with:
- *   - data: Object mapping contributor IDs to person objects
- *   - isLoading: boolean indicating if initial fetch is in progress
- *   - isValidating: boolean indicating if revalidation is in progress
- *   - error: Error object if request failed
+ * @param {number|string|null|undefined} interviewId - Internal interview ID; empty skips fetching.
+ * @param {{shortname: string}} [project] - Loaded project for reads outside the current route.
+ * @returns {Object} Contributors by person ID, loading/refresh status, and request error.
  */
-export default function useInterviewContributors(interviewId) {
-    const pathBase = usePathBase();
+export default function useInterviewContributors(interviewId, project) {
+    const currentPathBase = usePathBase();
+    const { locale } = useI18n();
+    // Select the owning project on this host, retaining the current session.
+    const pathBase = project
+        ? `/${project.shortname}/${locale}`
+        : currentPathBase;
 
     const path = interviewId
         ? `${pathBase}/people.json?contributors_for_interview=${interviewId}`
@@ -33,5 +30,10 @@ export default function useInterviewContributors(interviewId) {
         fetcher
     );
 
-    return { isLoading, isValidating, data: data?.data, error };
+    return {
+        isLoading,
+        isValidating,
+        data: error ? undefined : data?.data,
+        error,
+    };
 }

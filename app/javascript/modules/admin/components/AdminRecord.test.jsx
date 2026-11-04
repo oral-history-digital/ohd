@@ -1,10 +1,21 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { registerDoi } from 'modules/archive';
-import { deleteData } from 'modules/data';
+import { AuthorizedContent } from 'modules/auth';
+import { deleteData, useProjectDetail } from 'modules/data';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import AdminRecord from './AdminRecord';
+import DataList from './DataList';
+
+jest.mock('./EditViewOrRedirect', () => {
+    const MockPropTypes = jest.requireActual('prop-types');
+    function EditViewOrRedirect({ children }) {
+        return children;
+    }
+    EditViewOrRedirect.propTypes = { children: MockPropTypes.node };
+    return EditViewOrRedirect;
+});
 
 jest.mock('modules/archive', () => ({
     getProjectId: (state) => state.archive?.projectId,
@@ -20,15 +31,22 @@ jest.mock('modules/auth', () => {
 
     AuthorizedContent.propTypes = { children: MockPropTypes.node };
 
-    return { AuthorizedContent };
+    return { AuthorizedContent: jest.fn(AuthorizedContent) };
 });
 jest.mock('modules/data', () => ({
     deleteData: jest.fn((...args) => ({ type: 'deleteData', args })),
-    useGetProject: jest.fn(),
+    useProjectDetail: jest.fn(),
     useSensitiveData: jest.fn(),
 }));
 jest.mock('modules/i18n', () => ({
-    useI18n: () => ({ t: (key) => key, locale: 'en' }),
+    useI18n: () => ({
+        t: (key) =>
+            ({
+                'activerecord.models.logo.one': 'Logo',
+                'activerecord.models.sponsor_logo.one': 'Sponsor logo',
+            })[key] || key,
+        locale: 'en',
+    }),
 }));
 jest.mock('modules/person', () => {
     const MockPropTypes = jest.requireActual('prop-types');
@@ -43,6 +61,7 @@ jest.mock('modules/person', () => {
 });
 jest.mock('modules/routes', () => ({
     usePathBase: () => '/test/en',
+    useProjectIdentity: () => ({ projectDbId: 1 }),
     useProject: () => ({
         project: { id: 1, shortname: 'test' },
         projectId: 'test',
@@ -82,7 +101,11 @@ jest.mock('modules/ui', () => {
     };
     AdminMenu.Item = AdminMenuItem;
 
-    return { AdminMenu };
+    function InlineNotification({ description }) {
+        return <p role="alert">{description}</p>;
+    }
+    InlineNotification.propTypes = { description: MockPropTypes.string };
+    return { AdminMenu, InlineNotification };
 });
 jest.mock('react-redux', () => ({
     connect: () => (Component) => Component,
@@ -94,7 +117,8 @@ jest.mock('./DataDetails', () => {
     function DataDetails({ detailsAttributes, data }) {
         return (
             <div data-testid="data-details">
-                {detailsAttributes.join(',')}:{data.id}
+                {detailsAttributes.join(',')}:{data.id}:
+                {data.shortname || data.title}:{data.doi_status}
             </div>
         );
     }
@@ -154,6 +178,76 @@ test('renders the record and its configured actions', () => {
     expect(screen.queryByTestId('action-register_doi')).not.toBeInTheDocument();
 });
 
+test.each([
+    [
+        'logo',
+        { id: 4, type: 'Logo', filename: 'archive.svg', locale: 'en' },
+        'Logo en',
+    ],
+    [
+        'logo',
+        { id: 4, type: 'Logo', filename: 'archive-de.svg', locale: 'de' },
+        'Logo de',
+    ],
+    [
+        'sponsor_logo',
+        {
+            id: 4,
+            type: 'SponsorLogo',
+            filename: 'sponsor.png',
+            locale: 'de',
+            title: 'Sponsor title',
+        },
+        'Sponsor title',
+    ],
+    [
+        'logo',
+        { id: 4, type: 'Logo', filename: null, url: null, locale: 'en' },
+        'Logo en',
+    ],
+    [
+        'logo',
+        { id: 4, type: 'Logo', filename: null, url: null, locale: null },
+        'Logo #4',
+    ],
+    [
+        'media_stream',
+        { id: 4, media_type: 'video', resolution: '720p', path: '/media/{id}' },
+        'video 720p',
+    ],
+    [
+        'external_link',
+        {
+            id: 4,
+            name: null,
+            internal_name: 'Project website',
+            url: 'https://example.org',
+        },
+        'Project website',
+    ],
+    [
+        'external_link',
+        { id: 4, name: '', internal_name: '', url: 'https://example.org' },
+        'https://example.org',
+    ],
+])('renders a visible label in the real %s list', (scope, data, label) => {
+    render(
+        <DataList
+            data={[data]}
+            scope={scope}
+            hideAdd
+            hideShow
+            hideEdit
+            hideDelete
+            fetchData={jest.fn()}
+            submitData={jest.fn()}
+        />
+    );
+    expect(
+        screen.getByText(label, { selector: '.base-data .name' })
+    ).toBeInTheDocument();
+});
+
 test('respects hidden action configuration', () => {
     renderAdminRecord({ hideShow: true, hideEdit: true, hideDelete: true });
 
@@ -168,31 +262,8 @@ test('deletes the server record and removes it from Redux state', () => {
     fireEvent.click(screen.getByRole('button', { name: 'delete' }));
 
     expect(deleteData.mock.calls).toEqual([
-        [
-            {
-                locale: 'en',
-                projectId: 'test',
-                project: { id: 1, shortname: 'test' },
-            },
-            'collections',
-            7,
-            null,
-            null,
-            true,
-        ],
-        [
-            {
-                locale: 'en',
-                projectId: 'test',
-                project: { id: 1, shortname: 'test' },
-            },
-            'collections',
-            7,
-            null,
-            null,
-            null,
-            true,
-        ],
+        [{ pathBase: '/test/en' }, 'collections', 7, null, null, true],
+        [{ pathBase: '/test/en' }, 'collections', 7, null, null, null, true],
     ]);
     expect(dispatch).toHaveBeenCalledTimes(2);
 });
@@ -233,4 +304,111 @@ test('renders custom record and joined-data components', () => {
 
     expect(screen.getByText('custom-7')).toBeInTheDocument();
     expect(screen.getByTestId('joined-data')).toHaveTextContent('interviews');
+});
+
+test('project editing waits for details instead of opening a form with summary data', () => {
+    useProjectDetail.mockReturnValue({
+        project: undefined,
+        isLoading: true,
+        error: null,
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        hideShow: true,
+        data: { id: 7, type: 'Project', name: 'Archive' },
+        form,
+    });
+    expect(screen.getByText('loading')).toBeInTheDocument();
+    expect(form).not.toHaveBeenCalled();
+});
+
+test('project editing shows a loading error without falling back to summary data', () => {
+    useProjectDetail.mockReturnValue({
+        project: { id: 7, available_locales: ['en'] },
+        isLoading: false,
+        error: { status: 403, message: 'Forbidden' },
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        hideShow: true,
+        data: { id: 7, type: 'Project', name: 'Archive' },
+        form,
+    });
+    expect(screen.getByRole('alert')).toHaveTextContent('Forbidden');
+    expect(form).not.toHaveBeenCalled();
+});
+
+test('project editing retains stored translations and adapts locales without manually refetching', () => {
+    const project = {
+        id: 7,
+        type: 'Project',
+        shortname: 'archive',
+        name: 'Archive',
+        available_locales: ['de', 'en'],
+        translations: [{ id: 12, locale: 'en', name: '' }],
+    };
+    const mutate = jest.fn();
+    useProjectDetail.mockReturnValue({
+        project,
+        isLoading: false,
+        error: null,
+        mutate,
+    });
+    const form = jest.fn();
+    renderAdminRecord({
+        scope: 'project',
+        data: { id: 7, type: 'Project', name: 'Summary' },
+        form,
+    });
+    expect(form).toHaveBeenCalledWith(
+        { ...project, pseudo_available_locales: 'de,en' },
+        expect.any(Function),
+        expect.any(Function)
+    );
+    form.mock.calls[0][1]();
+    expect(mutate).not.toHaveBeenCalled();
+    expect(project).not.toHaveProperty('pseudo_available_locales');
+});
+
+test('project dialogs load by shortname and display the API identifier and DOI status', () => {
+    useProjectDetail.mockReturnValue({
+        project: {
+            id: 7,
+            shortname: 'project-shortname',
+            available_locales: ['en'],
+            doi_status: 'created',
+        },
+    });
+    renderAdminRecord({
+        scope: 'project',
+        data: {
+            id: 7,
+            type: 'Project',
+            shortname: 'project-shortname',
+            name: 'Summary',
+        },
+        detailsAttributes: ['shortname', 'doi_status'],
+        hideEdit: true,
+    });
+    expect(useProjectDetail).toHaveBeenCalledWith('project-shortname', {
+        profile: 'edit',
+        include: ['translations'],
+    });
+    expect(screen.getByTestId('data-details')).toHaveTextContent(
+        'project-shortname:created'
+    );
+});
+
+test('uses the resource scope for permission checks when API records omit a class name', () => {
+    renderAdminRecord({
+        scope: 'external_link',
+        data: { id: 7, name: 'Link' },
+    });
+    expect(AuthorizedContent.mock.lastCall[0].object[0]).toEqual({
+        id: 7,
+        name: 'Link',
+        type: 'ExternalLink',
+    });
 });

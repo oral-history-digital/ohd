@@ -1,3 +1,4 @@
+import { LOGOUT } from '../../user/action-types';
 import {
     DELETE_STATUS_MSG,
     RECEIVE_DATA,
@@ -7,12 +8,13 @@ import {
     REQUEST_DATA,
     UPDATE_DATA,
 } from './action-types';
+import { reduceProjects } from './projectReducer';
 
 const initialState = {
     users: {
         current: null,
     },
-    projects: {},
+    projects: undefined,
     instance_settings: null,
     statuses: {
         users: { resultPagesCount: 1 },
@@ -42,7 +44,113 @@ const initialState = {
     },
 };
 
+/**
+ * Stores project reads in the normalized project slice and routes legacy nested
+ * resources to projects.resources. Full legacy project bodies are not stored.
+ * Logout clears cached accounts; anonymous current-account responses remain null.
+ *
+ * @param {Object} [state=initialState] - Data branch of the Redux store.
+ * @param {Object} action - Request, response, mutation, or access-change action.
+ * @returns {Object} Updated data state, or the same object for ignored actions.
+ */
 export const dataReducer = (state = initialState, action) => {
+    const previousProjects = state.projects;
+    const projects = reduceProjects(previousProjects, action);
+    if (projects !== previousProjects) state = { ...state, projects };
+    if (action.apiVersion === 2) {
+        if (
+            !action.projectResource ||
+            action.type !== RECEIVE_DATA ||
+            projects === previousProjects
+        )
+            return state;
+        action = {
+            type: RECEIVE_DATA,
+            dataType: 'projects',
+            nestedDataType: action.projectResource,
+            id: action.projectId,
+            data: action.data.data,
+            extraParams: `for_projects_${action.projectId}`,
+            page: '1',
+        };
+    }
+    if (action.dataType !== 'projects') return reduceLegacyData(state, action);
+
+    // Full legacy responses acknowledge saves; project content comes from read endpoints.
+    // Retain only routing identity (also needed for newly created projects) and status.
+    // TODO: Remove legacy project-resource merging once all resources are normalized.
+    if (!action.nestedDataType && action.type === RECEIVE_DATA) {
+        const identity =
+            action.id && action.data?.shortname
+                ? {
+                      id: Number(action.id),
+                      shortname: action.data.shortname,
+                      archive_domain: action.data.archive_domain || null,
+                      is_umbrella: action.data.is_umbrella,
+                  }
+                : null;
+        let statuses = updateStatus(state.statuses, 'projects', {
+            [action.id || action.extraParams || 'all']:
+                action.msg || `fetched-${new Date()}`,
+        });
+        statuses = updateStatus(statuses, action.reloadDataType, {
+            [action.reloadId]: `reload-${new Date()}`,
+        });
+        return {
+            ...state,
+            statuses,
+            projects: identity
+                ? {
+                      ...projects,
+                      identities: {
+                          ...projects.identities,
+                          [identity.id]: identity,
+                      },
+                  }
+                : projects,
+        };
+    }
+    if (!action.nestedDataType && action.type === UPDATE_DATA) return state;
+
+    // Reuse legacy resource merging inside projects.resources. The temporary view
+    // exists only during reduction; it never puts legacy records beside normalized records.
+    const reduced = reduceLegacyData(
+        { ...state, projects: projects.resources },
+        action
+    );
+    let identities = projects.identities;
+    if (action.type === REMOVE_DATA && !action.nestedDataType && action.id) {
+        identities = { ...identities };
+        delete identities[action.id];
+    }
+    return {
+        ...reduced,
+        projects: { ...projects, identities, resources: reduced.projects },
+    };
+};
+
+/**
+ * Applies existing entity and nested-resource updates, including status and reload signals.
+ * Project-resource callers supply their resource map in place of the project slice.
+ *
+ * @param {Object} state - Entity state or the temporary project-resource view.
+ * @param {Object} action - Legacy request, response, or mutation action.
+ * @returns {Object} Updated entities and statuses.
+ */
+function reduceLegacyData(state, action) {
+    if (
+        action.type === LOGOUT ||
+        (action.type === RECEIVE_DATA &&
+            action.dataType === 'users' &&
+            action.id === 'current' &&
+            action.data === null)
+    ) {
+        return {
+            ...state,
+            users: { current: null },
+            statuses: { ...state.statuses, users: initialState.statuses.users },
+        };
+    }
     switch (action.type) {
         case REPLACE_INSTANCE_SETTINGS:
             return { ...state, instance_settings: action.data };
@@ -78,7 +186,7 @@ export const dataReducer = (state = initialState, action) => {
                                 {
                                     [action.nestedDataType]: Object.assign(
                                         {},
-                                        state[action.dataType][action.id][
+                                        state[action.dataType]?.[action.id]?.[
                                             action.nestedDataType
                                         ],
                                         {
@@ -108,7 +216,9 @@ export const dataReducer = (state = initialState, action) => {
         case REMOVE_DATA:
             if (action.nestedId) {
                 let nestedData =
-                    state[action.dataType][action.id][action.nestedDataType];
+                    state[action.dataType]?.[action.id]?.[
+                        action.nestedDataType
+                    ];
                 if (nestedData) {
                     return Object.assign({}, state, {
                         statuses: updateStatus(
@@ -251,7 +361,7 @@ export const dataReducer = (state = initialState, action) => {
                                 {
                                     [action.nestedDataType]: Object.assign(
                                         {},
-                                        state[action.dataType][action.id][
+                                        state[action.dataType]?.[action.id]?.[
                                             action.nestedDataType
                                         ],
                                         {
@@ -295,7 +405,7 @@ export const dataReducer = (state = initialState, action) => {
                                 {
                                     [action.nestedDataType]: Object.assign(
                                         {},
-                                        state[action.dataType][action.id][
+                                        state[action.dataType]?.[action.id]?.[
                                             action.nestedDataType
                                         ],
                                         {
@@ -326,7 +436,7 @@ export const dataReducer = (state = initialState, action) => {
                 let nestedData =
                     (state[action.dataType] &&
                         state[action.dataType][action.id] &&
-                        state[action.dataType][action.id][
+                        state[action.dataType]?.[action.id]?.[
                             action.nestedDataType
                         ]) ||
                     {};
@@ -442,7 +552,7 @@ export const dataReducer = (state = initialState, action) => {
         default:
             return state;
     }
-};
+}
 
 function updateStatus(statuses, dataType, messageObject) {
     if (dataType) {

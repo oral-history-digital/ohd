@@ -2,14 +2,16 @@ import { useMemo } from 'react';
 
 import { useLocation } from 'react-router-dom';
 
-import useProject from '../useProject';
+import useProjectIdentity from '../useProjectIdentity';
 import {
     getCurrentPageFromLocation,
     normalizeCurrentPageWithProjectContext,
 } from '../utils';
 
 /**
- * Resolves the current route location into a normalized page context object.
+ * Resolves the current route and project identity without loading project details.
+ *
+ * @returns {Object} Normalized page context with route parameters and project identifiers.
  */
 export function useCurrentPage() {
     const location = useLocation();
@@ -17,7 +19,7 @@ export function useCurrentPage() {
         projectShortname,
         projectDbId: projectId,
         isUmbrella,
-    } = useProject();
+    } = useProjectIdentity();
 
     return useMemo(() => {
         const currentPage = getCurrentPageFromLocation({

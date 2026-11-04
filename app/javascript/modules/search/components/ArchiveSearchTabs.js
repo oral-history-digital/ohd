@@ -9,15 +9,23 @@ import {
 } from 'modules/constants';
 import { Fetch } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
 import { useSidebar } from 'modules/sidebar';
+import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 
 import ResultGrid from './ResultGrid';
 import ResultTable from './ResultTable';
-import WorkflowResultsContainer from './WorkflowResultsContainer';
+import WorkflowResults from './WorkflowResults';
 
+/**
+ * Switches search result views while retaining the separate collection resource loader.
+ * Project display data is loaded by the grid/table consumers rather than a legacy project fetch.
+ * Pagination waits for collection metadata alongside the selected result view.
+ * @param {Object} props - Interview results, tabs, pagination, and view-change callback.
+ * @returns {React.ReactElement} Search result tabs and their selected view.
+ */
 export default function ArchiveSearchTabs({
+    children,
     interviews,
     empty,
     loading,
@@ -29,7 +37,6 @@ export default function ArchiveSearchTabs({
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
-    const { project } = useProject();
     const { hide, show } = useSidebar();
 
     function handleTabClick(tabIndex) {
@@ -78,78 +85,70 @@ export default function ArchiveSearchTabs({
             <hr className="Rule u-mt" />
 
             <Fetch
-                fetchParams={[
-                    'projects',
-                    project.is_umbrella ? null : project.id,
-                    null,
-                    project.is_umbrella ? 'all' : null,
-                ]}
-                testDataType="projects"
-                testIdOrDesc={project.is_umbrella ? 'all' : project.id}
+                fetchParams={['collections', null, null, 'all']}
+                testDataType="collections"
+                testIdOrDesc={'all'}
+                fallback={
+                    <div className="u-align-center">
+                        <Spinner withPadding />
+                    </div>
+                }
             >
-                <Fetch
-                    fetchParams={['collections', null, null, 'all']}
-                    testDataType="collections"
-                    testIdOrDesc={'all'}
-                >
-                    <TabPanels className="u-mt">
-                        {viewModes?.map((viewMode) => {
-                            if (viewMode !== currentViewMode) {
-                                return <TabPanel key={viewMode} />;
-                            }
+                <TabPanels className="u-mt">
+                    {viewModes?.map((viewMode) => {
+                        if (viewMode !== currentViewMode) {
+                            return <TabPanel key={viewMode} />;
+                        }
 
-                            let tabContent;
-                            if (empty) {
-                                tabContent = (
-                                    <div className="search-result">
-                                        {t('no_interviews_results')}
-                                    </div>
-                                );
-                            } else {
-                                switch (viewMode) {
-                                    case VIEWMODE_LIST:
-                                        tabContent = (
-                                            <ResultTable
-                                                interviews={interviews}
-                                            />
-                                        );
-                                        break;
-                                    case VIEWMODE_WORKFLOW:
-                                        tabContent = (
-                                            <AuthorizedContent
-                                                object={{ type: 'General' }}
-                                                action="edit"
-                                            >
-                                                <WorkflowResultsContainer
-                                                    interviews={interviews}
-                                                />
-                                            </AuthorizedContent>
-                                        );
-                                        break;
-                                    case VIEWMODE_GRID:
-                                    default:
-                                        tabContent = (
-                                            <ResultGrid
-                                                interviews={interviews}
-                                                loading={loading}
-                                            />
-                                        );
-                                        break;
-                                }
-                            }
-
-                            return (
-                                <TabPanel key={viewMode}>{tabContent}</TabPanel>
+                        let tabContent;
+                        if (empty) {
+                            tabContent = (
+                                <div className="search-result">
+                                    {t('no_interviews_results')}
+                                </div>
                             );
-                        })}
-                    </TabPanels>
-                </Fetch>
+                        } else {
+                            switch (viewMode) {
+                                case VIEWMODE_LIST:
+                                    tabContent = (
+                                        <ResultTable interviews={interviews} />
+                                    );
+                                    break;
+                                case VIEWMODE_WORKFLOW:
+                                    tabContent = (
+                                        <AuthorizedContent
+                                            object={{ type: 'General' }}
+                                            action="edit"
+                                        >
+                                            <WorkflowResults
+                                                interviews={interviews}
+                                            />
+                                        </AuthorizedContent>
+                                    );
+                                    break;
+                                case VIEWMODE_GRID:
+                                default:
+                                    tabContent = (
+                                        <ResultGrid
+                                            interviews={interviews}
+                                            loading={loading}
+                                        />
+                                    );
+                                    break;
+                            }
+                        }
+
+                        return <TabPanel key={viewMode}>{tabContent}</TabPanel>;
+                    })}
+                </TabPanels>
+                {children}
             </Fetch>
         </Tabs>
     );
 }
 
 ArchiveSearchTabs.propTypes = {
+    children: PropTypes.node,
     interviews: PropTypes.array,
     empty: PropTypes.bool.isRequired,
     loading: PropTypes.bool.isRequired,

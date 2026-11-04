@@ -4,6 +4,11 @@ import { pluralize } from 'modules/strings';
 
 import { parametrizedQuery, statifiedQuery } from '../utils';
 
+/**
+ * Loads initial admin resources once per project route and fetches further pages on demand.
+ * @param {Object} options - Query/status state, route, project ID, and Redux request actions.
+ * @returns {Object} Loading/pagination flags and the next-page callback.
+ */
 export default function usePaginatedAdminRecords({
     query,
     dataStatus,
@@ -15,62 +20,48 @@ export default function usePaginatedAdminRecords({
     nestedScope,
     fetchData,
     setQueryParams,
-    locale,
-    project,
-    projectId,
+    pathBase,
+    projectDbId,
 }) {
-    // Capture initial values because legacy loading runs only once on mount.
-    const initialConfig = useRef({
-        query,
-        dataStatus,
-        statuses,
-        otherDataToLoad,
-        scope,
-        scopeId,
-        nestedScope,
-        fetchData,
-        locale,
-        project,
-        projectId,
-    });
+    const initializedFor = useRef(null);
 
     useEffect(() => {
-        const config = initialConfig.current;
-        const context = {
-            locale: config.locale,
-            project: config.project,
-            projectId: config.projectId,
-        };
-
+        const routeKey = `${pathBase}/${projectDbId}`;
+        if (!projectDbId || initializedFor.current === routeKey) return;
+        initializedFor.current = routeKey;
+        const context = { pathBase };
         if (
-            config.query &&
+            query &&
             !(
-                config.dataStatus?.[`for_projects_${config.project?.id}`] ||
-                config.dataStatus?.all ||
-                config.dataStatus?.[statifiedQuery(config.query)]
+                dataStatus?.[`for_projects_${projectDbId}`] ||
+                dataStatus?.all ||
+                dataStatus?.[statifiedQuery(query)]
             )
         ) {
-            config.fetchData(
+            fetchData(
                 context,
-                pluralize(config.scope),
-                config.scopeId || null,
-                config.nestedScope ? pluralize(config.nestedScope) : null,
-                parametrizedQuery(config.query)
+                pluralize(scope),
+                scopeId || null,
+                nestedScope ? pluralize(nestedScope) : null,
+                parametrizedQuery(query)
             );
         }
-
-        config.otherDataToLoad.forEach((dataType) => {
-            if (!config.statuses?.[dataType]?.all) {
-                config.fetchData(
-                    context,
-                    pluralize(dataType),
-                    null,
-                    null,
-                    'all'
-                );
-            }
+        otherDataToLoad.forEach((dataType) => {
+            if (!statuses?.[dataType]?.all)
+                fetchData(context, pluralize(dataType), null, null, 'all');
         });
-    }, []);
+    }, [
+        pathBase,
+        projectDbId,
+        dataStatus,
+        fetchData,
+        nestedScope,
+        otherDataToLoad,
+        query,
+        scope,
+        scopeId,
+        statuses,
+    ]);
 
     const loadNextPage = useCallback(
         (inView) => {
@@ -82,7 +73,7 @@ export default function usePaginatedAdminRecords({
                 page: query.page + 1,
             });
             fetchData(
-                { locale, project, projectId },
+                { pathBase },
                 pluralize(scope),
                 scopeId || null,
                 nestedScope ? pluralize(nestedScope) : null,
@@ -91,10 +82,8 @@ export default function usePaginatedAdminRecords({
         },
         [
             fetchData,
-            locale,
+            pathBase,
             nestedScope,
-            project,
-            projectId,
             query,
             scope,
             scopeId,
@@ -103,7 +92,7 @@ export default function usePaginatedAdminRecords({
     );
 
     const notFetched = !(
-        /^fetched/.test(dataStatus?.[`for_projects_${project?.id}`]) ||
+        /^fetched/.test(dataStatus?.[`for_projects_${projectDbId}`]) ||
         /^fetched/.test(dataStatus?.all)
     );
     const queryStatusKey = query ? statifiedQuery(query) : null;

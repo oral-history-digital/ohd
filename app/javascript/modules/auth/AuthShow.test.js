@@ -34,7 +34,7 @@ function buildProject(overrides = {}) {
         id: 1,
         shortname: 'project',
         is_umbrella: false,
-        is_catalog_project: false,
+        is_catalog: false,
         grant_access_without_login: false,
         grant_project_access_instantly: false,
         ...overrides,
@@ -116,7 +116,7 @@ describe('AuthShow', () => {
 
     it('renders children for catalog projects when ifCatalog is set', () => {
         useProject.mockReturnValue({
-            project: buildProject({ is_catalog_project: true }),
+            project: buildProject({ is_catalog: true }),
         });
 
         const html = renderAuthShow({
@@ -180,7 +180,7 @@ describe('AuthShow', () => {
 
     it('returns null for non-catalog projects when only ifCatalog is set', () => {
         useProject.mockReturnValue({
-            project: buildProject({ is_catalog_project: false }),
+            project: buildProject({ is_catalog: false }),
         });
 
         const html = renderAuthShow({
@@ -200,4 +200,28 @@ describe('AuthShow', () => {
 
         expect(html).toBe('');
     });
+});
+
+test('pending or failed project reads hide access-dependent content but keep login controls available', () => {
+    useAuthorization.mockReturnValue({ isAuthorized: () => false });
+    useProject.mockReturnValue({ isLoading: true });
+    expect(
+        renderAuthShow({
+            isLoggedIn: true,
+            hasProjectAccess: true,
+            user: buildUser({ admin: true }),
+        })
+    ).not.toContain('VISIBLE');
+    expect(renderAuthShow({ ifLoggedOut: true })).toContain('VISIBLE');
+    useProject.mockReturnValue({
+        project: buildProject(),
+        error: { message: 'Access denied' },
+    });
+    expect(
+        renderAuthShow({
+            isLoggedIn: true,
+            ifNoProject: true,
+            user: buildUser(),
+        })
+    ).not.toContain('VISIBLE');
 });

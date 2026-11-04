@@ -1,18 +1,35 @@
-import {
-    getCurrentProject,
-    getRegistryReferenceTypesStatus,
-} from 'modules/data';
-import { useSelector } from 'react-redux';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 import MetadataFieldForm from './MetadataFieldForm';
 import MetadataFieldShow from './MetadataFieldShow';
 
+/**
+ * Lists editable metadata definitions, including stored labels for translation forms.
+ * @returns {React.ReactElement} Metadata administration, loading indicator, or request error.
+ */
 export default function MetadataFieldsAdminPage() {
-    const project = useSelector(getCurrentProject);
-    const joinDataStatus = useSelector(getRegistryReferenceTypesStatus);
+    const { t } = useI18n();
+    const { project, isLoading, error } = useProject({
+        profile: 'edit',
+        include: ['metadata_fields'],
+    });
     const { fetchData, deleteData, submitData } = useAdminDataActions();
+
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <PaginatedAdminRecordList
@@ -20,8 +37,6 @@ export default function MetadataFieldsAdminPage() {
             outerScope="project"
             outerScopeId={project.id}
             scope="metadata_field"
-            joinDataStatus={joinDataStatus}
-            joinDataScope="registry_reference_types"
             detailsAttributes={[
                 'name',
                 'use_as_facet',

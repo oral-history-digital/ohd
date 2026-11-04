@@ -1,11 +1,28 @@
-import { useEffect } from 'react';
-
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
+import PropTypes from 'prop-types';
 
 import RegistrySearchResult from './RegistrySearchResult';
 
+/**
+ * Edits a registry name, preserving nested-form placement and descriptor search.
+ *
+ * @param {Object} props - Name form properties.
+ * @param {number} [props.index] - Position used when adding a nested name.
+ * @param {Function} props.submitData - Saves through Redux or updates the parent form.
+ * @param {Function} [props.onSubmitCallback] - Callback forwarded to the shared form.
+ * @param {Function} [props.onCancel] - Closes the form without saving.
+ * @param {string} [props.formClasses] - Additional form classes.
+ * @param {Object} [props.data] - Existing name attributes.
+ * @param {boolean} [props.nested] - Enables nested-form behavior.
+ * @param {number} [props.registryEntryId] - Owning entry; omit while creating a new entry.
+ * @param {Object} props.registryNameTypes - Available name types keyed by ID.
+ * @param {Object} [props.foundRegistryEntries] - Existing entry search results.
+ * @param {Function} props.searchRegistryEntry - Searches existing entries by descriptor.
+ * @param {Function} props.setDescriptor - Updates the parent form's search descriptor.
+ * @returns {React.ReactElement} Name form with optional existing-entry suggestions.
+ */
 export default function RegistryNameForm({
     index,
     submitData,
@@ -20,8 +37,7 @@ export default function RegistryNameForm({
     searchRegistryEntry,
     setDescriptor,
 }) {
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
     const pathBase = usePathBase();
 
     // TODO: Is this necessary? It triggers the form to close if registry entry is a search result
@@ -33,7 +49,7 @@ export default function RegistryNameForm({
         (r) => r.code === 'spelling'
     );
 
-    const handleDescriptorChange = (name, value, params) => {
+    const handleDescriptorChange = (name, value) => {
         setDescriptor(value);
         if (!registryEntryId && value?.length > 3) {
             searchRegistryEntry(`${pathBase}/searches/registry_entry`, {
@@ -71,7 +87,7 @@ export default function RegistryNameForm({
                 // to insert new items at the correct array position. For existing
                 // items (Redux action), the index parameter is ignored.
                 // Routing between handlers is managed by the forms module.
-                submitData({ projectId, locale, project }, params, index);
+                submitData({ pathBase }, params, index);
             }}
             helpTextCode="registry_name_form"
             onSubmitCallback={onSubmitCallback}
@@ -107,3 +123,18 @@ export default function RegistryNameForm({
         </Form>
     );
 }
+
+RegistryNameForm.propTypes = {
+    index: PropTypes.number,
+    submitData: PropTypes.func.isRequired,
+    onSubmitCallback: PropTypes.func,
+    onCancel: PropTypes.func,
+    formClasses: PropTypes.string,
+    data: PropTypes.object,
+    nested: PropTypes.bool,
+    registryEntryId: PropTypes.number,
+    registryNameTypes: PropTypes.object.isRequired,
+    foundRegistryEntries: PropTypes.object,
+    searchRegistryEntry: PropTypes.func.isRequired,
+    setDescriptor: PropTypes.func.isRequired,
+};

@@ -7,13 +7,24 @@ import {
     getRegistryEntriesStatus,
 } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { getIsLoggedIn } from 'modules/user';
 import { useDispatch, useSelector } from 'react-redux';
 
+/**
+ * Loads and sorts registry children using Redux project visibility configuration.
+ * Preserves hidden-entry rules, visitor visibility at the root, and update-permission overrides.
+ *
+ * @param {Object|undefined} registryEntryParent - Parent whose children are displayed.
+ * @returns {{dataLoaded: boolean, registryEntries: Object[], error: Object|null}} Visible children,
+ * readiness state, and project request error. No children are exposed before configuration loads.
+ */
 export default function useRegistryEntries(registryEntryParent) {
-    const { project, projectId } = useProject();
-    const { t, locale } = useI18n();
+    const { project, error } = useProject({
+        include: ['registry_configuration'],
+    });
+    const pathBase = usePathBase();
+    const { locale } = useI18n();
     const isLoggedIn = useSelector(getIsLoggedIn);
     const registryEntries = useSelector(getRegistryEntries);
     const registryEntriesStatus = useSelector(getRegistryEntriesStatus);
@@ -21,69 +32,60 @@ export default function useRegistryEntries(registryEntryParent) {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        loadWithAssociations();
-        loadRegistryEntries();
-    });
+    const parentId = registryEntryParent?.id;
+    const parentHasAssociations = registryEntryParent?.associations_loaded;
+    const parentStatus = registryEntriesStatus[parentId];
+    const childrenStatus =
+        registryEntriesStatus[`children_for_entry_${parentId}`];
+    const canLoad = Boolean(project && !error && parentId);
+    const dataLoaded = Boolean(
+        canLoad &&
+            parentHasAssociations &&
+            childrenStatus?.split('-')[0] === 'fetched'
+    );
 
-    function loadWithAssociations() {
-        if (
-            registryEntryParent &&
-            !registryEntryParent.associations_loaded &&
-            registryEntriesStatus[registryEntryParent.id] !== 'fetching'
-        ) {
+    useEffect(() => {
+        if (!canLoad) return;
+
+        if (!parentHasAssociations && parentStatus !== 'fetching') {
             dispatch(
                 fetchData(
-                    { locale, project, projectId },
+                    { pathBase },
                     'registry_entries',
-                    registryEntryParent.id,
+                    parentId,
                     null,
                     'with_associations=true'
                 )
             );
         }
-    }
-
-    function loadRegistryEntries() {
-        if (
-            projectId &&
-            registryEntryParent &&
-            registryEntryParent.associations_loaded &&
-            !registryEntriesStatus[
-                `children_for_entry_${registryEntryParent.id}`
-            ]
-        ) {
+        if (parentHasAssociations && !childrenStatus) {
             dispatch(
                 fetchData(
-                    { locale, project, projectId },
+                    { pathBase },
                     'registry_entries',
                     null,
                     null,
-                    `children_for_entry=${registryEntryParent.id}`
+                    `children_for_entry=${parentId}`
                 )
             );
         }
-    }
+    }, [
+        dispatch,
+        pathBase,
+        parentId,
+        parentHasAssociations,
+        parentStatus,
+        childrenStatus,
+        canLoad,
+    ]);
 
-    function dataLoaded() {
-        return (
-            registryEntryParent &&
-            registryEntriesStatus[
-                `children_for_entry_${registryEntryParent.id}`
-            ] &&
-            registryEntriesStatus[
-                `children_for_entry_${registryEntryParent.id}`
-            ].split('-')[0] === 'fetched' &&
-            registryEntryParent.associations_loaded
-        );
-    }
-
+    /** @returns {Object[]} Children visible to the current user, sorted by localized name. */
     function sortedRegistryEntries() {
         if (!registryEntryParent?.child_ids || !registryEntries) {
             return [];
         }
 
-        return registryEntryParent.child_ids[locale]
+        return (registryEntryParent.child_ids[locale] || [])
             .map((id) => registryEntries[id])
             .filter(
                 (registryEntry) =>
@@ -153,7 +155,8 @@ export default function useRegistryEntries(registryEntryParent) {
     }
 
     return {
-        dataLoaded: dataLoaded(),
-        registryEntries: sortedRegistryEntries(),
+        dataLoaded,
+        registryEntries: canLoad ? sortedRegistryEntries() : [],
+        error: error || null,
     };
 }

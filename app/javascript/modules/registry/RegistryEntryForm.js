@@ -2,13 +2,26 @@ import { useState } from 'react';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 
 import NormDatumFormContainer from './NormDatumFormContainer';
 import NormDatumFormWrapper from './NormDatumFormWrapper';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 
+/**
+ * Creates or edits registry entries, preserving nested names and authority data.
+ *
+ * @param {Object} props - Form properties.
+ * @param {Object} props.normDataProviders - Authority providers keyed by ID.
+ * @param {Object} props.registryEntries - Cached entries keyed by ID.
+ * @param {number} [props.registryEntryId] - Entry to edit; omit when creating.
+ * @param {Object} [props.registryEntryParent] - Parent for the new or edited entry.
+ * @param {Function} props.submitData - Saves through Redux using the current route.
+ * @param {Function} [props.onSubmit] - Called after starting the save.
+ * @param {Function} [props.onCancel] - Closes the form without saving.
+ * @returns {React.ReactElement} Registry entry form.
+ */
 export default function RegistryEntryForm({
     normDataProviders,
     registryEntries,
@@ -18,7 +31,7 @@ export default function RegistryEntryForm({
     onSubmit,
     onCancel,
 }) {
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
     const { t, locale } = useI18n();
     const registryEntry = registryEntries[registryEntryId];
     const [descriptor, setDescriptor] = useState(initialDescriptor());
@@ -84,7 +97,7 @@ export default function RegistryEntryForm({
                             params.registry_entry
                         ),
                     };
-                    submitData({ projectId, locale, project }, updatedParams);
+                    submitData({ pathBase }, updatedParams);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }

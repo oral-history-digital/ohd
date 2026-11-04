@@ -4,6 +4,31 @@ require_relative "helpers/project_loading_helper"
 class EditProjectInfoFormTest < ApplicationSystemTestCase
   include ProjectLoadingHelper
 
+  test 'adding a cooperation partner preserves an unsaved project form' do
+    TranslationValue.create_or_update_for_key('edit.cooperation_partner.new', en: 'Add cooperation partner')
+    visit '/'
+    login_as 'alice@example.com'
+    click_on 'Editing interface'
+    click_on 'Archive configuration'
+    click_on 'Edit archive information'
+    assert_text 'Archive name'
+    within 'main.Site-content' do
+      find('button', text: 'Edit', match: :first).click
+    end
+    fill_in 'project_name_en', with: 'Unsaved project name'
+
+    click_on 'Add cooperation partner'
+    within 'form#cooperation_partner' do
+      fill_in 'cooperation_partner_name_en', with: 'New cooperation partner'
+      click_on 'Submit'
+    end
+
+    assert_no_selector '[data-reach-dialog-overlay]'
+    assert_text 'New cooperation partner'
+    assert_field 'project_name_en', with: 'Unsaved project name'
+    assert_not_equal 'Unsaved project name', Project.find_by!(shortname: 'test').translations.find_by!(locale: 'en').name
+  end
+
   test 'edit Archive configuration form' do
     visit '/'
     login_as 'alice@example.com'

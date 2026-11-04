@@ -1,35 +1,38 @@
-import shuffle from 'lodash.shuffle';
-import {
-    getArchiveId,
-    getEditView,
-    getLocale,
-    getProjectId,
-} from 'modules/archive';
-import { DEFAULT_LOCALES } from 'modules/constants';
+import { getArchiveId, getEditView, getProjectId } from 'modules/archive';
 import { CONTRIBUTION_INTERVIEWEE } from 'modules/person';
 import { findProjectByDomain } from 'modules/routes/domainUtils';
 import { createSelector } from 'reselect';
 
+import { getProjectIdentities } from '../projectDetails';
 import {
     getInterviews,
-    getProjects,
+    getProjectResources,
     getStatuses,
     getUsers,
 } from './baseSelectors';
+
+// Keep the fallback stable before a resource category has been requested.
+const EMPTY_STATUSES = {};
 
 /**
  * Basic Selectors others depend on
  **/
 
+/**
+ * Selects the current project's legacy nested resources using its routing identity.
+ * Project display and editing data are read through useProject instead.
+ *
+ * @param {Object} state - Root Redux state.
+ * @returns {Object|null} Nested-resource holder with its project ID, or null before identity resolves.
+ */
 export const getCurrentProject = createSelector(
-    [getProjectId, getProjects],
-    (projectId, projects) => {
-        const currentProject =
-            Object.values(projects).find(
+    [getProjectId, getProjectIdentities, getProjectResources],
+    (projectId, identities, projects) => {
+        const identity =
+            Object.values(identities).find(
                 (project) => project.shortname === projectId
-            ) || findProjectByDomain(projects);
-
-        return currentProject || null;
+            ) || findProjectByDomain(identities);
+        return identity ? { ...projects[identity.id], id: identity.id } : null;
     }
 );
 
@@ -40,16 +43,16 @@ export const getCurrentInterview = createSelector(
     }
 );
 
-export const getUmbrellaProject = createSelector([getProjects], (projects) => {
-    return Object.values(projects).find((project) => project.is_umbrella);
-});
-
-export const getPublicProjects = createSelector(
-    getProjects,
-    (projectObject) => {
-        return Object.values(projectObject).filter(
-            (project) => project.workflow_state === 'public'
-        );
+/**
+ * Selects the umbrella routing identity from current records or bootstrap identities.
+ *
+ * @param {Object} state - Root Redux state.
+ * @returns {Object|undefined} Umbrella identity, without project content or settings.
+ */
+export const getUmbrellaProject = createSelector(
+    [getProjectIdentities],
+    (projects) => {
+        return Object.values(projects).find((project) => project.is_umbrella);
     }
 );
 
@@ -274,97 +277,11 @@ export const getShowStartPageVideo = (state) => {
     return projectId === 'mog';
 };
 
-export const getProjectTranslation = createSelector(
-    [getLocale, getCurrentProject],
-    (locale, currentProject) => {
-        if (!currentProject) {
-            return null;
-        } else {
-            const translation = currentProject.translations_attributes.find(
-                (t) => t.locale === locale
-            );
-            return (
-                translation ||
-                currentProject.translations_attributes.find(
-                    (t) => t.locale === currentProject.default_locale
-                )
-            );
-        }
-    }
-);
-
 export const getIsCampscapesProject = (state) => {
     const projectId = getProjectId(state);
 
     return projectId === 'campscapes';
 };
-
-export const getIsCatalog = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.is_catalog === true;
-    }
-);
-
-export const getCurrentProjectMapSectionsHydrating = createSelector(
-    [getCurrentProject, (state) => getStatuses(state)?.projects],
-    (currentProject, projectsStatus) => {
-        if (!currentProject?.id) {
-            return false;
-        }
-
-        return (
-            projectsStatus?.[currentProject.id] === 'fetching' &&
-            !currentProject.map_sections
-        );
-    }
-);
-
-export const getMapSections = createSelector(
-    [getCurrentProject, getCurrentProjectMapSectionsHydrating],
-    (currentProject, isHydrating) => {
-        if (!currentProject) {
-            return [];
-        }
-
-        // While project details are still loading, return no section to avoid
-        // a temporary jump to fallback bounds.
-        if (isHydrating) {
-            return [];
-        }
-
-        if (!currentProject.map_sections) {
-            return [DEFAULT_MAP_SECTION];
-        }
-
-        const sections = Object.values(currentProject.map_sections);
-
-        if (sections.length === 0) {
-            return [DEFAULT_MAP_SECTION];
-        }
-
-        return sections.sort((a, b) => a.order - b.order);
-    }
-);
-
-export const getProjectLocales = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject
-            ? currentProject.available_locales
-            : DEFAULT_LOCALES;
-    }
-);
-
-export const getStartpageProjects = createSelector(
-    [getPublicProjects],
-    (projects) => {
-        const projectsWithoutUmbrella = projects.filter(
-            (project) => !project.is_umbrella
-        );
-        return shuffle(projectsWithoutUmbrella);
-    }
-);
 
 export const getCollectionsForCurrentProject = createSelector(
     [getCurrentProject],
@@ -415,13 +332,6 @@ export const getRolesForCurrentProjectFetched = createSelector(
     }
 );
 
-export const getMediaStreamsForCurrentProject = createSelector(
-    [getCurrentProject],
-    (currentProject) => {
-        return currentProject?.media_streams;
-    }
-);
-
 /**
  * Registry Selectors
  **/
@@ -432,21 +342,11 @@ export const getRegistryEntriesStatus = (state) =>
 export const getRegistryReferenceTypesStatus = (state) =>
     getStatuses(state).registry_reference_types;
 
-// TODO: Is this correct? It gets the same status as getRegistryReferenceTypesStatus
 export const getRegistryNameTypesStatus = (state) =>
-    getStatuses(state).registry_reference_types;
+    getStatuses(state)?.registry_name_types || EMPTY_STATUSES;
 
-// TODO: Is this correct? It gets the same status as getRegistryReferenceTypesStatus
 export const getContributionTypesStatus = (state) =>
-    getStatuses(state).registry_reference_types;
-
-export const getRootRegistryEntryReload = createSelector(
-    [getRegistryEntriesStatus, getCurrentProject],
-    (status, currentProject) => {
-        const reload = /^reload/;
-        return reload.test(status[currentProject.root_registry_entry_id]);
-    }
-);
+    getStatuses(state)?.contribution_types || EMPTY_STATUSES;
 
 export const getRegistryReferenceTypesForCurrentProject = createSelector(
     [getCurrentProject],
@@ -494,40 +394,22 @@ export const getContributorsFetched = createSelector(
     }
 );
 
-export const getProjectAccessStatus = createSelector(
-    [getCurrentUser, getCurrentProject],
-    (user, project) => {
-        const projectRegistration =
-            user &&
-            project &&
-            Object.values(user.user_projects).find(
-                (urp) => urp.project_id === project.id
-            );
-
-        const projectAccessStatus = userHasAccessWithoutRegistration()
-            ? 'project_access_granted'
-            : projectRegistration?.workflow_state;
-
-        function userHasAccessWithoutRegistration() {
-            return (
-                project.grant_access_without_login ||
-                (user && project.grant_project_access_instantly) ||
-                user?.admin === true
-            );
-        }
-
-        return projectAccessStatus;
-    }
-);
-
+/**
+ * Groups current interview contributions by visible type in the configured order.
+ * Project access is supplied by the consumer's shared access hook.
+ *
+ * @param {Object} state - Root Redux state with interview and contribution-type records.
+ * @param {boolean} projectAccessGranted - Whether the viewer has access to the loaded project.
+ * @returns {Object[]|null} Ordered contribution groups, or null before records are available.
+ */
 export const getGroupedContributions = createSelector(
     [
         (state) => getEditView(state),
         (state) => getCurrentInterview(state),
         (state) => getContributionTypesForCurrentProject(state),
-        (state) => getProjectAccessStatus(state),
+        (_state, projectAccessGranted) => Boolean(projectAccessGranted),
     ],
-    (editView, currentInterview, contributionTypes, projectAccessStatus) => {
+    (editView, currentInterview, contributionTypes, projectAccessGranted) => {
         if (
             !currentInterview ||
             !currentInterview.contributions ||
@@ -540,8 +422,7 @@ export const getGroupedContributions = createSelector(
             .filter(
                 (ct) =>
                     editView ||
-                    (projectAccessStatus === 'project_access_granted' &&
-                        ct.use_in_details_view) ||
+                    (projectAccessGranted && ct.use_in_details_view) ||
                     ct.display_on_landing_page
             )
             .sort((a, b) => a.order - b.order)

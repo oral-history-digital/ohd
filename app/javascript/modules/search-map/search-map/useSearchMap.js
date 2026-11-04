@@ -13,6 +13,11 @@ import filterLocations from './filterLocations';
 import filterReferenceTypes from './filterReferenceTypes';
 import sortMarkers from './sortMarkers';
 
+/**
+ * Combines location data, reference colors, and selected filters into search markers.
+ *
+ * @returns {Object} Markers, loading status, and location or reference-type errors.
+ */
 export default function useSearchMap() {
     const filter = useSelector(getMapFilter);
 
@@ -36,6 +41,6 @@ export default function useSearchMap() {
     return {
         isLoading: !(referenceTypes && locations),
         markers,
-        error: locationsError,
+        error: referenceTypesError || locationsError,
     };
 }

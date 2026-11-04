@@ -1,5 +1,6 @@
 export const FILTER_PARAMS = [
     'explorer_q',
+    'explorer_show_unpublished',
     'explorer_interviews_min',
     'explorer_interviews_max',
     'explorer_collections_min',

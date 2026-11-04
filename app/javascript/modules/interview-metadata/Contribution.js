@@ -5,7 +5,7 @@ import {
     useInvalidateAllPersonData,
     useInvalidateInterviewContributors,
 } from 'modules/person';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { Modal } from 'modules/ui';
 import PropTypes from 'prop-types';
@@ -13,6 +13,19 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 import ContributionFormContainer from './ContributionFormContainer';
 
+/**
+ * Shows a permitted interview contributor and authorized editing controls.
+ *
+ * @param {Object} props - Contribution context.
+ * @param {Object} [props.person] - Contributor display data.
+ * @param {string} props.archiveId - Public interview identifier.
+ * @param {Object} props.contribution - Contribution and publication settings.
+ * @param {Object} [props.interview] - Interview used for contributor-cache invalidation.
+ * @param {boolean} [props.withSpeakerDesignation=false] - Displays the speaker designation.
+ * @param {Function} props.deleteData - Deletes the nested contribution through Redux.
+ * @param {Function} props.submitData - Saves contribution edits.
+ * @returns {React.ReactElement|null} Contributor controls, loading indicator, or nothing when hidden.
+ */
 export default function Contribution({
     person,
     archiveId,
@@ -22,8 +35,8 @@ export default function Contribution({
     deleteData,
     submitData,
 }) {
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
     const { isAuthorized } = useAuthorization();
     const invalidateInterviewContributors = useInvalidateInterviewContributors(
         interview?.id
@@ -32,7 +45,7 @@ export default function Contribution({
 
     const destroy = async () => {
         deleteData(
-            { locale, projectId, project },
+            { pathBase },
             'interviews',
             archiveId,
             'contributions',
