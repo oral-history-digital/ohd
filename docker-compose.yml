@@ -14,7 +14,6 @@ services:
     volumes:
       # Mount secrets from host
       - ./config/hls:/app/config/hls:ro
-      - ./docker/clamav/clamscan.conf:/app/config/clamav/clamscan.conf:ro
       - clamav-db:/var/lib/clamav:ro
       # Persistent data
       - app-cache:/app/tmp/cache
@@ -25,8 +24,6 @@ services:
     env_file:
       - .env.defaults # Defaults
       - .env # Overrides & optional variables
-    environment:
-      CLAMAV_CONFIG: /app/config/clamav/clamscan.conf
     depends_on:
       redis:
         condition: service_healthy
@@ -64,7 +61,6 @@ services:
     volumes:
       # Same secret mounts as app
       - ./config/hls:/app/config/hls:ro
-      - ./docker/clamav/clamscan.conf:/app/config/clamav/clamscan.conf:ro
       - clamav-db:/var/lib/clamav:ro
       # Shared volumes
       - app-cache:/app/tmp/cache
@@ -73,8 +69,6 @@ services:
     env_file:
       - .env.defaults # Defaults
       - .env # Overrides & optional variables
-    environment:
-      CLAMAV_CONFIG: /app/config/clamav/clamscan.conf
     depends_on:
       app:
         condition: service_healthy
