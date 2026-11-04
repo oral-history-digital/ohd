@@ -6,23 +6,27 @@ import { useDispatch, useSelector } from 'react-redux';
 
 /**
  * Loads institutions through the current route and reads their existing Redux records.
- * @returns {Object} Institution records by ID.
+ * Failed requests remain failed until explicitly refreshed, rather than retrying on render.
+ * @param {Object} [options={}] - Request controls.
+ * @param {boolean} [options.enabled=true] - Wait for the owning editor's authorization before fetching.
+ * @returns {Object|undefined} Institution records by ID, absent before the first response.
  */
-export function useGetInstitutions() {
+export function useGetInstitutions({ enabled = true } = {}) {
     const dispatch = useDispatch();
     const pathBase = usePathBase();
     const institutions = useSelector(getInstitutions);
     const statuses = useSelector(getStatuses);
+    const status = statuses?.institutions?.all;
 
     useEffect(() => {
-        // Check if institutions for the current project have already been loaded before
-        // dispatch fetchData if not, to avoid unnecessary API calls
-        if (!statuses?.institution?.all) {
+        if (enabled && (!status || /^reload/.test(status))) {
             dispatch(
-                fetchData({ pathBase }, 'institutions', null, null, 'all')
+                fetchData({ pathBase }, 'institutions', null, null, 'all', {
+                    handleErrors: true,
+                })
             );
         }
-    }, [dispatch, pathBase, statuses?.institution?.all]);
+    }, [dispatch, pathBase, status, enabled]);
 
     return institutions;
 }

@@ -72,6 +72,7 @@ class FormEditProjectDisplayTest < ApplicationSystemTestCase
     end
     assert_no_selector '[data-reach-dialog-content]'
     assert_selector '.ProjectLogo img', wait: 15
+    assert_selector '.dataBox--logo .base-data .name', text: "#{TranslationValue.for('activerecord.models.logo.one', :en)} en", wait: 15
     assert @alpha.reload.logos.exists?
     # Separate independent saves in Rails' clock; its serializer cache uses seconds.
     travel 2.seconds

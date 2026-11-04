@@ -22,6 +22,8 @@ import queryString from 'query-string';
 import { FaEyeSlash, FaKey } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 
+import CollectionPublicationStatus from './CollectionPublicationStatus';
+
 /**
  * Shows an interview row with project links and access settings loaded through Redux.
  * Metadata columns follow the current project's configuration loaded through Redux.
@@ -155,15 +157,29 @@ export default function InterviewListRow({
                     );
                 }
 
+                const value =
+                    allowedToSee && obj
+                        ? humanReadable({
+                              obj,
+                              attribute: column.name,
+                              optionsScope: 'search_facets',
+                          })
+                        : null;
+
                 return (
                     <td key={column.name} className="Table-cell">
-                        {allowedToSee && obj
-                            ? humanReadable({
-                                  obj,
-                                  attribute: column.name,
-                                  optionsScope: 'search_facets',
-                              })
-                            : '---'}
+                        {allowedToSee && obj ? (
+                            <>
+                                {value}
+                                {value && column.name === 'collection_id' && (
+                                    <CollectionPublicationStatus
+                                        interview={interview}
+                                    />
+                                )}
+                            </>
+                        ) : (
+                            '---'
+                        )}
                     </td>
                 );
             })}

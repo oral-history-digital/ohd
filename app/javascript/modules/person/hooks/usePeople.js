@@ -14,7 +14,7 @@ export default function usePeople() {
         isLoading: projectIsLoading,
         isValidating: projectIsValidating,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const pathBase = usePathBase();
     const canFetch = !!project?.id && !projectIsLoading && !projectError;
 

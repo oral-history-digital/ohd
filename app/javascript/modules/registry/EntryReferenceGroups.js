@@ -22,7 +22,7 @@ export default function EntryReferenceGroups({ registryEntry, onSubmit }) {
         project,
         isLoading: projectIsLoading,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const {
         isLoading,
         groupedRefs,

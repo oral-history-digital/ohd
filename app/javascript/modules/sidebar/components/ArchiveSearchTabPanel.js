@@ -19,7 +19,7 @@ import SubTab from './SubTab';
  */
 export default function ArchiveSearchTabPanel() {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const selectedArchiveIds = useSelector(getSelectedArchiveIds);
 
     if (error) {

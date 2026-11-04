@@ -13,7 +13,7 @@ export default function useCombinedRegistryReferenceTypes() {
         project,
         isLoading: projectLoading,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const projectReady = Boolean(project && !projectLoading && !projectError);
     const projectRegistryReferenceTypes = useSelector(
         getRegistryReferenceTypesForCurrentProject

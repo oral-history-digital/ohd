@@ -20,6 +20,8 @@ export const useExplorerParams = () => {
 
     return {
         isInstitutionsList,
+        showUnpublished:
+            searchParams.get('explorer_show_unpublished') === 'true',
         query: searchParams.get('explorer_q') || '',
         interviewMin: searchParams.has('explorer_interviews_min')
             ? Number(searchParams.get('explorer_interviews_min'))

@@ -29,7 +29,7 @@ export default function RegisterForm({
     onCancel = () => null,
     showCancelButton = false,
 }) {
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const { project: umbrellaProject } = useUmbrellaProject();
     const countryKeys = useSelector(getCountryKeys);
     const registrationStatus = useSelector(getRegistrationStatus);

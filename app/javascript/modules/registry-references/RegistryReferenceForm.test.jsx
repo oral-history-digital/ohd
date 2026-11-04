@@ -59,7 +59,7 @@ test('waits for project settings, handles denial, and loads reference types thro
     const { rerender } = render(
         <RegistryReferenceForm {...props} registryReferenceTypesStatus={{}} />
     );
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText('Loading')).toBeInTheDocument();
     expect(props.fetchData).not.toHaveBeenCalled();
     expect(Form).not.toHaveBeenCalled();

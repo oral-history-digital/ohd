@@ -34,7 +34,7 @@ beforeEach(() => {
 
 test('keeps the reference-type endpoint and adds segment mentions using the project color', () => {
     const { result, rerender } = renderHook(() => useMapReferenceTypes());
-    expect(useProject).toHaveBeenCalledWith({});
+    expect(useProject).toHaveBeenCalledWith();
     expect(useSWRImmutable).toHaveBeenCalledWith(
         '/pilot/en/searches/map_reference_types',
         fetcher

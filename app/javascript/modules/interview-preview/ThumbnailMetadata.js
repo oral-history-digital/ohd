@@ -18,6 +18,7 @@ import {
     METADATA_SOURCE_EVENT_TYPE,
     METADATA_SOURCE_INTERVIEW,
 } from '../constants';
+import CollectionPublicationStatus from './CollectionPublicationStatus';
 
 /**
  * Displays configured grid metadata, respecting restricted interview visibility.
@@ -118,7 +119,16 @@ export default function ThumbnailMetadata({ interview }) {
                                           field.name === 'collection_id',
                                   })}
                               >
-                                  {allowedToSee && value}
+                                  {allowedToSee && (
+                                      <>
+                                          {value}
+                                          {field.name === 'collection_id' && (
+                                              <CollectionPublicationStatus
+                                                  interview={interview}
+                                              />
+                                          )}
+                                      </>
+                                  )}
                               </li>
                           );
                       } else {

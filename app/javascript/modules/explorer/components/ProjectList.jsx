@@ -24,6 +24,7 @@ import { ProjectSortControl } from './ProjectSortControl';
  * @param {?number} [props.collectionMin] - Minimum collection count; defaults to the list minimum.
  * @param {?number} [props.collectionMax] - Maximum collection count; defaults to the list maximum.
  * @param {number[]} [props.institutionIds] - Institution or parent IDs; empty means no institution filter.
+ * @param {boolean} [props.showUnpublished=true] - Include accessible unpublished projects; the catalog root opts out by default.
  * @param {boolean} [props.showTotals=true] - Include the unfiltered total in the count label.
  * @param {boolean} [props.hideifEmpty=false] - Render nothing when no projects match.
  * @returns {import('react').ReactElement|null} Project list or its current request/empty state.
@@ -35,6 +36,7 @@ export function ProjectList({
     collectionMin,
     collectionMax,
     institutionIds,
+    showUnpublished = true,
     showTotals = true,
     hideifEmpty = false,
 }) {
@@ -42,11 +44,14 @@ export function ProjectList({
     const { expandedId, toggle } = useAccordion();
     const { sort, setSort } = useProjectsSort();
     const { projects, isLoading, error } = useCatalogProjects();
+    const visibleProjects = showUnpublished
+        ? projects
+        : projects.filter((project) => project.workflow_state === 'public');
     const { globalCollectionMin, globalCollectionMax } =
-        useProjectsAndCollectionsRange({ items: projects });
+        useProjectsAndCollectionsRange({ items: visibleProjects });
 
     const filtered = filterProjects(
-        projects,
+        visibleProjects,
         query,
         interviewMin,
         interviewMax,
@@ -57,7 +62,7 @@ export function ProjectList({
     const projectCountLabel = useExplorerListCountLabel({
         scope: 'project',
         displayedItems: filtered,
-        totalItems: projects,
+        totalItems: visibleProjects,
         showTotals,
     });
 
@@ -126,6 +131,7 @@ ProjectList.propTypes = {
     collectionMin: PropTypes.number,
     collectionMax: PropTypes.number,
     institutionIds: PropTypes.arrayOf(PropTypes.number),
+    showUnpublished: PropTypes.bool,
     showTotals: PropTypes.bool,
     hideifEmpty: PropTypes.bool,
 };

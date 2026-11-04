@@ -319,10 +319,11 @@ module ApiContract
     class ProjectDisplay < ProjectSummary
       schema(
         description: 'Localized public display details, including the fields used by ProjectHome. Institutions remain an optional include.',
-        required: %w[domain more_text primary_color secondary_color editorial_color has_map is_catalog has_newsletter display_ohd_link show_preview_img oai_doi_identifier view_modes default_search_order aspect_x aspect_y],
+        required: %w[has_visible_registry_entries domain more_text primary_color secondary_color editorial_color has_map is_catalog has_newsletter display_ohd_link show_preview_img oai_doi_identifier view_modes default_search_order aspect_x aspect_y],
         properties: {
           domain: { type: %w[string null] },
           more_text: { type: %w[string null], description: 'Localized rich text; sanitize before rendering HTML' },
+          has_visible_registry_entries: { type: 'boolean' },
           primary_color: { type: %w[string null] },
           secondary_color: { type: %w[string null] },
           editorial_color: { type: %w[string null] },

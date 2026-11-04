@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { readProjectRecord } from './projectRecords';
-import { v2AccessContext, v2RequestKey } from './v2Requests';
+import { projectAccessContext, projectRequestKey } from './projectRequests';
 
 /**
  * @typedef {Object} ProjectListOptions
@@ -19,14 +19,14 @@ import { v2AccessContext, v2RequestKey } from './v2Requests';
  * @typedef {Object} ProjectListSelection
  * @property {Object[]} projects - List records combined with their display values.
  * @property {Object|undefined} pagination - API pagination, available after success.
- * @property {string|undefined} status - Pending, succeeded, or failed; absent before a request.
+ * @property {string|undefined} status - Pending, succeeded, failed, or stale awaiting refresh.
  * @property {?{status: ?number, message: string}} error - Request failure, if any.
  * @property {boolean} isLoading - No list is available and the request has not failed.
  * @property {boolean} isValidating - A request is pending, including during refresh.
  */
 
 /**
- * Builds the v2 project-list URL, sorting query parameters and deduplicating sets.
+ * Builds the project-list URL, sorting query parameters and deduplicating sets.
  * Pagination settings are omitted when all is true.
  *
  * @param {string} locale - Requested display locale.
@@ -74,13 +74,17 @@ export function projectListUrl(
 export const makeProjectListSelector = () =>
     createSelector(
         [
-            (state) => state.data.v2?.projects,
-            v2AccessContext,
+            (state) => state.data.projects,
+            projectAccessContext,
             (_state, url) => url,
             (_state, _url, locale) => locale,
         ],
         (projects, context, url, locale) => {
-            const key = v2RequestKey(url, context, projects?.generation || 0);
+            const key = projectRequestKey(
+                url,
+                context,
+                projects?.generation || 0
+            );
             const matchesContext = projects?.context === context;
             const list = matchesContext ? projects.lists[key] : null;
             const request = matchesContext ? projects.requests[key] : null;
@@ -92,7 +96,7 @@ export const makeProjectListSelector = () =>
                 status: request?.status,
                 error: request?.error || null,
                 isLoading: !list && request?.status !== 'failed',
-                isValidating: request?.status === 'pending',
+                isValidating: ['pending', 'stale'].includes(request?.status),
             };
         }
     );

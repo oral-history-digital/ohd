@@ -23,7 +23,7 @@ function RegistryEntriesTabPanel({
     changeRegistryEntriesViewMode,
 }) {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const { projectShortname } = useProjectIdentity();
 
     return (

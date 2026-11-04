@@ -1,7 +1,7 @@
 import { Loader } from 'modules/api';
 import { pathBase } from 'modules/routes';
 
-import { deleteData, submitData } from './actions';
+import { deleteData, fetchData, submitData } from './actions';
 
 jest.mock('modules/api', () => ({
     Loader: {
@@ -19,6 +19,17 @@ jest.mock('modules/routes', () => ({
 jest.mock('modules/strings', () => ({
     pluralize: jest.fn((value) => `${value}s`),
 }));
+
+test('legacy GET error handling stays unchanged unless a reader opts in', () => {
+    fetchData(
+        { pathBase: '/pilot/de' },
+        'institutions',
+        null,
+        null,
+        'all'
+    )(jest.fn());
+    expect(Loader.getJson.mock.lastCall[4]).toBeUndefined();
+});
 
 describe('submitData', () => {
     beforeEach(() => {

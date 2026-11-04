@@ -55,6 +55,12 @@ function ProjectAdminContent({ data, children }) {
     });
 }
 
+/**
+ * Shows a labeled resource row and its permission-checked administration dialogs.
+ * Project-logo rows retain the translated image type and stored locale as their label.
+ * @param {Object} props - Record, resource scope, ownership, and dialog/action settings.
+ * @returns {React.ReactElement|null} Resource row, or null without a record.
+ */
 export default function AdminRecord({
     data,
     joinedData,
@@ -123,7 +129,11 @@ export default function AdminRecord({
         return null;
     }
 
-    const displayName = getDataDisplayName(data, locale);
+    const resourceLabel = t(`activerecord.models.${scope}.one`);
+    const displayName = getDataDisplayName(data, locale, {
+        scope,
+        resourceLabel,
+    });
     // API records omit the Rails class name; the configured resource scope supplies it for permission checks.
     const authorizationRecord = {
         ...data,

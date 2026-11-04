@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { render, screen } from '@testing-library/react';
-import { submitData } from 'modules/data';
+import { submitData, useGetInstitutions } from 'modules/data';
 import { useProject } from 'modules/routes';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -41,6 +41,7 @@ jest.mock('modules/data', () => ({
     getCurrentUser: jest.fn(),
     getIsLoading: jest.fn(),
     getInstitutions: jest.fn(),
+    useGetInstitutions: jest.fn(),
     getStatuses: jest.fn(),
 }));
 jest.mock('react-redux', () => ({
@@ -94,7 +95,8 @@ const project = {
 beforeEach(() => {
     jest.clearAllMocks();
     useProject.mockReturnValue({ project, isLoading: false });
-    useSelector.mockReturnValue({});
+    useSelector.mockReturnValue({ institutions: { all: 'fetched' } });
+    useGetInstitutions.mockReturnValue({});
     useDispatch.mockReturnValue(jest.fn());
 });
 
@@ -170,7 +172,7 @@ test('institution assignments display names from the separately loaded instituti
             ],
         },
     });
-    useSelector.mockReturnValue({
+    useGetInstitutions.mockReturnValue({
         4: { name: { de: 'Institution' }, shortname: 'inst' },
     });
     render(<InstitutionProjects />);
@@ -183,6 +185,21 @@ test('institution assignments display names from the separately loaded instituti
             shortname: 'inst',
         },
     ]);
+});
+
+test('institution assignments wait for institution names and show a load failure instead of blank rows', () => {
+    useSelector.mockReturnValue({ institutions: { all: 'fetching' } });
+    const { rerender } = render(<InstitutionProjects />);
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(DataList).not.toHaveBeenCalled();
+    expect(useGetInstitutions).toHaveBeenCalledWith({ enabled: true });
+
+    useSelector.mockReturnValue({ institutions: { all: 'error-timestamp' } });
+    rerender(<InstitutionProjects />);
+    expect(screen.getByRole('alert')).toHaveTextContent(
+        'explorer.institutions_list.error'
+    );
+    expect(DataList).not.toHaveBeenCalled();
 });
 
 test.each([

@@ -103,7 +103,7 @@ test.each([CitationInfo, InterviewCollectionInfo, InterviewTextMaterials])(
             <Component interview={interview} collections={mockCollections} />
         );
         expect(screen.getByText('Loading')).toBeInTheDocument();
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         useProject.mockReturnValue({
             project,
             error: { message: 'Access denied' },

@@ -1,4 +1,4 @@
-import { getInstitutions, getStatuses } from 'modules/data';
+import { getStatuses, useGetInstitutions } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
@@ -9,7 +9,7 @@ import { DataList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
 /**
- * Edits project-owned institution assignments from the edit profile.
+ * Edits project institution assignments after their separate institution names load.
  * @returns {React.ReactElement} Resource list, loading indicator, or request error.
  */
 export default function InstitutionProjects() {
@@ -19,20 +19,24 @@ export default function InstitutionProjects() {
         error,
         isLoading: projectLoading,
     } = useProject({ profile: 'edit', include: ['institution_projects'] });
-    const institutions = useSelector(getInstitutions);
+    const institutions = useGetInstitutions({ enabled: !!project && !error });
     const statuses = useSelector(getStatuses);
+    const institutionStatus = statuses?.institutions?.all;
     const { fetchData, deleteData, submitData } = useAdminDataActions();
-    if (error) {
+    if (error || /^error/.test(institutionStatus)) {
         return (
             <InlineNotification
                 variant="error"
                 title={t('error')}
-                description={error.message}
+                description={
+                    error?.message || t('explorer.institutions_list.error')
+                }
                 isClosable={false}
             />
         );
     }
-    if (projectLoading || !project) return <Spinner />;
+    if (projectLoading || !project || !/^fetched/.test(institutionStatus))
+        return <Spinner />;
 
     // Assignment records contain IDs; institution names belong to the institution reader.
     const assignments = project.institution_projects.map((assignment) => ({
@@ -47,8 +51,6 @@ export default function InstitutionProjects() {
             outerScope="project"
             outerScopeId={project.id}
             scope="institution_project"
-            statuses={statuses}
-            otherDataToLoad={['institution']}
             detailsAttributes={['name', 'shortname']}
             initialFormValues={{ project_id: project.id }}
             formElements={[

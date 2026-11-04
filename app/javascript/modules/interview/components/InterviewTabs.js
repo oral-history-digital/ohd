@@ -38,7 +38,7 @@ import showTranslationTab from './showTranslationTab';
  */
 export default function InterviewTabs({ interview }) {
     const { t, locale } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const initialized = useRef(false);
     const [tabIndex, setTabIndex] = useState(0);
     const [translationLocale, setTranslationLocale] = useState(

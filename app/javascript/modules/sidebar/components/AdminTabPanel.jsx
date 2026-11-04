@@ -21,7 +21,7 @@ export default function AdminTabPanel() {
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const user = useSelector(getCurrentUser);
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const countryKeys = useSelector(getCountryKeys);
 
     const [selectedCountries, setSelectedCountries] = useState([]);

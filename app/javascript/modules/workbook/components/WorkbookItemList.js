@@ -21,7 +21,7 @@ import WorkbookItemContainer from './WorkbookItemContainer';
 export default function WorkbookItemList({ type, contents }) {
     const { t } = useI18n();
     const [open, setOpen] = useState(false);
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
 
     const items = useMemo(() => {
         if (project?.is_umbrella) {

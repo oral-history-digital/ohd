@@ -7,18 +7,22 @@ import {
     makeProjectDetailSelector,
     projectDetailUrl,
 } from '../redux/projectDetails';
-import { fetchV2Data, v2AccessContext } from '../redux/v2Requests';
+import {
+    fetchProjectData,
+    projectAccessContext,
+} from '../redux/projectRequests';
 
 /**
  * @typedef {import('../redux/projectDetails').ProjectDetailOptions} ProjectDetailOptions
  * @typedef {import('../redux/projectDetails').ProjectDetailSelection} ProjectDetailSelection
- * @typedef {import('../redux/v2Requests').V2ReadResult} V2ReadResult
- * @typedef {ProjectDetailSelection & {mutate: function(): Promise<V2ReadResult>}} ProjectDetailResult
+ * @typedef {import('../redux/projectRequests').ProjectReadResult} ProjectReadResult
+ * @typedef {ProjectDetailSelection & {mutate: function(): Promise<ProjectReadResult>}} ProjectDetailResult
  */
 
 /**
  * Fetches project details and reads the requested profile and status from Redux.
- * Access changes and mutations trigger refetching. Locale/profile/include changes require
+ * Ordinary saves keep loaded details visible while affected queries refresh; access
+ * changes discard them. Locale/profile/include changes require
  * their own successful response; summaries alone do not count as loaded details.
  *
  * @param {number|string|null|undefined} identifier - Project ID or shortname; empty skips fetching.
@@ -32,19 +36,21 @@ export function useProjectDetail(identifier, options = {}) {
     const url = projectDetailUrl(identifier, locale, options);
     const select = useMemo(makeProjectDetailSelector, []);
     const result = useSelector((state) => select(state, url, locale));
-    const context = useSelector(v2AccessContext);
+    const context = useSelector(projectAccessContext);
     const generation = useSelector(
-        (state) => state.data.v2?.projects?.generation || 0
+        (state) => state.data.projects?.generation || 0
     );
     useEffect(() => {
-        if (url && !result.status)
-            dispatch(fetchV2Data('projects', url, { locale, single: true }));
+        if (url && (!result.status || result.status === 'stale'))
+            dispatch(
+                fetchProjectData('projects', url, { locale, single: true })
+            );
     }, [dispatch, url, locale, context, generation, result.status]);
     const mutate = useCallback(
         () =>
             url
                 ? dispatch(
-                      fetchV2Data('projects', url, {
+                      fetchProjectData('projects', url, {
                           locale,
                           single: true,
                           refresh: true,

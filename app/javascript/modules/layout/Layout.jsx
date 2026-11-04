@@ -10,11 +10,7 @@ import {
     hideBanner,
 } from 'modules/banner';
 import { VIEWMODE_WORKFLOW } from 'modules/constants';
-import {
-    getProjectBrandName,
-    useCurrentProject,
-    useUmbrellaProject,
-} from 'modules/data';
+import { getProjectBrandName, useUmbrellaProject } from 'modules/data';
 import { useCheckLocaleAgainstProject, useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import {
@@ -69,13 +65,7 @@ export default function Layout({ children }) {
     const { locale, t } = useI18n();
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { project, projectShortname, isLoading, error } = useProject({});
-    // TODO: Remove this fetch and guard once registry name/reference types and
-    // collections are loaded explicitly by their consumers.
-    const { isLoading: legacyResourcesLoading, error: legacyResourcesError } =
-        useCurrentProject({
-            requireDetails: true,
-        });
+    const { project, projectShortname, isLoading, error } = useProject();
     const scrollPositionBelowThreshold = useScrollBelowThreshold();
     const isEditviewActive = useIsEditor();
 
@@ -119,18 +109,17 @@ export default function Layout({ children }) {
         project?.name ||
         getProjectBrandName(umbrellaProject, locale);
     const faviconUrl = getFaviconUrl(project);
-    const loadingError = error || legacyResourcesError;
-    if (loadingError)
+    if (error)
         return (
             <InlineNotification
                 variant="error"
                 title={t('error')}
-                description={loadingError.message}
+                description={error.message}
                 isClosable={false}
             />
         );
 
-    if (isLoading || legacyResourcesLoading) {
+    if (isLoading) {
         return (
             <div className="Layout Layout--loading">
                 <main className="Site-content Layout-loadingContent">

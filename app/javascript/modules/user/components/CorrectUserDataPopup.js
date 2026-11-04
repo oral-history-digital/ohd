@@ -13,7 +13,7 @@ import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
 export default function CorrectUserDataPopup() {
     const { t } = useI18n();
     const user = useSelector(getCurrentUser);
-    const { project: project, isLoading, error } = useProject({});
+    const { project: project, isLoading, error } = useProject();
 
     if (!project || isLoading || error) return null;
 

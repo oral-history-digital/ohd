@@ -12,7 +12,7 @@ import { useBreadcrumbModel } from './useBreadcrumbModel';
  */
 export function useBreadcrumbs() {
     const { locale } = useI18n();
-    const { project } = useProject({});
+    const { project } = useProject();
     const { currentPage, items } = useBreadcrumbModel();
 
     if (!project) {

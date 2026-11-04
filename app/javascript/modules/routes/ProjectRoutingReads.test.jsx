@@ -7,6 +7,7 @@ import {
     setViewMode,
 } from 'modules/archive';
 
+import { getIsRedirectingAfterLogout as mockGetIsRedirectingAfterLogout } from '../user/selectors';
 import ProjectRoutes from './ProjectRoutes';
 import RouteDivider from './RouteDivider';
 import useProject from './useProject';
@@ -16,7 +17,8 @@ const mockDispatch = jest.fn();
 jest.mock('./useProject', () => ({ __esModule: true, default: jest.fn() }));
 jest.mock('react-redux', () => ({
     useDispatch: () => mockDispatch,
-    useSelector: () => mockViewMode,
+    useSelector: (selector) =>
+        selector === mockGetIsRedirectingAfterLogout ? false : mockViewMode,
 }));
 jest.mock('modules/archive', () => ({
     getViewMode: jest.fn(),
@@ -105,7 +107,7 @@ test.each([
     (project, routeLabel) => {
         useProject.mockReturnValue({ project });
         render(<RouteDivider />);
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         expect(screen.getByText(routeLabel)).toBeInTheDocument();
     }
 );

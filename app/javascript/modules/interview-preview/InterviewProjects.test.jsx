@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useAuthorization } from 'modules/auth';
-import { useProjectDetail } from 'modules/data';
+import { getCollections, useProjectDetail } from 'modules/data';
 import { useInterviewSearch } from 'modules/interview-search';
-import { useProjectIdentity } from 'modules/routes';
+import { useProject, useProjectIdentity } from 'modules/routes';
 import { WorkbookItemForm } from 'modules/workbook';
 
 import InterviewListRow from './InterviewListRow';
@@ -13,6 +13,7 @@ jest.mock('modules/data', () => ({
     ...jest.requireActual('../data/utils/getResultMetadataFields'),
     useProjectDetail: jest.fn(),
     getCurrentUser: () => null,
+    getCollections: jest.fn(),
     useHumanReadable: () => ({
         humanReadable: ({ obj, attribute }) => obj[attribute],
     }),
@@ -28,11 +29,18 @@ jest.mock('modules/auth', () => ({
     PROJECT_ACCESS_REQUESTED: 'project_access_requested',
 }));
 jest.mock('modules/i18n', () => ({
-    useI18n: () => ({ locale: 'en', t: (key) => key }),
+    useI18n: () => ({
+        locale: 'en',
+        t: (key) =>
+            ({
+                'activerecord.models.collection.one': 'Collection',
+                'workflow_state.unshared': 'not public',
+            })[key] || key,
+    }),
 }));
 jest.mock('modules/routes', () => ({
     useProjectIdentity: jest.fn(),
-    useProject: () => ({
+    useProject: jest.fn(() => ({
         project: {
             is_umbrella: true,
             metadata_fields: [
@@ -44,7 +52,7 @@ jest.mock('modules/routes', () => ({
                 },
             ],
         },
-    }),
+    })),
     LinkOrA: ({ project, to, onLinkClick, children }) =>
         project ? (
             <a href={`/${project.shortname}/en/${to}`} onClick={onLinkClick}>
@@ -108,11 +116,68 @@ const props = {
 
 beforeEach(() => {
     jest.clearAllMocks();
+    getCollections.mockReturnValue({});
     useProjectIdentity.mockReturnValue({ isUmbrella: true });
     useProjectDetail.mockReturnValue({ project });
     useAuthorization.mockReturnValue({ isAuthorized: () => false });
     useInterviewSearch.mockReturnValue({ numResults: 2, data: {} });
 });
+
+test.each(['public', 'unshared'])(
+    'table collection metadata shows publication status for %s collections',
+    (workflow_state) => {
+        getCollections.mockReturnValue({
+            2: { project_id: 7, workflow_state },
+        });
+        const metadata = {
+            project: {
+                metadata_fields: [
+                    {
+                        id: 2,
+                        name: 'collection_id',
+                        source: 'Interview',
+                        use_in_results_list: true,
+                    },
+                ],
+            },
+        };
+        useProject.mockReturnValueOnce(metadata);
+        const { rerender } = render(
+            <table>
+                <tbody>
+                    <InterviewListRow
+                        {...props}
+                        interview={{ ...interview, collection_id: 2 }}
+                    />
+                </tbody>
+            </table>
+        );
+        expect(
+            Boolean(
+                screen.queryByRole('img', { name: 'Collection not public' })
+            )
+        ).toBe(workflow_state === 'unshared');
+        useProject.mockReturnValueOnce(metadata);
+        rerender(
+            <table>
+                <tbody>
+                    <InterviewListRow
+                        {...props}
+                        interview={{
+                            ...interview,
+                            collection_id: 2,
+                            workflow_state: 'restricted',
+                        }}
+                    />
+                </tbody>
+            </table>
+        );
+        expect(
+            screen.queryByRole('img', { name: 'Collection not public' })
+        ).toBeNull();
+        expect(screen.getByText('---')).toBeInTheDocument();
+    }
+);
 
 test('card uses display details for links, names, preview images, bookmarks, and search results', () => {
     const { container } = render(

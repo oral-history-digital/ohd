@@ -88,7 +88,7 @@ const project = {
     name: 'Localized name',
     is_umbrella: false,
     has_map: true,
-    logged_out_visible_registry_entry_ids: ['7'],
+    has_visible_registry_entries: true,
 };
 
 beforeEach(() => {
@@ -104,9 +104,7 @@ test('waits for project settings and hides retained tabs when access fails', () 
             <SidebarTabs />
         </MemoryRouter>
     );
-    expect(useProject).toHaveBeenCalledWith({
-        include: ['registry_configuration'],
-    });
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText('Loading')).toBeInTheDocument();
     expect(screen.queryByRole('tab')).not.toBeInTheDocument();
     useProject.mockReturnValue({
@@ -138,7 +136,7 @@ test('preserves visitor registry visibility, project map settings, and permissio
         project: {
             ...project,
             has_map: false,
-            logged_out_visible_registry_entry_ids: [],
+            has_visible_registry_entries: false,
         },
     });
     rerender(
@@ -152,7 +150,7 @@ test('preserves visitor registry visibility, project map settings, and permissio
         project: {
             ...project,
             is_umbrella: true,
-            logged_out_visible_registry_entry_ids: [],
+            has_visible_registry_entries: false,
         },
     });
     useAuthorization.mockReturnValue({ isAuthorized: () => true });

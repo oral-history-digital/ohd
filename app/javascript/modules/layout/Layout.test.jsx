@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { render, screen } from '@testing-library/react';
-import { useCurrentProject } from 'modules/data';
 import { useProject } from 'modules/routes';
 import { Helmet } from 'react-helmet';
 
@@ -14,7 +13,6 @@ jest.mock('modules/banner', () => ({ getBannerActive: () => false }));
 jest.mock('modules/data', () => ({
     getProjectBrandName: () => 'Portal',
     useUmbrellaProject: () => ({ project: { name: 'Portal' } }),
-    useCurrentProject: jest.fn(),
 }));
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: 'en', t: (key) => key }),
@@ -82,15 +80,11 @@ const project = {
 beforeEach(() => {
     jest.clearAllMocks();
     useProject.mockReturnValue({ project, projectShortname: 'pilot' });
-    useCurrentProject.mockReturnValue({
-        project: { name: { en: 'Legacy name' } },
-    });
 });
 
-test('uses display details for the page title and favicon while preserving the nested-resource fetch', () => {
+test('uses display details for the page title and favicon', () => {
     const { rerender } = render(<Layout>Page content</Layout>);
-    expect(useProject).toHaveBeenCalledWith({});
-    expect(useCurrentProject).toHaveBeenCalledWith({ requireDetails: true });
+    expect(useProject).toHaveBeenCalledWith();
     expect(screen.getByText('Page content')).toBeInTheDocument();
     expect(Helmet.mock.lastCall[0].defaultTitle).toBe('Display title');
     expect(
@@ -113,26 +107,19 @@ test('uses display details for the page title and favicon while preserving the n
     ).toBe('/new.ico');
 });
 
-test('waits for display data and existing nested-resource readers before rendering the page', () => {
+test('waits for display details before rendering the page', () => {
     useProject.mockReturnValue({ isLoading: true });
     const { rerender } = render(<Layout>Page content</Layout>);
     expect(screen.getByRole('status')).toBeInTheDocument();
     expect(screen.queryByText('Page content')).not.toBeInTheDocument();
     useProject.mockReturnValue({ project });
-    useCurrentProject.mockReturnValue({ isLoading: true });
-    rerender(<Layout>Page content</Layout>);
-    expect(screen.getByRole('status')).toBeInTheDocument();
-    useCurrentProject.mockReturnValue({});
     rerender(<Layout>Page content</Layout>);
     expect(screen.getByText('Page content')).toBeInTheDocument();
 });
 
-test.each([useProject, useCurrentProject])(
-    'shows request errors without rendering incomplete page content',
-    (hook) => {
-        hook.mockReturnValue({ error: { message: 'Request denied' } });
-        render(<Layout>Page content</Layout>);
-        expect(screen.getByRole('alert')).toHaveTextContent('Request denied');
-        expect(screen.queryByText('Page content')).not.toBeInTheDocument();
-    }
-);
+test('shows request errors without rendering incomplete page content', () => {
+    useProject.mockReturnValue({ error: { message: 'Request denied' } });
+    render(<Layout>Page content</Layout>);
+    expect(screen.getByRole('alert')).toHaveTextContent('Request denied');
+    expect(screen.queryByText('Page content')).not.toBeInTheDocument();
+});

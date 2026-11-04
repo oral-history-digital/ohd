@@ -16,7 +16,7 @@ import Select from 'react-select';
 export default function StatisticsAdminPage() {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     const countryKeys = useSelector(getCountryKeys);
     const [selectedCountries, setSelectedCountries] = useState([]);
 

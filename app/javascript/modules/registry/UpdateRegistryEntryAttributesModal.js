@@ -38,7 +38,7 @@ function UpdateRegistryEntryAttributesModal({
     replaceNestedFormValues,
 }) {
     const { t, locale } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
 
     const show = (entry) => {
         const alternateName = entry.AlternativeNames?.AlternativeName;

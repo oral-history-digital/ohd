@@ -39,9 +39,7 @@ export default function SidebarTabs({
     isLoggedIn,
 }) {
     const { t, locale } = useI18n();
-    const { project, isLoading, error } = useProject({
-        include: ['registry_configuration'],
-    });
+    const { project, isLoading, error } = useProject();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const navigate = useNavigate();
@@ -99,9 +97,7 @@ export default function SidebarTabs({
     const showCatalogTab = project?.is_umbrella;
     const showInterviewTab = !!interview;
     const showRegistryTab =
-        (!isLoggedIn &&
-            project?.logged_out_visible_registry_entry_ids?.length > 0) ||
-        isLoggedIn;
+        (!isLoggedIn && project?.has_visible_registry_entries) || isLoggedIn;
     const showMapTab = hasMap && !project?.is_umbrella;
     const showWorkbookTab = isLoggedIn;
     const showIndexingTab = isAuthorized({ type: 'General' }, 'edit');

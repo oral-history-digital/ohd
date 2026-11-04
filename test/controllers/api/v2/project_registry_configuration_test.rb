@@ -44,6 +44,7 @@ class Api::V2::ProjectRegistryConfigurationTest < ActionDispatch::IntegrationTes
 
   test 'cache follows visibility edits and root creation removal and reassignment within the target project' do
     default = read_project(include: nil)
+    assert_equal true, default['has_visible_registry_entries']
     read_project
     @project.update_columns(logged_out_visible_registry_entry_ids: [], hidden_registry_entry_ids: ['14'],
       hidden_transcript_registry_entry_ids: ['15'])
@@ -51,6 +52,8 @@ class Api::V2::ProjectRegistryConfigurationTest < ActionDispatch::IntegrationTes
     assert_empty data['logged_out_visible_registry_entry_ids']
     assert_equal ['14'], data['hidden_registry_entry_ids']
     assert_equal ['15'], data['hidden_transcript_registry_entry_ids']
+    default = read_project(include: nil)
+    assert_equal false, default['has_visible_registry_entries']
     @root.update_column(:code, 'former_root')
     assert_nil read_project['root_registry_entry_id']
     replacement = RegistryEntry.create!(project_id: @project.id, code: 'root', workflow_state: 'public')

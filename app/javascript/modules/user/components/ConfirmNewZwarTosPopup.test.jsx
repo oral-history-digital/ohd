@@ -92,7 +92,7 @@ test.each([
         });
         usePathBase.mockReturnValue(route);
         render(<ConfirmNewZwarTosPopup />);
-        expect(useProject).toHaveBeenCalledWith({});
+        expect(useProject).toHaveBeenCalledWith();
         expect(screen.getAllByRole('link').map((link) => link.href)).toEqual([
             'https://portal.example/en/conditions',
             conditions,

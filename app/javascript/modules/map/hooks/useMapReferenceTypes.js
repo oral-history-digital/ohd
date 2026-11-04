@@ -18,7 +18,7 @@ export default function useMapReferenceTypes() {
         isLoading,
         isValidating: projectIsValidating,
         error: projectError,
-    } = useProject({});
+    } = useProject();
 
     const path = `${pathBase}/searches/map_reference_types`;
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);

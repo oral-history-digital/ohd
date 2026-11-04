@@ -29,7 +29,7 @@ export default function InterviewSearchResults({ archiveId, interview }) {
         project,
         isLoading: projectIsLoading,
         error: projectError,
-    } = useProject({});
+    } = useProject();
     const { fulltext } = useSearchParams();
     const {
         isLoading,

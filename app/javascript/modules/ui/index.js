@@ -14,3 +14,4 @@ export { default as Pagination } from './Pagination';
 export { default as PhotoModal } from './PhotoModal';
 export { ResetFiltersButton } from './ResetFiltersButton';
 export { default as SmartImage } from './SmartImage';
+export { default as Switch } from './Switch';

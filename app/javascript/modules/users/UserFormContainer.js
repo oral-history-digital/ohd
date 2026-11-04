@@ -15,7 +15,7 @@ import UserForm from './UserForm';
  */
 export default function UserFormContainer({ data, ...props }) {
     const { t } = useI18n();
-    const { project, isLoading, error } = useProject({});
+    const { project, isLoading, error } = useProject();
     if (error)
         return (
             <InlineNotification

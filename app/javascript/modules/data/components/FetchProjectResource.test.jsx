@@ -9,8 +9,8 @@ import thunk from 'redux-thunk';
 import { LOGOUT } from '../../user/action-types';
 import userReducer from '../../user/reducer';
 import { REMOVE_DATA } from '../redux/action-types';
+import { fetchProjectData } from '../redux/projectRequests';
 import { dataReducer } from '../redux/reducer';
-import { fetchV2Data } from '../redux/v2Requests';
 import { FetchProjectResource } from './FetchProjectResource';
 
 jest.mock('modules/routes', () => ({
@@ -43,11 +43,14 @@ function makeStore() {
             data: {
                 ...dataReducer(undefined, {}),
                 projects: {
-                    7: {
-                        collections: { 1: { id: 1 } },
-                        contribution_types: { 3: { id: 3 } },
+                    ...dataReducer(undefined, {}).projects,
+                    resources: {
+                        7: {
+                            collections: { 1: { id: 1 } },
+                            contribution_types: { 3: { id: 3 } },
+                        },
+                        9: { collections: { 2: { id: 2 } } },
                     },
-                    9: { collections: { 2: { id: 2 } } },
                 },
             },
             user: { isLoggedIn: true },
@@ -103,14 +106,14 @@ test('waits for identity, shares requests, and replaces only the requested proje
     act(() => complete());
     expect(screen.getByText('Editor')).toBeInTheDocument();
     expect(screen.getByText('Citation')).toBeInTheDocument();
-    expect(store.getState().data.projects).toEqual({
+    expect(store.getState().data.projects.resources).toEqual({
         7: {
             collections: { 4: { id: 4 } },
             contribution_types: { 3: { id: 3 } },
         },
         9: { collections: { 2: { id: 2 } } },
     });
-    expect(store.getState().data.v2.projects.records).toEqual({});
+    expect(store.getState().data.projects.records).toEqual({});
 });
 
 test.each([LOGOUT, REMOVE_DATA])(
@@ -118,7 +121,7 @@ test.each([LOGOUT, REMOVE_DATA])(
     (type) => {
         const store = makeStore();
         store.dispatch(
-            fetchV2Data(
+            fetchProjectData(
                 'projects',
                 '/pilot/en/collections.json?for_projects=7',
                 {
@@ -129,9 +132,11 @@ test.each([LOGOUT, REMOVE_DATA])(
         );
         store.dispatch({ type, dataType: 'collections', id: 99 });
         complete();
-        expect(store.getState().data.projects[7].collections).toEqual({
-            1: { id: 1 },
-        });
+        expect(store.getState().data.projects.resources[7].collections).toEqual(
+            {
+                1: { id: 1 },
+            }
+        );
     }
 );
 
@@ -175,7 +180,7 @@ test.each([
     expect(screen.getByRole('alert')).toHaveTextContent(
         'Invalid project resource response.'
     );
-    expect(store.getState().data.projects[7].collections).toEqual({
+    expect(store.getState().data.projects.resources[7].collections).toEqual({
         1: { id: 1 },
     });
 });
@@ -183,7 +188,7 @@ test.each([
 test('adapts registry-name lists to the same nested records used by mutations', () => {
     const store = makeStore();
     store.dispatch(
-        fetchV2Data(
+        fetchProjectData(
             'projects',
             '/pilot/en/registry_name_types.json?for_projects=7',
             {
@@ -198,7 +203,9 @@ test('adapts registry-name lists to the same nested records used by mutations', 
         id: undefined,
         extra_params: 'for_projects_7',
     });
-    expect(store.getState().data.projects[7].registry_name_types).toEqual({
+    expect(
+        store.getState().data.projects.resources[7].registry_name_types
+    ).toEqual({
         4: { id: 4 },
     });
 });

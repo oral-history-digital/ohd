@@ -70,13 +70,15 @@ bin/start_search
 bin/shakapacker-dev-server
 ```
 
-- When asset compilation is affected, verify the production frontend build with:
+- When asset compilation is affected, run the isolated production frontend check inside the development container as the `vscode` user in `/workspace`:
 
 ```sh
-RAILS_ENV=production bin/shakapacker
+bin/check_frontend_build
 ```
 
-Frontend CI runs this command in `.github/workflows/jest.yml`. The Docker image uses a separate `assets:precompile` path.
+- Use this wrapper for all local production frontend build checks. It writes assets, the manifest, and the build cache under `tmp/frontend-production-check`, preserving the development manifest in `public/packs`.
+- Do not run `RAILS_ENV=production bin/shakapacker` directly in the development container. It overwrites the development manifest and can leave Rails requesting production chunks that the active dev server does not serve.
+- See `.devcontainer/README.md` for the development build workflow. Frontend CI uses a direct production build in `.github/workflows/jest.yml`; that CI command is not the local verification command. The Docker image uses a separate `assets:precompile` path.
 
 ## Architecture and implementation conventions
 
@@ -147,7 +149,7 @@ yarn test
 - Test locale/project paths when routing changes.
 - For data-loading changes, test concurrent request deduplication, summary-to-detail loading, mutation freshness, denied access, and logout/permission changes during in-flight requests. Obsolete responses must not restore protected data or data from another project or access context.
 - Run migration checks when schema behavior changes.
-- Run the production Shakapacker build when frontend asset compilation is affected.
+- Run `bin/check_frontend_build` inside the development container when frontend asset compilation is affected. Do not overwrite the development manifest with a direct production build.
 - Do not claim a command passed unless it completed successfully.
 
 ## Code Documenation
