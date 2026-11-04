@@ -62,6 +62,16 @@ describe('useHydrateProjectsByIds', () => {
         expect(mockDispatch).not.toHaveBeenCalled();
     });
 
+    it('loads missing legacy projects without refetching existing base records', () => {
+        renderUseHydrateProjectsByIds({
+            currentProject: { id: 99, shortname: 'ohd' },
+            projectIds: [7, 8],
+            projects: { 8: { id: 8 } },
+        });
+        expect(fetchData).toHaveBeenCalledTimes(1);
+        expect(fetchData.mock.calls[0][2]).toBe(7);
+    });
+
     it('hydrates unique truthy project IDs by default', () => {
         const currentProject = { id: 99, shortname: 'ohd' };
 

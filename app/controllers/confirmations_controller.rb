@@ -14,22 +14,25 @@ class ConfirmationsController < Devise::ConfirmationsController
 
   protected
 
-  # Devise redirects to the confirmed user's tenant host without passing
-  # allow_other_host. The target is already restricted to trusted hosts in
-  # after_confirmation_path_for, so allow the cross-host redirect only then.
+  # Allows cross-host redirects only to trusted tenant hosts.
+  #
+  # @param options [Hash, String] Redirect destination
+  # @param response_options [Hash] Redirect response options
+  # @return [Object] Result of the underlying redirect
   def redirect_to(options = {}, response_options = {})
     if options.is_a?(String) && (host = cross_host_for(options)) && trusted_redirect_host?(host)
       response_options = response_options.merge(allow_other_host: true)
     end
     super(options, response_options)
   end
-
+  
   def after_confirmation_path_for(resource_name, resource)
     fallback_path = "/#{resource.default_locale || I18n.default_locale}"
     return fallback_path if resource.pre_register_location.blank?
 
     uri = URI.parse(resource.pre_register_location)
-    return fallback_path if uri.scheme.present? && !%w[http https].include?(uri.scheme)
+    return fallback_path if uri.scheme && (!%w[http https].include?(uri.scheme) || uri.host.blank?)
+    return fallback_path if uri.userinfo.present?
 
     # Allow absolute redirects only for trusted tenant hosts.
     if uri.host.present? && !trusted_redirect_host?(uri.host)
@@ -38,6 +41,9 @@ class ConfirmationsController < Devise::ConfirmationsController
 
     # Require an absolute-path component to block malformed or scheme-only URLs.
     return fallback_path if uri.path.blank? || !uri.path.start_with?('/')
+
+    # Reject malformed nested parameters before selecting scalar sorting values.
+    Rack::Utils.parse_nested_query(uri.query)
 
     # Preserve search sorting without forwarding tokens or redirect parameters.
     query = if uri.path.end_with?('/searches/archive')
@@ -51,7 +57,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     uri.fragment = nil
 
     uri.host.present? ? uri.to_s : [uri.path, uri.query].compact.join('?')
-  rescue URI::InvalidURIError, ArgumentError
+  rescue URI::InvalidURIError, Rack::QueryParser::ParameterTypeError, Rack::QueryParser::QueryLimitError, ArgumentError
     fallback_path
   end 
 

@@ -1,66 +1,24 @@
-import { useEffect } from 'react';
-
 import groupBy from 'lodash.groupby';
 import {
-    fetchData,
     getCurrentProject,
     getCurrentUser,
-    getProjects,
-    getProjectsStatus,
+    useHydrateProjectsByIds,
 } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import UserProject from './UserProject';
 
 function UserProjects() {
-    const dispatch = useDispatch();
-    const { locale } = useI18n();
     const user = useSelector(getCurrentUser);
     const currentProject = useSelector(getCurrentProject);
-    const projects = useSelector(getProjects);
-    const projectsStatus = useSelector(getProjectsStatus);
     const userProjects = Object.values(user?.user_projects || {});
 
     const currentUserProject = userProjects.find(
         (urp) => urp.project_id === currentProject?.id
     );
 
-    // TODO: Remove this component-level fetch once project loading is unified.
-    // On project reloads, Redux often starts with only current project + umbrella.
-    // UserProject needs projects[userProject.project_id], so we hydrate missing
-    // projects referenced by user.user_projects here as a temporary bridge.
-    useEffect(() => {
-        if (!currentProject) {
-            return;
-        }
-
-        userProjects.forEach((userProject) => {
-            const projectId = userProject?.project_id;
-
-            if (
-                projectId &&
-                !projects[projectId] &&
-                // Prevent duplicate requests while the same project is in flight.
-                !/^fetching/.test(projectsStatus[projectId] || '')
-            ) {
-                dispatch(
-                    fetchData(
-                        { locale, project: currentProject },
-                        'projects',
-                        projectId
-                    )
-                );
-            }
-        });
-    }, [
-        currentProject,
-        dispatch,
-        locale,
-        projects,
-        projectsStatus,
-        userProjects,
-    ]);
+    const projectsNeeded = userProjects.map(({ project_id }) => project_id);
+    useHydrateProjectsByIds(projectsNeeded);
 
     const roles = user?.user_roles && Object.values(user.user_roles);
     const groupedRoles = groupBy(roles, 'project_id');
