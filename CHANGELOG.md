@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.12.0] - 2026-11-04
+
+### Added
+
+- feat: strengthen project-loading system coverage and fix export and registration bugs ([#164](https://github.com/oral-history-digital/ohd/pull/164))
+- feat: extend playback rates and controls ([#176](https://github.com/oral-history-digital/ohd/pull/176))
+- feat: add v2 API project lists endpoint ([#167](https://github.com/oral-history-digital/ohd/pull/167))
+- feat: add isolated production frontend checks ([de83409ff](https://github.com/oral-history-digital/ohd/commit/de83409ff0588719a494d18976b1eea03c72fbc0))
+- feat: add RuboCop configuration and integrate into development environment ([1c6ccfab8](https://github.com/oral-history-digital/ohd/commit/1c6ccfab80da37465a3a49be828ac15db2fad28b))
+- add EventType permissions to Archivmanagement-role for new projects ([68b6bc3b4](https://github.com/oral-history-digital/ohd/commit/68b6bc3b4feb36b9d9880ce314753fada910c682))
+- added default Event permissions to Archivmanagement ([47af20021](https://github.com/oral-history-digital/ohd/commit/47af20021cf9e4f80b4a5ef7a63052481e8ea2fd))
+- adding clamav docker img and conf ([2a54e0f1e](https://github.com/oral-history-digital/ohd/commit/2a54e0f1ead9d6bb76a28b53fc4dd7f5760850ac))
+
+### Changed
+
+- refactor(spinner): replace loader dependency with shared CSS spinner ([#179](https://github.com/oral-history-digital/ohd/pull/179))
+- refactor: adjust frontend to projects v2 API ([#173](https://github.com/oral-history-digital/ohd/pull/173))
+- refactor: project loading cleanup ([#175](https://github.com/oral-history-digital/ohd/pull/175))
+- changing clamav configuration for containers ([5c0fdfa66](https://github.com/oral-history-digital/ohd/commit/5c0fdfa66db1373de893a7c5d45d0dd33ee5e4be))
+
+### Fixed
+
+- fix(security): harden application and update dependencies ([#178](https://github.com/oral-history-digital/ohd/pull/178))
+- fix: update solr index in background after content changes ([#177](https://github.com/oral-history-digital/ohd/pull/177))
+- feat: improve Redux project loading ([#166](https://github.com/oral-history-digital/ohd/pull/166))
+- fix(auth): handle empty logout responses ([0ef199301](https://github.com/oral-history-digital/ohd/commit/0ef19930181ae696d7ea0bb2f943d6f25fa6e995))
+- fix(test): correct file names to add system tests for contribution types and interview person editing ([2809eb857](https://github.com/oral-history-digital/ohd/commit/2809eb8574a85f39bfb0db1096b702a6873cf9dd))
+- fix(clamav): remove unused clamscan config for containers ([bcf6cb195](https://github.com/oral-history-digital/ohd/commit/bcf6cb19542f5c90b78b904589c666023c85653d))
+
 ## [2.11.2] - 2026-10-21
 
 ### Changed
@@ -851,6 +880,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.12.0]: https://github.com/oral-history-digital/ohd/compare/v2.11.2...v2.12.0
 [2.11.2]: https://github.com/oral-history-digital/ohd/compare/v2.11.1...v2.11.2
 [2.11.1]: https://github.com/oral-history-digital/ohd/compare/v2.11.0...v2.11.1
 [2.11.0]: https://github.com/oral-history-digital/ohd/compare/v2.10.1...v2.11.0
