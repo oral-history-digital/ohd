@@ -89,6 +89,7 @@ group :test do
   gem 'json_schemer', '~> 2.0'
   gem 'capybara'
   gem 'database_cleaner'
+  gem 'minitest-mock'
   gem 'minitest-retry'
   gem 'spork' # faster tests
   gem 'pdf-inspector', require: "pdf/inspector"
