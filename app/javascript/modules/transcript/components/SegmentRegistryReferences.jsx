@@ -7,18 +7,44 @@ import {
     RegistryReferencesContainer,
 } from 'modules/registry-references';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { CancelButton } from 'modules/ui/Buttons';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
+/**
+ * Shows segment registry references and their creation form after configuration loads.
+ *
+ * @param {Object} props - Reference context.
+ * @param {Object} props.segment - Segment whose references are shown.
+ * @param {Object} props.interview - Interview used by reference permissions.
+ * @param {Function} [props.onCancel] - Closes the reference editor.
+ * @returns {React.ReactElement|null} Reference controls, request status, or nothing without a registry root.
+ */
 export default function SegmentRegistryReferences({
     segment,
     interview,
     onCancel,
 }) {
     const { t } = useI18n();
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({
+        include: ['registry_configuration'],
+    });
     const [showForm, setShowForm] = useState(false);
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
+    if (!project.root_registry_entry_id) return null;
 
     const handleFormCancel = () => {
         if (showForm) {

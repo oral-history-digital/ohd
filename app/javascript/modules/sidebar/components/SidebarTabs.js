@@ -7,6 +7,7 @@ import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -21,6 +22,16 @@ import ProjectConfigTabPanel from './ProjectConfigTabPanel';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
 import WorkbookTabPanel from './WorkbookTabPanel';
 
+/**
+ * Shows route tabs according to project settings, session state, and permissions.
+ *
+ * @param {Object} props - Sidebar context.
+ * @param {Array} [props.selectedArchiveIds] - Selected public interview identifiers.
+ * @param {Object} [props.interview] - Current interview, when available.
+ * @param {string} [props.archiveId] - Current public interview identifier.
+ * @param {boolean} [props.isLoggedIn] - Whether a user is signed in.
+ * @returns {React.ReactElement} Sidebar tabs or project request status.
+ */
 export default function SidebarTabs({
     selectedArchiveIds,
     interview,
@@ -28,7 +39,9 @@ export default function SidebarTabs({
     isLoggedIn,
 }) {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({
+        include: ['registry_configuration'],
+    });
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const navigate = useNavigate();
@@ -38,11 +51,7 @@ export default function SidebarTabs({
     const hasMap = project?.has_map;
     const isCampscapesProject = project?.shortname === 'campscapes';
     const projectName =
-        (typeof project?.name === 'object' && project?.name?.[locale]) ||
-        project?.name ||
-        project?.display_name ||
-        project?.shortname ||
-        '';
+        project?.name || project?.display_name || project?.shortname || '';
 
     const [tabIndex, setTabIndex] = useState(() =>
         tabIndexFromRoute(pathBase, pathname, isCampscapesProject)
@@ -115,6 +124,18 @@ export default function SidebarTabs({
     const searchTabLabelParams = isCampscapesWithoutArchive
         ? { project: projectName }
         : undefined;
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <Tabs

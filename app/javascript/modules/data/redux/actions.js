@@ -63,6 +63,20 @@ export const receiveData = (json) => ({
     resultPagesCount: json.result_pages_count,
 });
 
+/**
+ * Builds the usual receive action and marks it as a completed mutation so v2
+ * caches can be invalidated without changing legacy response merging.
+ *
+ * @param {Object} json - Legacy mutation response envelope.
+ * @param {string} [mutationResource] - Resource changed by the request; the response may contain a parent record.
+ * @returns {Object} Receive action with mutation metadata for cache invalidation.
+ */
+export const receiveMutationData = (json, mutationResource) => ({
+    ...receiveData(json),
+    mutation: true,
+    ...(mutationResource ? { mutationResource } : {}),
+});
+
 export const replaceInstanceSettings = (data) => ({
     type: REPLACE_INSTANCE_SETTINGS,
     data,
@@ -106,6 +120,19 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
     };
 }
 
+/**
+ * Saves a record through the legacy API, using PUT when an ID is present or POST
+ * otherwise. Dispatches loading, success, and error actions; successful responses
+ * also invalidate affected v2 caches.
+ *
+ * @param {Object} props - Request path or legacy project and locale context.
+ * @param {string} [props.pathBase] - Route-based prefix; overrides project-based path construction.
+ * @param {Object} params - Form payload keyed by the singular resource name.
+ * @param {Object} [opts={}] - Submission settings.
+ * @param {boolean} [opts.updateStateBeforeSubmit=false] - Apply an optimistic update for PUT.
+ * @param {Function} [callback] - Receives the successful response after Redux is updated.
+ * @returns {function(Function): void} Redux thunk that starts the save request.
+ */
 export function submitData(props, params, opts = {}, callback) {
     let dataType = Object.keys(params)[0];
     let pluralizedDataType = pluralize(dataType);
@@ -138,10 +165,10 @@ export function submitData(props, params, opts = {}, callback) {
                     )
                 );
             Loader.put(
-                `${pathBase(props)}/${pluralizedDataType}/${id}`,
+                `${props.pathBase || pathBase(props)}/${pluralizedDataType}/${id}`,
                 payload,
                 dispatch,
-                receiveData,
+                (json) => receiveMutationData(json, pluralizedDataType),
                 (error) => receiveError(pluralizedDataType, id, error),
                 callback
             );
@@ -158,10 +185,10 @@ export function submitData(props, params, opts = {}, callback) {
             dispatch(requestData(pluralizedDataType));
             //dispatch(addData(params));
             Loader.post(
-                `${pathBase(props)}/${pluralizedDataType}`,
+                `${props.pathBase || pathBase(props)}/${pluralizedDataType}`,
                 params,
                 dispatch,
-                receiveData,
+                (json) => receiveMutationData(json, pluralizedDataType),
                 (error) => receiveError(pluralizedDataType, null, error),
                 callback
             );
@@ -169,6 +196,21 @@ export function submitData(props, params, opts = {}, callback) {
     }
 }
 
+/**
+ * Deletes a record through the legacy API and invalidates affected v2 caches.
+ * By default, removes the cached legacy record before sending the request.
+ *
+ * @param {Object} props - Request path or legacy project and locale context.
+ * @param {string} [props.pathBase] - Route-based prefix; overrides project-based path construction.
+ * @param {string} dataType - Plural name of the parent resource.
+ * @param {number|string} id - Parent or standalone record ID.
+ * @param {?string} [nestedDataType] - Nested resource name, when deleting a child.
+ * @param {number|string|null} [nestedId] - Nested record ID.
+ * @param {boolean} [skipRemove=false] - Send DELETE without removing the cached record first.
+ * @param {boolean} [onlyRemove=false] - Remove locally without DELETE; ignored when skipRemove is true.
+ * @param {Function} [callback] - Receives the successful API response.
+ * @returns {function(Function): void} Redux thunk that removes the record or starts DELETE.
+ */
 export function deleteData(
     props,
     dataType,
@@ -179,14 +221,19 @@ export function deleteData(
     onlyRemove = false,
     callback
 ) {
-    let url = `${pathBase(props)}/${dataType}/${id}`;
+    let url = `${props.pathBase || pathBase(props)}/${dataType}/${id}`;
     if (nestedDataType) {
         url += `/${nestedDataType}/${nestedId}`;
     }
 
     if (skipRemove) {
         return (dispatch) => {
-            Loader.delete(url, dispatch, receiveData, callback);
+            Loader.delete(
+                url,
+                dispatch,
+                (json) => receiveMutationData(json, dataType),
+                callback
+            );
         };
     } else if (onlyRemove) {
         return (dispatch) => {
@@ -195,7 +242,12 @@ export function deleteData(
     } else {
         return (dispatch) => {
             dispatch(removeData(id, dataType, nestedDataType, nestedId));
-            Loader.delete(url, dispatch, receiveData, callback);
+            Loader.delete(
+                url,
+                dispatch,
+                (json) => receiveMutationData(json, dataType),
+                callback
+            );
         };
     }
 }

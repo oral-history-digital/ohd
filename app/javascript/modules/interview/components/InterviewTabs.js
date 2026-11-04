@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@reach/tabs';
 import '@reach/tabs/styles.css';
@@ -11,8 +11,10 @@ import {
 } from 'modules/interview-search';
 import { useSearchParams } from 'modules/query-string';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import { TableOfContentsContainer } from 'modules/toc';
 import { Transcript } from 'modules/transcript';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import {
     FaList,
@@ -26,65 +28,70 @@ import LocaleSwitch from './LocaleSwitch';
 import showTocTab from './showTocTab';
 import showTranslationTab from './showTranslationTab';
 
+/**
+ * Shows interview content tabs using the current project's display settings.
+ * Initial tab selection waits for project details; later updates preserve the user's choice.
+ *
+ * @param {Object} props - Interview context.
+ * @param {Object} props.interview - Interview with transcript and translation availability.
+ * @returns {React.ReactElement} Content tabs, loading indicator, or project error.
+ */
 export default function InterviewTabs({ interview }) {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const { project, isLoading, error } = useProject({});
+    const initialized = useRef(false);
     const [tabIndex, setTabIndex] = useState(0);
     const [translationLocale, setTranslationLocale] = useState(
         interview.translation_alpha3
     );
 
     const { fulltext } = useSearchParams();
+    // Pause searching while project details are loading or unavailable.
     const { numResults } = useInterviewSearch(
         interview.archive_id,
         fulltext,
-        project
+        !isLoading && !error ? project : undefined
     );
 
+    // Wait for project details before choosing the initial tab. The ref prevents
+    // later data updates from overriding the tab the user has selected.
     useEffect(() => {
-        selectTabOnInit();
-    }, []);
-
-    useEffect(() => {
-        checkSelectedTabAfterLocaleChange();
-    }, [locale]);
-
-    function selectTabOnInit() {
-        if (directlyShowSearchResults()) {
+        if (!project || isLoading || error || initialized.current) return;
+        initialized.current = true;
+        // Prefer existing search matches, then a suitable translation; otherwise keep the transcript.
+        if (fulltext && numResults > 0) {
             setTabIndex(3);
-        } else if (translatedTranscriptIsMoreSuitable()) {
-            setTabIndex(1);
-        } else {
-            setTabIndex(0);
-        }
-    }
-
-    function directlyShowSearchResults() {
-        return fulltext && numResults > 0;
-    }
-
-    function translatedTranscriptIsMoreSuitable() {
-        return (
+        } else if (
             locale !== interview.alpha2 &&
             showTranslationTab(project, interview, locale)
-        );
-    }
-
-    function checkSelectedTabAfterLocaleChange() {
-        // When changing locales sometimes a formerly selected tab is not
-        // available any more.
-        if (selectedTabNotAvailable()) {
-            setTabIndex(0);
+        ) {
+            setTabIndex(1);
         }
-    }
+    }, [project, isLoading, error, fulltext, numResults, interview, locale]);
 
-    function selectedTabNotAvailable() {
-        return (
+    useEffect(() => {
+        if (!project || isLoading || error) return;
+        // Return to the transcript if the selected translation or contents tab becomes unavailable.
+        if (
             (tabIndex === 1 &&
                 !showTranslationTab(project, interview, locale)) ||
             (tabIndex === 2 && !showTocTab(project, interview, locale))
+        ) {
+            setTabIndex(0);
+        }
+    }, [project, isLoading, error, interview, locale, tabIndex]);
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
         );
     }
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <Tabs

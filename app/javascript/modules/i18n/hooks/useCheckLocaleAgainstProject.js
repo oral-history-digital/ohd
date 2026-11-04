@@ -2,26 +2,36 @@ import { useEffect } from 'react';
 
 import { fetchTranslationsForLocale, setLocale } from 'modules/archive';
 import { useI18n } from 'modules/i18n';
-import { pathBase, useProject } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const MATCH_PATH_BASE_PART = /^(?:\/[a-z0-9-]{1,11}[a-z])?\/([a-z]{2})(?:\/|$)/;
 
+/**
+ * Applies loaded project locale settings while preserving account/legal page locale exceptions.
+ * Locale redirects keep the current project/domain route and query string.
+ */
 export function useCheckLocaleAgainstProject() {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
-    const { project, projectId } = useProject();
+    const { project, isLoading, error } = useProject({});
+    const routeBase = usePathBase();
     const { locale } = useI18n();
 
     useEffect(() => {
-        if (!project?.available_locales || !project.default_locale) {
+        if (
+            isLoading ||
+            error ||
+            !project?.available_locales ||
+            !project.default_locale
+        ) {
             return;
         }
 
         checkLocaleAgainstProject();
-    }, [project, projectId, locale, location.pathname]);
+    }, [project, isLoading, error, routeBase, locale, location.pathname]);
 
     function checkLocaleAgainstProject() {
         const found = location.pathname.match(MATCH_PATH_BASE_PART);
@@ -70,11 +80,10 @@ export function useCheckLocaleAgainstProject() {
             return;
         }
 
-        const newPathBase = pathBase({
-            projectId,
-            locale: project.default_locale,
-            project,
-        });
+        const newPathBase = routeBase.replace(
+            /\/[a-z]{2}$/,
+            `/${project.default_locale}`
+        );
         const newPath = location.pathname.replace(
             MATCH_PATH_BASE_PART,
             newPathBase + '/'

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import classNames from 'classnames';
+import { useProjectDetail } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
 import { LinkOrA, useProject } from 'modules/routes';
@@ -13,10 +14,26 @@ import queryString from 'query-string';
 import queryToFacets from '../queryToFacets';
 import WorkbookActions from './WorkbookActions';
 
+/**
+ * Loads an entry's project through Redux and links to its saved interview or search.
+ * Entries remain visible when project details are unavailable.
+ * Shows entry controls only after the current project loads and is confirmed
+ * to be an individual project.
+ *
+ * @param {Object} props - Entry properties and existing interview actions.
+ * @param {Object} props.data - Saved workbook entry, including its project ID.
+ * @param {string} [props.className] - Additional styling.
+ * @param {Object} props.statuses - Request statuses for related interviews.
+ * @param {Object} props.interviews - Loaded interviews by archive ID.
+ * @param {Function} props.setArchiveId - Selects the interview for navigation.
+ * @param {Function} props.sendTimeChangeRequest - Seeks to a saved segment.
+ * @param {Function} props.hideSidebar - Closes the mobile sidebar.
+ * @param {Function} props.fetchData - Loads a related interview when needed.
+ * @returns {React.ReactElement} Workbook entry and actions.
+ */
 export default function WorkbookItem({
     data,
     className,
-    project,
     statuses,
     interviews,
     setArchiveId,
@@ -25,15 +42,20 @@ export default function WorkbookItem({
     fetchData,
 }) {
     const { t, locale } = useI18n();
+    const { project } = useProjectDetail(data.project_id);
     const { facets } = useFacets();
-    const { isUmbrella } = useProject();
+    const {
+        project: currentProject,
+        isLoading: currentProjectLoading,
+        error: currentProjectError,
+    } = useProject({});
     const projectId = project?.shortname;
     const interview = interviews[data.media_id];
 
     const fetchingInterview = !!statuses['interviews'][data.media_id];
 
     useEffect(() => {
-        if (project && !interview && !fetchingInterview) {
+        if (data.media_id && project && !interview && !fetchingInterview) {
             fetchData(
                 { projectId, locale, project },
                 'interviews',
@@ -159,20 +181,22 @@ export default function WorkbookItem({
                 )}
             </p>
 
-            {!isUmbrella && (
-                <WorkbookActions
-                    item={data}
-                    itemPath={itemPath}
-                    className="WorkbookEntry-actions"
-                />
-            )}
+            {currentProject &&
+                !currentProjectLoading &&
+                !currentProjectError &&
+                !currentProject.is_umbrella && (
+                    <WorkbookActions
+                        item={data}
+                        itemPath={itemPath}
+                        className="WorkbookEntry-actions"
+                    />
+                )}
         </div>
     );
 }
 
 WorkbookItem.propTypes = {
     data: PropTypes.object.isRequired,
-    project: PropTypes.object,
     statuses: PropTypes.object.isRequired,
     interviews: PropTypes.object.isRequired,
     className: PropTypes.string,

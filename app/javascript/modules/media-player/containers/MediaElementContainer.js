@@ -1,8 +1,5 @@
 import { getArchiveId } from 'modules/archive';
-import {
-    getCurrentInterview,
-    getMediaStreamsForCurrentProject,
-} from 'modules/data';
+import { getCurrentInterview } from 'modules/data';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -24,7 +21,6 @@ import {
 const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
-    mediaStreams: getMediaStreamsForCurrentProject(state),
     tape: getCurrentTape(state),
     isPlaying: getIsPlaying(state),
     timeChangeRequest: getTimeChangeRequest(state),

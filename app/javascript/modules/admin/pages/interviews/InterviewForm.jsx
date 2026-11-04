@@ -1,6 +1,7 @@
 import { createElement, useState } from 'react';
 
 import {
+    FetchProjectResource,
     getCollectionsForCurrentProject,
     getContributionTypesForCurrentProject,
     getLanguages,
@@ -11,10 +12,20 @@ import { useI18n } from 'modules/i18n';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { usePeople } from 'modules/person';
 import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+/**
+ * Creates or edits interviews using project-specific public ID rules.
+ * @param {Object} props - Editor options.
+ * @param {Object} [props.interview] - Interview being edited; omit to create one.
+ * @param {string} [props.submitText] - Save button translation key.
+ * @param {boolean} [props.withContributions] - Includes nested contributor forms.
+ * @returns {React.ReactElement} Form, processing feedback, or project loading/error state.
+ */
 export default function InterviewForm({
     interview,
     submitText,
@@ -30,7 +41,11 @@ export default function InterviewForm({
     const [archiveId, setArchiveId] = useState(null);
 
     const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const {
+        project,
+        isLoading: projectLoading,
+        error: projectError,
+    } = useProject({ include: ['form_options'] });
     const pathBase = usePathBase();
 
     const { data: people } = usePeople();
@@ -60,7 +75,7 @@ export default function InterviewForm({
     function handleSubmit(params) {
         setShowForm(false);
 
-        dispatch(submitData({ locale, projectId, project }, params));
+        dispatch(submitData({ pathBase }, params));
     }
 
     function renderForm() {
@@ -189,8 +204,30 @@ export default function InterviewForm({
         return createElement(Form, props);
     }
 
+    if (projectError)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={projectError.message}
+                isClosable={false}
+            />
+        );
+    if (projectLoading || !project) return <Spinner />;
+
     if (showForm) {
-        return renderForm();
+        const form = withContributions ? (
+            <FetchProjectResource resource="contribution_types">
+                {renderForm()}
+            </FetchProjectResource>
+        ) : (
+            renderForm()
+        );
+        return (
+            <FetchProjectResource resource="collections">
+                {form}
+            </FetchProjectResource>
+        );
     }
 
     return (

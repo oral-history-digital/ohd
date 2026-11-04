@@ -47,8 +47,8 @@ describe('sortProjects', () => {
 
     test('sorts by name ascending by default', () => {
         const projects = [
-            { name: 'A', interviews: { total: 1 } },
-            { name: 'B', interviews: { total: 5 } },
+            { name: 'A', interview_counts: { total: 1 } },
+            { name: 'B', interview_counts: { total: 5 } },
             { name: 'C' },
         ];
 
@@ -59,9 +59,9 @@ describe('sortProjects', () => {
 
     test('sorts by collections ascending and treats missing totals as zero', () => {
         const projects = [
-            { name: 'A', collections: { total: 2 } },
+            { name: 'A', collection_counts: { total: 2 } },
             { name: 'B' },
-            { name: 'C', collections: { total: 1 } },
+            { name: 'C', collection_counts: { total: 1 } },
         ];
 
         const actual = sortProjects(projects, 'collections_asc').map(

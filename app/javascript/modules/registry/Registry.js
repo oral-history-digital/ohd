@@ -3,6 +3,7 @@ import { useIsEditor } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
+import { InlineNotification } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -13,6 +14,15 @@ import RegistrySearchResult from './RegistrySearchResult';
 import RegistrySkeleton from './RegistrySkeleton';
 import useRootEntry from './useRootEntry';
 
+/**
+ * Displays the registry tree or search results after its configured root loads.
+ *
+ * @param {Object} props - Registry page properties.
+ * @param {Object} props.foundRegistryEntries - Search results and their metadata.
+ * @param {boolean} props.showRegistryEntriesSearchResults - Shows search results instead of the tree.
+ * @param {boolean} [props.isRegistryEntrySearching] - Whether a registry search is pending.
+ * @returns {React.ReactElement|null} Registry content, loading/error state, or null without a root.
+ */
 export default function Registry({
     foundRegistryEntries,
     showRegistryEntriesSearchResults,
@@ -22,11 +32,23 @@ export default function Registry({
     const isEditor = useIsEditor();
     useTrackPageView();
 
-    const { isLoading, data: rootRegistryEntry } = useRootEntry();
+    const { isLoading, data: rootRegistryEntry, error } = useRootEntry();
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
 
     if (isLoading) {
         return <RegistrySkeleton />;
     }
+    if (!rootRegistryEntry) return null;
 
     return (
         <ScrollToTop>

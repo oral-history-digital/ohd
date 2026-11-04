@@ -12,3 +12,4 @@ export * from './useFilteredCollections';
 export * from './useInstitutionsSort';
 export * from './useSelectableHeaderToggle';
 export * from './useScrollToExpandedCard';
+export * from './useCatalogProjects';

@@ -1,8 +1,12 @@
 import { Form } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 
+/**
+ * Edits replacement text, forwarding nested-form callbacks and the current route.
+ * @param {Object} props - Form data, nested index, and save/cancel callbacks.
+ * @returns {React.ReactElement} Replacement text form.
+ */
 export default function SingleTextInputForm({
     index,
     submitData,
@@ -12,8 +16,7 @@ export default function SingleTextInputForm({
     data,
     nested,
 }) {
-    const { project, projectId } = useProject();
-    const { locale } = useI18n();
+    const pathBase = usePathBase();
 
     return (
         <Form
@@ -22,7 +25,7 @@ export default function SingleTextInputForm({
                 // TODO: Check if it is correct to pass index here. If submitData is the Redux action
                 // dispatcher, index has no effect there. But if submitData is a custom function,
                 // it might need index (e.g. nested forms).
-                submitData({ projectId, project, locale }, params, index);
+                submitData({ pathBase }, params, index);
             }}
             onSubmitCallback={onSubmitCallback}
             onCancel={onCancel}

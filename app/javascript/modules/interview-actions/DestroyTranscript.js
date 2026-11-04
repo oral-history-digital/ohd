@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { deleteData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
 import { FaTrash } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Confirms deletion of one transcript language and shows its pending deletion state.
+ *
+ * @param {Object} props - Interview context.
+ * @param {Object} props.interview - Interview with its public identifier and transcript languages.
+ * @returns {React.ReactElement} Transcript deletion controls.
+ */
 export default function DestroyTranscript({ interview }) {
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
     const dispatch = useDispatch();
     const [alpha3ToDestroy, setAlpha3ToDestroy] = useState(null);
     const [alpha3IsDestroying, setAlpha3IsDestroying] = useState(null);
@@ -37,7 +44,7 @@ export default function DestroyTranscript({ interview }) {
                                 onClick={() => {
                                     dispatch(
                                         deleteData(
-                                            { locale, projectId, project },
+                                            { pathBase },
                                             'interviews',
                                             interview.archive_id,
                                             'transcripts',

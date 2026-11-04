@@ -1,30 +1,37 @@
 import { useEffect } from 'react';
 
 import { fetchData } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { pluralize, underscore } from 'modules/strings';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Loads missing resource fields through the current route, retaining Redux ownership.
+ * @param {Object} data - Record whose fields may need separate requests.
+ * @param {string[]} sensitiveAttributes - Fields loaded through nested resource endpoints.
+ */
 export function useSensitiveData(data, sensitiveAttributes) {
     const dispatch = useDispatch();
-    const { locale } = useI18n();
-    const { projectId, project } = useProject();
+    const pathBase = usePathBase();
 
+    const { id, type } = data;
+    // Compare field names by content so new record or array references do not repeat requests.
+    // The effect parses this string back into the field names to fetch.
+    const missingAttributes = JSON.stringify(
+        sensitiveAttributes.filter((attribute) => !data[attribute])
+    );
     useEffect(() => {
-        sensitiveAttributes.forEach((attr) => {
-            if (!data[attr]) {
-                dispatch(
-                    fetchData(
-                        { projectId, locale, project },
-                        pluralize(underscore(data.type)),
-                        data.id,
-                        attr
-                    )
-                );
-            }
+        JSON.parse(missingAttributes).forEach((attribute) => {
+            dispatch(
+                fetchData(
+                    { pathBase },
+                    pluralize(underscore(type)),
+                    id,
+                    attribute
+                )
+            );
         });
-    }, sensitiveAttributes);
+    }, [dispatch, pathBase, id, type, missingAttributes]);
 }
 
 export default useSensitiveData;

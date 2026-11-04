@@ -1,12 +1,35 @@
-import { getCurrentProject } from 'modules/data';
-import { useSelector } from 'react-redux';
+import { useI18n } from 'modules/i18n';
+import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 
 import { DataList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
+/**
+ * Edits project-owned external links from the edit profile.
+ * @returns {React.ReactElement} Resource list, loading indicator, or request error.
+ */
 export default function ExternalLinks() {
-    const project = useSelector(getCurrentProject);
+    const { t } = useI18n();
+    const {
+        project,
+        error,
+        isLoading: projectLoading,
+    } = useProject({ profile: 'edit', include: ['external_links'] });
     const { fetchData, deleteData, submitData } = useAdminDataActions();
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (projectLoading || !project) return <Spinner />;
+
     return (
         <DataList
             editView

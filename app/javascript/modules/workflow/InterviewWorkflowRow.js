@@ -6,7 +6,7 @@ import { SingleValueWithForm } from 'modules/forms';
 import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import { usePeople } from 'modules/person';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProjectIdentity } from 'modules/routes';
 import { useArchiveSearch } from 'modules/search';
 import { Spinner } from 'modules/spinners';
 import { formatDuration } from 'modules/utils';
@@ -18,12 +18,16 @@ import useSWRImmutable from 'swr/immutable';
 
 import TaskContainer from './TaskContainer';
 
+/**
+ * Displays an interview workflow using separately loaded collections, tasks, and task types.
+ * @param {Object} props - Interview, resource records/statuses, and Redux actions.
+ * @returns {React.ReactElement} Workflow summary and expandable task editors.
+ */
 export default function InterviewWorkflowRow({
     interview,
     languages,
     collections,
-    project,
-    projectId,
+    taskTypes,
     tasks,
     tasksStatus,
     fetchData,
@@ -32,10 +36,13 @@ export default function InterviewWorkflowRow({
     const [collapsed, setCollapsed] = useState(true);
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
+    const { projectShortname } = useProjectIdentity();
     const { fulltext } = useArchiveSearch();
     const { isLoading } = usePeople(); // TODO: Does it make sense to onnly get loading state?
 
-    const usersPath = `${pathBase}/users.json?workflow_users_for_project=${projectId}`;
+    const usersPath = projectShortname
+        ? `${pathBase}/users.json?workflow_users_for_project=${projectShortname}`
+        : null;
     const { data: users } = useSWRImmutable(usersPath);
 
     const params = { fulltext };
@@ -43,20 +50,16 @@ export default function InterviewWorkflowRow({
     const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
 
     useEffect(() => {
-        loadTasks();
-    }, []);
-
-    function loadTasks() {
         if (!tasksStatus[`for_interview_${interview.archive_id}`]) {
             fetchData(
-                { projectId, project, locale },
+                { pathBase },
                 'tasks',
                 null,
                 null,
                 `for_interview=${interview.archive_id}`
             );
         }
-    }
+    }, [fetchData, interview.archive_id, pathBase, tasksStatus]);
 
     function box(value, width = '17-5') {
         return <div className={`box box-${width}`}>{value}</div>;
@@ -110,7 +113,10 @@ export default function InterviewWorkflowRow({
                 {box(t(interview?.media_type), '10')}
                 {box(formatDuration(interview?.duration), '10')}
                 {box(languages[interview?.language_id]?.name[locale], '10')}
-                {box(collections[interview?.collection_id]?.name[locale], '10')}
+                {box(
+                    collections?.[interview?.collection_id]?.name[locale],
+                    '10'
+                )}
 
                 <div
                     className={classNames(
@@ -121,14 +127,10 @@ export default function InterviewWorkflowRow({
                     {tasksFetched && (
                         <div className="workflow-symbols">
                             {interview.task_ids.map((taskId) => {
-                                // using the slightly more complicated way to get task_types' use attribute
-                                // (tasks[taskId].task_type.use would be easier)
-                                // otherwise all tasks cache would have to be cleared on project configuration changes
-                                //
+                                // Read current task-type settings so configuration changes affect existing tasks.
                                 if (
-                                    project.task_types[
-                                        tasks[taskId].task_type.id
-                                    ]?.use
+                                    taskTypes?.[tasks[taskId]?.task_type?.id]
+                                        ?.use
                                 ) {
                                     return symbol(tasks[taskId]);
                                 }
@@ -188,8 +190,7 @@ export default function InterviewWorkflowRow({
                         <HelpText code="workflow_tasks" />
                         {interview.task_ids.map((taskId) => {
                             if (
-                                project.task_types[tasks[taskId].task_type.id]
-                                    ?.use
+                                taskTypes?.[tasks[taskId]?.task_type?.id]?.use
                             ) {
                                 return (
                                     <TaskContainer
@@ -210,11 +211,9 @@ export default function InterviewWorkflowRow({
 
 InterviewWorkflowRow.propTypes = {
     interview: PropTypes.object.isRequired,
-    usersStatus: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     collections: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
+    taskTypes: PropTypes.object,
     tasks: PropTypes.object,
     tasksStatus: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,

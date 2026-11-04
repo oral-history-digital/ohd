@@ -9,17 +9,25 @@ import classNames from 'classnames';
 import { AuthorizedContent } from 'modules/auth';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import { sanitizeHtml } from 'modules/utils';
 import PropTypes from 'prop-types';
 import { FaAngleDown, FaAngleUp, FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
+import BiographicalEntryForm from './BiographicalEntryForm';
 
+/**
+ * Shows a localized biographical entry and authorized edit/delete controls.
+ *
+ * @param {Object} props - Biography context.
+ * @param {Object} props.data - Entry with localized text/dates and its person ID.
+ * @param {Function} props.deleteData - Deletes the nested entry through Redux.
+ * @returns {React.ReactElement|null} Entry controls, or nothing after deletion.
+ */
 export default function BiographicalEntry({ data, deleteData }) {
     const { t, locale } = useI18n();
-    const { project } = useProject();
+    const pathBase = usePathBase();
     const [open, setOpen] = useState(false);
     const [deleted, setDeleted] = useState(false);
 
@@ -37,7 +45,7 @@ export default function BiographicalEntry({ data, deleteData }) {
                     }
                 >
                     {(close) => (
-                        <BiographicalEntryFormContainer
+                        <BiographicalEntryForm
                             biographicalEntry={data}
                             onSubmit={close}
                             onCancel={close}
@@ -55,7 +63,7 @@ export default function BiographicalEntry({ data, deleteData }) {
                         <DeleteItemForm
                             onSubmit={() => {
                                 deleteData(
-                                    { project, locale },
+                                    { pathBase },
                                     'people',
                                     data.person_id,
                                     'biographical_entries',

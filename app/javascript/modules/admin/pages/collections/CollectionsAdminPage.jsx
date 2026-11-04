@@ -1,21 +1,28 @@
 import {
     getCollectionsForCurrentProject,
     getCollectionsStatus,
-    getCurrentProject,
 } from 'modules/data';
+import { useProjectIdentity } from 'modules/routes';
 import { getCollectionsQuery } from 'modules/search';
+import { Spinner } from 'modules/spinners';
 import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 
+/**
+ * Lists project-scoped resources without loading project details.
+ * @returns {React.ReactElement} Administration list or pending project identity.
+ */
 export default function CollectionsAdminPage() {
-    const project = useSelector(getCurrentProject);
+    const { projectDbId } = useProjectIdentity();
     const data = useSelector(getCollectionsForCurrentProject);
     const dataStatus = useSelector(getCollectionsStatus);
     const collectionsQuery = useSelector(getCollectionsQuery);
     const { fetchData, deleteData, submitData, setQueryParams } =
         useAdminDataActions();
+
+    if (!projectDbId) return <Spinner />;
 
     return (
         <PaginatedAdminRecordList
@@ -25,10 +32,10 @@ export default function CollectionsAdminPage() {
             query={{
                 ...collectionsQuery,
                 // Always fetch collections scoped to the current project in admin.
-                for_projects: project.id,
+                for_projects: projectDbId,
             }}
             outerScope="project"
-            outerScopeId={project.id}
+            outerScopeId={projectDbId}
             scope="collection"
             sortAttribute="name"
             sortAttributeTranslated
@@ -39,7 +46,7 @@ export default function CollectionsAdminPage() {
                 'notes',
                 'doi_status',
             ]}
-            initialFormValues={{ project_id: project.id }}
+            initialFormValues={{ project_id: projectDbId }}
             formElements={[
                 {
                     attribute: 'name',

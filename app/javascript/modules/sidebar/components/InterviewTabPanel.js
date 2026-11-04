@@ -23,8 +23,9 @@ import { MaterialList } from 'modules/materials';
 import { PersonDataContainer, usePersonWithAssociations } from 'modules/person';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -33,18 +34,31 @@ import AdminSubTab from './AdminSubTab';
 import DownloadLinks from './DownloadLinks';
 import SubTab from './SubTab';
 
+/**
+ * Shows interview metadata and tools according to project display settings and access checks.
+ * Waits for project details before applying catalog and map visibility settings.
+ *
+ * @param {Object} props - Interview context and sidebar actions.
+ * @param {string} [props.archiveId] - Public interview identifier.
+ * @param {string} [props.projectId] - Current project's shortname.
+ * @param {Object} [props.interview] - Loaded interview.
+ * @param {number} [props.intervieweeId] - Interviewee's internal ID.
+ * @param {Function} props.setViewMode - Selects the search results view.
+ * @param {Function} props.hideSidebar - Closes the sidebar.
+ * @param {boolean} props.isLoggedIn - Whether the visitor is signed in.
+ * @returns {React.ReactElement|null} Interview tools, loading/error state, or nothing without an interview.
+ */
 export default function InterviewTabPanel({
     archiveId,
     projectId,
     interview,
     intervieweeId,
-    hasMap,
-    isCatalog,
     setViewMode,
     hideSidebar,
     isLoggedIn,
 }) {
     const pathBase = usePathBase();
+    const { project, isLoading, error } = useProject({});
     const isEditor = useIsEditor();
     const { t } = useI18n();
     const { data: interviewee, isLoading: intervieweeIsLoading } =
@@ -55,6 +69,18 @@ export default function InterviewTabPanel({
     if (!archiveId || archiveId === 'new' || !projectId || !interview) {
         return null;
     }
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     const hasPublicPhotos =
         interview.photos &&
@@ -93,7 +119,7 @@ export default function InterviewTabPanel({
                         </Link>
                     </p>
                 </AuthorizedContent>
-                {!isCatalog && (
+                {!project.is_catalog && (
                     <>
                         <AuthorizedContent
                             object={interview}
@@ -211,7 +237,7 @@ export default function InterviewTabPanel({
 
                 {projectId !== PROJECT_CAMPSCAPES && (
                     <AuthShowContainer hasProjectAccess>
-                        <AuthShowContainer hasProjectAccess={hasMap}>
+                        <AuthShowContainer hasProjectAccess={project.has_map}>
                             <AuthorizedContent
                                 object={interview}
                                 action="show"
@@ -293,8 +319,6 @@ InterviewTabPanel.propTypes = {
     projectId: PropTypes.string,
     interview: PropTypes.object,
     intervieweeId: PropTypes.number,
-    hasMap: PropTypes.bool.isRequired,
-    isCatalog: PropTypes.bool.isRequired,
     setViewMode: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,

@@ -349,3 +349,17 @@ describe('humanReadable', () => {
         });
     });
 });
+
+test('reads the editor locale from stored API translations rather than the display projection', () => {
+    expect(
+        humanReadable({
+            obj: {
+                name: 'Display projection',
+                translations: [{ locale: 'en', name: 'Stored name' }],
+            },
+            attribute: 'name',
+            locale: 'en',
+            translations: {},
+        })
+    ).toBe('Stored name');
+});

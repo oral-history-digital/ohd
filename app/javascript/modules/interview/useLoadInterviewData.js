@@ -1,93 +1,70 @@
 import { useEffect } from 'react';
 
 import { getEditView } from 'modules/archive';
-import {
-    AuthShowContainer,
-    AuthorizedContent,
-    useAuthorization,
-    useProjectAccessStatus,
-} from 'modules/auth';
-import { fetchData, getInterviewsStatus, getStatuses } from 'modules/data';
-import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { useAuthorization, useProjectAccessStatus } from 'modules/auth';
+import { fetchData, getInterviewsStatus } from 'modules/data';
+import { usePathBase, useProject } from 'modules/routes';
 import { getIsLoggedIn } from 'modules/user';
 import { useDispatch, useSelector } from 'react-redux';
 
+/**
+ * Loads interview fields according to Redux project metadata and the user's access.
+ * Waits for project settings; interview records continue through the existing request flow.
+ *
+ * @param {Object} options - Interview loading context.
+ * @param {Object|undefined} options.interview - Cached interview, if available.
+ * @param {string} options.archiveId - Public interview identifier.
+ */
 export default function useLoadInterviewData({ interview, archiveId }) {
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { project, error } = useProject({ include: ['metadata_fields'] });
+    const pathBase = usePathBase();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const { isAuthorized } = useAuthorization();
+    const canEditInterview = isAuthorized(interview, 'update');
+    const hasInterview = Boolean(interview);
     const dispatch = useDispatch();
     const statuses = useSelector(getInterviewsStatus);
     const editView = useSelector(getEditView);
     const isLoggedIn = useSelector(getIsLoggedIn);
-    const status = statuses[archiveId];
-    const metadataFieldObservations = Object.values(
-        project.metadata_fields
-    ).find((m) => m.name === 'observations');
-    const metadataFieldDescription = Object.values(
-        project.metadata_fields
-    ).find((m) => m.name === 'description');
+    const needsInterview = !statuses[archiveId];
+    const metadataFields = project?.metadata_fields;
 
     useEffect(() => {
-        if (!status) {
+        if (!metadataFields || error || !archiveId) return;
+
+        const metadataFieldObservations = metadataFields.find(
+            (field) => field.name === 'observations'
+        );
+        const metadataFieldDescription = metadataFields.find(
+            (field) => field.name === 'description'
+        );
+        if (needsInterview) {
+            dispatch(fetchData({ pathBase }, 'interviews', archiveId));
+        }
+        if (
+            hasInterview &&
+            metadataFieldObservations?.display_on_landing_page
+        ) {
             dispatch(
-                fetchData(
-                    { projectId, locale, project },
-                    'interviews',
-                    archiveId
-                )
+                fetchData({ pathBase }, 'interviews', archiveId, 'observations')
             );
         }
-        if (interview && metadataFieldObservations?.display_on_landing_page) {
+        if (hasInterview && metadataFieldDescription?.display_on_landing_page) {
             dispatch(
-                fetchData(
-                    { projectId, locale, project },
-                    'interviews',
-                    archiveId,
-                    'observations'
-                )
+                fetchData({ pathBase }, 'interviews', archiveId, 'description')
             );
         }
-        if (interview && metadataFieldDescription?.display_on_landing_page) {
+        if (hasInterview && projectAccessGranted) {
+            dispatch(fetchData({ pathBase }, 'interviews', archiveId, 'title'));
             dispatch(
-                fetchData(
-                    { projectId, locale, project },
-                    'interviews',
-                    archiveId,
-                    'description'
-                )
+                fetchData({ pathBase }, 'interviews', archiveId, 'short_title')
             );
-        }
-        if (interview && projectAccessGranted) {
             dispatch(
-                fetchData(
-                    { projectId, locale, project },
-                    'interviews',
-                    archiveId,
-                    'title'
-                )
+                fetchData({ pathBase }, 'interviews', archiveId, 'photos')
             );
             dispatch(
                 fetchData(
-                    { projectId, locale, project },
-                    'interviews',
-                    archiveId,
-                    'short_title'
-                )
-            );
-            dispatch(
-                fetchData(
-                    { projectId, locale, project },
-                    'interviews',
-                    archiveId,
-                    'photos'
-                )
-            );
-            dispatch(
-                fetchData(
-                    { projectId, locale, project },
+                    { pathBase },
                     'interviews',
                     archiveId,
                     'registry_references'
@@ -99,7 +76,7 @@ export default function useLoadInterviewData({ interview, archiveId }) {
             ) {
                 dispatch(
                     fetchData(
-                        { projectId, locale, project },
+                        { pathBase },
                         'interviews',
                         archiveId,
                         'observations'
@@ -112,7 +89,7 @@ export default function useLoadInterviewData({ interview, archiveId }) {
             ) {
                 dispatch(
                     fetchData(
-                        { projectId, locale, project },
+                        { pathBase },
                         'interviews',
                         archiveId,
                         'description'
@@ -120,10 +97,10 @@ export default function useLoadInterviewData({ interview, archiveId }) {
                 );
             }
         }
-        if (isAuthorized(interview, 'update')) {
+        if (canEditInterview) {
             dispatch(
                 fetchData(
-                    { projectId, locale, project },
+                    { pathBase },
                     'interviews',
                     archiveId,
                     'reload_translations'
@@ -135,7 +112,7 @@ export default function useLoadInterviewData({ interview, archiveId }) {
             ) {
                 dispatch(
                     fetchData(
-                        { projectId, locale, project },
+                        { pathBase },
                         'interviews',
                         archiveId,
                         'observations'
@@ -148,7 +125,7 @@ export default function useLoadInterviewData({ interview, archiveId }) {
             ) {
                 dispatch(
                     fetchData(
-                        { projectId, locale, project },
+                        { pathBase },
                         'interviews',
                         archiveId,
                         'description'
@@ -158,12 +135,16 @@ export default function useLoadInterviewData({ interview, archiveId }) {
         }
     }, [
         interview?.primary_language_id,
-        projectId,
-        locale,
+        dispatch,
+        metadataFields,
+        error,
+        pathBase,
         archiveId,
         isLoggedIn,
         editView,
-        metadataFieldObservations,
-        metadataFieldDescription,
+        hasInterview,
+        needsInterview,
+        projectAccessGranted,
+        canEditInterview,
     ]);
 }

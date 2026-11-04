@@ -1,17 +1,24 @@
-import { getCurrentProject, getCurrentUser } from 'modules/data';
+import { getCurrentUser } from 'modules/data';
+import { useProject } from 'modules/routes';
 import { Modal } from 'modules/ui';
 import { useSelector } from 'react-redux';
 
 import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 
+/**
+ * Opens access-request step two after confirmation on the originating project page.
+ * @returns {React.ReactElement|null} Registration/access content when project settings are available.
+ */
 export default function AfterConfirmationPopup() {
     const currentUser = useSelector(getCurrentUser);
-    const currentProject = useSelector(getCurrentProject);
+    const { project: currentProject, isLoading, error } = useProject({});
     const currentProjectAccess =
         currentUser?.user_projects &&
         Object.values(currentUser.user_projects).find((up) => {
             return up.project_id === currentProject?.id;
         });
+
+    if (!currentProject || isLoading || error) return null;
 
     const recentlyConfirmed =
         !currentUser?.admin &&

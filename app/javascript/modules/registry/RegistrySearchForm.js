@@ -1,12 +1,23 @@
 import { useState } from 'react';
 
 import { useI18n } from 'modules/i18n';
-import { usePathBase, useProject } from 'modules/routes';
+import { usePathBase, useProjectIdentity } from 'modules/routes';
 import { PixelLoader } from 'modules/spinners';
 import { isMobile } from 'modules/user-agent';
 import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 
+/**
+ * Searches registry entries and switches the current project to search results.
+ *
+ * @param {Object} props - Search controls and state.
+ * @param {string} [props.fulltext] - Initial search term.
+ * @param {boolean} [props.isRegistryEntrySearching] - Whether results are loading.
+ * @param {Function} props.changeRegistryEntriesViewMode - Selects the project view.
+ * @param {Function} props.searchRegistryEntry - Requests matching entries.
+ * @param {Function} props.hideSidebar - Closes the sidebar on mobile devices.
+ * @returns {React.ReactElement} Search form and loading indicator.
+ */
 export default function RegistrySearchForm({
     fulltext,
     isRegistryEntrySearching,
@@ -15,7 +26,7 @@ export default function RegistrySearchForm({
     hideSidebar,
 }) {
     const { t } = useI18n();
-    const { projectId } = useProject();
+    const { projectShortname } = useProjectIdentity();
     const pathBase = usePathBase();
     const [searchTerm, setSearchTerm] = useState(fulltext || '');
 
@@ -28,7 +39,7 @@ export default function RegistrySearchForm({
 
         let url = `${pathBase}/searches/registry_entry`;
         searchRegistryEntry(url, { fulltext: searchTerm });
-        changeRegistryEntriesViewMode(true, projectId);
+        changeRegistryEntriesViewMode(true, projectShortname);
 
         if (isMobile()) {
             hideSidebar();

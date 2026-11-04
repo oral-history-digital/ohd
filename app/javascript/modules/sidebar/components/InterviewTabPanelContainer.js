@@ -1,10 +1,5 @@
 import { getArchiveId, getProjectId, setViewMode } from 'modules/archive';
-import {
-    getCurrentInterview,
-    getCurrentIntervieweeId,
-    getCurrentProject,
-    getIsCatalog,
-} from 'modules/data';
+import { getCurrentInterview, getCurrentIntervieweeId } from 'modules/data';
 import { getIsLoggedIn } from 'modules/user';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -17,8 +12,6 @@ const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     interview: getCurrentInterview(state),
     intervieweeId: getCurrentIntervieweeId(state),
-    hasMap: Boolean(getCurrentProject(state)?.has_map),
-    isCatalog: getIsCatalog(state),
     isLoggedIn: getIsLoggedIn(state),
 });
 

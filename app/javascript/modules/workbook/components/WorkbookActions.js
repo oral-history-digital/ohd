@@ -10,11 +10,22 @@ import { useSelector } from 'react-redux';
 import WorkbookItemDelete from './WorkbookItemDelete';
 import WorkbookItemForm from './WorkbookItemForm';
 
+/**
+ * Offers editing and deletion, plus link copying once the project is available.
+ *
+ * @param {Object} props - Action properties.
+ * @param {Object} props.item - Saved workbook entry.
+ * @param {string} [props.itemPath] - Target path, unavailable while the project loads.
+ * @param {string} [props.className] - Additional styling.
+ * @returns {React.ReactElement} Workbook action controls.
+ */
 export default function WorkbookActions({ item, itemPath, className }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
     const interview = useSelector(getCurrentInterview);
-    const itemUrl = `${window.location.protocol}//${window.location.host}${pathBase}/${itemPath}`;
+    const itemUrl = itemPath
+        ? `${window.location.protocol}//${window.location.host}${pathBase}/${itemPath}`
+        : null;
 
     return (
         <div className={classNames(className)}>
@@ -64,6 +75,6 @@ export default function WorkbookActions({ item, itemPath, className }) {
 
 WorkbookActions.propTypes = {
     item: PropTypes.object.isRequired,
-    itemPath: PropTypes.string.isRequired,
+    itemPath: PropTypes.string,
     className: PropTypes.string,
 };

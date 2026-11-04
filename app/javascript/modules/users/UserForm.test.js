@@ -1,194 +1,177 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { t as originalT } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import UserForm from './UserForm';
+import UserFormContainer from './UserFormContainer';
 
-const middlewares = [thunk];
-
-// Mock the translation fetching to avoid network errors in tests
-jest.mock('modules/archive/actions', () => {
-    const actual = jest.requireActual('modules/archive/actions');
-    return {
-        ...actual,
-        fetchTranslationsForLocale: () => (dispatch) => {
-            dispatch({
-                type: 'MERGE_TRANSLATIONS',
-                translations: {},
-            });
-        },
-    };
-});
-
-// Mock the i18n module so the component can call useI18n() and original t
-// without needing the full translations fixture. This mock returns a
-// simple `t` implementation and a locale. For mailer keys we return an
-// array (the component calls .join('') on mailer translations).
+jest.mock('modules/archive/actions', () => ({
+    ...jest.requireActual('modules/archive/actions'),
+    fetchTranslationsForLocale: () => () => Promise.resolve(),
+}));
+jest.mock('modules/routes/useProject', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
 jest.mock('modules/i18n', () => ({
-    useI18n: () => ({
-        t: (key) =>
-            key && key.startsWith('devise.mailer')
-                ? ['Mail text']
-                : 'Translated',
-        locale: 'de',
-    }),
-    t: (opts, key, values = {}) =>
-        key && key.startsWith('devise.mailer')
+    useI18n: () => ({ t: (key) => key, locale: 'en' }),
+    t: jest.fn((_context, key, values = {}) =>
+        key.startsWith('devise.mailer')
             ? [`Mail text for ${values.project_name}`]
-            : 'Translated',
+            : 'Translated'
+    ),
 }));
 
-describe('<UserForm />', () => {
-    const initialState = {
-        data: {},
-        archive: {
-            locale: 'en',
-        },
-    };
-    const mockStore = configureStore(middlewares);
+const project = {
+    id: 123,
+    shortname: 'zwar',
+    available_locales: ['de', 'en'],
+    default_locale: 'de',
+    archive_domain: 'https://example.org',
+    name: 'Projekt DE',
+    contact_email: 'contact@example.org',
+    is_umbrella: true,
+};
+const data = {
+    id: 4,
+    first_name: 'Hans',
+    last_name: 'Tester',
+    default_locale: 'de',
+    type: 'User',
+    workflow_state: 'afirmed',
+    workflow_states: ['block', 'remove'],
+};
+const mockStore = configureStore([thunk]);
+let preview;
 
-    const data = {
-        access_token: null,
-        admin: null,
-        appellation: null,
-        city: 'Kairo',
-        confirmed_at: 1624392054000,
-        country: 'Ägypten',
-        created_at: '22.06.2021',
-        default_locale: 'de',
-        email: 'test@web.de',
-        first_name: 'Hans',
-        last_name: 'Tester',
-        gender: 'male',
-        id: 456116,
-        job_description: null,
-        organization: null,
-        pre_register_location: null,
-        priv_agreement: true,
-        processed_at: '22.06.2021',
-        research_intentions: null,
-        specification: 'alsjd lkajsdlkja sldkjal ksdj laksjdl',
-        state: null,
-        street: 'Heinrichstr. 1',
-        tos_agreement: true,
-        translations_attributes: [],
-        type: 'User',
-        user_id: 456116,
-        user_projects: {
-            id: 1,
-            project_id: 1,
-            user_id: 456116,
-            workflow_state: '',
-            workflow_states: '',
-            mail_text: '',
-            receive_newsletter: '',
-            appellation: '',
-            first_name: '',
-            last_name: '',
-            street: '',
-            zipcode: '',
-            city: '',
-            country: '',
-            job_description: '',
-            research_intentions: '',
-            specification: '',
-            organization: '',
-            pre_register_location: '',
-            activated_at: '',
-            processed_at: '',
-            terminated_at: '',
-            updated_at: '',
-            created_at: '',
-        },
-        user_roles: {},
-        workflow_state: 'afirmed',
-        workflow_states: ['block', 'remove'],
-        zipcode: '87979',
-    };
+beforeEach(() => {
+    jest.clearAllMocks();
+    preview = { project };
+    useProject.mockImplementation((options) =>
+        options.include ? preview : { project }
+    );
+});
 
-    const dataPath = 'path/to/data';
-    const userId = 123;
-    const scope = 'scope';
-    const locale = 'en';
-    const project = {
-        id: 123,
-        shortname: 'zwar',
-        available_locales: ['de', 'en'],
-        default_locale: 'de',
-        domain_with_optional_identifier: 'https://example.org',
-        name: { de: 'Projekt DE', en: 'Project EN' },
-        contact_email: 'contact@example.org',
-        is_umbrella: true,
-        external_links: {
-            1: {
-                id: 1,
-                name: { de: 'Test Link', en: 'Test Link' },
-                url: { de: 'https://test.de', en: 'https://test.de' },
-            },
-        },
-    };
+/**
+ * Opens the user editor with current project settings and a recipient account.
+ * @param {Object} [user=data] - Account fields to edit.
+ * @returns {Object} Render controls.
+ */
+function renderUserForm(user = data) {
+    return render(
+        <Provider
+            store={mockStore({
+                data: {},
+                archive: { locale: 'en', translations: {} },
+            })}
+        >
+            <BrowserRouter>
+                <UserFormContainer
+                    data={user}
+                    dataPath="/users.json"
+                    userId={4}
+                    scope="user"
+                />
+            </BrowserRouter>
+        </Provider>
+    );
+}
 
-    const onSubmit = jest.fn();
-
-    const renderUserForm = ({ user = data, currentProject = project } = {}) =>
-        render(
-            <Provider store={mockStore(initialState)}>
-                <BrowserRouter>
-                    <UserForm
-                        data={user}
-                        dataPath={dataPath}
-                        userId={userId}
-                        scope={scope}
-                        locale={locale}
-                        project={currentProject}
-                        onSubmit={onSubmit}
-                    />
-                </BrowserRouter>
-            </Provider>
-        );
-
-    it('renders a form with the correct elements', () => {
-        renderUserForm();
-
-        expect(screen.getByTestId('scope-form')).toBeInTheDocument();
-        expect(
-            screen.getByTestId('scope-workflow_state-select')
-        ).toBeInTheDocument();
-        expect(
-            screen.getByTestId('scope-mail_text-textarea')
-        ).toBeInTheDocument();
-        expect(screen.getByTestId('submit-button')).toBeInTheDocument();
-    });
-
-    it('uses the umbrella project name when generating account mail text', () => {
-        renderUserForm();
-
-        fireEvent.change(screen.getByTestId('scope-workflow_state-select'), {
-            target: { value: 'remove' },
+test.each([
+    ['de', 'de'],
+    ['en', 'en'],
+    ['es', 'de'],
+])(
+    'uses the allowed recipient locale or project default for %s',
+    (defaultLocale, locale) => {
+        renderUserForm({ ...data, default_locale: defaultLocale });
+        expect(useProject).toHaveBeenCalledWith({
+            locale,
+            include: ['email_preview'],
         });
-
-        expect(screen.getByTestId('scope-mail_text-textarea')).toHaveValue(
-            'Mail text for Projekt DE'
-        );
-    });
-
-    it('uses umbrella default locale when user locale is unavailable', () => {
-        renderUserForm({
-            user: { ...data, default_locale: 'es' },
-            currentProject: {
-                ...project,
-                name: { ...project.name, es: 'Proyecto ES' },
-            },
-        });
-
-        fireEvent.change(screen.getByTestId('scope-workflow_state-select'), {
+        expect(screen.getByTestId('user-form')).toBeInTheDocument();
+        fireEvent.change(screen.getByTestId('user-workflow_state-select'), {
             target: { value: 'block' },
         });
-
-        expect(screen.getByTestId('scope-mail_text-textarea')).toHaveValue(
+        expect(screen.getByTestId('user-mail_text-textarea')).toHaveValue(
             'Mail text for Projekt DE'
         );
+        expect(originalT).toHaveBeenLastCalledWith(
+            expect.objectContaining({ locale }),
+            'devise.mailer.block.text',
+            expect.objectContaining({
+                project_name: 'Projekt DE',
+                tos_link: expect.stringContaining(
+                    `https://example.org/${locale}/conditions`
+                ),
+                mail_to: expect.stringContaining('mailto:contact@example.org'),
+                correct_link: expect.stringContaining(
+                    `https://example.org/${locale}?correct_user_data=true`
+                ),
+            })
+        );
+    }
+);
+
+test('retains the originating project link and uses portal-prefixed policy URLs without a dedicated domain', () => {
+    preview = { project: { ...project, archive_domain: null } };
+    renderUserForm({
+        ...data,
+        pre_access_location: 'https://example.org/de/interviews/za001',
     });
+    fireEvent.change(screen.getByTestId('user-workflow_state-select'), {
+        target: { value: 'block' },
+    });
+    expect(originalT).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.objectContaining({
+            project_link: expect.stringContaining(
+                'https://example.org/de/interviews/za001'
+            ),
+            tos_link: expect.stringContaining('/zwar/de/conditions'),
+        })
+    );
+});
+
+test('waits for authorized contact data and reports denial without showing the form', () => {
+    preview = { isLoading: true };
+    const { rerender } = renderUserForm();
+    expect(screen.queryByTestId('user-form')).not.toBeInTheDocument();
+    preview = { error: { message: 'Forbidden' } };
+    rerender(
+        <Provider
+            store={mockStore({
+                data: {},
+                archive: { locale: 'en', translations: {} },
+            })}
+        >
+            <BrowserRouter>
+                <UserFormContainer
+                    data={data}
+                    dataPath="/users.json"
+                    userId={4}
+                    scope="user"
+                />
+            </BrowserRouter>
+        </Provider>
+    );
+    expect(screen.getByRole('alert')).toHaveTextContent('Forbidden');
+    expect(screen.queryByTestId('user-form')).not.toBeInTheDocument();
+});
+
+test('omits the contact link when the project has no contact address', () => {
+    preview = { project: { ...project, contact_email: null } };
+    renderUserForm();
+    fireEvent.change(screen.getByTestId('user-workflow_state-select'), {
+        target: { value: 'block' },
+    });
+    expect(originalT).toHaveBeenLastCalledWith(
+        expect.anything(),
+        expect.anything(),
+        expect.objectContaining({ mail_to: '' })
+    );
 });

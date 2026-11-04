@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
+import DataList from './DataList';
 import PaginatedAdminRecordList from './PaginatedAdminRecordList';
 
 jest.mock('modules/auth', () => {
@@ -13,6 +14,10 @@ jest.mock('modules/auth', () => {
 
     return { AuthShowContainer };
 });
+jest.mock('modules/react-toolbox', () => ({
+    ErrorBoundary: jest.requireActual('react').Fragment,
+}));
+jest.mock('modules/ui', () => ({ Modal: () => null }));
 jest.mock('modules/forms', () => {
     const MockPropTypes = jest.requireActual('prop-types');
 
@@ -32,10 +37,8 @@ jest.mock('modules/i18n', () => ({
     useI18n: () => ({ t: (key) => key, locale: 'en' }),
 }));
 jest.mock('modules/routes', () => ({
-    useProject: () => ({
-        project: { id: 1, shortname: 'test' },
-        projectId: 'test',
-    }),
+    usePathBase: () => '/test/en',
+    useProjectIdentity: () => ({ projectDbId: 1 }),
 }));
 jest.mock('react-helmet', () => ({
     Helmet: ({ children }) => children,
@@ -134,11 +137,7 @@ test('submits the default add form and closes it', () => {
     fireEvent.click(screen.getByRole('button', { name: 'submit-form' }));
 
     expect(defaultProps.submitData).toHaveBeenCalledWith(
-        {
-            locale: 'en',
-            project: { id: 1, shortname: 'test' },
-            projectId: 'test',
-        },
+        { pathBase: '/test/en' },
         { role: {} }
     );
     expect(
@@ -152,4 +151,36 @@ test('hides both add controls when creation is disabled', () => {
     expect(
         screen.queryByRole('button', { name: 'add-role' })
     ).not.toBeInTheDocument();
+});
+
+test('shared record lists load supporting resources once through the current route', () => {
+    const fetchData = jest.fn();
+    const { rerender } = render(
+        <DataList
+            data={{}}
+            scope="role"
+            hideAdd
+            fetchData={fetchData}
+            submitData={jest.fn()}
+            otherDataToLoad={['language']}
+        />
+    );
+    expect(fetchData).toHaveBeenCalledWith(
+        { pathBase: '/test/en' },
+        'languages',
+        null,
+        null,
+        'all'
+    );
+    rerender(
+        <DataList
+            data={{}}
+            scope="role"
+            hideAdd
+            fetchData={fetchData}
+            submitData={jest.fn()}
+            otherDataToLoad={['language']}
+        />
+    );
+    expect(fetchData).toHaveBeenCalledTimes(1);
 });

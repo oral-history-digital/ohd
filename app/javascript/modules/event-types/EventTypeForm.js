@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
 import { submitDataWithFetch } from 'modules/api';
-import { getCurrentProject } from 'modules/data';
 import { Form } from 'modules/forms';
-import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
+import { usePathBase, useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import useMutateEventTypes from './useMutateEventTypes';
 
@@ -20,11 +21,28 @@ const formElements = [
     },
 ];
 
+/**
+ * Edits translated event types with the current project ID from loaded display details.
+ * @param {Object} props - Event type and completion/cancel callbacks.
+ * @returns {React.ReactElement} Form or project loading/error state.
+ */
 export default function EventTypeForm({ data, onSubmit, onCancel }) {
     const [isFetching, setIsFetching] = useState(false);
     const pathBase = usePathBase();
-    const project = useSelector(getCurrentProject);
+    const { project, isLoading, error } = useProject({});
+    const { t } = useI18n();
     const mutateEventTypes = useMutateEventTypes();
+
+    if (error)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <Form

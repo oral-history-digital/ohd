@@ -7,6 +7,7 @@ class Api::V2::ProjectBrandingTest < ActionDispatch::IntegrationTest
   include ApiSchemaAssertions
 
   setup do
+    FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
     Rails.application.reload_routes! if Devise.mappings.empty?
     @previous_cache = Rails.cache
     Rails.cache = ActiveSupport::Cache::MemoryStore.new

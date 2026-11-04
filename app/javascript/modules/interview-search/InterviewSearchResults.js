@@ -4,6 +4,7 @@ import { showTranslationTab } from 'modules/interview';
 import { useSearchParams } from 'modules/query-string';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
 import AnnotationResult from './AnnotationResult';
@@ -14,13 +15,25 @@ import TocResult from './TocResult';
 import TranscriptResult from './TranscriptResult';
 import useInterviewSearch from './useInterviewSearch';
 
+/**
+ * Shows grouped interview search results, including available transcript translations.
+ *
+ * @param {Object} props - Result context.
+ * @param {string} props.archiveId - Public interview identifier.
+ * @param {Object} props.interview - Interview and transcript language metadata.
+ * @returns {React.ReactElement|null} Result groups, request status, or an empty-result message.
+ */
 export default function InterviewSearchResults({ archiveId, interview }) {
     const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const {
+        project,
+        isLoading: projectIsLoading,
+        error: projectError,
+    } = useProject({});
     const { fulltext } = useSearchParams();
     const {
         isLoading,
-        data,
+        error: searchError,
         numResults,
         segmentResults,
         headingResults,
@@ -31,7 +44,19 @@ export default function InterviewSearchResults({ archiveId, interview }) {
         observationsResults,
     } = useInterviewSearch(archiveId, fulltext, project);
 
-    if (isLoading) {
+    const error = projectError || searchError;
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+
+    if (projectIsLoading || !project || isLoading) {
         return <Spinner />;
     }
 
@@ -56,7 +81,7 @@ export default function InterviewSearchResults({ archiveId, interview }) {
                 (segment) => segment.text[resultLocale]?.length > 0
             ),
         ])
-        .filter(([_, results]) => results.length > 0);
+        .filter(([, results]) => results.length > 0);
 
     return (
         <div

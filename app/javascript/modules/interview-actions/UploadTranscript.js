@@ -3,18 +3,22 @@ import { useState } from 'react';
 import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
 import { Form, validateTapeNumber } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
 
+/**
+ * Uploads transcripts through the current route and keeps queued-work feedback visible.
+ * @param {Object} props - Record data, form options, and mutation callbacks.
+ * @returns {React.ReactElement|null} Editing controls and request feedback.
+ */
 export default function UploadTranscript({
-    locale,
-    projectId,
-    project,
     archiveId,
     interview,
     languages,
     submitData,
 }) {
+    const pathBase = usePathBase();
     const { t } = useI18n();
     const [isOdt, setIsOdt] = useState(false);
     const [showForm, setShowForm] = useState(true);
@@ -77,7 +81,7 @@ export default function UploadTranscript({
             <Form
                 scope="transcript"
                 onSubmit={(params) => {
-                    submitData({ locale, projectId, project }, params);
+                    submitData({ pathBase }, params);
                     setShowForm(false);
                 }}
                 submitText="edit.upload_transcript.title"
@@ -151,8 +155,5 @@ UploadTranscript.propTypes = {
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    project: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
 };

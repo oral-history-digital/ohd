@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { AnnotationFormContainer } from 'modules/annotations';
+import { AnnotationForm } from 'modules/annotations';
 import AnnotationContainer from 'modules/annotations/AnnotationContainer';
 import { useI18n } from 'modules/i18n';
 import { CancelButton } from 'modules/ui/Buttons';
@@ -74,7 +74,7 @@ export default function SegmentAnnotations({
                 </>
             )}
             {showForm && (
-                <AnnotationFormContainer
+                <AnnotationForm
                     segment={segment}
                     contentLocale={contentLocale}
                     onSubmit={handleFormSuccess}

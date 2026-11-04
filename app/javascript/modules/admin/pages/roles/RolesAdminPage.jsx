@@ -1,22 +1,26 @@
-import {
-    getCurrentProject,
-    getRolesForCurrentProject,
-    getRolesStatus,
-} from 'modules/data';
+import { getRolesForCurrentProject, getRolesStatus } from 'modules/data';
+import { useProjectIdentity } from 'modules/routes';
 import { getRolesQuery } from 'modules/search';
+import { Spinner } from 'modules/spinners';
 import { useSelector } from 'react-redux';
 
 import { PaginatedAdminRecordList } from '../../components';
 import { useAdminDataActions } from '../../hooks';
 import RolePermissions from './RolePermissions';
 
+/**
+ * Lists all roles for the current project and allows creating, editing, and deleting them.
+ * @returns {React.ReactElement} Administration list or pending project identity.
+ */
 export default function RolesAdminPage() {
-    const project = useSelector(getCurrentProject);
+    const { projectDbId } = useProjectIdentity();
     const data = useSelector(getRolesForCurrentProject);
     const dataStatus = useSelector(getRolesStatus);
     const query = useSelector(getRolesQuery);
     const { fetchData, deleteData, submitData, setQueryParams } =
         useAdminDataActions();
+
+    if (!projectDbId) return <Spinner />;
 
     return (
         <PaginatedAdminRecordList
@@ -25,10 +29,10 @@ export default function RolesAdminPage() {
             resultPagesCount={dataStatus.resultPagesCount}
             query={query}
             outerScope="project"
-            outerScopeId={project.id}
+            outerScopeId={projectDbId}
             scope="role"
             detailsAttributes={['name', 'desc']}
-            initialFormValues={{ project_id: project.id }}
+            initialFormValues={{ project_id: projectDbId }}
             formElements={[
                 {
                     attribute: 'name',

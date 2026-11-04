@@ -1,14 +1,23 @@
 import { fetchData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import { useDispatch } from 'react-redux';
 
+/**
+ * Selects a registry entry and loads its associations through the current route.
+ *
+ * @param {Object} props - Tree selection properties.
+ * @param {boolean} props.isLoading - Disables selection while the tree loads.
+ * @param {Object} [props.tree] - Tree with selectable children.
+ * @param {Function} props.handleChange - Updates the form's registry_entry_id.
+ * @returns {React.ReactElement} Registry entry tree selector.
+ */
 export default function TreeSelectComponent({ isLoading, tree, handleChange }) {
     const dispatch = useDispatch();
-    const { t, locale } = useI18n();
-    const { project, projectId } = useProject();
+    const { t } = useI18n();
+    const pathBase = usePathBase();
 
     const onChange = (_, selectedNodes) => {
         const registryEntryId = selectedNodes[0]?.value;
@@ -16,11 +25,16 @@ export default function TreeSelectComponent({ isLoading, tree, handleChange }) {
         handleChange('registry_entry_id', registryEntryId);
     };
 
+    /**
+     * Loads associations for a selected entry; clearing the selection skips loading.
+     *
+     * @param {number|undefined} registryEntryId - Selected entry ID.
+     */
     function fetchSelectedRegistryEntryData(registryEntryId) {
         if (typeof registryEntryId !== 'undefined') {
             dispatch(
                 fetchData(
-                    { locale, projectId, project },
+                    { pathBase },
                     'registry_entries',
                     registryEntryId,
                     null,

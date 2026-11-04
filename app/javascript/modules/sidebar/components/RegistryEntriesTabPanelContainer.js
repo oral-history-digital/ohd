@@ -1,4 +1,3 @@
-import { getProjectLocales } from 'modules/data';
 import {
     changeRegistryEntriesViewMode,
     getShowRegistryEntriesSearchResults,
@@ -11,7 +10,6 @@ import RegistryEntriesTabPanel from './RegistryEntriesTabPanel';
 const mapStateToProps = (state) => ({
     showRegistryEntriesSearchResults:
         getShowRegistryEntriesSearchResults(state),
-    locales: getProjectLocales(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

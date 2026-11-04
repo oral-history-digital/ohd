@@ -1,10 +1,11 @@
-import { useGetInstitutionsList, useGetProjects } from 'modules/data';
+import { useGetInstitutionsList } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useCurrentPage } from 'modules/routes';
 import { ResetFiltersButton } from 'modules/ui';
 import { useSearchParams } from 'react-router-dom';
 
 import {
+    useCatalogProjects,
     useExplorerInterviewRange,
     useExplorerProjectInstitutions,
     useProjectsAndCollectionsRange,
@@ -23,14 +24,17 @@ import { ExplorerInstitutionLevelFilter } from './ExplorerInstitutionLevelFilter
 import { ExplorerRangeFilter } from './ExplorerRangeFilter';
 import { ExplorerSearchInput } from './ExplorerSearchInput';
 
+/**
+ * Displays catalog filters and writes changes to the URL query parameters.
+ * The sidebar stays mounted on other pages, where project fetching is disabled
+ * and no filter UI is rendered. Institution fetching remains a separate SWR read.
+ *
+ * @returns {import('react').ReactElement|null} Catalog filters, or null outside list views.
+ */
 export function ExplorerSidebarSearch() {
     const { t } = useI18n();
     const currentPage = useCurrentPage();
     const [searchParams, setSearchParams] = useSearchParams();
-    const { projects } = useGetProjects({
-        all: true,
-        workflowState: 'public',
-    });
     const { institutions: institutionsList } = useGetInstitutionsList({
         all: true,
     });
@@ -43,6 +47,7 @@ export function ExplorerSidebarSearch() {
         currentPage.params.catalogType === 'institutions' &&
         !currentPage.params.id;
     const showSidebarFilters = isCatalogRoot || isInstitutionsIndex;
+    const { projects } = useCatalogProjects({ enabled: showSidebarFilters });
 
     const isInstitutionsList =
         isCatalogPage && currentPage.params.catalogType === 'institutions';
@@ -53,6 +58,7 @@ export function ExplorerSidebarSearch() {
     });
     const { globalMin, globalMax } = useExplorerInterviewRange({
         items: isProjectsList ? projects : (institutionsList ?? []),
+        countField: isProjectsList ? 'interview_counts' : 'interviews',
     });
     const { globalCollectionMin, globalCollectionMax } =
         useProjectsAndCollectionsRange({ items: projects });

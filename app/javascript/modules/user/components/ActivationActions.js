@@ -11,11 +11,17 @@ import { getIsLoggedIn } from '../selectors';
 import CorrectUserDataFormContainer from './CorrectUserDataFormContainer';
 import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 
+/**
+ * Offers access-request or correction actions for the current project.
+ * @param {Object} props - Component options and callbacks.
+ * @returns {React.ReactElement|null} Registration/access content when project settings are available.
+ */
 export default function ActivationFlow({ className }) {
     const { t } = useI18n();
     const isLoggedIn = useSelector(getIsLoggedIn);
     const user = useSelector(getCurrentUser);
-    const { project, isUmbrella } = useProject();
+    const { project, isLoading, error } = useProject({});
+    const isUmbrella = project?.is_umbrella;
     const { projectAccessGranted, projectAccessStatus } =
         useProjectAccessStatus(project);
 
@@ -27,7 +33,7 @@ export default function ActivationFlow({ className }) {
 
     if (!user) {
         return null;
-    } else if (!project) {
+    } else if (!project || isLoading || error) {
         return null;
     } else if (project.grant_access_without_login) {
         return null;
@@ -82,7 +88,6 @@ export default function ActivationFlow({ className }) {
                 >
                     {(close) => (
                         <RequestProjectAccessFormContainer
-                            project={project}
                             onSubmit={close}
                             onCancel={close}
                         />

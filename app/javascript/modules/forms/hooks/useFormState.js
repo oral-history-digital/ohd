@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useI18n } from 'modules/i18n';
 import { pluralize } from 'modules/strings';
 
-import { hasMissingRequiredValues } from '../utils';
+import { getMergedTranslations, hasMissingRequiredValues } from '../utils';
 
 /**
  * Custom hook for managing form state including regular fields and nested collections.
@@ -70,17 +70,9 @@ export function useFormState(
     function hasError(element) {
         let error = false;
         if (typeof element.validate === 'function') {
-            const elementValues = (
-                (data?.translations_attributes &&
-                    Object.values(data.translations_attributes)) ||
-                []
-            )
-                .concat(
-                    (values?.translations_attributes &&
-                        Object.values(values.translations_attributes)) ||
-                        []
-                )
-                .map((t) => t[element.attribute]);
+            const elementValues = getMergedTranslations(data, values).map(
+                (translation) => translation[element.attribute]
+            );
 
             // Use current form value first for live validation; fall back to
             // element default, then persisted data for untouched fields.

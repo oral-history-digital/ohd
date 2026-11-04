@@ -1,84 +1,107 @@
 import { useEffect, useState } from 'react';
 
-import { fetchData, getInterviews } from 'modules/data';
+import { fetchData, getInterviews, getInterviewsStatus } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { usePeople } from 'modules/person';
-import { LinkOrA, useProject } from 'modules/routes';
+import { useInterviewContributors } from 'modules/person';
+import { LinkOrA } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
-function UserProjectInterviewPermissions({ interviewPermissions, project }) {
+/**
+ * Links to one permitted interview using its owning project's contributor names or localized title.
+ *
+ * @param {Object} props - Public interview identifier, cached details, and owning project.
+ * @param {string} props.archiveId - Public interview identifier used in navigation.
+ * @param {Object} [props.interview] - Cached interview details, used only when the project matches.
+ * @param {Object} props.project - Project display record from the account's project row.
+ * @returns {React.ReactElement} Interview link, retaining its archive ID while the label loads.
+ */
+function InterviewPermissionLink({ archiveId, interview, project }) {
+    const { locale } = useI18n();
+    const scopedInterview =
+        interview?.project_id === project.id ? interview : undefined;
+    const { data: people } = useInterviewContributors(
+        scopedInterview?.id,
+        project
+    );
+    const name =
+        people?.[scopedInterview?.interviewee_id]?.display_name ||
+        scopedInterview?.short_title?.[locale] ||
+        scopedInterview?.anonymous_title?.[locale];
+    return (
+        <LinkOrA project={project} to={`interviews/${archiveId}`}>
+            {name ? `${name} (${archiveId})` : archiveId}
+        </LinkOrA>
+    );
+}
+
+InterviewPermissionLink.propTypes = {
+    archiveId: PropTypes.string.isRequired,
+    interview: PropTypes.object,
+    project: PropTypes.object.isRequired,
+};
+
+/**
+ * Shows an account's interview permissions with names and links from their owning project.
+ * Loads interview details when expanded and retains archive IDs while labels are unavailable.
+ *
+ * @param {Object} props - Permissions and their owning project.
+ * @param {Object[]} [props.interviewPermissions=[]] - Granted interviews identified by archive_id.
+ * @param {Object} props.project - Project display record supplied by the account's project row.
+ * @returns {React.ReactElement|null} Expandable permission list, or nothing when empty.
+ */
+function UserProjectInterviewPermissions({
+    interviewPermissions = [],
+    project,
+}) {
     const { t, locale } = useI18n();
     const interviews = useSelector(getInterviews);
-    const { data: people } = usePeople();
-    const { project: currentProject, projectId } = useProject();
+    const interviewStatuses = useSelector(getInterviewsStatus);
+    const requestPath = `/${project.shortname}/${locale}`;
     const dispatch = useDispatch();
     const [showPermissions, setShowPermissions] = useState(false);
-    const hasPermissions =
-        interviewPermissions && Object.keys(interviewPermissions).length > 0;
+    const hasPermissions = interviewPermissions?.length > 0;
 
-    // Load interview data for all interviews that have permissions
-    // TODO: Instead of fetching here, use a centralized data loading mechanism
     useEffect(() => {
-        if (hasPermissions) {
-            interviewPermissions.forEach((permission) => {
-                // Only load if not already loaded
-                if (!interviews?.[permission.archive_id]) {
-                    dispatch(
-                        fetchData(
-                            { projectId, locale, project: currentProject },
-                            'interviews',
-                            permission.archive_id
-                        )
-                    );
-                }
-            });
-        }
+        if (!showPermissions) return;
+        interviewPermissions.forEach(({ archive_id: archiveId }) => {
+            if (
+                interviews?.[archiveId]?.project_id !== project.id &&
+                interviewStatuses?.[archiveId] !== 'fetching'
+            ) {
+                dispatch(
+                    fetchData(
+                        { pathBase: requestPath },
+                        'interviews',
+                        archiveId
+                    )
+                );
+            }
+        });
     }, [
-        hasPermissions,
+        showPermissions,
         interviewPermissions,
         interviews,
+        interviewStatuses,
         dispatch,
-        projectId,
-        locale,
-        currentProject,
+        project.id,
+        requestPath,
     ]);
 
     if (!hasPermissions) {
         return null;
     }
 
-    // Helper function to get interviewee name for an interview
-    const getIntervieweeName = (interview) => {
-        if (!interview) return null;
-
-        // Get the interviewee from the people data using display_name
-        if (people && interview.interviewee_id) {
-            const interviewee = people[interview.interviewee_id];
-            if (interviewee?.display_name) {
-                return interviewee.display_name;
-            }
-        }
-
-        // Fallback to interview's title if interviewee not found in people data
-        if (interview.short_title?.[locale]) {
-            return interview.short_title[locale];
-        }
-
-        // Fallback to anonymous title if available
-        if (interview.anonymous_title?.[locale]) {
-            return interview.anonymous_title[locale];
-        }
-
-        return null;
-    };
-
     return (
         <div className="interview_permissions">
             <h4 className="title">
                 {t('activerecord.models.interview_permission.other')}
                 <button
+                    aria-label={t(
+                        'activerecord.models.interview_permission.other'
+                    )}
+                    aria-expanded={showPermissions}
                     type="button"
                     className="Button Button--transparent Button--icon"
                     onClick={() => setShowPermissions((prev) => !prev)}
@@ -92,43 +115,23 @@ function UserProjectInterviewPermissions({ interviewPermissions, project }) {
             </h4>
             {showPermissions ? (
                 <ul className="DetailList">
-                    {interviewPermissions
-                        ?.sort((a, b) =>
+                    {[...interviewPermissions]
+                        .sort((a, b) =>
                             a.archive_id.localeCompare(
                                 b.archive_id,
                                 undefined,
                                 { numeric: true }
                             )
                         )
-                        .map((permission, index) => {
-                            // Find the corresponding interview using the archive_id
-                            const interview = interviews
-                                ? interviews[permission.archive_id]
-                                : null;
-                            const intervieweeName =
-                                getIntervieweeName(interview);
-
-                            return (
-                                <li
-                                    key={`interview-permission-${index}`}
-                                    className="DetailList-item"
-                                >
-                                    <LinkOrA
-                                        project={project}
-                                        to={`interviews/${permission.archive_id}`}
-                                    >
-                                        {intervieweeName ? (
-                                            <span>
-                                                {intervieweeName} (
-                                                {permission.archive_id})
-                                            </span>
-                                        ) : (
-                                            permission.archive_id
-                                        )}
-                                    </LinkOrA>
-                                </li>
-                            );
-                        })}
+                        .map(({ archive_id: archiveId }) => (
+                            <li key={archiveId} className="DetailList-item">
+                                <InterviewPermissionLink
+                                    archiveId={archiveId}
+                                    project={project}
+                                    interview={interviews?.[archiveId]}
+                                />
+                            </li>
+                        ))}
                 </ul>
             ) : null}
         </div>
@@ -136,8 +139,16 @@ function UserProjectInterviewPermissions({ interviewPermissions, project }) {
 }
 
 UserProjectInterviewPermissions.propTypes = {
-    interviewPermissions: PropTypes.object,
-    project: PropTypes.object.isRequired,
+    interviewPermissions: PropTypes.arrayOf(
+        PropTypes.shape({
+            archive_id: PropTypes.string.isRequired,
+        })
+    ),
+    project: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        shortname: PropTypes.string.isRequired,
+        archive_domain: PropTypes.string,
+    }).isRequired,
 };
 
 export default UserProjectInterviewPermissions;

@@ -2,21 +2,24 @@ import { useState } from 'react';
 
 import { submitDataWithFetch } from 'modules/api';
 import { Form } from 'modules/forms';
+import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 
 import { useMutatePeople, useMutatePersonWithAssociations } from './hooks';
 
+/**
+ * Creates or edits a person's localized biographical entry and refreshes person caches after saving.
+ * @param {Object} props - Existing entry or owning person, plus save/cancel callbacks.
+ * @returns {React.ReactElement} Biography form with translated text and date fields.
+ */
 export default function BiographicalEntryForm({
     biographicalEntry,
     person,
-    locale,
-    projectId,
-    projects,
-    submitData,
     onSubmit,
     onCancel,
 }) {
+    const { locale } = useI18n();
     const [isFetching, setIsFetching] = useState(false);
     const mutatePeople = useMutatePeople();
     const mutatePersonWithAssociations = useMutatePersonWithAssociations();
@@ -93,10 +96,6 @@ export default function BiographicalEntryForm({
 BiographicalEntryForm.propTypes = {
     biographicalEntry: PropTypes.object,
     person: PropTypes.object,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
 };

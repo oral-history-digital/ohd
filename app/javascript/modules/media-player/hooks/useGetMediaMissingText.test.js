@@ -1,4 +1,4 @@
-import { useProjectTranslation } from 'modules/i18n';
+import { useProject } from 'modules/routes';
 
 import { useGetMediaMissingText } from './useGetMediaMissingText';
 
@@ -6,7 +6,6 @@ jest.mock('modules/i18n', () => ({
     useI18n: jest.fn(() => ({
         t: jest.fn(() => 'Default missing media text'),
     })),
-    useProjectTranslation: jest.fn(),
 }));
 
 jest.mock('modules/routes', () => ({
@@ -15,8 +14,10 @@ jest.mock('modules/routes', () => ({
 
 describe('useGetMediaMissingText', () => {
     it('returns custom media missing text when available', () => {
-        useProjectTranslation.mockReturnValue({
-            media_missing_text: 'Custom no media message',
+        useProject.mockReturnValue({
+            project: {
+                media_missing_text: 'Custom no media message',
+            },
         });
 
         const result = useGetMediaMissingText();
@@ -25,7 +26,7 @@ describe('useGetMediaMissingText', () => {
     });
 
     it('returns default translation when custom text is missing', () => {
-        useProjectTranslation.mockReturnValue({});
+        useProject.mockReturnValue({ project: {} });
 
         const result = useGetMediaMissingText();
 
@@ -33,8 +34,10 @@ describe('useGetMediaMissingText', () => {
     });
 
     it('returns default translation when custom text is empty', () => {
-        useProjectTranslation.mockReturnValue({
-            media_missing_text: '   ',
+        useProject.mockReturnValue({
+            project: {
+                media_missing_text: '   ',
+            },
         });
 
         const result = useGetMediaMissingText();
@@ -43,8 +46,10 @@ describe('useGetMediaMissingText', () => {
     });
 
     it('returns default translation when custom text is not a string', () => {
-        useProjectTranslation.mockReturnValue({
-            media_missing_text: 123,
+        useProject.mockReturnValue({
+            project: {
+                media_missing_text: 123,
+            },
         });
 
         const result = useGetMediaMissingText();
@@ -52,3 +57,15 @@ describe('useGetMediaMissingText', () => {
         expect(result).toBe('Default missing media text');
     });
 });
+
+test.each([{ isLoading: true }, { error: { message: 'Access denied' } }])(
+    'uses the default while playback settings are unavailable: %p',
+    (status) => {
+        useProject.mockReturnValue({
+            project: { media_missing_text: 'Retained message' },
+            ...status,
+        });
+        expect(useGetMediaMissingText()).toBe('Default missing media text');
+        expect(useProject).toHaveBeenCalledWith({ include: ['playback'] });
+    }
+);

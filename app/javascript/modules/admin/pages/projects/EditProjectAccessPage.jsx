@@ -1,14 +1,11 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
-import {
-    getIsLoading,
-    submitData,
-    useHydrateProjectsByIds,
-} from 'modules/data';
+import { submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { Helmet } from 'react-helmet';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { EditData, EditViewOrRedirect } from '../../components';
 import {
@@ -16,23 +13,38 @@ import {
     transformBracketNotationToNested,
 } from '../../utils';
 
+/**
+ * Reads editable access settings from Redux and saves through the existing setter endpoint.
+ *
+ * @returns {React.ReactElement} Access configuration, loading indicator, or request error.
+ */
 export default function EditProjectAccessPage() {
     const { t } = useI18n();
-    const { project, projectDbId } = useProject();
-    const dispatch = useDispatch();
-    const isLoading = useSelector((state) =>
-        getIsLoading(state, project ? 'projects' : null, project?.id)
-    );
-
-    // Hydrate the project if it doesn't have an access_config yet
-    useHydrateProjectsByIds([projectDbId], {
-        needsHydration: (candidateProject) => !candidateProject?.access_config,
+    const { project, error, isLoading, isValidating } = useProject({
+        profile: 'edit',
+        include: ['access_config'],
     });
+    const dispatch = useDispatch();
 
+    /**
+     * Converts checkbox setters to Rails hashes and waits for the server to invalidate reads.
+     *
+     * @param {Object} props - Current project and locale for the save URL.
+     * @param {Object} params - Access configuration ID and checkbox values.
+     * @param {Object} opts - Shared form submission options.
+     * @param {Function} callback - Called after a successful save.
+     */
     function submitHandler(props, params, opts, callback) {
-        // Transform bracket notation attributes into nested objects
         const transformedParams = transformBracketNotationToNested(params);
-        dispatch(submitData(props, transformedParams, opts, callback));
+        // An optimistic legacy write would refetch these settings before the save finishes.
+        dispatch(
+            submitData(
+                props,
+                transformedParams,
+                { ...opts, updateStateBeforeSubmit: false },
+                callback
+            )
+        );
     }
 
     const formElements = [];
@@ -82,27 +94,24 @@ export default function EditProjectAccessPage() {
                 elementType: 'input',
                 attribute: `[${attribute}_setter]display`,
                 labelKey: 'edit.default.display',
-                value: String(accessConfig.display).toLowerCase() === 'true',
+                value: accessConfig.display === true,
                 type: 'checkbox',
             });
             formElements.push({
                 elementType: 'input',
                 attribute: `[${attribute}_setter]obligatory`,
                 labelKey: 'edit.default.obligatory',
-                value: String(accessConfig.obligatory).toLowerCase() === 'true',
+                value: accessConfig.obligatory === true,
                 type: 'checkbox',
             });
             if (DEFAULT_FORM_ELEMENTS[attribute].values) {
-                DEFAULT_FORM_ELEMENTS[attribute].values.map((value) => {
+                DEFAULT_FORM_ELEMENTS[attribute].values.forEach((value) => {
                     formElements.push({
                         elementType: 'input',
                         attribute: `[${attribute}_setter][values]${value}`,
                         labelKey: `user_project.${attribute}.${value}`,
                         className: 'is-option',
-                        value:
-                            String(
-                                accessConfig.values?.[value]
-                            ).toLowerCase() === 'true',
+                        value: accessConfig.values?.[value] === true,
                         type: 'checkbox',
                     });
                 });
@@ -120,7 +129,16 @@ export default function EditProjectAccessPage() {
                     <h1 className="Page-main-title">
                         {t(`edit.project.access_config`)}
                     </h1>
-                    {project?.access_config ? (
+                    {error ? (
+                        <InlineNotification
+                            variant="error"
+                            title={t('error')}
+                            description={error.message}
+                            isClosable={false}
+                        />
+                    ) : isLoading ? (
+                        <Spinner />
+                    ) : project?.access_config ? (
                         <EditData
                             data={project.access_config}
                             scope="access_config"
@@ -130,10 +148,14 @@ export default function EditProjectAccessPage() {
                             helpTextCode="access_config_form"
                             formElements={formElements}
                             submitData={submitHandler}
-                            isLoading={isLoading}
+                            isLoading={isValidating}
                         />
                     ) : (
-                        <Spinner />
+                        <InlineNotification
+                            variant="error"
+                            title={t('error')}
+                            isClosable={false}
+                        />
                     )}
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>

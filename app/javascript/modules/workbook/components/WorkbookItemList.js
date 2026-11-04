@@ -1,43 +1,54 @@
 import { useMemo, useState } from 'react';
 
 import classNames from 'classnames';
-import { getProjects, useHydrateProjectsByIds } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { useProject } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 
 import WorkbookItemContainer from './WorkbookItemContainer';
 
+/**
+ * Groups workbook entries, filtering to the current project outside the umbrella.
+ *
+ * @param {Object} props - List properties.
+ * @param {string} props.type - Workbook section's translation key.
+ * @param {Object[]} [props.contents] - Entries in their saved order.
+ * @returns {React.ReactElement} Collapsible workbook section.
+ */
 export default function WorkbookItemList({ type, contents }) {
     const { t } = useI18n();
     const [open, setOpen] = useState(false);
-    const { project, isUmbrella } = useProject();
-    const projects = useSelector(getProjects);
+    const { project, isLoading, error } = useProject({});
 
     const items = useMemo(() => {
-        if (isUmbrella) {
+        if (project?.is_umbrella) {
             return contents || [];
         }
 
         return (
             contents?.filter((item) => item.project_id === project?.id) || []
         );
-    }, [contents, isUmbrella, project?.id]);
+    }, [contents, project?.is_umbrella, project?.id]);
 
-    const projectIds = useMemo(
-        () => items.map((item) => item.project_id),
-        [items]
-    );
-
-    // Hydrate projects for the items in the list
-    // TODO: This is a temporary solution that should be replaced once project loading is unified
-    useHydrateProjectsByIds(projectIds);
-
+    /** Toggles the section without changing its saved entry order. */
     function handleClick() {
         setOpen((prev) => !prev);
     }
+
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+    if (isLoading || !project) return <Spinner />;
 
     return (
         <div className="userContents">
@@ -54,20 +65,13 @@ export default function WorkbookItemList({ type, contents }) {
                 )}
             </button>
             <div className={classNames('panel', { open: open })}>
-                {items.map((item, index, array) => {
-                    const itemProject =
-                        projects?.[item.project_id] ||
-                        (project?.id === item.project_id ? project : undefined);
-
-                    return (
-                        <WorkbookItemContainer
-                            key={item.id}
-                            data={item}
-                            project={itemProject}
-                            className={index < array.length - 1 ? 'u-mb' : null}
-                        />
-                    );
-                })}
+                {items.map((item, index, array) => (
+                    <WorkbookItemContainer
+                        key={item.id}
+                        data={item}
+                        className={index < array.length - 1 ? 'u-mb' : null}
+                    />
+                ))}
             </div>
         </div>
     );

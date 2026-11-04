@@ -1,10 +1,15 @@
 import classNames from 'classnames';
 import { useAuthorization } from 'modules/auth';
-import { getCurrentUser, useHumanReadable } from 'modules/data';
+import {
+    getCurrentUser,
+    getResultMetadataFields,
+    useHumanReadable,
+} from 'modules/data';
 import { formatEventShort } from 'modules/events';
 import { useI18n } from 'modules/i18n';
 import { usePersonWithAssociations } from 'modules/person';
 import { useProject } from 'modules/routes';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 import { useSelector } from 'react-redux';
@@ -14,9 +19,23 @@ import {
     METADATA_SOURCE_INTERVIEW,
 } from '../constants';
 
+/**
+ * Displays configured grid metadata, respecting restricted interview visibility.
+ *
+ * @param {Object} props - Component properties.
+ * @param {Object} props.interview - Interview summary.
+ * @returns {React.ReactElement} Metadata or its loading/error state.
+ */
 export default function ThumbnailMetadata({ interview }) {
-    const { project } = useProject();
-    const { locale } = useI18n();
+    const {
+        project,
+        isLoading: isProjectLoading,
+        error,
+    } = useProject({
+        include: ['metadata_fields'],
+    });
+    const fields = getResultMetadataFields(project?.metadata_fields, 'grid');
+    const { locale, t } = useI18n();
     const { humanReadable } = useHumanReadable();
     const { data: interviewee, isLoading } = usePersonWithAssociations(
         interview.interviewee_id
@@ -28,16 +47,27 @@ export default function ThumbnailMetadata({ interview }) {
     const isRestricted = interview.workflow_state === 'restricted';
     const { isAuthorized } = useAuthorization();
 
+    if (error) {
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={error.message}
+                isClosable={false}
+            />
+        );
+    }
+
     return (
         <ul className="DetailList" lang={locale}>
-            {!project?.grid_fields || isLoading
+            {isProjectLoading || isLoading
                 ? // Show skeleton loaders while data is loading
                   Array.from({ length: 3 }).map((_, index) => (
                       <li key={`skeleton-${index}`} className="DetailList-item">
                           <Skeleton />
                       </li>
                   ))
-                : project?.grid_fields?.map((field) => {
+                : fields.map((field) => {
                       const allowedToSee =
                           !isRestricted ||
                           (isRestricted && field.display_on_landing_page) ||

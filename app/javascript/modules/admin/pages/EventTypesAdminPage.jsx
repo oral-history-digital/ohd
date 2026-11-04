@@ -10,14 +10,28 @@ import { useI18n } from 'modules/i18n';
 import { useInvalidateAllPersonData } from 'modules/person';
 import { useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import { Helmet } from 'react-helmet';
 
 import { AddButton, AdminRecord, EditViewOrRedirect } from '../components';
 
+/**
+ * Lists event types using current project details for scoped editing controls.
+ * @returns {React.ReactElement} Event type administration or project loading/error state.
+ */
 export default function EventTypesAdminPage() {
     const { t, locale } = useI18n();
-    const { project } = useProject();
-    const { data, isLoading, isValidating } = useEventTypes();
+    const {
+        project,
+        isLoading: projectLoading,
+        error: projectError,
+    } = useProject({});
+    const {
+        data,
+        isLoading,
+        isValidating,
+        error: eventTypesError,
+    } = useEventTypes();
     const mutateEventTypes = useMutateEventTypes();
     const { deleteEventType } = useEventTypeApi();
     const invalidateAllPersonData = useInvalidateAllPersonData();
@@ -28,11 +42,21 @@ export default function EventTypesAdminPage() {
         hideDelete = false;
     const detailsAttributes = ['code', 'name'];
     const outerScope = 'project';
-    const outerScopeId = project.id;
+    const outerScopeId = project?.id;
     const joinedData = {};
     const showComponent = undefined;
 
-    if (isLoading) {
+    const requestError = projectError || eventTypesError;
+    if (requestError)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={requestError.message}
+                isClosable={false}
+            />
+        );
+    if (isLoading || projectLoading || !project || !data) {
         return (
             <div className="wrapper-content register">
                 <Spinner />

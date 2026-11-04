@@ -14,8 +14,9 @@ import {
 import { useEventTypes } from 'modules/event-types';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { useProject } from 'modules/routes';
+import { usePathBase, useProject } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
@@ -62,12 +63,25 @@ const NAME_VALUES = {
     ],
 };
 
+/**
+ * Edits metadata settings and excludes fields already configured for the same source.
+ * @param {Object} props - Editor options.
+ * @param {Object} [props.data] - Metadata field being edited.
+ * @param {Function} [props.onSubmit] - Called after starting the save.
+ * @param {Function} [props.onCancel] - Closes the editor.
+ * @returns {React.ReactElement} Form, processing feedback, or project loading/error state.
+ */
 export default function MetadataFieldForm({ data, onSubmit, onCancel }) {
     const dispatch = useDispatch();
-    const { locale } = useI18n();
-    const { project, projectId } = useProject();
+    const pathBase = usePathBase();
+    const { t } = useI18n();
+    const {
+        project,
+        isLoading: projectLoading,
+        error: projectError,
+    } = useProject({ include: ['metadata_fields'] });
 
-    const existingMetadataFields = Object.values(project.metadata_fields || {});
+    const existingMetadataFields = project?.metadata_fields || [];
 
     const [source, setSource] = useState(data?.source);
     const [registryReferenceTypeId, setRegistryReferenceTypeId] = useState(
@@ -142,6 +156,17 @@ export default function MetadataFieldForm({ data, onSubmit, onCancel }) {
         }
     };
 
+    if (projectError)
+        return (
+            <InlineNotification
+                variant="error"
+                title={t('error')}
+                description={projectError.message}
+                isClosable={false}
+            />
+        );
+    if (projectLoading || !project) return <Spinner />;
+
     return (
         <Fetch
             fetchParams={[
@@ -156,9 +181,7 @@ export default function MetadataFieldForm({ data, onSubmit, onCancel }) {
             <Form
                 scope="metadata_field"
                 onSubmit={(params) => {
-                    dispatch(
-                        submitData({ locale, projectId, project }, params)
-                    );
+                    dispatch(submitData({ pathBase }, params));
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
