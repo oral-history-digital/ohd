@@ -33,6 +33,62 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     #assert_response :success
   end
 
+  [false, true].each do |logged_in|
+    %w[restricted unshared].each do |state|
+      test "cached homepage examples exclude interviews changed to #{state} with logged_in=#{logged_in}" do
+        project.interviews.update_all(startpage_position: nil)
+        interview.update!(workflow_state: 'public', media_type: 'audio')
+        sign_in User.find_by!(email: 'john@example.com') if logged_in
+        cache = ActiveSupport::Cache::MemoryStore.new
+        portal_uri = URI.parse(OHD_DOMAIN)
+        host! "#{portal_uri.host}:#{portal_uri.port}"
+        path = "/#{project.shortname}/en/random_featured_interviews.json"
+
+        Rails.stub(:cache, cache) do
+          get path
+          assert_response :success
+          assert_includes JSON.parse(response.body).fetch('data').keys, interview.archive_id
+
+          interview.update!(workflow_state: state)
+          replacement = Interview.create!(project: project, archive_id: "#{project.shortname}999",
+            workflow_state: 'public', media_type: 'audio',
+            interview_languages: [InterviewLanguage.new(language: Language.find_by!(code: 'eng'), spec: 'primary')])
+
+          get path
+          assert_response :success
+          payload = JSON.parse(response.body)
+          assert_equal 'random_featured_interviews', payload.fetch('data_type')
+          assert_not_includes payload.fetch('data').keys, interview.archive_id
+          assert_includes payload.fetch('data').keys, replacement.archive_id
+          cached_ids = cache.read("#{project.shortname}-interview-random-featured-ids-v1-#{logged_in}")
+          assert_includes cached_ids, replacement.id
+          assert_not_includes cached_ids, interview.id
+        end
+      end
+    end
+  end
+
+  test 'cached homepage candidates are scoped to the current project and ignore legacy payloads' do
+    project.interviews.update_all(startpage_position: nil)
+    interview.update!(workflow_state: 'public', media_type: 'audio')
+    other_project = DataHelper.test_project(shortname: "other#{SecureRandom.hex(2)}a")
+    other_interview = Interview.create!(project: other_project, archive_id: "#{other_project.shortname}001",
+      workflow_state: 'public', media_type: 'audio')
+    cache = ActiveSupport::Cache::MemoryStore.new
+    prefix = "#{project.shortname}-interview-random-featured"
+    cache.write("#{prefix}-false", { data: { other_interview.archive_id => { id: other_interview.id } } })
+    cache.write("#{prefix}-ids-v1-false", [other_interview.id, interview.id])
+    portal_uri = URI.parse(OHD_DOMAIN)
+    host! "#{portal_uri.host}:#{portal_uri.port}"
+
+    Rails.stub(:cache, cache) do
+      get "/#{project.shortname}/en/random_featured_interviews.json"
+    end
+
+    assert_response :success
+    assert_equal [interview.archive_id], JSON.parse(response.body).fetch('data').keys
+  end
+
   test "reference tree uses the configured umbrella root" do
     umbrella_project = DataHelper.test_project(
       shortname: "umb#{SecureRandom.hex(2)}a"

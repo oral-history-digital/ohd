@@ -426,6 +426,10 @@ class InterviewsController < ApplicationController
     end
   end
 
+  # Returns public homepage examples, rechecking cached candidates on every request.
+  # Rebuilds the random selection when a cached candidate is no longer eligible.
+  #
+  # @return [void]
   def random_featured
     respond_to do |format|
       format.json do
@@ -433,12 +437,13 @@ class InterviewsController < ApplicationController
         serializer_name = logged_in ? 'InterviewLoggedInSearchResult' : 'InterviewBase'
         public_description = current_project.public_description?
         search_results_metadata_fields = current_project.search_results_metadata_fields.
-          includes(:translations)
+                                         includes(:translations)
         featured_interviews = current_project.featured_interviews.
-          includes(:translations, :registry_references)
+                              includes(:translations, :registry_references)
 
+        # If current project has any featured interviews, use them.
         if featured_interviews.present?
-          data = featured_interviews.inject({}) do |mem, interview|
+          data = featured_interviews.each_with_object({}) do |interview, mem|
             mem[interview.archive_id] = cache_single(
               interview,
               serializer_name: serializer_name,
@@ -447,24 +452,33 @@ class InterviewsController < ApplicationController
               project_available_locales: current_project.available_locales,
               project_shortname: current_project.shortname
             )
-            mem
           end
-          json = {
-            data: data,
-            data_type: "random_featured_interviews",
-        }.to_json
+        # Otherwise, fall back to random featured interviews.
         else
-          json = Rails.cache.fetch("#{current_project.shortname}-interview-random-featured-#{logged_in}", expires_in: 30.minutes) do
-            data = Interview.random_featured(6, current_project.id).inject({}) do |mem, interview|
-              mem[interview.archive_id] = cache_single(interview, serializer_name: serializer_name)
-              mem
-            end
-            {
-              data: data,
-              data_type: "random_featured_interviews",
-            }
-          end.to_json
+          cache_key = "#{current_project.shortname}-interview-random-featured-ids-v1-#{logged_in}"
+          interview_ids = Rails.cache.fetch(
+            cache_key, expires_in: 30.minutes
+          ) do
+            Interview.random_featured(6, current_project.id).map(&:id)
+          end
+          eligible_interviews = current_project.interviews.shared.with_media_type
+          interviews = eligible_interviews.where(id: interview_ids).index_by(&:id)
+          # If any of the cached interview IDs are no longer eligible, rebuild the random selection.
+          if interviews.size != interview_ids.size
+            interview_ids = Interview.random_featured(6, current_project.id).map(&:id)
+            Rails.cache.write(cache_key, interview_ids, expires_in: 30.minutes)
+            interviews = eligible_interviews.where(id: interview_ids).index_by(&:id)
+          end
+          data = interview_ids.each_with_object({}) do |id, mem|
+            interview = interviews[id]
+            mem[interview.archive_id] = cache_single(interview, serializer_name: serializer_name) if interview
+          end
         end
+
+        json = {
+          data: data,
+          data_type: 'random_featured_interviews'
+        }.to_json
 
         render plain: json
       end
