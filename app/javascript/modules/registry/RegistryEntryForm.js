@@ -149,7 +149,7 @@ export default function RegistryEntryForm({
                         scope: 'registry_name',
                         elementRepresentation: showRegistryName,
                         showElementsInForm: showElementsInForm,
-                        disableAddingElements: resultsFromNormDataSet,
+                        disableAddingElements: false, //resultsFromNormDataSet
                     },
                     {
                         wrapperComponent: NormDatumFormWrapper,
