@@ -87,7 +87,7 @@ export function setDescriptor(
         'locale',
         locale
     );
-    translation.descriptor = Array.isArray(value) ? value[0] : value;
+    translation.descriptor = Array.isArray(value) ? value.join(', ') : value;
 }
 
 export function updateRegistryEntryTranslationsAttributes(entry, project) {
