@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.13.0] - 2026-11-09
+
+### Added
+
+- feat(collections): add collection logos ([#184](https://github.com/oral-history-digital/ohd/pull/184))
+
+### Fixed
+
+- fix(interviews): refresh stale homepage examples ([#181](https://github.com/oral-history-digital/ohd/pull/181))
+
+### Changed
+
+- chore: improve task for normalization of existing timecodes ([#183](https://github.com/oral-history-digital/ohd/pull/183))
+- chore: update frontend packages ([#182](https://github.com/oral-history-digital/ohd/pull/182))
+
 ## [2.12.0] - 2026-11-04
 
 ### Added
@@ -880,6 +895,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.13.0]: https://github.com/oral-history-digital/ohd/compare/v2.12.0...v2.13.0
 [2.12.0]: https://github.com/oral-history-digital/ohd/compare/v2.11.2...v2.12.0
 [2.11.2]: https://github.com/oral-history-digital/ohd/compare/v2.11.1...v2.11.2
 [2.11.1]: https://github.com/oral-history-digital/ohd/compare/v2.11.0...v2.11.1
