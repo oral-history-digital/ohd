@@ -88,7 +88,7 @@ Prerequisites:
 
 - Ruby 3.0.7
 - MySQL/MariaDB
-- Node.js >=18
+- Node.js >=22 <=24
 - Yarn
 - Java Runtime Environment (Version 8)
 - ClamAV antimalware software

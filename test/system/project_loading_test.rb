@@ -231,14 +231,15 @@ class ProjectLoadingTest < ApplicationSystemTestCase
   test 'explorer shared and dedicated archive links use their own route shapes' do
     visit "/en/catalog/archives/#{@alpha.id}"
     assert_selector '.ProjectDetails-title', text: 'Alpha Archive', wait: 15
-    assert_selector '.ProjectDetails-actions button'
     mark_project_document
-    find('.ProjectDetails-actions button').click
+    find_test_id('catalog-project-actions').find('button').click
     assert_project_presentation(@alpha)
     assert_same_project_document
     visit "/en/catalog/archives/#{@dedicated.id}"
     assert_selector '.ProjectDetails-title', text: 'Dedicated Archive', wait: 15
-    assert_selector ".ProjectDetails-actions a[href='#{@dedicated.archive_domain}'][target='_blank']"
+    within find_test_id('catalog-project-actions') do
+      assert_selector "a[href='#{@dedicated.archive_domain}'][target='_blank']"
+    end
   end
 
 

@@ -471,3 +471,22 @@ describe('flattenNestedObject', () => {
         });
     });
 });
+
+test('attaches localized logo files and sends removal flags in the same request', () => {
+    const req = { field: jest.fn(), attach: jest.fn() };
+    const file = new File(['image'], 'logo.png', { type: 'image/png' });
+
+    flattenNestedObject(req, 'collection', 'logo_changes', {
+        de: { file },
+        en: { remove: true },
+    });
+
+    expect(req.attach).toHaveBeenCalledWith(
+        'collection[logo_changes][de][file]',
+        file
+    );
+    expect(req.field).toHaveBeenCalledWith(
+        'collection[logo_changes][en][remove]',
+        true
+    );
+});

@@ -1,8 +1,9 @@
-.ProjectDetails {
-  .ProjectDetails-title {
-    text-wrap: balance;
-  }
-  .ProjectDetails-layout {
+.ProjectDetails .ProjectDetails-title {
+  text-wrap: balance;
+}
+
+.CatalogDetails {
+  .CatalogDetails-layout {
     display: flex;
     flex-direction: column;
 
@@ -13,7 +14,7 @@
     }
   }
 
-  .ProjectDetails-main {
+  .CatalogDetails-main {
     min-width: 0;
 
     @include screen-l {
@@ -21,7 +22,7 @@
     }
   }
 
-  .ProjectDetails-actions {
+  .CatalogDetails-actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -29,7 +30,7 @@
     margin-bottom: $base-unit * 1.5;
   }
 
-  .ProjectDetails-sidebar {
+  .CatalogDetails-sidebar {
     display: none;
 
     @include screen-l {
@@ -39,12 +40,12 @@
     }
   }
 
-  .ProjectDetails-logo {
+  .CatalogDetails-logo {
     display: block;
     height: auto;
   }
 
-  .ProjectDetails-logo--inline {
+  .CatalogDetails-logo--inline {
     width: clamp(5.5rem, 30vw, 8.5rem);
     max-width: 45%;
     flex-shrink: 0;
@@ -54,7 +55,7 @@
     }
   }
 
-  .ProjectDetails-logo--sidebar {
+  .CatalogDetails-logo--sidebar {
     display: none;
     width: 100%;
 

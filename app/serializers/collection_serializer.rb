@@ -2,6 +2,7 @@ class CollectionSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :shortname,
+    :logos,
     :workflow_state,
     :publication_date,
     :institution,
@@ -21,6 +22,12 @@ class CollectionSerializer < ApplicationSerializer
     define_method m do
       object.localized_hash(m)
     end
+  end
+
+  # Serializes collection logos for the existing upload editor.
+  # @return [Hash] Uploaded files keyed by ID
+  def logos
+    object.logos.each_with_object({}) { |logo, result| result[logo.id] = UploadedFileSerializer.new(logo) }
   end
 
   def institution
