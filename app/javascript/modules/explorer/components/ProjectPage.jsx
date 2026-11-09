@@ -94,20 +94,23 @@ export function ProjectPage() {
                 <title>{title}</title>
             </Helmet>
             <ErrorBoundary>
-                <div className="wrapper-content ProjectDetails">
+                <div className="wrapper-content ProjectDetails CatalogDetails">
                     <h1 className="Page-main-title ProjectDetails-title u-mb">
                         {title}
                     </h1>
-                    <div className="ProjectDetails-layout">
-                        <div className="ProjectDetails-main">
-                            <div className="ProjectDetails-actions">
+                    <div className="CatalogDetails-layout">
+                        <div className="CatalogDetails-main">
+                            <div
+                                className="CatalogDetails-actions"
+                                data-testid="catalog-project-actions"
+                            >
                                 {toProjectButton}
 
                                 {project.logo?.url && (
                                     <SmartImage
                                         src={project.logo.url}
                                         alt={project.logo.alt || title}
-                                        className="ProjectDetails-logo ProjectDetails-logo--inline"
+                                        className="CatalogDetails-logo CatalogDetails-logo--inline"
                                     />
                                 )}
                             </div>
@@ -206,11 +209,11 @@ export function ProjectPage() {
                         </div>
 
                         {project.logo?.url && (
-                            <div className="ProjectDetails-sidebar">
+                            <div className="CatalogDetails-sidebar">
                                 <SmartImage
                                     src={project.logo.url}
                                     alt={project.logo.alt || title}
-                                    className="ProjectDetails-logo ProjectDetails-logo--sidebar"
+                                    className="CatalogDetails-logo CatalogDetails-logo--sidebar"
                                 />
                             </div>
                         )}

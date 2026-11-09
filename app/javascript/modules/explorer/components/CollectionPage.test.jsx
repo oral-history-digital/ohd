@@ -23,6 +23,9 @@ jest.mock('modules/user-agent', () => ({
 jest.mock('modules/ui', () => ({
     LinkButton: ({ buttonText, to }) => <a href={to}>{buttonText}</a>,
     CopyText: () => null,
+    SmartImage: ({ src, alt, className }) => (
+        <img src={src} alt={alt} className={className} />
+    ),
 }));
 
 const collection = {
@@ -179,4 +182,24 @@ test('shows collection request errors before a project ID is available', () => {
     useProjectDetail.mockReturnValue({});
     renderPage();
     expect(screen.getByRole('alert')).toHaveTextContent('Collection not found');
+});
+
+test('displays collection branding in the responsive project detail layout', () => {
+    useGetCollection.mockReturnValue({
+        collection: { ...collection, logo: { url: '/collection.png' } },
+    });
+    const { container } = renderPage();
+    const images = screen.getAllByRole('img', { name: 'Collection' });
+    expect(images).toHaveLength(2);
+    images.forEach((image) =>
+        expect(image).toHaveAttribute('src', '/collection.png')
+    );
+    expect(
+        container.querySelector('.CatalogDetails-sidebar img')
+    ).toBeInTheDocument();
+});
+
+test('omits logo images for collections without branding', () => {
+    renderPage();
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
 });

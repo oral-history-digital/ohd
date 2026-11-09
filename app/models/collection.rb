@@ -5,6 +5,8 @@ class Collection < ApplicationRecord
   include OaiDc
   include OaiDatacite
 
+  has_many :logos, as: :ref, dependent: :destroy
+
   has_many :interviews
   has_many :materials, as: :attachable
   belongs_to :project, touch: true
@@ -18,6 +20,12 @@ class Collection < ApplicationRecord
   validates_presence_of :name, :project_id
   validates :workflow_state, inclusion: { in: %w(public unshared),
     message: "%{value} is not a valid workflow state" }
+
+  # Returns the current locale's logo, falling back to the first available image.
+  # @return [Logo, nil] Collection branding image
+  def logo
+    logos.find { |item| item.locale.to_s == I18n.locale.to_s } || logos.first
+  end
 
   def num_interviews
     interviews_count

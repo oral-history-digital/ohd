@@ -37,11 +37,28 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    @collection = Collection.find params[:id]
+    changes = collection_logo_changes
+    @collection = changes.any? ? current_project.collections.find(params[:id]) : Collection.find(params[:id])
     authorize @collection
-    @collection.update collection_params
+
+    if changes.any?
+      invalid_file = changes.values.any? do |file|
+        file.present? && (!file.is_a?(ActionDispatch::Http::UploadedFile) ||
+          !Marcel::MimeType.for(file.tempfile).start_with?('image/'))
+      end
+      return head :unprocessable_entity if invalid_file
+
+      @collection.with_lock do
+        @collection.update!(collection_params.except(:project_id))
+        changes.each { |locale, file| update_logo(@collection, locale, file) }
+      end
+    else
+      @collection.update collection_params
+    end
 
     respond @collection
+  rescue ActiveRecord::RecordInvalid => error
+    render json: { errors: error.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def index
@@ -85,6 +102,7 @@ class CollectionsController < ApplicationController
           projects_cache_scope_key,
           Collection.count,
           Collection.maximum(:updated_at),
+          collection_logo_cache_key,
           collection_linkability_cache_key(current_project.id)
         ].join('-')
 
@@ -157,6 +175,7 @@ class CollectionsController < ApplicationController
       Project.maximum(:updated_at),
       Collection.count,
       Collection.maximum(:updated_at),
+      collection_logo_cache_key,
       Interview.maximum(:updated_at),
       InterviewLanguage.maximum(:updated_at),
       Language.maximum(:updated_at)
@@ -277,6 +296,38 @@ class CollectionsController < ApplicationController
     end
   end
 
+  # Extracts requested logo changes from the collection's locale fields.
+  # @return [Hash{String, nil => ActionDispatch::Http::UploadedFile, nil}] File or removal by locale
+  def collection_logo_changes
+    changes = params.require(:collection)[:logo_changes]
+    return {} unless changes.is_a?(ActionController::Parameters)
+
+    changes.each_pair.with_object({}) do |(key, change), result|
+      next unless change.is_a?(ActionController::Parameters)
+
+      values = change.permit(:file, :remove)
+      if values[:file].present? || ActiveModel::Type::Boolean.new.cast(values[:remove])
+        locale = key == '_default' ? nil : key
+        result[locale] = values[:file]
+      end
+    end
+  end
+
+  # Replaces or removes the logo for the selected locale during a collection save.
+  # @param collection [Collection] Authorized collection locked for the update
+  # @param locale [String, nil] Selected locale, or nil for an unlocalized logo
+  # @param file [ActionDispatch::Http::UploadedFile, nil] Replacement image, if provided
+  # @return [void]
+  def update_logo(collection, locale, file)
+    logos = collection.logos.where(locale: locale || [nil, ''])
+    if file.present?
+      logo = logos.first || collection.logos.build(locale: locale)
+      logo.update!(file: file)
+    else
+      logos.first&.destroy!
+    end
+  end
+
   def collection_params
     params.require(:collection).
       permit(
@@ -308,8 +359,24 @@ class CollectionsController < ApplicationController
     @normalized_workflow_states = filtered_states.presence
   end
 
+  # Builds a cache key from the logos because two changes in the same second
+  # can leave the collection's updated_at timestamp unchanged.
+  # @param collection_id [Integer, nil] Owner ID, or all collections for list caches
+  # @return [String] Digest of logo ownership, locale, and attachment identity
+  def collection_logo_cache_key(collection_id = nil)
+    logos = Logo.where(ref_type: 'Collection')
+    logos = logos.where(ref_id: collection_id) if collection_id
+    values = logos.left_joins(:file_attachment).order(:id)
+      .pluck(:id, :ref_id, :locale, 'active_storage_attachments.blob_id')
+    Digest::SHA256.hexdigest(values.to_json)
+  end
+
   def collection_cache_key_suffix(collection, base_suffix = nil)
-    parts = [base_suffix, "linkability:#{collection_linkability_cache_key(collection.project_id)}"]
+    parts = [
+      base_suffix,
+      "logos:#{collection_logo_cache_key(collection.id)}",
+      "linkability:#{collection_linkability_cache_key(collection.project_id)}"
+    ]
     parts.compact.join('-')
   end
 

@@ -2,7 +2,7 @@ import { useTrackPageView } from 'modules/analytics';
 import { useGetCollection, useProjectDetail } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { LinkButton } from 'modules/ui';
+import { LinkButton, SmartImage } from 'modules/ui';
 import { ScrollToTop } from 'modules/user-agent';
 import { Helmet } from 'react-helmet';
 import { FaArrowRight } from 'react-icons/fa';
@@ -120,68 +120,107 @@ export function CollectionPage() {
                 <title>{collectionName}</title>
             </Helmet>
             <ErrorBoundary>
-                <div className="wrapper-content CollectionDetails">
+                <div className="wrapper-content CollectionDetails CatalogDetails">
                     <h1 className="Page-main-title CollectionDetails-title">
                         {collectionName}
                     </h1>
 
-                    {collection?.is_linkable && toCollectionButton}
+                    <div className="CatalogDetails-layout">
+                        <div className="CatalogDetails-main">
+                            <div className="CatalogDetails-actions">
+                                {collection?.is_linkable && toCollectionButton}
+                                {collection.logo?.url && (
+                                    <SmartImage
+                                        src={collection.logo.url}
+                                        alt={collectionName}
+                                        className="CatalogDetails-logo CatalogDetails-logo--inline"
+                                    />
+                                )}
+                            </div>
 
-                    <dl className="DescriptionList">
-                        <ProjectLink
-                            projectId={collection.project_id}
-                            projectName={project.display_name || project.name}
-                        />
-                        <Institutions institutions={project.institutions} />
-                        <RichtextDetail richtext={collectionNotes} />
-                        <Website url={collectionHomepage} />
-                        <InterviewStats counts={collection.interviews} />
-                        <MediaTypes mediaTypes={collection?.media_types} />
-                        <YearRange
-                            years={collection.birth_year_range}
-                            labelKey="modules.catalog.birthyears"
-                        />
-                        <YearRange
-                            years={collection.interview_year_range}
-                            labelKey="modules.catalog.period"
-                        />
-                        <InterviewLanguages
-                            languages={collection.languages_interviews}
-                        />
-                        <IndexingLevels
-                            levels={collection.levels_of_indexing}
-                        />
-                        <Subjects subjects={collection.subjects} />
-                        <Responsibles responsibles={collectionResponsibles} />
-                        <PublicationDate
-                            publicationDate={collection.publication_date}
-                        />
-                        <Citation
-                            type="collection"
-                            institutions={project.institutions}
-                            primary_institution={
-                                project.institutions?.find(
-                                    (institution) => institution.is_primary
-                                )?.id
-                            }
-                            projectName={project?.display_name || project?.name}
-                            collectionName={collection?.name}
-                            collectionId={collection?.id}
-                            doiUrl={collection?.oai_doi_identifier}
-                        />{' '}
-                        {!project.is_catalog && (
-                            <GenericDetail
-                                labelKey="explorer.export_formats.label"
-                                value={t('explorer.export_formats.description')}
-                            />
-                        )}
-                        <XmlLinks collectionId={collection.id} />
-                        {collection?.is_linkable && (
-                            <div className="u-mv-large">
-                                {toCollectionButton}
+                            <dl className="DescriptionList">
+                                <ProjectLink
+                                    projectId={collection.project_id}
+                                    projectName={
+                                        project.display_name || project.name
+                                    }
+                                />
+                                <Institutions
+                                    institutions={project.institutions}
+                                />
+                                <RichtextDetail richtext={collectionNotes} />
+                                <Website url={collectionHomepage} />
+                                <InterviewStats
+                                    counts={collection.interviews}
+                                />
+                                <MediaTypes
+                                    mediaTypes={collection?.media_types}
+                                />
+                                <YearRange
+                                    years={collection.birth_year_range}
+                                    labelKey="modules.catalog.birthyears"
+                                />
+                                <YearRange
+                                    years={collection.interview_year_range}
+                                    labelKey="modules.catalog.period"
+                                />
+                                <InterviewLanguages
+                                    languages={collection.languages_interviews}
+                                />
+                                <IndexingLevels
+                                    levels={collection.levels_of_indexing}
+                                />
+                                <Subjects subjects={collection.subjects} />
+                                <Responsibles
+                                    responsibles={collectionResponsibles}
+                                />
+                                <PublicationDate
+                                    publicationDate={
+                                        collection.publication_date
+                                    }
+                                />
+                                <Citation
+                                    type="collection"
+                                    institutions={project.institutions}
+                                    primary_institution={
+                                        project.institutions?.find(
+                                            (institution) =>
+                                                institution.is_primary
+                                        )?.id
+                                    }
+                                    projectName={
+                                        project?.display_name || project?.name
+                                    }
+                                    collectionName={collection?.name}
+                                    collectionId={collection?.id}
+                                    doiUrl={collection?.oai_doi_identifier}
+                                />{' '}
+                                {!project.is_catalog && (
+                                    <GenericDetail
+                                        labelKey="explorer.export_formats.label"
+                                        value={t(
+                                            'explorer.export_formats.description'
+                                        )}
+                                    />
+                                )}
+                                <XmlLinks collectionId={collection.id} />
+                                {collection?.is_linkable && (
+                                    <div className="u-mv-large">
+                                        {toCollectionButton}
+                                    </div>
+                                )}
+                            </dl>
+                        </div>
+                        {collection.logo?.url && (
+                            <div className="CatalogDetails-sidebar">
+                                <SmartImage
+                                    src={collection.logo.url}
+                                    alt={collectionName}
+                                    className="CatalogDetails-logo CatalogDetails-logo--sidebar"
+                                />
                             </div>
                         )}
-                    </dl>
+                    </div>
                 </div>
             </ErrorBoundary>
         </ScrollToTop>
