@@ -194,7 +194,7 @@ module.exports = {
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
     transformIgnorePatterns: [
-        '/node_modules/(?!(react-leaflet|@react-leaflet|leaflet)/)',
+        '/node_modules/(?!(react-leaflet|@react-leaflet|leaflet|query-string|decode-uri-component|filter-obj|split-on-first)/)',
         '\\.pnp\\.[^\\/]+$',
     ],
 
