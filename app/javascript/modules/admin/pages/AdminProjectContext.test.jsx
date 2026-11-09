@@ -38,6 +38,7 @@ jest.mock('modules/data', () => ({
     getCurrentUser: jest.fn(),
 }));
 jest.mock('modules/archive', () => ({ getCountryKeys: jest.fn() }));
+jest.mock('modules/forms', () => ({ Form: () => null }));
 jest.mock('modules/search', () => ({
     getTaskTypesQuery: jest.fn(),
     getCollectionsQuery: jest.fn(),

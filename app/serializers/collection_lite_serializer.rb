@@ -3,6 +3,7 @@ class CollectionLiteSerializer < ActiveModel::Serializer
 
   attributes :id,
     :project_id,
+    :logo,
     :project_name,
     :name,
     :shortname,
@@ -20,6 +21,15 @@ class CollectionLiteSerializer < ActiveModel::Serializer
     :languages_interviews,
     :subjects,
     :levels_of_indexing
+
+  # Exposes the localized collection logo to catalog detail pages.
+  # @return [Hash, nil] Image ID and attachment URL
+  def logo
+    image = object.logo
+    return nil unless image&.file&.attached?
+
+    { id: image.id, url: Rails.application.routes.url_helpers.rails_blob_path(image.file, only_path: true) }
+  end
 
   def project_name
     object.project&.name

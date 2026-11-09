@@ -22,10 +22,11 @@ export function flattenNestedObject(req, scope, param, value) {
                     nestedValue[deepKey] !== null &&
                     nestedValue[deepKey] !== undefined
                 ) {
-                    req.field(
-                        `${scope}[${param}][${nestedKey}][${deepKey}]`,
-                        nestedValue[deepKey]
-                    );
+                    const name = `${scope}[${param}][${nestedKey}][${deepKey}]`;
+                    const field = nestedValue[deepKey];
+                    // Attach nested files, such as localized logos, so Rails receives them as uploads.
+                    if (field instanceof File) req.attach(name, field);
+                    else req.field(name, field);
                 }
             });
         } else if (nestedValue !== null && nestedValue !== undefined) {
