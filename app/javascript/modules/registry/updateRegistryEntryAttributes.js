@@ -50,7 +50,7 @@ export function prepareRegistryNameAttributes(
             (n) => n.Lang === langOrig && n.Name
         )?.Name;
     }
-    originalName = entry.Name || originalName;
+    originalName = originalName || entry.Name;
     if (originalName)
         setDescriptor(
             originalName,
