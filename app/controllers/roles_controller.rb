@@ -15,11 +15,14 @@ class RolesController < ApplicationController
   end
 
   def index
+    authenticate_user! unless request.format.html?
     policy_scope(Role)
 
     respond_to do |format|
       format.html { render :template => '/react/app' }
       format.json do
+        raise ActiveRecord::RecordNotFound unless current_project
+
         json = Rails.cache.fetch "#{current_project.shortname}-roles-visible-for-#{current_user.id}-#{cache_key_params}-#{Role.count}-#{Role.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(Role).

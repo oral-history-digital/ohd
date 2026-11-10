@@ -23,6 +23,54 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     assert 'test123', data['archive_id']
   end
 
+  test 'creation rejects invalid attributes and foreign projects or collections' do
+    host! 'test.portal.oral-history.localhost:47001'
+    login_as User.find_by!(email: 'alice@example.com')
+    path = '/test/en/interviews.json'
+
+    assert_no_difference ['Interview.count', 'Tape.count'] do
+      post path, params: { interview: { archive_id: 'invalid', media_type: 'audio', tape_count: 1 } }
+      assert_response :unprocessable_entity
+
+      other_project = DataHelper.test_project(shortname: 'othercreate')
+      post path, params: { interview: { project_id: other_project.id, media_type: 'audio' } }
+      assert_response :not_found
+
+      collection = other_project.collections.create!(name: 'Foreign collection')
+      post path, params: {
+        interview: { archive_id: 'test998', collection_id: collection.id, media_type: 'audio' }
+      }
+      assert_response :not_found
+    end
+  end
+
+  test 'creation serializes an interview without a primary language' do
+    host! 'test.portal.oral-history.localhost:47001'
+    login_as User.find_by!(email: 'alice@example.com')
+
+    post '/test/en/interviews.json', params: {
+      interview: { archive_id: 'test998', media_type: 'audio', tape_count: 1 }
+    }
+
+    assert_response :success
+    data = JSON.parse(response.body).fetch('data')
+    assert_nil data.fetch('alpha2')
+    assert_equal '01', data.fetch('tape_count')
+  end
+
+  test 'creation rolls back the interview and earlier tapes if a tape is invalid' do
+    host! 'test.portal.oral-history.localhost:47001'
+    login_as User.find_by!(email: 'alice@example.com')
+    Tape.create!(interview: interview, media_id: 'TEST998_02_02', number: 3)
+
+    assert_no_difference ['Interview.count', 'Tape.count'] do
+      post '/test/en/interviews.json', params: {
+        interview: { archive_id: 'test998', media_type: 'audio', tape_count: 2 }
+      }
+      assert_response :unprocessable_entity
+    end
+  end
+
   test 'should use auth for observations' do
     url = "#{root_url}/en/interviews/#{interview.archive_id}/observations.json"
     get url

@@ -13,23 +13,36 @@ class InterviewsController < ApplicationController
 
   def create
     authorize Interview
-    @interview = Interview.create interview_params
-    @interview.find_or_create_tapes(interview_params[:tape_count])
+    raise ActiveRecord::RecordNotFound unless current_project
 
-    # Whitelist allowed workflow state transitions
-    if params[:interview][:workflow_state].present?
-      allowed_states = %w[public unshared restricted]
-      state = params[:interview][:workflow_state]
-      if allowed_states.include?(state)
-        @interview.public_send("#{state}!")
-      end
+    attributes = interview_params
+    # Check that the project_id in the params matches the current_project.id, if present
+    if attributes[:project_id].present? && attributes[:project_id].to_s != current_project.id.to_s
+      raise ActiveRecord::RecordNotFound
+    end
+
+    # Check that the collection_id in the params matches a collection in the current project
+    # (raises ActiveRecord::RecordNotFound if not found)
+    current_project.collections.find(attributes[:collection_id]) if attributes[:collection_id].present?
+
+    # Allow only supported initial workflow states
+    attributes.delete(:workflow_state) unless %w[public unshared restricted].include?(attributes[:workflow_state])
+
+    @interview = current_project.interviews.build(attributes)
+
+    # Use a transaction to ensure that both the interview and its tapes are created successfully
+    Interview.transaction do
+      @interview.save!
+      @interview.initialize_tapes!(attributes[:tape_count])
     end
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, msg: "processed")
+        render json: data_json(@interview, msg: 'processed')
       end
     end
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def edit
@@ -173,6 +186,8 @@ class InterviewsController < ApplicationController
   end
 
   def show
+    raise ActiveRecord::RecordNotFound unless current_project
+
     @interview = Interview.find_by!(archive_id: params[:id])
 
     if request.format.vtt? || request.format.csv?
