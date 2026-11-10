@@ -82,6 +82,7 @@ class CollectionsController < ApplicationController
     else
       page = params[:page] || 1
       collections = policy_scope(Collection).
+        where(project_id: current_project.id).
         where(search_params).
         includes(:translations, :institution).
         order("collection_translations.name ASC").
@@ -97,7 +98,7 @@ class CollectionsController < ApplicationController
       format.json do
         cache_key = [
           current_project.shortname,
-          'collections',
+          'collections-v2',
           extra_params,
           projects_cache_scope_key,
           Collection.count,

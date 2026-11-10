@@ -129,6 +129,49 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal [], data
   end
 
+  test 'default collections index only returns visible collections from the current archive' do
+    first = DataHelper.test_project(
+      shortname: "ca#{SecureRandom.hex(4)}a",
+      archive_domain: 'http://first-collections.localhost:47001'
+    )
+    second = DataHelper.test_project(
+      shortname: "ca#{SecureRandom.hex(4)}b",
+      archive_domain: 'http://second-collections.localhost:47001'
+    )
+    first_collection = Collection.create!(
+      project: first, institution: Institution.first, name: 'Shared name', workflow_state: 'public'
+    )
+    second_collection = Collection.create!(
+      project: second, institution: Institution.first, name: 'Shared name', workflow_state: 'public'
+    )
+    Collection.create!(
+      project: first, institution: Institution.first, name: 'Shared name', workflow_state: 'unshared'
+    )
+
+    Rails.stub(:cache, ActiveSupport::Cache::MemoryStore.new) do
+      path = collections_path(locale: 'en', format: :json)
+      host! 'first-collections.localhost:47001'
+      get path, params: { all: true }
+      assert_response :success
+      assert_includes JSON.parse(response.body).fetch('data').keys, second_collection.id.to_s
+
+      [{}, { name: 'Shared name' }, {}].each do |query|
+        get path, params: query
+        assert_response :success
+        payload = JSON.parse(response.body)
+        assert_equal first.id, payload.fetch('id')
+        assert_equal [first_collection.id.to_s], payload.fetch('data').keys
+      end
+
+      host! 'second-collections.localhost:47001'
+      get path
+      assert_response :success
+      payload = JSON.parse(response.body)
+      assert_equal second.id, payload.fetch('id')
+      assert_equal [second_collection.id.to_s], payload.fetch('data').keys
+    end
+  end
+
   test 'cached collections index does not reveal unshared collections to anonymous users' do
     project = DataHelper.test_project(
       shortname: "cc#{SecureRandom.hex(4)}a",
