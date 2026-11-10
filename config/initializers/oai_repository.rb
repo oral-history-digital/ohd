@@ -9,6 +9,23 @@ OaiRepository.setup do |config|
     # dynamically set this.
     config.repository_url = Rails.env.development? ? "http://portal.oral-history.localhost:3000" : "https://portal.oral-history.digital"
 
+    # Dataspace API advertisement, appended to the <description> of Identify.
+    config.identify_description = <<~XML
+      <api-advertisements xmlns="https://4memory.de/dataspace/ApiAdvertisement"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="https://4memory.de/dataspace/ApiAdvertisement ../DataspaceApiAdvertisement.xsd">
+        <update-api>
+          <version>1.0</version>
+          <implementation-type>OAI-PMH</implementation-type>
+          <url>#{config.repository_url}/de/oai_repository</url>
+        </update-api>
+        <access-api>
+          <version>1.0</version>
+          <metadata-prefix>oai_datacite</metadata-prefix>
+        </access-api>
+      </api-advertisements>
+    XML
+
     # By default the (unique) identifier of each record will be composed as
     # #{record_prefix}/#{record.id}
     # This is probably not want you want, especially if you have multiple record
