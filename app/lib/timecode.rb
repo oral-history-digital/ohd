@@ -1,6 +1,16 @@
 class Timecode
   # encapsulates Timecode-Formats and operations
 
+  # Checks whether a value is in the canonical segment storage format.
+  # Accepts timecodes in the format HH:MM:SS.mmm, where HH can be 2 or more
+  # digits, MM and SS are 2 digits each, and mmm is 3 digits.
+  #
+  # @param value [Object] Candidate timecode
+  # @return [Boolean] Whether the value can be stored as-is
+  def self.canonical?(value)
+    value.is_a?(String) && /\A(?:[0-9]{2}|[1-9][0-9]{2,}):[0-5][0-9]:[0-5][0-9]\.[0-9]{3}\z/.match?(value)
+  end
+
   def initialize(time=nil)
     @time = case time
       when String

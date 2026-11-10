@@ -41,7 +41,7 @@ class Interview::ExportTest < ActiveSupport::TestCase
     @rows = @csv.split(/\n/)
     @first_row_entries = @rows[1].split(/\t/)
 
-    assert_equal("00:00:02.00", @first_row_entries[0])
+    assert_equal("00:00:02.000", @first_row_entries[0])
     assert_equal("INT", @first_row_entries[1])
     assert_equal("Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца", @first_row_entries[2])
   end
@@ -51,7 +51,7 @@ class Interview::ExportTest < ActiveSupport::TestCase
     @rows = @csv.split(/\n/)
     @first_row_entries = @rows[1].split(/\t/)
 
-    assert_equal("00:02:02.00", @first_row_entries[0])
+    assert_equal("00:02:02.000", @first_row_entries[0])
     assert_equal("AB", @first_row_entries[1])
     assert_equal("И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни", @first_row_entries[2])
   end
@@ -61,7 +61,7 @@ class Interview::ExportTest < ActiveSupport::TestCase
     @rows = @csv.split(/\n/)
     @first_row_entries = @rows[1].split(/\t/)
 
-    assert_equal("00:00:02.00", @first_row_entries[0])
+    assert_equal("00:00:02.000", @first_row_entries[0])
     assert_equal("INT", @first_row_entries[1])
     assert_equal("Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez", @first_row_entries[2])
   end
