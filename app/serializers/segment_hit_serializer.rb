@@ -16,7 +16,7 @@ class SegmentHitSerializer < ApplicationSerializer
   end
 
   def tape_nbr
-    object.tape.number
+    object.tape&.number || object.tape_number
   end
 
   def text
