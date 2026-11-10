@@ -138,6 +138,7 @@ class Segment < ApplicationRecord
   end
 
   validates_presence_of :timecode#, :media_id
+  validate :validate_timecode_format, if: -> { new_record? || will_save_change_to_timecode? }
 
   # TODO: rm this: segments won`t change id any more when platform and archive are joined together?!
   # NOTE: NO UNIQUENESS OF MEDIA_ID!
@@ -152,6 +153,16 @@ class Segment < ApplicationRecord
   validates_associated :tape
 
   before_validation :do_before_validation_on_create, :on => :create
+
+  # Adds a field error when a supplied timecode is outside the storage format.
+  # Blank values are handled by the presence validation.
+  #
+  # @return [void]
+  private def validate_timecode_format
+    return if timecode.blank? || Timecode.canonical?(timecode)
+
+    errors.add(:timecode, 'must use HH:MM:SS.mmm with minutes and seconds in 00–59')
+  end
 
   class << self
     def create_or_update_by(opts={})

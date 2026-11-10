@@ -108,7 +108,7 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
       interview: interview,
       tape: interview.tapes.first,
       speaking_person: interview.interviewee,
-      timecode: "00:00:01.00"
+      timecode: "00:00:01.000"
     )
     RegistryReference.create!(
       interview: interview,
