@@ -546,8 +546,13 @@ class Interview < ApplicationRecord
     language&.code
   end
 
+  # Returns the primary language's ISO 639-1 code when one exists.
+  # @return [String, nil] Two-letter code or nil when there is no mapping
   def alpha2
-    ISO_639.find(language&.code).try(:alpha2) || language&.code[0..1]
+    code = alpha3
+    return if code.blank?
+
+    ISO_639.find(code)&.alpha2.presence
   end
 
   def translation_language
