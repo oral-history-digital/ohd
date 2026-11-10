@@ -433,6 +433,19 @@ class Interview < ApplicationRecord
     self.touch unless self.new_record?
   end
 
+  # Ensures the initial tapes exist for a newly saved interview.
+  # @param count [Integer, String, nil] Number of tapes to initialize
+  # @return [void]
+  # @raise [ActiveRecord::RecordInvalid] If a tape fails validation
+  def initialize_tapes!(count)
+    count = count.to_i
+    (1..count).each do |number|
+      media_id = format('%s_%02d_%02d', archive_id.upcase, count, number)
+      tapes.find_or_create_by!(media_id: media_id, number: number)
+    end
+    touch
+  end
+
   def self.random_featured(n = 1, project_id)
     if n == 1
       shared.where(project_id: project_id).with_media_type.order(Arel.sql('RAND()')).first || first
