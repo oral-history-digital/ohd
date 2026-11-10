@@ -5,6 +5,27 @@ class SegmentTest < ActiveSupport::TestCase
     @segment = Segment.first
   end
 
+  test "validates the timecode of a new segment" do
+    segment = @segment.dup
+    segment.timecode = "00:60:02.003"
+    assert_not segment.save
+    assert segment.errors[:timecode].any?
+
+    segment.timecode = "344:01:02.003"
+    assert segment.valid?, segment.errors.full_messages.to_sentence
+  end
+
+  test "allows unrelated updates to legacy segments but rejects a new malformed timecode" do
+    @segment.update_columns(timecode: "00:01:02")
+    assert @segment.update(text: "Updated transcript", locale: :ger), @segment.errors.full_messages.to_sentence
+
+    assert_not @segment.update(timecode: "00:01:02:003")
+    assert @segment.errors[:timecode].any?
+    assert_equal "00:01:02", @segment.reload.timecode
+
+    assert @segment.update(timecode: "00:01:02.003"), @segment.errors.full_messages.to_sentence
+  end
+
   test "should parse <p2> correctly" do
     @segment.update(text: "Ich war <p2> bei Maria Malta, als <p3> das passierte.", locale: :ger)
     assert_equal(

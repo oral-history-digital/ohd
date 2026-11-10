@@ -1,6 +1,20 @@
 require 'test_helper'
 
 class TimecodeTest < ActiveSupport::TestCase
+  test 'recognizes canonical segment timecodes' do
+    %w[00:00:00.000 99:59:59.999 344:01:02.003].each do |value|
+      assert Timecode.canonical?(value), value
+    end
+  end
+
+  test 'rejects noncanonical segment timecodes' do
+    [nil, '', 0, '0:01:02.003', '0344:01:02.003', '00:60:02.003',
+     '00:01:60.003', '00:01:02', '00:01:02.03', '00:01:02.0030',
+     '00:01:02:003', '00:01:02,003', ' 00:01:02.003', "00:01:02.003\n"].each do |value|
+      refute Timecode.canonical?(value), value.inspect
+    end
+  end
+
   test 'should parse the "02:01:50.100" format correctly' do
     timecode = '[1] 02:01:50.100'
     time = 7200 + 110.1
