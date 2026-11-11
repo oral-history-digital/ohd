@@ -38,6 +38,7 @@ export default function SegmentForm({
         isSaving,
         saveNotification,
         handleSaveStart,
+        handleSaveError,
         dismissSaveNotification,
     } = useSegmentSaveNotification(segment?.id);
 
@@ -97,10 +98,21 @@ export default function SegmentForm({
         [timecodeFormat, prevSegmentTimecode, nextSegmentTimecode, onChange]
     );
 
+    /**
+     * Waits for the server before the form marks the submitted values as saved.
+     *
+     * @param {Object} params - Segment form payload
+     * @returns {Promise<Object>} Successful save response
+     */
     const submitHandler = (params) => {
-        handleSaveStart(); // Set saving state and clear notifications before dispatching save action
-        submitData({ pathBase }, params, () => {
-            onSubmit();
+        handleSaveStart();
+        return new Promise((resolve, reject) => {
+            submitData({ pathBase }, params, resolve, {
+                onError: (error) => {
+                    handleSaveError(error);
+                    reject(error);
+                },
+            });
         });
     };
 
@@ -152,6 +164,7 @@ export default function SegmentForm({
             <Form
                 scope="segment"
                 onSubmit={submitHandler}
+                onSubmitCallback={onSubmit}
                 onCancel={onCancel}
                 onChange={handleFormChange}
                 fetching={isSaving}

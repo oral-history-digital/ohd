@@ -1,8 +1,14 @@
 class SegmentsController < ApplicationController
+  # Updates the segment and returns field errors when validation fails.
+  #
+  # @return [void]
   def update
     @segment = Segment.find params[:id]
     authorize @segment
-    @segment.update(segment_params)
+    unless @segment.update(segment_params)
+      return render json: { errors: @segment.errors.to_hash }, status: :unprocessable_entity
+    end
+
     @segment.update_has_heading
     @segment.reload
 

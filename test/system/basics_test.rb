@@ -344,6 +344,13 @@ class BasicsTest < ApplicationSystemTestCase
     click_test_id('toggle-edit-view-button')
     click_test_id('interview-tab-transcript')
     click_test_id('segment-button-edit')
+    within '.Segment--editMode' do
+      fill_in 'timecode', with: '00:17:12'
+      click_test_id('submit-button')
+      assert_text 'must use HH:MM:SS.mmm'
+      assert_field 'timecode', with: '00:17:12'
+      fill_in 'timecode', with: '00:17:12.000'
+    end
     select 'Dupont, Jean'
     click_test_id('submit-button')
     within '.Segment--editMode' do

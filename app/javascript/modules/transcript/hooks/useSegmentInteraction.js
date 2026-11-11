@@ -49,8 +49,8 @@ export function useSegmentInteraction({
     );
 
     const handleSubmitData = useCallback(
-        (props, params, callback) =>
-            dispatch(submitData(props, params, {}, callback)),
+        (props, params, callback, options = {}) =>
+            dispatch(submitData(props, params, options, callback)),
         [dispatch]
     );
 
