@@ -131,6 +131,39 @@ class SegmentsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'invalid timecode updates return a field error and preserve the segment' do
+    sign_in User.find_by!(email: 'alice@example.com')
+    original = @segment.attributes
+
+    @controller.stub(:current_project, @project) do
+      patch :update, params: {
+        id: @segment.id, locale: 'en', format: :json,
+        segment: { timecode: '00:60:00.000', speaker_id: nil }
+      }
+    end
+
+    assert_response 422
+    assert_equal original, @segment.reload.attributes
+    assert JSON.parse(response.body).fetch('errors').fetch('timecode').any?
+  end
+
+  test 'an unrelated project reader cannot obtain validation errors or update the segment' do
+    other = DataHelper.test_project(shortname: 'othereditor')
+    UserProject.create!(user: @reader, project: other).update_columns(workflow_state: 'project_access_granted')
+    original = @segment.timecode
+
+    @controller.stub(:current_project, other) do
+      patch :update, params: {
+        id: @segment.id, locale: 'en', format: :json,
+        segment: { timecode: '00:60:00.000' }
+      }
+    end
+
+    assert_response :forbidden
+    assert_equal({ 'msg' => 'not_authorized' }, JSON.parse(response.body))
+    assert_equal original, @segment.reload.timecode
+  end
+
   private
 
   # Requests the interview's segment list using the supplied project context.

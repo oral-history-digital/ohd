@@ -64,6 +64,25 @@ describe('submitData', () => {
         expect(params.segment.id).toBe(92654354);
     });
 
+    it('passes validation errors to the submitter and keeps the Redux error action', () => {
+        const onError = jest.fn();
+        const body = { errors: { timecode: ['must use HH:MM:SS.mmm'] } };
+        const error = { response: { status: 422, body } };
+
+        submitData(
+            { pathBase: '/pilot/de' },
+            { segment: { id: 7, timecode: '00:00:01' } },
+            { onError }
+        )(jest.fn());
+
+        expect(Loader.put.mock.lastCall[4](error)).toMatchObject({
+            dataType: 'segments',
+            id: 7,
+            error,
+        });
+        expect(onError).toHaveBeenCalledWith(body);
+    });
+
     it.each([
         ['/en', true],
         ['/en', false],
