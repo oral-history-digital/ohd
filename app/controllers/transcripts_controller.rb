@@ -15,20 +15,21 @@ class TranscriptsController < ApplicationController
 
     locale = Language.find(transcript_params[:transcript_language_id]).code
     extension = File.extname(file.original_filename).downcase
-    spreadsheet_options = {}
+    import_options = {}
 
-    # Handle spreadsheet uploads
-    if TranscriptSpreadsheetImport::EXTENSIONS.include?(extension.delete_prefix('.'))
+    # Handle queued formats (spreadsheet and subtitle files)
+    queued_formats = TranscriptSpreadsheetImport::EXTENSIONS + TranscriptSubtitleReader::EXTENSIONS
+    if queued_formats.include?(extension.delete_prefix('.'))
       tape ||= interview.tapes.find_by!(number: transcript_params[:tape_number])
-      file_path = create_spreadsheet_tmp_file(file, extension)
-      spreadsheet_options = {
+      file_path = create_transcript_tmp_file(file, extension)
+      import_options = {
         filename: file.original_filename,
         delete_existing: transcript_params[:delete_existing],
         frame_rate: transcript_params[:timecode_frame_rate],
         trim_timecodes: transcript_params[:trim_timecodes],
         contributions_attributes: transcript_params[:contributions_attributes]&.to_h
       }
-    # Handle non-spreadsheet uploads
+    # Handle non-queued formats (odt)
     else
       file_path = create_tmp_file(file)
       update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
@@ -43,7 +44,7 @@ class TranscriptsController < ApplicationController
       locale: locale,
       user: current_user,
       update_only_speakers: transcript_params[:update_only_speakers],
-      **spreadsheet_options
+      **import_options
     }
 
     ReadTranscriptFileJob.perform_later(job_options)
@@ -102,12 +103,12 @@ class TranscriptsController < ApplicationController
       )
   end
 
-  # Copies a spreadsheet to a unique path so queued uploads can share a filename.
+  # Copies an upload to a unique path so queued jobs can share a filename.
   #
-  # @param file [ActionDispatch::Http::UploadedFile] Spreadsheet upload
-  # @param extension [String] File extension used by the spreadsheet reader
+  # @param file [ActionDispatch::Http::UploadedFile] Transcript upload
+  # @param extension [String] File extension used by the reader
   # @return [String] Path to the closed temporary file
-  def create_spreadsheet_tmp_file(file, extension)
+  def create_transcript_tmp_file(file, extension)
     temporary = Tempfile.create(['transcript-', extension], Rails.root.join('tmp'), binmode: true)
     IO.copy_stream(file.tempfile, temporary)
     temporary.path

@@ -1,5 +1,4 @@
 require 'globalize'
-require 'webvtt'
 
 class Interview < ApplicationRecord
   include RefreshesSearchIndex
@@ -680,33 +679,17 @@ class Interview < ApplicationRecord
     })
   end
 
-  def create_or_update_segments_from_vtt(file_path, tape_id, locale)
-    extension = File.extname(file_path).strip.downcase[1..-1]
-    webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
-    webvtt.cues.each do |cue|
-      #
-      # get speaker_id
-      #
-      speaker_match = cue.text.match(/<v (\S+)>/)
-      speaker_designation = speaker_match && speaker_match[1]
-      contribution = contributions.select{|c| c.speaker_designation && c.speaker_designation == speaker_designation}.first
-      speaker_id = contribution && contribution.person_id
-      #
-      # cut speaker-tag
-      #
-      text = cue.text.sub(/<v \S+> /, '')
-
-      Segment.create_or_update_by({
-        interview_id: id,
-        timecode: cue.start.to_s,
-        next_timecode: cue.end.to_s,
-        tape_id: tape_id,
-        text: text,
-        locale: locale,
-        speaker_id: speaker_id,
-        split: false
-      })
-    end
+  # Imports validated subtitle cues into one of this interview's tapes.
+  #
+  # @param file_path [String] Path to the VTT or SRT upload
+  # @param tape_id [Integer] ID of the destination tape
+  # @param locale [String] Transcript locale
+  # @param options [Hash] Replacement and speaker settings
+  # @return [void]
+  def create_or_update_segments_from_vtt(file_path, tape_id, locale, **options)
+    tape = tapes.find(tape_id)
+    rows = TranscriptSubtitleReader.new(file_path).call
+    TranscriptSegmentImport.new(tape, locale, options).call(rows)
   end
 
   def duration=(seconds_or_timecode)
