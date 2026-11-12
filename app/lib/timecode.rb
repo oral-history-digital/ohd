@@ -103,14 +103,24 @@ class Timecode
     duration_in_secs + milliseconds
   end
 
-  # yields the formatted timecode from a duration in secs
+  # Formats a nonnegative duration after rounding to the nearest millisecond.
+  #
+  # @param time [Numeric, nil] Duration in seconds, defaulting to zero when absent
+  # @return [String] Canonical timecode
+  # @raise [ArgumentError] If the duration is negative or nonfinite
   def self.format_duration(time)
-    return "00:00:00.000" unless time
-    ms = ((time % 1) * 1000).round
-    hours = (time / 3600).to_i
-    mins = ((time - hours * 3600) / 60).to_i
-    secs = (time - hours * 3600 - mins * 60).to_i
-    "#{hours.to_s.rjust(2,'0')}:#{mins.to_s.rjust(2,'0')}:#{secs.to_s.rjust(2,'0')}.#{ms.to_s.rjust(3,'0')}"
+    time ||= 0
+    raise ArgumentError, 'Timecode duration must be finite and nonnegative' unless time.finite? && !time.negative?
+
+    # Round to the nearest millisecond and split into hours, minutes, seconds, and milliseconds
+    total_milliseconds = (time * 1000).round
+    total_seconds, milliseconds = total_milliseconds.divmod(1000)
+    total_minutes, seconds = total_seconds.divmod(60)
+    hours, minutes = total_minutes.divmod(60)
+    format(
+      '%<hours>02d:%<minutes>02d:%<seconds>02d.%<milliseconds>03d',
+      hours: hours, minutes: minutes, seconds: seconds, milliseconds: milliseconds
+    )
   end
 
 end

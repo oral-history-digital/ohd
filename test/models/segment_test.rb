@@ -5,6 +5,27 @@ class SegmentTest < ActiveSupport::TestCase
     @segment = Segment.first
   end
 
+  test "speaker splitting saves an estimate that rounds into the next second" do
+    @segment.update!(timecode: "00:00:00.000")
+    @segment.interview.contributions.first.update!(speaker_designation: "*CG:*")
+
+    # The first of five text characters spans 9.998 / 5 seconds.
+    assert_difference("Segment.count", 1) do
+      Segment.create_or_update_by(
+        interview_id: @segment.interview_id,
+        tape_id: @segment.tape_id,
+        timecode: @segment.timecode,
+        next_timecode: "00:00:09.998",
+        text: "A*CG:*BBBB",
+        locale: :eng,
+        split: true
+      )
+    end
+
+    split_segment = @segment.tape.segments.find_by!(timecode: "00:00:02.000")
+    assert_equal "BBBB", split_segment.text(:eng)
+  end
+
   test "validates the timecode of a new segment" do
     segment = @segment.dup
     segment.timecode = "00:60:02.003"
