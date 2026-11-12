@@ -7,6 +7,11 @@ import { usePathBase } from 'modules/routes';
 import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
 
+const FRAME_RATE_OPTIONS = [24, 25, 30, 50, 60].map((rate) => ({
+    value: String(rate),
+    name: `${rate} fps`,
+}));
+
 /**
  * Uploads transcripts through the current route and keeps queued-work feedback visible.
  * @param {Object} props - Record data, form options, and mutation callbacks.
@@ -20,15 +25,14 @@ export default function UploadTranscript({
 }) {
     const pathBase = usePathBase();
     const { t } = useI18n();
-    const [isOdt, setIsOdt] = useState(false);
+    const [filename, setFilename] = useState('');
     const [showForm, setShowForm] = useState(true);
+    const [useFrameTimecodes, setUseFrameTimecodes] = useState(false);
+    const isOdt = /\.odt$/i.test(filename);
+    const isSpreadsheet = /\.(ods|xlsx|xlsm|xls|xlm|csv)$/i.test(filename);
 
     const handleFileChange = (name, file) => {
-        if (name === 'data' && file && /\.odt$/.test(file.name)) {
-            setIsOdt(true);
-        } else {
-            setIsOdt(false);
-        }
+        if (name === 'data') setFilename(file?.name || '');
     };
 
     if (!interview.contributions) {
@@ -42,7 +46,11 @@ export default function UploadTranscript({
                 <button
                     type="button"
                     className="Button return-to-upload"
-                    onClick={() => setShowForm(true)}
+                    onClick={() => {
+                        setFilename('');
+                        setUseFrameTimecodes(false);
+                        setShowForm(true);
+                    }}
                 >
                     {t('edit.upload.return')}
                 </button>
@@ -57,7 +65,6 @@ export default function UploadTranscript({
         )
         .map((contribution) => ({
             id: contribution.id,
-            contribution_type: contribution.contribution_type,
             person_id: contribution.person_id,
             speaker_designation: contribution.speaker_designation,
         }));
@@ -81,7 +88,15 @@ export default function UploadTranscript({
             <Form
                 scope="transcript"
                 onSubmit={(params) => {
-                    submitData({ pathBase }, params);
+                    const {
+                        use_frame_timecodes,
+                        timecode_frame_rate,
+                        ...transcript
+                    } = params.transcript;
+                    if (isSpreadsheet && use_frame_timecodes) {
+                        transcript.timecode_frame_rate = timecode_frame_rate;
+                    }
+                    submitData({ pathBase }, { transcript });
                     setShowForm(false);
                 }}
                 submitText="edit.upload_transcript.title"
@@ -111,6 +126,30 @@ export default function UploadTranscript({
                     {
                         attribute: 'tape_number',
                         validate: validateTapeNumber,
+                    },
+                    {
+                        attribute: 'use_frame_timecodes',
+                        elementType: 'input',
+                        type: 'checkbox',
+                        hidden: !isSpreadsheet,
+                        help: 'activerecord.attributes.transcript.timecode_frame_rate_explanation',
+                        handlechangecallback: (_name, checked) =>
+                            setUseFrameTimecodes(checked),
+                    },
+                    {
+                        attribute: 'timecode_frame_rate',
+                        elementType: 'select',
+                        values: FRAME_RATE_OPTIONS,
+                        withEmpty: true,
+                        keepOrder: true,
+                        validate: Boolean,
+                        hidden: !isSpreadsheet || !useFrameTimecodes,
+                    },
+                    {
+                        attribute: 'trim_timecodes',
+                        elementType: 'input',
+                        type: 'checkbox',
+                        hidden: !isSpreadsheet,
                     },
                     {
                         elementType: 'input',

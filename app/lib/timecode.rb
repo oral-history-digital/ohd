@@ -28,10 +28,13 @@ class Timecode
   # @return [String] Canonical timecode
   # @raise [ImportFormatError] If the timecode or frame rate does not match a supported convention
   def self.parse_import(value, frame_rate: nil)
+    validate_import_clock(value)
+
     if frame_rate.nil?
       return value if canonical?(value)
 
-      raise ImportFormatError, 'Use HH:MM:SS.mmm with three digits after the dot, for example 01:02:03.240.'
+      raise ImportFormatError,
+            'Use colons (:) between hours, minutes, and seconds, then a dot (.) followed by three millisecond digits, as in 00:04:29.000.'
     end
 
     unless frame_rate.is_a?(Integer) && IMPORT_FRAME_RATES.include?(frame_rate)
@@ -39,7 +42,8 @@ class Timecode
     end
 
     unless value.is_a?(String) && /\A#{CLOCK_PATTERN}:[0-9]{2}\z/.match?(value)
-      raise ImportFormatError, 'Use HH:MM:SS:FF with a colon before the two frame digits, for example 01:02:03:12.'
+      raise ImportFormatError,
+            'Use colons (:) between hours, minutes, seconds, and the two-digit frame number, as in 00:04:29:12.'
     end
 
     hours, minutes, seconds, frames = value.split(':').map(&:to_i)
@@ -48,6 +52,21 @@ class Timecode
     end
 
     format_duration(hours * 3600 + minutes * 60 + seconds + Rational(frames, frame_rate))
+  end
+
+  # Reports minutes or seconds outside 00–59 when those fields can be read.
+  #
+  # @param value [Object] Timecode from the upload
+  # @return [void]
+  # @raise [ImportFormatError] If a two-digit minute or second exceeds 59
+  private_class_method def self.validate_import_clock(value)
+    return unless value.is_a?(String)
+
+    clock = /\A[0-9]+:([0-9]{2}):([0-9]{2})(?=[.:,;]|\z)/.match(value)
+    return unless clock
+
+    raise ImportFormatError, 'Minutes must be between 00 and 59.' if clock[1].to_i > 59
+    raise ImportFormatError, 'Seconds must be between 00 and 59.' if clock[2].to_i > 59
   end
 
   def initialize(time=nil)
@@ -161,5 +180,4 @@ class Timecode
       hours: hours, minutes: minutes, seconds: seconds, milliseconds: milliseconds
     )
   end
-
 end
