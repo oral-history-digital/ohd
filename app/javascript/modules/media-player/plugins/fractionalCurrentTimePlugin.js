@@ -27,14 +27,7 @@ class FractionalCurrentTimeDisplay extends VjsCurrentTimeDisplay {
         }
 
         const showFractions = this.player_.paused() || this.player_.scrubbing();
-        const timecodeFormat = this.options_.timecodeFormat ?? 'ms';
-        const formattedTime = formatTimecode(
-            time,
-            false, // don't use Hms Format
-            showFractions, // include fractions if paused or scrubbing
-            false, // leave leading zeros
-            timecodeFormat
-        );
+        const formattedTime = formatTimecode(time, false, showFractions);
 
         if (formattedTime === this.formattedTime_) return;
         this.formattedTime_ = formattedTime;

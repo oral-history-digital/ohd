@@ -29,7 +29,6 @@ jest.mock('../hooks', () => ({
     useGetMediaMissingText: () => 'Custom missing message',
     useMediaPlayerResize: () => ({}),
     usePosterImage: () => ({ posterUrl: '/poster.jpg' }),
-    useTimecodeFormat: () => 'ms',
 }));
 jest.mock('../plugins/configurationMenuPlugin.js', () => ({}));
 jest.mock('../plugins/customSkipButtonsPlugin.js', () => ({}));
@@ -79,6 +78,9 @@ test('waits for playback settings, then initializes sources, aspect ratio, and t
         language: 'en',
         sources: [{ src: '/pilot/en/media_streams/pilot001/1/hls.m3u8' }],
     });
+    expect(playerProps.options.controlBar.children).toContain(
+        'FractionalCurrentTimeDisplay'
+    );
     const player = {
         playbackRate: jest.fn(() => 1.5),
         configurationMenuPlugin: jest.fn(),
