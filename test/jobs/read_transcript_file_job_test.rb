@@ -120,6 +120,82 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
     assert_equal [existing.id], other_tape.segments.pluck(:id)
   end
 
+  test 'imports VTT cues with short timestamps and keeps their explicit duration' do
+    content = <<~VTT
+      WEBVTT
+
+      NOTE This is metadata
+
+      cue-1
+      00:01.500 --> 00:03.750 align:start
+      First line
+      Second line
+    VTT
+    with_upload(content, '.vtt') do |path|
+      ReadTranscriptFileJob.new.perform(
+        interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path, delete_existing: true
+      )
+    end
+
+    segment = @tape.segments.sole
+    assert_equal '00:00:01.500', segment.timecode
+    assert_equal 2.25, segment.duration
+    assert_includes segment.text('eng'), 'Second line'
+  end
+
+  test 'imports SRT commas and hours above 99 without converting timestamps inside the text' do
+    content = "1\r\n100:00:01,000 --> 100:00:02,250\r\nMention 00:00:15,250 in the cue.\r\n"
+    with_upload(content, '.srt') do |path|
+      ReadTranscriptFileJob.new.perform(
+        interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path, delete_existing: true
+      )
+    end
+
+    segment = @tape.segments.sole
+    assert_equal '100:00:01.000', segment.timecode
+    assert_equal 1.25, segment.duration
+    assert_equal 'Mention 00:00:15,250 in the cue.', segment.text('eng')
+  end
+
+  test 'emails invalid VTT boundaries and preserves existing segments during replacement' do
+    content = <<~VTT
+      WEBVTT
+
+      00:61:49.000 --> 00:01:54.00
+      Bad start and end
+
+      00:00:05.000 --> 00:00:04.000
+      Reversed cue
+    VTT
+    original = @tape.segments.pluck(:id, :timecode)
+    assert_difference 'ActionMailer::Base.deliveries.count', 1 do
+      with_upload(content, '.vtt') do |path|
+        ReadTranscriptFileJob.perform_now(
+          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
+          filename: 'transcript.vtt', user: @user, delete_existing: true
+        )
+      end
+    end
+
+    assert_equal original, @tape.segments.pluck(:id, :timecode)
+    body = ActionMailer::Base.deliveries.last.text_part.decoded
+    assert_includes body, 'Line 3: Invalid cue start timestamp "00:61:49.000". Minutes must be between 00 and 59.'
+    assert_includes body, 'Line 3: Invalid cue end timestamp "00:01:54.00". Use HH:MM:SS.mmm or MM:SS.mmm'
+    assert_includes body, 'Line 6: Cue end "00:00:04.000" must be later than start "00:00:05.000".'
+    refute_includes body, 'transcript_subtitle_reader.rb'
+  end
+
+  test 'reports the comma requirement for a malformed SRT timestamp' do
+    with_upload("1\n00:00:01.000 --> 00:00:02,000\nText\n", '.srt') do |path|
+      error = assert_raises(Timecode::ImportFormatError) do
+        ReadTranscriptFileJob.new.perform(
+          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path
+        )
+      end
+      assert_includes error.message, 'Line 2: Invalid cue start timestamp "00:00:01.000". Use HH:MM:SS,mmm'
+    end
+  end
+
   private
 
   # Writes tab-delimited transcript rows to a temporary upload.
@@ -128,9 +204,18 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
   # @yieldparam path [String] Temporary spreadsheet path
   # @return [void]
   def with_spreadsheet(rows)
-    Tempfile.create(['transcript', '.csv']) do |file|
-      file.write("TIMECODE\tSPEAKER\tTRANSCRIPT\n")
-      file.write(rows)
+    with_upload("TIMECODE\tSPEAKER\tTRANSCRIPT\n#{rows}", '.csv') { |path| yield path }
+  end
+
+  # Writes a temporary upload for the job to read.
+  #
+  # @param content [String] File contents
+  # @param extension [String] Extension indicating the import format
+  # @yieldparam path [String] Temporary upload path
+  # @return [void]
+  def with_upload(content, extension)
+    Tempfile.create(['transcript', extension]) do |file|
+      file.write(content)
       file.flush
       yield file.path
     end
