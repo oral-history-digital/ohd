@@ -7,18 +7,24 @@ class ReadTranscriptFileJob < ApplicationJob
   # @return [void]
   def perform(opts)
     interview = opts[:interview]
+    extension = File.extname(opts[:file_path]).strip.downcase.delete_prefix('.')
     # One transaction also coalesces nested translation saves into one indexing job.
     RefreshSearchIndexJob.batch do
       Interview.transaction do
-        extension = File.extname(opts[:file_path]).strip.downcase[1..-1]
         case extension
-        # only ods is tested
-        when 'ods', 'xlsx', 'xlsm','xls', 'xlm', 'csv'
+        when *TranscriptSpreadsheetImport::EXTENSIONS
+          boolean = ActiveModel::Type::Boolean.new
+          frame_rate = opts[:frame_rate].presence
+          frame_rate = frame_rate.to_i if frame_rate.is_a?(String) && /\A[0-9]+\z/.match?(frame_rate)
           interview.create_or_update_segments_from_spreadsheet(
             opts[:file_path],
             opts[:tape_id],
             opts[:locale],
-            opts[:update_only_speakers]
+            boolean.cast(opts[:update_only_speakers]),
+            frame_rate: frame_rate,
+            trim_timecodes: boolean.cast(opts[:trim_timecodes]),
+            delete_existing: boolean.cast(opts[:delete_existing]),
+            contributions_attributes: opts[:contributions_attributes]
           )
         when 'odt'
           interview.create_or_update_segments_from_text(
@@ -36,6 +42,7 @@ class ReadTranscriptFileJob < ApplicationJob
         interview.touch
       end
     end
+  ensure
+    FileUtils.rm_f(opts[:file_path]) if opts[:filename] && opts[:file_path]
   end
-
 end
