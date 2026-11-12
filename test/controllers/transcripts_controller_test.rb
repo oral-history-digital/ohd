@@ -49,6 +49,27 @@ class TranscriptsControllerTest < ActionController::TestCase
     assert_equal original_ids, @tape.segments.pluck(:id)
   end
 
+  test 'queues subtitle replacement without deleting existing segments' do
+    sign_in User.find_by!(email: 'alice@example.com')
+    original_ids = @tape.segments.pluck(:id)
+    options = nil
+    params = upload_params
+    params[:transcript][:data] = fixture_file_upload(Rails.root.join('test/files/transcript_de.vtt'), 'text/vtt')
+
+    @controller.stub(:current_project, @project) do
+      ReadTranscriptFileJob.stub(:perform_later, ->(args) { options = args }) do
+        post :create, params: params
+      end
+    end
+
+    assert_response :ok
+    assert_equal original_ids, @tape.segments.pluck(:id)
+    assert_equal 'true', options.fetch(:delete_existing)
+    assert_equal 'transcript_de.vtt', options.fetch(:filename)
+  ensure
+    FileUtils.rm_f(options[:file_path]) if options
+  end
+
   private
 
   # Builds an upload request with explicit frame conversion and replacement.
