@@ -165,22 +165,35 @@ class Segment < ApplicationRecord
   end
 
   class << self
+    # Imports a segment and optionally splits its text into speaker turns.
+    #
+    # @param opts [Hash] Segment attributes and transcript timing options
+    # @return [Boolean, nil] Save result for an unsplit segment
+    # @raise [ActiveRecord::RecordInvalid] If a segment needed for splitting cannot be created
     def create_or_update_by(opts={})
-      segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       split = opts.delete(:split)
-      if opts[:speaker_id] || !split
-        next_time = Timecode.new(opts.delete(:next_timecode).dup).time
-        duration = next_time - Timecode.new(opts[:timecode].dup).time
-        opts.update(duration: duration) if duration > 0
-        segment.update(opts)
-      else
-        assign_speakers_and_update_text(segment, opts)
+      attributes = opts.slice(:interview_id, :timecode, :tape_id)
+
+      # ODT imports use this flag to split transcript text at speaker designations.
+      if split && !opts[:speaker_id]
+        segment = find_or_create_by!(attributes)
+        return assign_speakers_and_update_text(segment, opts)
       end
+
+      segment = find_or_create_by(attributes)
+      next_time = Timecode.new(opts.delete(:next_timecode).dup).time
+      duration = next_time - Timecode.new(opts[:timecode].dup).time
+      opts.update(duration: duration) if duration > 0
+      segment.update(opts)
     end
 
-    # this methods substitutes speaker_designations (e.g. *CG:*)
-    # if these speaker_designations do not occur at the beginning of the text, a new segment will be created for each occurence
+    # Splits text at speaker designations and reuses or creates timed segments.
     #
+    # @param segment [Segment] Segment at the start of the transcript interval
+    # @param opts [Hash] Transcript text, locale, tape, and timing options
+    # @return [nil]
+    # @raise [ArgumentError] If an estimated start is negative or nonfinite
+    # @raise [ActiveRecord::RecordInvalid] If a generated segment cannot be saved
     def assign_speakers_and_update_text(segment, opts)
       tape = Tape.find opts[:tape_id]
 
@@ -232,7 +245,8 @@ class Segment < ApplicationRecord
               tape = tape.next
               next_time = tape.time_shift
             end
-            segment = create(interview_id: opts[:interview_id], tape_id: tape.id, timecode: Timecode.new(next_time).timecode)
+            segment = create!(interview_id: opts[:interview_id], tape_id: tape.id,
+                              timecode: Timecode.new(next_time).timecode)
           end
         end
       end

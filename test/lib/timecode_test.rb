@@ -1,6 +1,22 @@
 require 'test_helper'
 
 class TimecodeTest < ActiveSupport::TestCase
+  test 'carries rounded milliseconds into seconds, minutes, and hours' do
+    {
+      1.9996 => '00:00:02.000',
+      59.9996 => '00:01:00.000',
+      359_999.9996 => '100:00:00.000'
+    }.each do |seconds, expected|
+      assert_equal expected, Timecode.format_duration(seconds)
+    end
+  end
+
+  test 'rejects durations that cannot represent a segment time' do
+    [-0.001, Float::INFINITY, Float::NAN].each do |seconds|
+      assert_raises(ArgumentError) { Timecode.format_duration(seconds) }
+    end
+  end
+
   test 'recognizes canonical segment timecodes' do
     %w[00:00:00.000 99:59:59.999 344:01:02.003].each do |value|
       assert Timecode.canonical?(value), value
