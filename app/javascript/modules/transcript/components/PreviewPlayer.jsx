@@ -4,11 +4,7 @@ import {
     getPlaybackRate,
     updatePlaybackRate,
 } from 'modules/media-player';
-import {
-    detectTimecodeFormat,
-    formatTimecode,
-    timecodeToSeconds,
-} from 'modules/utils';
+import { formatTimecode, timecodeToSeconds } from 'modules/utils';
 import PropTypes from 'prop-types';
 import {
     FaBackward,
@@ -42,8 +38,6 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
         currentTime,
     } = useSegmentPreview(segment, nextSegmentTimecode);
 
-    const timeCodeFormat = detectTimecodeFormat(segment.timecode) ?? 'ms';
-
     const segmentStartTime = timecodeToSeconds(segment.timecode);
 
     const skipBackDisabled = currentTime <= segmentStartTime + 0.1;
@@ -62,17 +56,11 @@ export default function PreviewPlayer({ segment, nextSegmentTimecode }) {
             ? segmentStartTime
             : currentTime;
     const formattedStartTime = isPreviewPlaying
-        ? formatTimecode(displayTime, false, false, false)
-        : formatTimecode(displayTime, false, true, false, timeCodeFormat);
+        ? formatTimecode(displayTime)
+        : formatTimecode(displayTime, false, true);
 
     const formattedEndTime = nextSegmentTimecode
-        ? formatTimecode(
-              timecodeToSeconds(nextSegmentTimecode),
-              false,
-              true,
-              false,
-              timeCodeFormat
-          )
+        ? formatTimecode(timecodeToSeconds(nextSegmentTimecode), false, true)
         : null;
 
     return (

@@ -1,5 +1,3 @@
-import { normalizeTimecode, timecodeToSeconds } from 'modules/utils';
-
 export function validateTapeNumber(v) {
     const number = /^\d{1,2}$/;
     return number.test(v);
@@ -21,81 +19,64 @@ export function validateDate(v) {
 }
 
 /**
- * Validates a timecode string, optionally enforcing a specific format.
- * Accepts both dot and colon separators for sub-second precision:
- * - HH:MM:SS, HH:MM:SS.FF or HH:MM:SS:FF (frames)
- * - HH:MM:SS, HH:MM:SS.MMM or HH:MM:SS:MMM (milliseconds)
+ * Validates HH:MM:SS.mmm with unpadded hours above 99.
  *
- * @param {string} v - The timecode value to validate.
- * @param {'ms'|'frames'|null} [format=null] - Expected format. When null, accepts
- *   any valid timecode (1–3 decimal places or none) for backwards compatibility.
+ * @param {string} value - Candidate timecode.
+ * @returns {boolean} Whether the value is canonical.
  */
-export function validateTimecode(v, format = null) {
-    // Validate basic structure: HH:MM:SS with optional sub-seconds using either : or . separator
-    const basicFormat = /^\d{2}:\d{2}:\d{2}([:.]\d{1,3})?$/.test(v);
-    if (!basicFormat) {
-        return false;
-    }
-
-    // If no specific format required, accept any valid timecode
-    if (!format) {
-        return true;
-    }
-
-    // Normalize to dot separator for format validation
-    const normalized = normalizeTimecode(v);
-    if (!normalized) {
-        return false;
-    }
-
-    if (format === 'frames') {
-        // Frames format (25fps): exactly 2 digits after separator (or none)
-        return /^\d{2}:\d{2}:\d{2}(\.\d{2})?$/.test(normalized);
-    }
-
-    if (format === 'ms') {
-        // Milliseconds format: exactly 3 digits after separator (or none)
-        return /^\d{2}:\d{2}:\d{2}(\.\d{3})?$/.test(normalized);
-    }
-
-    return false;
+export function validateTimecode(value) {
+    const pattern =
+        /^(?:[0-9]{2}|[1-9][0-9]{2,}):[0-5][0-9]:[0-5][0-9]\.[0-9]{3}(?![\s\S])/;
+    return typeof value === 'string' && pattern.test(value);
 }
 
 /**
- * Validates that a timecode string is within an exclusive range.
+ * Checks the chronological order of two already-validated HH:MM:SS.mmm strings.
+ * No conversion to a Number is necessary because the canonical format
+ * preserves precision in string comparison.
  *
- * @param {string} value - The timecode to validate.
- * @param {string|null} minTimecode - Lower bound (exclusive). Pass null to skip.
- * @param {string|null} maxTimecode - Upper bound (exclusive). Pass null to skip.
- * @param {'ms'|'frames'|null} [format=null] - Expected timecode format, passed
- *   through to {@link validateTimecode}.
- * @returns {boolean} True if the value is a valid timecode and strictly between
- *   minTimecode and maxTimecode.
+ * @param {string} earlier - First timecode to compare.
+ * @param {string} later - Second timecode to compare.
+ * @returns {boolean} True only if the first timecode is strictly before the second.
  */
-export function validateTimecodeInRange(
-    value,
-    minTimecode,
-    maxTimecode,
-    format = null
-) {
-    if (!validateTimecode(value, format)) {
+function isBeforeCanonicalTimecode(earlier, later) {
+    // Only hours can vary in width. More hour digits means a later timecode.
+    if (earlier.length !== later.length) {
+        return earlier.length < later.length;
+    }
+
+    // Equal widths align the digits from hours through milliseconds.
+    // String comparison preserves precision without converting to a Number.
+    return earlier < later;
+}
+
+/**
+ * Validates a canonical timecode against exclusive canonical bounds.
+ *
+ * @param {string} value - Candidate timecode.
+ * @param {string|null} [minTimecode] - Lower bound.
+ * @param {string|null} [maxTimecode] - Upper bound.
+ * @returns {boolean} Whether the value and supplied bounds are valid and in order.
+ */
+export function validateTimecodeInRange(value, minTimecode, maxTimecode) {
+    if (!validateTimecode(value)) {
         return false;
     }
 
-    const valueSeconds = timecodeToSeconds(value);
-
-    if (minTimecode) {
-        const minSeconds = timecodeToSeconds(minTimecode);
-        if (valueSeconds <= minSeconds) {
-            return false;
-        }
+    if (
+        minTimecode &&
+        (!validateTimecode(minTimecode) ||
+            !isBeforeCanonicalTimecode(minTimecode, value))
+    ) {
+        return false;
     }
 
-    if (maxTimecode) {
-        const maxSeconds = timecodeToSeconds(maxTimecode);
-        if (valueSeconds >= maxSeconds) {
-            return false;
-        }
+    if (
+        maxTimecode &&
+        (!validateTimecode(maxTimecode) ||
+            !isBeforeCanonicalTimecode(value, maxTimecode))
+    ) {
+        return false;
     }
 
     return true;
