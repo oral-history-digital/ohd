@@ -9,7 +9,6 @@ import { useI18n } from 'modules/i18n';
 import { useInterviewContributors } from 'modules/person';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { detectTimecodeFormat } from 'modules/utils';
 import PropTypes from 'prop-types';
 
 import { useSegmentSaveNotification } from '../hooks';
@@ -42,60 +41,34 @@ export default function SegmentForm({
         dismissSaveNotification,
     } = useSegmentSaveNotification(segment?.id);
 
-    // Detect timecode format from the interview data so ms and frames are not mixed
-    const timecodeFormat = detectTimecodeFormat(
-        segment?.timecode || prevSegmentTimecode || nextSegmentTimecode
-    );
-
-    const [timecodeError, setTimecodeError] = useState(
-        'invalid_timecode_range'
-    );
-    const [hasTimecodeError, setHasTimecodeError] = useState(false);
+    const [timecodeError, setTimecodeError] = useState(null);
 
     const isTimecodeValid = useCallback(
-        (value) => {
-            if (!validateTimecode(value, timecodeFormat)) return false;
-            return validateTimecodeInRange(
+        (value) =>
+            value === segment?.timecode ||
+            validateTimecodeInRange(
                 value,
                 prevSegmentTimecode,
-                nextSegmentTimecode,
-                timecodeFormat
-            );
-        },
-        [prevSegmentTimecode, nextSegmentTimecode, timecodeFormat]
+                nextSegmentTimecode
+            ),
+        [segment?.timecode, prevSegmentTimecode, nextSegmentTimecode]
     );
 
-    // Handle form field changes — update error state here instead of inside validators
     const handleFormChange = useCallback(
         (changeInfo) => {
             const { field, value } = changeInfo;
             if (field === 'timecode') {
-                if (!validateTimecode(value, timecodeFormat)) {
-                    setTimecodeError(
-                        timecodeFormat === 'frames'
-                            ? 'invalid_format_frames'
-                            : 'invalid_format'
-                    );
-                    setHasTimecodeError(true);
-                } else if (
-                    !validateTimecodeInRange(
-                        value,
-                        prevSegmentTimecode,
-                        nextSegmentTimecode,
-                        timecodeFormat
-                    )
-                ) {
-                    setTimecodeError('invalid_timecode_range');
-                    setHasTimecodeError(true);
-                } else {
-                    setHasTimecodeError(false);
+                let error = null;
+                if (!isTimecodeValid(value)) {
+                    error = validateTimecode(value)
+                        ? 'invalid_timecode_range'
+                        : 'invalid_format';
                 }
+                setTimecodeError(error);
             }
-            if (typeof onChange === 'function') {
-                onChange(changeInfo);
-            }
+            onChange?.(changeInfo);
         },
-        [timecodeFormat, prevSegmentTimecode, nextSegmentTimecode, onChange]
+        [isTimecodeValid, onChange]
     );
 
     /**
@@ -149,8 +122,7 @@ export default function SegmentForm({
             help: getTimecodeHelpText(
                 t,
                 prevSegmentTimecode,
-                nextSegmentTimecode,
-                timecodeFormat
+                nextSegmentTimecode
             ),
         },
     ];
@@ -168,7 +140,7 @@ export default function SegmentForm({
                 onCancel={onCancel}
                 onChange={handleFormChange}
                 fetching={isSaving}
-                hasValidationErrors={hasTimecodeError}
+                hasValidationErrors={Boolean(timecodeError)}
                 disableIfUnchanged={true}
                 notification={saveNotification}
                 onDismissNotification={dismissSaveNotification}
