@@ -22,6 +22,7 @@ class ApplicationJob < ActiveJob::Base
       receiver: opts[:user],
       type: job_type,
       file: opts[:file_path],
+      filename: opts[:filename],
       locale: opts[:locale],
     ).finished_job.deliver_now if opts[:user]
 
@@ -37,7 +38,8 @@ class ApplicationJob < ActiveJob::Base
 
   rescue_from(StandardError) do |error|
     jobs_logger.error("*** #{opts[:interview]&.archive_id}: ")
-    jobs_logger.error("#{error.message}: #{error.backtrace}")
+    detail = error.is_a?(Timecode::ImportFormatError) ? error.class.name : error.message
+    jobs_logger.error("#{detail}: #{error.backtrace}")
 
     AdminMailer.with(
       project: opts[:project],
@@ -45,6 +47,7 @@ class ApplicationJob < ActiveJob::Base
       receiver: opts[:user],
       type: job_type,
       file: opts[:file_path],
+      filename: opts[:filename],
       locale: opts[:locale],
       error: error
     ).finished_job.deliver_now if opts[:user]
