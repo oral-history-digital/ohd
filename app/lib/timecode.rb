@@ -1,6 +1,16 @@
 class Timecode
   # encapsulates Timecode-Formats and operations
 
+  # Regular expression for matching a timecode in the format HH:MM:SS,
+  # where HH can be 2 or more digits, and MM and SS are 2 digits each.
+  CLOCK_PATTERN = /(?:[0-9]{2}|[1-9][0-9]{2,}):[0-5][0-9]:[0-5][0-9]/
+  private_constant :CLOCK_PATTERN
+
+  IMPORT_FRAME_RATES = [24, 25, 30, 50, 60].freeze
+
+  # Indicates that an uploaded timestamp does not match the selected format.
+  class ImportFormatError < ArgumentError; end
+
   # Checks whether a value is in the canonical segment storage format.
   # Accepts timecodes in the format HH:MM:SS.mmm, where HH can be 2 or more
   # digits, MM and SS are 2 digits each, and mmm is 3 digits.
@@ -8,7 +18,36 @@ class Timecode
   # @param value [Object] Candidate timecode
   # @return [Boolean] Whether the value can be stored as-is
   def self.canonical?(value)
-    value.is_a?(String) && /\A(?:[0-9]{2}|[1-9][0-9]{2,}):[0-5][0-9]:[0-5][0-9]\.[0-9]{3}\z/.match?(value)
+    value.is_a?(String) && /\A#{CLOCK_PATTERN}\.[0-9]{3}\z/.match?(value)
+  end
+
+  # Converts an uploaded timecode using the convention selected for the file.
+  #
+  # @param value [Object] Timecode from the upload
+  # @param frame_rate [Integer, nil] Source frame rate for HH:MM:SS:FF, or nil for HH:MM:SS.mmm
+  # @return [String] Canonical timecode
+  # @raise [ImportFormatError] If the timecode or frame rate does not match a supported convention
+  def self.parse_import(value, frame_rate: nil)
+    if frame_rate.nil?
+      return value if canonical?(value)
+
+      raise ImportFormatError, 'Use HH:MM:SS.mmm with three digits after the dot, for example 01:02:03.240.'
+    end
+
+    unless frame_rate.is_a?(Integer) && IMPORT_FRAME_RATES.include?(frame_rate)
+      raise ImportFormatError, "Choose a supported source frame rate (#{IMPORT_FRAME_RATES.join(', ')} fps)."
+    end
+
+    unless value.is_a?(String) && /\A#{CLOCK_PATTERN}:[0-9]{2}\z/.match?(value)
+      raise ImportFormatError, 'Use HH:MM:SS:FF with a colon before the two frame digits, for example 01:02:03:12.'
+    end
+
+    hours, minutes, seconds, frames = value.split(':').map(&:to_i)
+    if frames >= frame_rate
+      raise ImportFormatError, "At #{frame_rate} fps, the frame number must be between 00 and #{frame_rate - 1}."
+    end
+
+    format_duration(hours * 3600 + minutes * 60 + seconds + Rational(frames, frame_rate))
   end
 
   def initialize(time=nil)
