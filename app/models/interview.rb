@@ -433,6 +433,19 @@ class Interview < ApplicationRecord
     self.touch unless self.new_record?
   end
 
+  # Ensures the initial tapes exist for a newly saved interview.
+  # @param count [Integer, String, nil] Number of tapes to initialize
+  # @return [void]
+  # @raise [ActiveRecord::RecordInvalid] If a tape fails validation
+  def initialize_tapes!(count)
+    count = count.to_i
+    (1..count).each do |number|
+      media_id = format('%s_%02d_%02d', archive_id.upcase, count, number)
+      tapes.find_or_create_by!(media_id: media_id, number: number)
+    end
+    touch
+  end
+
   def self.random_featured(n = 1, project_id)
     if n == 1
       shared.where(project_id: project_id).with_media_type.order(Arel.sql('RAND()')).first || first
@@ -533,8 +546,13 @@ class Interview < ApplicationRecord
     language&.code
   end
 
+  # Returns the primary language's ISO 639-1 code when one exists.
+  # @return [String, nil] Two-letter code or nil when there is no mapping
   def alpha2
-    ISO_639.find(language&.code).try(:alpha2) || language&.code[0..1]
+    code = alpha3
+    return if code.blank?
+
+    ISO_639.find(code)&.alpha2.presence
   end
 
   def translation_language
@@ -928,15 +946,30 @@ class Interview < ApplicationRecord
     end
 
     def archive_search(user, project, locale, params, per_page = 12)
+      raise ActiveRecord::RecordNotFound unless project
+
+      %i[fulltext archive_id page].each do |key|
+        value = params[key]
+        raise ActionController::BadRequest, "Invalid #{key}" if value && !value.is_a?(String) && !value.is_a?(Numeric)
+      end
+      facet_names = project.search_facets_names
+      event_facet_names = project.event_facet_names
+      facet_names.each do |name|
+        unless Array.wrap(params[name]).all? { |value| value.is_a?(String) || value.is_a?(Numeric) }
+          raise ActionController::BadRequest, "Invalid #{name} filter"
+        end
+      end
+      event_facet_names.each do |name|
+        raise ActionController::BadRequest, "Invalid #{name} filter" unless Array.wrap(params[name]).all?(String)
+      end
+
       # Apply the same content gate to matches, counts, facets, maps and exports.
       content_search = user && params[:fulltext].present?
       searchable_archive_ids = InterviewPolicy::Scope.new(ProjectContext.new(user, project), self)
         .search_fulltext.pluck(:archive_id) if content_search
-      search = Interview.search do
 
-        if user
-          fulltext params[:fulltext]
-        end
+      Interview.search do
+        fulltext params[:fulltext] if user
 
         with(
           :workflow_state,
@@ -961,16 +994,15 @@ class Interview < ApplicationRecord
             # By default Sunspot will only return the first 100 facet values.
             # You can increase this limit, or force it to return all facets by
             # setting limit to -1.
-            project.search_facets_names.each do |facet_name|
-              facet_value = params[facet_name]
-              facet_value.reject(&:blank?) if facet_value.is_a?(Array)
-              filter = with(facet_name.to_sym).any_of(facet_value) if facet_value.present?
+            facet_names.each do |facet_name|
+              facet_values = Array.wrap(params[facet_name]).reject(&:blank?)
+              filter = with(facet_name.to_sym).any_of(facet_values) if facet_values.present?
               facet facet_name, limit: -1, exclude: [filter].reject(&:blank?)
             end
           end
 
           dynamic :events do
-            project.event_facet_names.each do |facet_name|
+            event_facet_names.each do |facet_name|
               facet_value = params[facet_name]
 
               if facet_value.present?

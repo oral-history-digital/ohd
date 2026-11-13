@@ -1,8 +1,9 @@
 class UploadedFile < ApplicationRecord
   belongs_to :ref, polymorphic: true, touch: true
   has_one_attached :file
+  validates :file, presence: true, on: :create
 
-  after_save :symlink
+  after_save :symlink, if: -> { file.attached? }
   def symlink
     symlink_path = File.join(Rails.root, 'tmp', 'files', file.blob.filename.to_s)
     File.delete(symlink_path) if File.symlink?(symlink_path)
