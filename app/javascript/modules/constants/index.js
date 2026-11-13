@@ -198,3 +198,30 @@ export const FRAMES_PER_SECOND = 25;
 
 // RTL languages (ISO 639-3 codes)
 export const RTL_LANGUAGES = ['ara', 'heb'];
+
+// Mapping from ISO 3166-1 alpha-2 country codes to ISO 639-1 language codes
+// Only includes cases where they differ or where multiple languages exist
+// For countries with multiple official languages, the first is typically the most widely used
+export const COUNTRY_TO_LANGUAGE = {
+    at: 'de', // Austria → German
+    be: 'nl', // Belgium → Dutch (also fr, de)
+    ca: 'en', // Canada → English (also fr)
+    ch: 'de', // Switzerland → German (also fr, it, rm)
+    cz: 'cs', // Czech Republic → Czech
+    dk: 'da', // Denmark → Danish
+    ee: 'et', // Estonia → Estonian
+    fi: 'fi', // Finland → Finnish (also sv)
+    gb: 'en', // United Kingdom → English
+    gr: 'el', // Greece → Greek
+    hr: 'hr', // Croatia → Croatian
+    ie: 'en', // Ireland → English (also ga)
+    is: 'is', // Iceland → Icelandic
+    kr: 'ko', // South Korea → Korean
+    lu: 'lb', // Luxembourg → Luxembourgish (also fr, de)
+    lv: 'lv', // Latvia → Latvian
+    no: 'no', // Norway → Norwegian
+    se: 'sv', // Sweden → Swedish
+    si: 'sl', // Slovenia → Slovenian
+    sk: 'sk', // Slovakia → Slovak
+    ua: 'uk', // Ukraine → Ukrainian
+};
