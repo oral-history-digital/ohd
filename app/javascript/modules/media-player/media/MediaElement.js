@@ -15,7 +15,6 @@ import {
     useGetMediaMissingText,
     useMediaPlayerResize,
     usePosterImage,
-    useTimecodeFormat,
 } from '../hooks';
 import '../plugins/configurationMenuPlugin.js';
 import '../plugins/customSkipButtonsPlugin.js';
@@ -93,8 +92,6 @@ export default function MediaElement({
     // Hook for manual resize via drag handle
     const { resizeHandleRef, isDragging } = useMediaPlayerResize();
 
-    const timecodeFormat = useTimecodeFormat(interview);
-
     const aspectRatio = project
         ? `${project.aspect_x}:${project.aspect_y}`
         : undefined;
@@ -134,10 +131,7 @@ export default function MediaElement({
                 'skipBackward',
                 'playToggle',
                 'skipForward',
-                {
-                    name: 'FractionalCurrentTimeDisplay',
-                    timecodeFormat,
-                },
+                'FractionalCurrentTimeDisplay',
                 'volumePanel',
                 'playbackRateMenuButton',
                 'qualitySelector',

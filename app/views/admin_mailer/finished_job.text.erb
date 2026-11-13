@@ -18,7 +18,9 @@ Sie haben im Portal "<%= @project_name %>" folgenden Arbeitsschritt vorgenommen:
 <% if @error %>
   Es gab folgende Fehlermeldung:
   <%= @error.message %>
-  <%= @error.backtrace[0..5] %>
+  <% unless @error.is_a?(Timecode::ImportFormatError) %>
+    <%= @error.backtrace[0..5] %>
+  <% end %>
 <% else %>
   Bitte prüfen Sie Vollständigkeit und Korrektheit der importierten Daten.
 <% end %>

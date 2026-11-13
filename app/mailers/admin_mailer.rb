@@ -49,7 +49,7 @@ class AdminMailer < ApplicationMailer
     @project = params[:project]
     @project_name = (@project && @project.name) || (@interview && @interview.project.name)
     @file = params[:file]
-    @filename = @file && @file.split('/').last
+    @filename = params[:filename] || (@file && @file.split('/').last)
     @locale = params[:locale]
     @error = params[:error]
     subject = "Interview-Archiv #{@project_name} - #{TranslationValue.for('jobs.'+@type, 'de')} #{@filename}"

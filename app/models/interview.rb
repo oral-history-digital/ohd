@@ -1,5 +1,4 @@
 require 'globalize'
-require 'webvtt'
 
 class Interview < ApplicationRecord
   include RefreshesSearchIndex
@@ -650,33 +649,18 @@ class Interview < ApplicationRecord
     language && language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers)
-    ods = Roo::Spreadsheet.open(file_path, { csv_options: CSV_OPTIONS })
-    ods.each_with_pagename do |name, sheet|
-      parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
-      parsed_sheet.each_with_index do |row, index|
-        contribution = contributions.select{|c| c.speaker_designation && c.speaker_designation == row[:speaker]}.first
-        speaker_id = contribution && contribution.person_id
-        unless row[:timecode] =~ /^\d{2}:\d{2}:\d{2}.\d{3}$/
-          raise "Timecode has to be in the format HH:MM:SS.mmm, but '#{row[:timecode]}' in line #{index+2} is not. Please correct the timecode and try again."
-        end
-        if update_only_speakers && speaker_id
-          segment = Segment.find_or_create_by(interview_id: id, timecode: row[:timecode], tape_id: tape_id)
-          segment.update speaker_id: speaker_id
-        else
-          Segment.create_or_update_by({
-            interview_id: id,
-            timecode: row[:timecode],
-            next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode,
-            tape_id: tape_id,
-            text: row[:transcript] || '',
-            locale: locale,
-            speaker_id: speaker_id,
-            split: false
-          })
-        end
-      end
-    end
+  # Imports a spreadsheet into one of this interview's tapes.
+  #
+  # @param file_path [String] Uploaded spreadsheet path
+  # @param tape_id [Integer] ID of the destination tape
+  # @param locale [String] Transcript locale
+  # @param update_only_speakers [Boolean] Whether to limit matching rows to speaker updates
+  # @param options [Hash] Optional format and replacement settings
+  # @return [void]
+  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers, **options)
+    tape = tapes.find(tape_id)
+    import_options = options.merge(update_only_speakers: update_only_speakers)
+    TranscriptSpreadsheetImport.new(tape, locale, import_options).call(file_path)
   end
 
   # tape_id is a dummy here
@@ -695,33 +679,17 @@ class Interview < ApplicationRecord
     })
   end
 
-  def create_or_update_segments_from_vtt(file_path, tape_id, locale)
-    extension = File.extname(file_path).strip.downcase[1..-1]
-    webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
-    webvtt.cues.each do |cue|
-      #
-      # get speaker_id
-      #
-      speaker_match = cue.text.match(/<v (\S+)>/)
-      speaker_designation = speaker_match && speaker_match[1]
-      contribution = contributions.select{|c| c.speaker_designation && c.speaker_designation == speaker_designation}.first
-      speaker_id = contribution && contribution.person_id
-      #
-      # cut speaker-tag
-      #
-      text = cue.text.sub(/<v \S+> /, '')
-
-      Segment.create_or_update_by({
-        interview_id: id,
-        timecode: cue.start.to_s,
-        next_timecode: cue.end.to_s,
-        tape_id: tape_id,
-        text: text,
-        locale: locale,
-        speaker_id: speaker_id,
-        split: false
-      })
-    end
+  # Imports validated subtitle cues into one of this interview's tapes.
+  #
+  # @param file_path [String] Path to the VTT or SRT upload
+  # @param tape_id [Integer] ID of the destination tape
+  # @param locale [String] Transcript locale
+  # @param options [Hash] Replacement and speaker settings
+  # @return [void]
+  def create_or_update_segments_from_vtt(file_path, tape_id, locale, **options)
+    tape = tapes.find(tape_id)
+    rows = TranscriptSubtitleReader.new(file_path).call
+    TranscriptSegmentImport.new(tape, locale, options).call(rows)
   end
 
   def duration=(seconds_or_timecode)

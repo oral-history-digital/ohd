@@ -172,6 +172,7 @@ export function fetchData(
  * @param {Object} params - Form payload keyed by the singular resource name.
  * @param {Object} [opts={}] - Submission settings.
  * @param {boolean} [opts.updateStateBeforeSubmit=false] - Apply an optimistic update for PUT.
+ * @param {Function} [opts.onError] - Receives the failed response body or request error.
  * @param {Function} [callback] - Receives the successful response after Redux is updated.
  * @returns {function(Function): void} Redux thunk that starts the save request.
  */
@@ -211,7 +212,10 @@ export function submitData(props, params, opts = {}, callback) {
                 payload,
                 dispatch,
                 (json) => receiveMutationData(json, pluralizedDataType),
-                (error) => receiveError(pluralizedDataType, id, error),
+                (error) => {
+                    opts.onError?.(error?.response?.body ?? error);
+                    return receiveError(pluralizedDataType, id, error);
+                },
                 callback
             );
         };
@@ -231,7 +235,10 @@ export function submitData(props, params, opts = {}, callback) {
                 params,
                 dispatch,
                 (json) => receiveMutationData(json, pluralizedDataType),
-                (error) => receiveError(pluralizedDataType, null, error),
+                (error) => {
+                    opts.onError?.(error?.response?.body ?? error);
+                    return receiveError(pluralizedDataType, null, error);
+                },
                 callback
             );
         };

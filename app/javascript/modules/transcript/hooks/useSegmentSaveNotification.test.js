@@ -116,6 +116,29 @@ describe('useSegmentSaveNotification', () => {
         expect(result.current.saveNotification).toBeNull();
     });
 
+    it('keeps the timecode error when Redux records the failed save', () => {
+        render();
+        act(() => result.current.handleSaveStart());
+        mockStatuses = { segments: { 1: 'fetching' } };
+        rerender();
+
+        const description = 'must use HH:MM:SS.mmm';
+        act(() =>
+            result.current.handleSaveError({
+                errors: { timecode: [description] },
+            })
+        );
+        mockStatuses = { segments: { 1: 'error-123' } };
+        rerender();
+
+        expect(result.current.isSaving).toBe(false);
+        expect(result.current.saveNotification).toEqual({
+            variant: 'error',
+            title: 'modules.forms.save_error',
+            description,
+        });
+    });
+
     it('resets notification when segment id changes', () => {
         render({ segmentId: 1 });
 

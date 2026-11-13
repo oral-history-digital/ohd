@@ -310,7 +310,7 @@ module DataHelper
 
     if with_segments
       segment_with_everything(
-        "00:00:02.00",
+        "00:00:02.000",
         interview,
         first_tape,
         first_speaker,
@@ -338,7 +338,7 @@ module DataHelper
         ]
       )
       segment_with_everything(
-        "00:02:02.00",
+        "00:02:02.000",
         interview,
         second_tape,
         second_speaker,
@@ -370,7 +370,7 @@ module DataHelper
   end
 
   def self.segment_with_everything(
-    timecode="00:00:02.00",
+    timecode="00:00:02.000",
     interview=test_interview,
     tape=test_tape,
     speaker=nil,
@@ -586,7 +586,7 @@ module DataHelper
       interview: i,
       tape: i.tapes.last,
       speaking_person: Person.find_by!(last_name: 'Rossi'),
-      timecode: '00:17:12.00',
+      timecode: '00:17:12.000',
       text: 'My name is Mario Rossi',
       locale: :eng
     )

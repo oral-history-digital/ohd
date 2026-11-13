@@ -4,9 +4,7 @@ describe('getTimecodeHelpText', () => {
     // Mock translation function with interpolation support
     const mockT = (key, params) => {
         const translations = {
-            'edit.segment.timecode_format': 'Format: HH:MM:SS or HH:MM:SS.mmm',
-            'edit.segment.timecode_format_frames':
-                'Format: HH:MM:SS or HH:MM:SS.ff',
+            'edit.segment.timecode_format': 'Format: HH:MM:SS.mmm',
             'edit.segment.timecode_range_both': `Allowed range: > ${params?.prev} and < ${params?.next}`,
             'edit.segment.timecode_range_prev_only': `Allowed range: > ${params?.prev}`,
         };
@@ -15,12 +13,12 @@ describe('getTimecodeHelpText', () => {
 
     it('returns format hint when no constraints exist', () => {
         const result = getTimecodeHelpText(mockT, null, null);
-        expect(result).toBe('Format: HH:MM:SS or HH:MM:SS.mmm');
+        expect(result).toBe('Format: HH:MM:SS.mmm');
     });
 
     it('returns format hint when both constraints are undefined', () => {
         const result = getTimecodeHelpText(mockT, undefined, undefined);
-        expect(result).toBe('Format: HH:MM:SS or HH:MM:SS.mmm');
+        expect(result).toBe('Format: HH:MM:SS.mmm');
     });
 
     it('shows only lower bound when only prevTimecode exists', () => {
@@ -75,8 +73,7 @@ describe('getTimecodeHelpText', () => {
     it('uses translation function for format text when no constraints', () => {
         const customT = jest.fn((key) => {
             const translations = {
-                'edit.segment.timecode_format':
-                    'Format: HH:MM:SS oder HH:MM:SS.mmm',
+                'edit.segment.timecode_format': 'Format: HH:MM:SS.mmm',
             };
             return translations[key] || key;
         });
@@ -84,17 +81,17 @@ describe('getTimecodeHelpText', () => {
         const result = getTimecodeHelpText(customT, null, null);
 
         expect(customT).toHaveBeenCalledWith('edit.segment.timecode_format');
-        expect(result).toBe('Format: HH:MM:SS oder HH:MM:SS.mmm');
+        expect(result).toBe('Format: HH:MM:SS.mmm');
     });
 
     it('treats empty strings as falsy (no constraints)', () => {
         const result = getTimecodeHelpText(mockT, '', '');
-        expect(result).toBe('Format: HH:MM:SS or HH:MM:SS.mmm');
+        expect(result).toBe('Format: HH:MM:SS.mmm');
     });
 
     it('handles mixed empty string and null', () => {
         const result = getTimecodeHelpText(mockT, '', null);
-        expect(result).toBe('Format: HH:MM:SS or HH:MM:SS.mmm');
+        expect(result).toBe('Format: HH:MM:SS.mmm');
     });
 
     it('shows constraint when prevTimecode is provided but nextTimecode is empty string (last segment)', () => {
@@ -132,66 +129,5 @@ describe('getTimecodeHelpText', () => {
                 next: '00:02:00',
             }
         );
-    });
-
-    describe('format parameter', () => {
-        it('uses timecode_format_frames key when format is frames and no constraints', () => {
-            const result = getTimecodeHelpText(mockT, null, null, 'frames');
-            expect(result).toBe('Format: HH:MM:SS or HH:MM:SS.ff');
-        });
-
-        it('uses timecode_format key when format is ms and no constraints', () => {
-            const result = getTimecodeHelpText(mockT, null, null, 'ms');
-            expect(result).toBe('Format: HH:MM:SS or HH:MM:SS.mmm');
-        });
-
-        it('uses 00:00:00.00 as default lower bound for frames format (first segment)', () => {
-            const result = getTimecodeHelpText(
-                mockT,
-                null,
-                '00:00:10.12',
-                'frames'
-            );
-            expect(result).toBe(
-                'Allowed range: > 00:00:00.00 and < 00:00:10.12'
-            );
-        });
-
-        it('uses 00:00:00.000 as default lower bound for ms format (first segment)', () => {
-            const result = getTimecodeHelpText(
-                mockT,
-                null,
-                '00:00:10.500',
-                'ms'
-            );
-            expect(result).toBe(
-                'Allowed range: > 00:00:00.000 and < 00:00:10.500'
-            );
-        });
-
-        it('uses 00:00:00.000 as default lower bound when format is null (first segment)', () => {
-            const result = getTimecodeHelpText(mockT, null, '00:03:45');
-            expect(result).toBe('Allowed range: > 00:00:00.000 and < 00:03:45');
-        });
-
-        it('passes actual prev and next unchanged when both are provided (frames)', () => {
-            const result = getTimecodeHelpText(
-                mockT,
-                '00:01:00.12',
-                '00:02:00.00',
-                'frames'
-            );
-            expect(result).toBe(
-                'Allowed range: > 00:01:00.12 and < 00:02:00.00'
-            );
-        });
-
-        it('uses timecode_format_frames key checked by spy', () => {
-            const spyT = jest.fn(mockT);
-            getTimecodeHelpText(spyT, null, null, 'frames');
-            expect(spyT).toHaveBeenCalledWith(
-                'edit.segment.timecode_format_frames'
-            );
-        });
     });
 });

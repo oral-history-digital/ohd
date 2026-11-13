@@ -85,160 +85,102 @@ describe('validateDate', () => {
     });
 });
 
-describe('validateTimecode', () => {
-    it('accepts HH:MM:SS format', () => {
-        expect(validateTimecode('01:23:45')).toBeTruthy();
+describe('canonical segment timecodes', () => {
+    it.each(['00:00:00.000', '99:59:59.999', '100:00:00.000'])(
+        'accepts %s',
+        (timecode) => expect(validateTimecode(timecode)).toBe(true)
+    );
+
+    it.each([
+        '00:00:00',
+        '00:00:00.0',
+        '00:00:00.00',
+        '00:00:00:000',
+        '00:60:00.000',
+        '00:00:60.000',
+        '010:00:00.000',
+        '00:00:00.000\n',
+    ])('rejects %j', (timecode) => {
+        expect(validateTimecode(timecode)).toBe(false);
     });
 
-    it('accepts HH:MM:SS.mmm format', () => {
-        expect(validateTimecode('01:23:45.123')).toBeTruthy();
-    });
-
-    it('accepts HH:MM:SS.m format', () => {
-        expect(validateTimecode('01:23:45.1')).toBeTruthy();
-    });
-
-    it('rejects invalid format', () => {
-        expect(validateTimecode('1:23:45')).toBeFalsy();
-    });
-
-    it('rejects missing colons', () => {
-        expect(validateTimecode('012345')).toBeFalsy();
-    });
-
-    it('accepts HH:MM:SS:ff format (colon for frames)', () => {
-        expect(validateTimecode('01:23:45:12')).toBeTruthy();
-    });
-
-    it('accepts HH:MM:SS:mmm format (colon for milliseconds)', () => {
-        expect(validateTimecode('01:23:45:123')).toBeTruthy();
-    });
-
-    it('accepts HH:MM:SS:m format (colon for single digit)', () => {
-        expect(validateTimecode('01:23:45:1')).toBeTruthy();
-    });
-});
-
-describe('validateTimecode with format', () => {
-    describe('ms format', () => {
-        it('accepts HH:MM:SS.mmm (3 decimal places)', () => {
-            expect(validateTimecode('01:23:45.123', 'ms')).toBeTruthy();
-        });
-
-        it('accepts HH:MM:SS (no decimals)', () => {
-            expect(validateTimecode('01:23:45', 'ms')).toBeTruthy();
-        });
-
-        it('rejects HH:MM:SS.ff (2 decimal places)', () => {
-            expect(validateTimecode('01:23:45.12', 'ms')).toBeFalsy();
-        });
-
-        it('rejects HH:MM:SS.m (1 decimal place)', () => {
-            expect(validateTimecode('01:23:45.1', 'ms')).toBeFalsy();
-        });
-
-        it('accepts HH:MM:SS:mmm (3 digits with colon)', () => {
-            expect(validateTimecode('01:23:45:123', 'ms')).toBeTruthy();
-        });
-
-        it('rejects HH:MM:SS:ff (2 digits with colon)', () => {
-            expect(validateTimecode('01:23:45:12', 'ms')).toBeFalsy();
-        });
-    });
-
-    describe('frames format', () => {
-        it('accepts HH:MM:SS.ff (2 decimal places)', () => {
-            expect(validateTimecode('01:23:45.12', 'frames')).toBeTruthy();
-        });
-
-        it('accepts HH:MM:SS (no decimals)', () => {
-            expect(validateTimecode('01:23:45', 'frames')).toBeTruthy();
-        });
-
-        it('rejects HH:MM:SS.mmm (3 decimal places)', () => {
-            expect(validateTimecode('01:23:45.123', 'frames')).toBeFalsy();
-        });
-
-        it('rejects HH:MM:SS.m (1 decimal place)', () => {
-            expect(validateTimecode('01:23:45.1', 'frames')).toBeFalsy();
-        });
-
-        it('accepts frame 00 (00:00:00.00)', () => {
-            expect(validateTimecode('00:00:00.00', 'frames')).toBeTruthy();
-        });
-
-        it('accepts frame 24 (max at 25fps)', () => {
-            expect(validateTimecode('00:00:59.24', 'frames')).toBeTruthy();
-        });
-
-        it('accepts HH:MM:SS:ff (2 digits with colon)', () => {
-            expect(validateTimecode('01:23:45:12', 'frames')).toBeTruthy();
-        });
-
-        it('rejects HH:MM:SS:mmm (3 digits with colon)', () => {
-            expect(validateTimecode('01:23:45:123', 'frames')).toBeFalsy();
-        });
+    it('keeps neighboring bounds exclusive across the 100-hour boundary', () => {
+        const lower = '99:59:59.999';
+        const upper = '100:00:00.001';
+        expect(validateTimecodeInRange('100:00:00.000', lower, upper)).toBe(
+            true
+        );
+        expect(validateTimecodeInRange(lower, lower, upper)).toBe(false);
+        expect(validateTimecodeInRange(upper, lower, upper)).toBe(false);
     });
 });
 
 describe('validateTimecodeInRange', () => {
     it('accepts timecode between min and max', () => {
         const result = validateTimecodeInRange(
-            '00:01:30',
-            '00:01:00',
-            '00:02:00'
+            '00:01:30.000',
+            '00:01:00.000',
+            '00:02:00.000'
         );
         expect(result).toBeTruthy();
     });
 
     it('rejects timecode equal to min', () => {
         const result = validateTimecodeInRange(
-            '00:01:00',
-            '00:01:00',
-            '00:02:00'
+            '00:01:00.000',
+            '00:01:00.000',
+            '00:02:00.000'
         );
         expect(result).toBeFalsy();
     });
 
     it('rejects timecode equal to max', () => {
         const result = validateTimecodeInRange(
-            '00:02:00',
-            '00:01:00',
-            '00:02:00'
+            '00:02:00.000',
+            '00:01:00.000',
+            '00:02:00.000'
         );
         expect(result).toBeFalsy();
     });
 
     it('rejects timecode below min', () => {
         const result = validateTimecodeInRange(
-            '00:00:30',
-            '00:01:00',
-            '00:02:00'
+            '00:00:30.000',
+            '00:01:00.000',
+            '00:02:00.000'
         );
         expect(result).toBeFalsy();
     });
 
     it('rejects timecode above max', () => {
         const result = validateTimecodeInRange(
-            '00:02:30',
-            '00:01:00',
-            '00:02:00'
+            '00:02:30.000',
+            '00:01:00.000',
+            '00:02:00.000'
         );
         expect(result).toBeFalsy();
     });
 
     it('accepts timecode with only min constraint', () => {
-        const result = validateTimecodeInRange('00:01:30', '00:01:00', null);
+        const result = validateTimecodeInRange(
+            '00:01:30.000',
+            '00:01:00.000',
+            null
+        );
         expect(result).toBeTruthy();
     });
 
     it('accepts timecode with only max constraint', () => {
-        const result = validateTimecodeInRange('00:01:30', null, '00:02:00');
+        const result = validateTimecodeInRange(
+            '00:01:30.000',
+            null,
+            '00:02:00.000'
+        );
         expect(result).toBeTruthy();
     });
 
     it('accepts timecode with no constraints', () => {
-        const result = validateTimecodeInRange('00:01:30', null, null);
+        const result = validateTimecodeInRange('00:01:30.000', null, null);
         expect(result).toBeTruthy();
     });
 
@@ -252,53 +194,20 @@ describe('validateTimecodeInRange', () => {
     });
 
     it('rejects invalid timecode format', () => {
-        const result = validateTimecodeInRange('1:30', '00:01:00', '00:02:00');
-        expect(result).toBeFalsy();
-    });
-
-    it('accepts timecode in colon format between min and max', () => {
-        // User's case: timecode "00:00:41:00" between "00:00:37:00" and "00:00:51:00"
         const result = validateTimecodeInRange(
-            '00:00:41:00',
-            '00:00:37:00',
-            '00:00:51:00'
-        );
-        expect(result).toBeTruthy();
-    });
-
-    it('rejects timecode in colon format equal to min', () => {
-        const result = validateTimecodeInRange(
-            '00:00:37:00',
-            '00:00:37:00',
-            '00:00:51:00'
+            '1:30',
+            '00:01:00.000',
+            '00:02:00.000'
         );
         expect(result).toBeFalsy();
     });
 
-    it('rejects timecode in colon format equal to max', () => {
-        const result = validateTimecodeInRange(
-            '00:00:51:00',
-            '00:00:37:00',
-            '00:00:51:00'
+    it('rejects noncanonical bounds', () => {
+        expect(validateTimecodeInRange('00:01:30.000', '00:01:00', null)).toBe(
+            false
         );
-        expect(result).toBeFalsy();
-    });
-
-    it('accepts mixed format (colon timecode with dot constraints)', () => {
-        const result = validateTimecodeInRange(
-            '00:00:41:00',
-            '00:00:37.00',
-            '00:00:51.00'
-        );
-        expect(result).toBeTruthy();
-    });
-
-    it('accepts mixed format (dot timecode with colon constraints)', () => {
-        const result = validateTimecodeInRange(
-            '00:00:41.00',
-            '00:00:37:00',
-            '00:00:51:00'
-        );
-        expect(result).toBeTruthy();
+        expect(
+            validateTimecodeInRange('00:01:30.000', null, '00:02:00:000')
+        ).toBe(false);
     });
 });
