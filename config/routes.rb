@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     controllers applications: 'oauth/applications'
   end
 
+  get "up" => "rails/health#show", as: :rails_health_check
+
   scope "/:locale", :constraints => { locale: LOCALE_ROUTE_CONSTRAINT } do
     devise_for :users,
       controllers: {
