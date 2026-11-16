@@ -1,7 +1,12 @@
 import classNames from 'classnames';
 import { registerDoi } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
-import { deleteData, useProjectDetail, useSensitiveData } from 'modules/data';
+import {
+    deleteData,
+    getCurrentUser,
+    useProjectDetail,
+    useSensitiveData,
+} from 'modules/data';
 import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { PersonDetails } from 'modules/person';
@@ -10,7 +15,7 @@ import { Spinner } from 'modules/spinners';
 import { camelCase, pluralize } from 'modules/strings';
 import { AdminMenu, InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getDataDisplayName } from '../utils';
 import BaseData from './BaseData';
@@ -83,6 +88,7 @@ export default function AdminRecord({
     const dispatch = useDispatch();
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
+    const currentUser = useSelector(getCurrentUser);
 
     useSensitiveData(data, sensitiveAttributes);
 
@@ -228,7 +234,7 @@ export default function AdminRecord({
                             )}
                         </Item>
                     )}
-                    {!hideRegisterDoiAction && (
+                    {!hideRegisterDoiAction && currentUser?.admin && (
                         <Item
                             name="register_doi"
                             label={t('register_doi')}

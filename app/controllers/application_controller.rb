@@ -472,6 +472,7 @@ class ApplicationController < ActionController::Base
   end
 
   def register_doi(object)
+    return unless current_user&.admin?
     return 'unshared' if object.workflow_state != 'public'
     status = nil
     unless object.doi_status == "created"
