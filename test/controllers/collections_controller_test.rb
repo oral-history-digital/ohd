@@ -249,7 +249,7 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
-  test 'should allow an admin to update a collection workflow state' do
+  test 'should allow an admin to update metadata without reassigning the collection' do
     project = DataHelper.test_project(shortname: "cs#{SecureRandom.hex(4)}a")
     collection = Collection.create!(
       project: project,
@@ -259,12 +259,27 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
     )
 
     login_as User.find_by!(email: 'alice@example.com')
-    patch collection_path(collection, locale: 'en', format: :json), params: {
-      collection: { workflow_state: 'public' }
+    patch "/#{project.shortname}/en/collections/#{collection.id}.json", params: {
+      collection: { workflow_state: 'public', project_id: Project.find_by!(shortname: 'test').id }
     }
 
     assert_response :success
     assert_equal 'public', collection.reload.workflow_state
+    assert_equal project.id, collection.project_id
+  end
+
+  test 'should reject collection updates through a different project route' do
+    project = DataHelper.test_project(shortname: "cs#{SecureRandom.hex(4)}a")
+    collection = Collection.create!(project: project, institution: Institution.first, name: 'Foreign collection')
+    other_project = Project.find_by!(shortname: 'test')
+
+    login_as User.find_by!(email: 'alice@example.com')
+    put "/#{other_project.shortname}/en/collections/#{collection.id}.json", params: {
+      collection: { project_id: other_project.id }
+    }
+
+    assert_response :not_found
+    assert_equal project.id, collection.reload.project_id
   end
 
   test 'should return lightweight single collection payload in show when lite flag is set' do

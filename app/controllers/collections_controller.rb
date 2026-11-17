@@ -37,9 +37,11 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    changes = collection_logo_changes
-    @collection = changes.any? ? current_project.collections.find(params[:id]) : Collection.find(params[:id])
+    @collection = current_project.collections.find(params[:id])
     authorize @collection
+
+    changes = collection_logo_changes
+    metadata = collection_params.except(:project_id)
 
     if changes.any?
       invalid_file = changes.values.any? do |file|
@@ -49,11 +51,11 @@ class CollectionsController < ApplicationController
       return head :unprocessable_entity if invalid_file
 
       @collection.with_lock do
-        @collection.update!(collection_params.except(:project_id))
+        @collection.update!(metadata)
         changes.each { |locale, file| update_logo(@collection, locale, file) }
       end
     else
-      @collection.update collection_params
+      @collection.update metadata
     end
 
     respond @collection
