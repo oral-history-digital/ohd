@@ -8,19 +8,23 @@ class TranscriptsController < ApplicationController
   end
 
   def create
-    file = params[:transcript].delete(:data)
-    file_path = create_tmp_file(file)
+    raise ActiveRecord::RecordNotFound unless current_project
 
-    interview = Interview.find_by_archive_id(transcript_params[:archive_id])
+    interview = current_project.interviews.find_by!(archive_id: transcript_params[:archive_id])
     authorize interview, :upload_transcript?
-    tape = interview.tapes.find_by_number transcript_params[:tape_number]
+    tape = interview.tapes.find_by!(number: transcript_params[:tape_number])
+    file = params.require(:transcript).require(:data)
+    unless file.is_a?(ActionDispatch::Http::UploadedFile)
+      raise ActionController::BadRequest, 'Expected a transcript file'
+    end
+
+    locale = Language.find(transcript_params[:transcript_language_id]).code
+    file_path = create_tmp_file(file)
 
     update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
     tape.segments.destroy_all if transcript_params[:delete_existing]
 
     update_contributions(interview, transcript_params[:contributions_attributes])
-
-    locale = Language.find(transcript_params[:transcript_language_id]).code
 
     ReadTranscriptFileJob.perform_later({
       interview: interview,

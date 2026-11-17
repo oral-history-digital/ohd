@@ -82,8 +82,13 @@ class SearchesController < ApplicationController
   end
 
   def found_instances(interview, model, search, field_name = 'text')
-    search.hits.select { |h| h.instance }.map do |hit|
-      instance = cache_single(hit.instance, serializer_name: model == Segment ? "SegmentHit" : nil, cache_key_suffix: field_name)
+    search.hits.filter_map do |hit|
+      record = hit.instance
+      next unless record
+      next if model == Segment && (record.interview_id != interview.id ||
+        (record.tape_number.blank? && record.tape.nil?))
+
+      instance = cache_single(record, serializer_name: model == Segment ? "SegmentHit" : nil, cache_key_suffix: field_name)
       instance[:text] = highlighted_text(interview, hit, field_name)
       instance
     end

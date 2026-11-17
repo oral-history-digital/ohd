@@ -3,7 +3,17 @@ class SponsorLogosController < ApplicationController
 
   def create
     authorize UploadedFile
-    @uploaded_file = UploadedFile.create(sponsor_logo_params)
+    raise ActiveRecord::RecordNotFound unless current_project
+
+    attributes = sponsor_logo_params
+    if attributes[:ref_type] != 'Project' || attributes[:ref_id].to_s != current_project.id.to_s
+      raise ActiveRecord::RecordNotFound
+    end
+
+    @uploaded_file = current_project.sponsor_logos.build(attributes.except(:id, :type, :ref_id, :ref_type))
+    unless @uploaded_file.save
+      return render json: { errors: @uploaded_file.errors.full_messages }, status: :unprocessable_entity
+    end
 
     respond @uploaded_file
   end
