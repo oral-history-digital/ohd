@@ -16,7 +16,7 @@ concurrency:
 jobs:
   jest-tests:
     name: 'Jest Unit Tests'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -36,7 +36,7 @@ jobs:
 
   production-build:
     name: 'Production Asset Compile'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
