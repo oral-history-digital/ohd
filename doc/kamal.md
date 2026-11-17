@@ -30,7 +30,6 @@ This guide covers:
 | `config/deploy.avd-staging.yml` | Destination config. Top block sets `ssh_user`, `host_ip`, `domain`, `arch`. Also sets roles, proxy, volumes and accessory hosts. |
 | `.kamal/secrets-common` | Optional. Secrets shared by all destinations. |
 | `.kamal/secrets.avd-staging` | Secrets for this destination. Keep out of git. |
-| `.kamal/hooks/docker-setup` | Runs during `kamal-podman setup` and calls `bin/server/bootstrap`. |
 | `bin/server/bootstrap` | Sets up the server(s) of a destination over SSH. Safe to re-run. |
 | `bin/server/remote-bootstrap.sh` | The part that runs on the server. Called by `bin/server/bootstrap`. |
 | `bin/server/podman-autostart.sh` | Installed on the server as `~/bin/podman-autostart.sh`. Starts the containers after a reboot. |
@@ -57,7 +56,7 @@ versions of this guide. They are no longer used.
 **Server**
 
 - Debian or Ubuntu with `apt`
-- A deploy user (e.g. `avd1`) with passwordless `sudo`
+- A deploy user (e.g. `avd1`) with SSH access and temporary passwordless `sudo` for bootstrap
 - Nothing else. `bin/server/bootstrap` installs Podman and everything it needs.
   Docker is not used.
 
@@ -134,15 +133,20 @@ ruby bin/server/layout.rb avd-staging
 
 ## 6) Setup and deploy
 
+Run bootstrap from your workstation while the deploy user has passwordless sudo.
+
 ```bash
-bin/server/bootstrap avd-staging               # once per server
-bundle exec kamal-podman setup -d avd-staging  # accessories, proxy, app
-bundle exec kamal-podman deploy -d avd-staging
+bin/server/bootstrap avd-staging
 ```
 
-`kamal-podman setup` first checks that Podman is installed on each host, then runs the
-`docker-setup` hook. The hook runs the bootstrap again. That is harmless, and it makes
-sure a server that was set up by hand also gets the current autostart script.
+After bootstrap succeeds, revoke the deploy user's temporary sudo access. Run the
+first deployment to start the accessories, proxy, and app.
+
+```bash
+bundle exec kamal-podman setup -d avd-staging
+```
+
+Use `bundle exec kamal-podman deploy -d avd-staging` for subsequent releases.
 
 ---
 
@@ -299,14 +303,8 @@ To redeploy the running version without running the bootstrap again, use
    `env.clear.OHD_EXTRA_HOSTS_PRODUCTION`, the `proxy` block, and the `job` command.
 
 3. Create `.kamal/secrets.<name>` with all secrets from section 4.
-4. Make sure the deploy user can log in over SSH and has passwordless `sudo`.
-5. Run:
-
-   ```bash
-   bin/server/bootstrap <name>
-   bundle exec kamal-podman setup -d <name>
-   bundle exec kamal-podman deploy -d <name>
-   ```
+4. Enable SSH access for the deploy user and follow [Setup and deploy](#6-setup-and-deploy)
+   with the new destination name.
 
 ---
 
@@ -353,13 +351,7 @@ To redeploy the running version without running the bootstrap again, use
 1. Copy `deploy.avd-staging.yml` to `deploy.<name>.yml` and change the top block (section 12).
 2. Create `.kamal/secrets.<name>`.
 3. Export `GITHUB_ACTOR` and `GITHUB_TOKEN`.
-4. Run:
-
-   ```bash
-   bin/server/bootstrap <name>
-   bundle exec kamal-podman setup -d <name>
-   bundle exec kamal-podman deploy -d <name>
-   ```
+4. Follow [Setup and deploy](#6-setup-and-deploy) with the new destination name.
 
 5. Reboot the server in a maintenance window and check
    `~/log/podman-autostart.log` and `podman ps -a`.

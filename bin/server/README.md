@@ -22,16 +22,19 @@ Hosts, ssh user and directories come from `config/deploy.yml` and
 1. Copy `config/deploy.avd-staging.yml` to `config/deploy.<name>.yml` and change the
    values at the top: `ssh_user`, `host_ip`, `domain`, `arch`.
 2. Put the secrets for it in `.kamal/secrets.<name>`.
-3. Make sure the ssh user can log in and has passwordless sudo.
-4. Bootstrap, then set up Kamal:
+3. Enable SSH access for the deploy user and grant temporary passwordless sudo.
+4. Bootstrap the server from your workstation.
 
    ```sh
    bin/server/bootstrap <name>
+   ```
+
+5. Revoke the deploy user's temporary sudo access, then run the first deployment.
+
+   ```sh
    bundle exec kamal-podman setup -d <name>
    ```
 
-   `kamal-podman setup` checks that podman is installed on each host before it runs
-   the `docker-setup` hook. On a new server, run `bin/server/bootstrap` first (step 4).
-   The hook then re-applies the bootstrap during setup, which is harmless.
+Use `bundle exec kamal-podman deploy -d <name>` for subsequent releases.
 
 Use `bin/server/layout.rb <name>` to print the host layout without touching a server.
