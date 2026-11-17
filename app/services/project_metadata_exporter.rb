@@ -35,9 +35,8 @@ class ProjectMetadataExporter
     @md.description = description
     @md.description_lang = I18n.locale.to_s
     @md.subject_languages = @interviews
-      .flat_map { |i| i.language.code.split(/[\/-]/) }
+      .flat_map { |i| i.alpha3.to_s.split(/[\/-]/) }
       .uniq
-      .select { |code| ISO_639.find_by_code(code).present? }
     @md.media_types = @interviews.pluck(:media_type).uniq + ['text']
     @md.mime_types = mime_types
 

@@ -9,13 +9,12 @@ class ProjectMetadata
     number.to_s.rjust(10, '0')
   end
 
+  # Resolves a language code for CMDI, using undetermined for unknown locales.
+  # @param lang [String] Language or locale code
+  # @return [String] ISO 639-3 language code
   def self.language_code(lang)
-    code = ISO_639.find_by_code(lang).alpha3_terminologic
-    if code != ''
-      code
-    else
-      ISO_639.find_by_code(lang).alpha3_bibliographic
-    end
+    language = ISO_639.find_by_code(lang)
+    language&.alpha3_terminologic.presence || language&.alpha3_bibliographic.presence || 'und'
   end
 
   def to_xml
@@ -89,12 +88,13 @@ class ProjectMetadata
 
               xml.DocumentationLanguages {
                 documentation_languages.each do |lang|
-                  language_code = self.class.language_code(lang)
-                  language_name = ISO_639.find_by_code(lang).english_name
+                  language = ISO_639.find_by_code(lang)
+                  next unless language
+
                   xml.Language {
-                    xml.LanguageName language_name
+                    xml.LanguageName language.english_name
                     xml.ISO639 {
-                      xml.send('iso-639-3-code', language_code)
+                      xml.send('iso-639-3-code', self.class.language_code(lang))
                     }
                   }
                 end
@@ -133,11 +133,14 @@ class ProjectMetadata
               }
               xml.SubjectLanguages {
                 subject_languages.each do |code|
+                  language = ISO_639.find_by_code(code)
+                  next unless language
+
                   xml.SubjectLanguage {
                     xml.Dominant true
                     xml.SourceLanguage false
                     xml.Language {
-                      xml.LanguageName ISO_639.find_by_code(code).english_name
+                      xml.LanguageName language.english_name
                       xml.ISO639 {
                         xml.send('iso-639-3-code', self.class.language_code(code))
                       }

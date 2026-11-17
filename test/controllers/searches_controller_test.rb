@@ -74,14 +74,21 @@ class SearchesControllerTest < ActionController::TestCase
     interview = project.interviews.first
     interview.update!(workflow_state: 'public')
     segment = interview.segments.first
+    tape_number = segment.tape.number
+    segment.update_columns(tape_id: nil, tape_number: tape_number)
     highlight = Object.new
     highlight.define_singleton_method(:format) { |&block| "matched #{block.call('protected')}" }
     hit = Struct.new(:instance).new(segment)
     hit.define_singleton_method(:highlights) { |*| [highlight] }
+    stale_segment = Segment.find(segment.id)
+    stale_segment.interview_id = -1
+    stale_hit = hit.dup
+    stale_hit.instance = stale_segment
+    stale_hit.define_singleton_method(:highlights) { |*| [highlight] }
     queries = []
     search = lambda do |model, &block|
       queries << Sunspot.new_search(model, &block).query.to_params
-      Struct.new(:hits).new(model == Segment ? [hit] : [])
+      Struct.new(:hits).new(model == Segment ? [hit, stale_hit] : [])
     end
     # Stub only the external Solr execution boundary, retaining the real query DSL.
     run = ->(*) { get :interview, params: { id: interview.archive_id, fulltext: 'protected', locale: 'en', format: :json } }
@@ -93,12 +100,26 @@ class SearchesControllerTest < ActionController::TestCase
 
     assert_response :success
     payload = JSON.parse(response.body)
-    assert_equal segment.id, payload['found_segments'].first['id']
+    assert_equal [segment.id], payload['found_segments'].pluck('id')
+    assert_equal tape_number, payload['found_segments'].first['tape_nbr']
     assert_includes payload['found_segments'].first['text']['eng'], '<mark>protected</mark>'
     assert_equal 8, queries.size
     queries.each do |query|
       assert_match(/\barchive_id_\w+:#{Regexp.escape(interview.archive_id)}\b/, query[:fq].join(' '))
       assert_match(/\bworkflow_state_\w+:public\b/, query[:fq].join(' '))
+    end
+  end
+
+  test 'archive and facets reject nested facet filters before querying Solr' do
+    project = Project.find_by!(shortname: 'test')
+    @controller.stub(:current_project, project) do
+      project.stub(:search_facets_names, ['collection_id']) do
+        %i[archive facets].each do |action|
+          assert_raises(ActionController::BadRequest) do
+            get action, params: { locale: 'en', format: :json, collection_id: { id: 1 } }
+          end
+        end
+      end
     end
   end
 

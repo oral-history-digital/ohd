@@ -11,6 +11,12 @@ class InterviewTest < ActiveSupport::TestCase
     @interview
   end
 
+  test 'alpha2 is nil for a language without a two-letter ISO code' do
+    interview.primary_language_id = Language.find_or_create_by!(code: 'gsw').id
+
+    assert_nil interview.alpha2
+  end
+
   test "should import ods-transcript correctly" do
     interview.create_or_update_segments_from_spreadsheet(File.join(Rails.root, 'test', 'files', 'transcript_de.ods'), interview.tapes.first.id, 'ger', false)
     assert_equal(15, interview.segments.count)
