@@ -31,6 +31,8 @@ gem 'cyrillizer'
 gem 'active_model_serializers', '~> 0.10.13'
 gem 'rails-latex'
 gem 'react_on_rails', '~> 14.0.4'
+# react_on_rails < 16.2.0 requires connection_pool < 3.0, see
+gem 'connection_pool', '< 3.0'
 gem 'slim-rails'
 gem 'iso-639'
 gem 'countries'
@@ -87,6 +89,7 @@ group :test do
   gem 'json_schemer', '~> 2.0'
   gem 'capybara'
   gem 'database_cleaner'
+  gem 'minitest-mock'
   gem 'minitest-retry'
   gem 'spork' # faster tests
   gem 'pdf-inspector', require: "pdf/inspector"
@@ -103,6 +106,12 @@ end
 #gem 'mini_racer', platforms: :ruby
 gem 'mini_racer', '~> 0.16.0', platforms: :ruby
 
+# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+gem "kamal", require: false
+gem 'kamal_podman', git: 'https://github.com/grgr/kamal_podman.git', branch: 'main', require: false
+
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
 
 # TODO: ruby 2.7 fixes
 gem 'net-http'

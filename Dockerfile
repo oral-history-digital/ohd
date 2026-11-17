@@ -5,9 +5,13 @@
 # =============================================================================
 # System dependencies, Node.js, Yarn, and JAVA_HOME are all provided by the
 # shared base image. See Dockerfile.base and .github/workflows/publish-base-image.yml.
-FROM ghcr.io/oral-history-digital/ohd-base:latest AS base
+# BASE_IMAGE can be overridden per build (e.g. to pin a tag) without editing this file.
+ARG BASE_IMAGE=ghcr.io/oral-history-digital/ohd-base:latest
+FROM ${BASE_IMAGE} AS base
 
-# Create app user (non-root for security; production-only concern)
+# Create app user (non-root for security; production-only concern).
+# UID/GID 1000 must match CONTAINER_UIDS in bin/server/layout.rb ("/app"): the host
+# directories for /app volumes are chowned to it on every server.
 RUN groupadd --gid 1000 appuser \
   && useradd --uid 1000 --gid appuser --shell /bin/bash --create-home appuser
 
@@ -26,9 +30,20 @@ RUN gem install bundler:2.5.14
 COPY Gemfile Gemfile.lock ./
 COPY package.json yarn.lock ./
 
-# Configure bundler for production (no development/test gems)
-# Note: Not using --deployment flag to allow platform flexibility in Docker
-RUN bundle config set --local without 'development:test' \
+# Default environment
+ENV RAILS_ENV=production \
+    RACK_ENV=production \
+    NODE_ENV=production \
+    RAILS_SERVE_STATIC_FILES=false \
+    RAILS_LOG_TO_STDOUT=true \
+    PORT=3000 \
+    BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_APP_CONFIG=/usr/local/bundle \
+    BUNDLE_WITHOUT=development:test \
+    BUNDLE_DEPLOYMENT=1
+RUN bundle config set --local path '/usr/local/bundle' \
+  && bundle config set --local without 'development:test' \
+  && bundle config set --local deployment 'true' \
   && bundle config set --local jobs $(nproc) \
   && bundle config set --local retry 3
 
@@ -74,31 +89,8 @@ RUN RAILS_ENV=production \
 # =============================================================================
 FROM base AS runtime
 
-# Install only runtime system dependencies (no build tools)
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    --no-install-recommends \
-    # Runtime only - no build-essential
-    default-mysql-client \
-    libmariadb3 \
-    libxml2 \
-    libxslt1.1 \
-    libmagickwand-6.q16-6 \
-    libffi8 \
-    default-jre-headless \
-    # PDF generation via rails-latex gem (required)
-    texlive-base \
-    texlive-xetex \
-    fonts-freefont-ttf \
-    fonts-noto \
-    # Utilities
-    curl \
-    netcat-openbsd \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Copy bundler from builder with appuser ownership so runtime bundle install
-# works when /usr/local/bundle is mounted as a named volume in local dev.
-COPY --from=builder --chown=appuser:appuser /usr/local/bundle /usr/local/bundle
+# Copy gems exactly as built (keep root ownership/metadata stable)
+COPY --from=builder /usr/local/bundle /usr/local/bundle
 
 # Copy application
 COPY --chown=appuser:appuser . /app
@@ -107,7 +99,7 @@ COPY --chown=appuser:appuser . /app
 COPY --from=assets --chown=appuser:appuser /app/node_modules /app/node_modules
 COPY --from=assets --chown=appuser:appuser /app/public/packs /app/public/packs
 
-# Create directories for runtime data
+# Create directories for runtime data (do not recursively chown /usr/local/bundle)
 RUN mkdir -p \
     tmp/cache \
     tmp/pids \
@@ -115,9 +107,7 @@ RUN mkdir -p \
     tmp/files \
     log \
     storage \
-    /usr/local/bundle \
   && chown -R appuser:appuser \
-    /usr/local/bundle \
     tmp \
     log \
     storage
@@ -129,16 +119,8 @@ USER appuser
 EXPOSE 3000
 
 # Health check endpoint
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
-
-# Default environment
-ENV RAILS_ENV=production \
-    RACK_ENV=production \
-    NODE_ENV=production \
-    RAILS_SERVE_STATIC_FILES=false \
-    RAILS_LOG_TO_STDOUT=true \
-    PORT=3000
+#HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  #CMD curl -f http://localhost:3000/health || exit 1
 
 # Default command (can be overridden in docker-compose or Capistrano)
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
