@@ -7,8 +7,6 @@
 # config/deploy.yml + config/deploy.<destination>.yml (see layout.rb). For each
 # host it copies remote-bootstrap.sh, podman-autostart.sh and the layout to a temp
 # dir on the server and runs remote-bootstrap.sh there. Safe to re-run.
-#
-# Also run by .kamal/hooks/docker-setup during `kamal-podman setup`.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
