@@ -3,7 +3,7 @@ import { registerDoi } from 'modules/archive';
 import { AuthorizedContent } from 'modules/auth';
 import { deleteData, useProjectDetail } from 'modules/data';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AdminRecord from './AdminRecord';
 import DataList from './DataList';
@@ -110,6 +110,7 @@ jest.mock('modules/ui', () => {
 jest.mock('react-redux', () => ({
     connect: () => (Component) => Component,
     useDispatch: jest.fn(),
+    useSelector: jest.fn(),
 }));
 jest.mock('./DataDetails', () => {
     const MockPropTypes = jest.requireActual('prop-types');
@@ -166,6 +167,7 @@ function renderAdminRecord(props = {}) {
 beforeEach(() => {
     jest.clearAllMocks();
     useDispatch.mockReturnValue(dispatch);
+    useSelector.mockReturnValue({ admin: true });
 });
 
 test('renders the record and its configured actions', () => {
