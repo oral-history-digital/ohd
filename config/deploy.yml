@@ -1,8 +1,26 @@
-# Shared Kamal configuration. config/deploy.<destination>.yml is deep-merged over
-# this file and holds everything that differs per server: hosts, ssh user, host
-# paths, domain, builder arch. See bin/server/README.md.
+<%
+  host = ENV.fetch('DEPLOY_HOST')
+  ssh_user = ENV.fetch('DEPLOY_SSH_USER')
+  ssh_key = ENV['DEPLOY_SSH_KEY']
+  storage = ENV.fetch('DEPLOY_STORAGE_DIR')
+  domain = ENV.fetch('DEPLOY_DOMAIN')
+  arch = ENV.fetch('DEPLOY_ARCH', 'amd64')
+  database = ENV.fetch('MYSQL_DATABASE')
+  database_user = ENV.fetch('MYSQL_USER')
+  allowed_hosts = ([domain] + ENV.fetch('OHD_EXTRA_HOSTS', '').split(',').map(&:strip).reject(&:empty?)).uniq.join(',')
+  abort 'DEPLOY_STORAGE_DIR must be an absolute path' unless storage.start_with?('/')
+  abort 'Deployment host, SSH user, domain, database, and database user must be set' if [host, ssh_user, domain, database, database_user].any?(&:empty?)
+%>
 service: ohd
 image: oral-history-digital/ohd
+
+servers:
+  web:
+    - <%= host %>
+  job:
+    hosts:
+      - <%= host %>
+    cmd: bundle exec rake jobs:work
 
 registry:
   server: ghcr.io
@@ -12,12 +30,25 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
-    - MYSQL_PASSWORD_PRODUCTION
+    - MYSQL_PASSWORD
     - OIDC_SIGNING_KEY
     - SECRET_KEY_BASE
+    - DATACITE_PASSWORD
+    - ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+    - ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+    - ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
   clear:
     WEB_CONCURRENCY: 1
-    MYSQL_HOST_PRODUCTION: ohd-db
+    MYSQL_HOST: ohd-db
+    MYSQL_DATABASE: <%= database %>
+    MYSQL_USER: <%= database_user %>
+    OHD_DOMAIN: https://<%= domain %>
+    OHD_EXTRA_HOSTS: <%= allowed_hosts %>
+    OIDC_ISSUER: https://<%= domain %>
+    STORAGE_FILE_ROOT: /app/storage
+    DATACITE_PREFIX: <%= ENV.fetch('DATACITE_PREFIX') %>
+    DATACITE_CLIENT_ID: <%= ENV.fetch('DATACITE_CLIENT_ID') %>
+    DATACITE_URL: <%= ENV.fetch('DATACITE_URL') %>
     SOLR_URL: http://ohd-solr:8983/solr/blacklight-core
     ALLOW_LOCALHOST_IN_PRODUCTION: "true"
     TZ: Europe/Berlin
@@ -31,28 +62,54 @@ aliases:
 
 asset_path: /app/public/packs
 
-# Accessories run as ohd-db / ohd-solr. Their hosts are set per destination.
-# Relative directories are created in the remote home (~/ohd-db/data, ...).
+proxy:
+  host: <%= domain %>
+  app_port: 3000
+  run:
+    http_port: 8080
+    bind_ips:
+      - 127.0.0.1
+
+volumes:
+  - "<%= storage %>/app-cache:/app/tmp/cache"
+  - "<%= storage %>/app-files:/app/tmp/files"
+  - "<%= storage %>/app-logs:/app/log"
+  - "<%= storage %>/uploads:/app/storage"
+
+ssh:
+  user: <%= ssh_user %>
+<% if ssh_key && !ssh_key.empty? %>
+  keys: [<%= ssh_key.inspect %>]
+<% end %>
+
+builder:
+  arch: <%= arch %>
+
+# Accessories run as ohd-db / ohd-solr on the deployment host.
 accessories:
   db:
     image: docker.io/mariadb:10.5
+    hosts:
+      - <%= host %>
     env:
       clear:
-        MARIADB_DATABASE: ohd_production
-        MARIADB_USER: ohd
+        MARIADB_DATABASE: <%= database %>
+        MARIADB_USER: <%= database_user %>
       secret:
         - MARIADB_ROOT_PASSWORD
         - MARIADB_PASSWORD
     directories:
-      - data:/var/lib/mysql
+      - "<%= storage %>/db:/var/lib/mysql"
 
   solr:
     image: ghcr.io/oral-history-digital/ohd-solr:5.5-sunspot
+    hosts:
+      - <%= host %>
     env:
       clear:
         SOLR_CORE: blacklight-core
     directories:
-      - solr_data:/opt/solr/server/solr/mycores
+      - "<%= storage %>/solr:/opt/solr/server/solr/mycores"
 
 deploy_timeout: 120
 drain_timeout: 60

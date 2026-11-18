@@ -40,23 +40,28 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Install Kamal
-        run: gem install kamal
-
-      - name: Resolve Kamal config
-        id: cfg
-        run: |
-          case "${{ inputs.target }}" in
-            avd-staging)   echo "file=config/deploy.avd-staging.yml" >> "$GITHUB_OUTPUT" ;;
-            avd-production) echo "file=config/deploy.avd-production.yml" >> "$GITHUB_OUTPUT" ;;
-            *) echo "Unknown target: ${{ inputs.target }}"; exit 1 ;;
-          esac
-
       - name: Deploy
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_SSH_USER: ${{ vars.DEPLOY_SSH_USER }}
+          DEPLOY_STORAGE_DIR: ${{ vars.DEPLOY_STORAGE_DIR }}
+          DEPLOY_DOMAIN: ${{ vars.DEPLOY_DOMAIN }}
+          DEPLOY_ARCH: ${{ vars.DEPLOY_ARCH || 'amd64' }}
+          MYSQL_DATABASE: ${{ vars.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ vars.MYSQL_USER }}
+          DATACITE_PREFIX: ${{ vars.DATACITE_PREFIX }}
+          DATACITE_CLIENT_ID: ${{ vars.DATACITE_CLIENT_ID }}
+          DATACITE_URL: ${{ vars.DATACITE_URL }}
+          OHD_EXTRA_HOSTS: ${{ vars.OHD_EXTRA_HOSTS || vars.DEPLOY_DOMAIN }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          DATACITE_PASSWORD: ${{ secrets.DATACITE_PASSWORD }}
+          MARIADB_ROOT_PASSWORD: ${{ secrets.MARIADB_ROOT_PASSWORD }}
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+          OIDC_SIGNING_KEY: ${{ secrets.OIDC_SIGNING_KEY }}
+          CERTIFICATE_PEM: ${{ secrets.CERTIFICATE_PEM }}
+          PRIVATE_KEY_PEM: ${{ secrets.PRIVATE_KEY_PEM }}
         run: |
-          kamal deploy -c "${{ steps.cfg.outputs.file }}"
+          bin/kamal deploy -d "${{ inputs.target }}"

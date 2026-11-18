@@ -4,7 +4,7 @@
 #   bin/server/bootstrap <destination>      e.g. bin/server/bootstrap avd-staging
 #
 # Runs on your machine. Hosts, ssh user and host directories come from
-# config/deploy.yml + config/deploy.<destination>.yml (see layout.rb). For each
+# config/deploy.yml and the selected instance's environment (see layout.rb). For each
 # host it copies remote-bootstrap.sh, podman-autostart.sh and the layout to a temp
 # dir on the server and runs remote-bootstrap.sh there. Safe to re-run.
 set -euo pipefail
@@ -18,8 +18,6 @@ if [ -z "$DEST" ]; then
   echo "usage: bin/server/bootstrap <destination>" >&2
   exit 2
 fi
-[ -f "config/deploy.$DEST.yml" ] || { echo "no config/deploy.$DEST.yml" >&2; exit 2; }
-
 LAYOUT="$(ruby "$HERE/layout.rb" "$DEST")"
 SSH_USER="$(awk '$1 == "SSH_USER" { print $2 }' <<<"$LAYOUT")"
 HOSTS="$(awk '$1 == "HOST" { print $2 }' <<<"$LAYOUT")"

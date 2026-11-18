@@ -37,8 +37,6 @@ services:
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
       # Point to Solr container default core
       SOLR_URL: http://solr:8983/solr/default
-      SOLR_HOST: solr
-      SOLR_PORT: 8983
       DISABLE_SPRING: true
       # Use precompiled platform-specific gems instead of compiling from source
       BUNDLE_FORCE_RUBY_PLATFORM: false

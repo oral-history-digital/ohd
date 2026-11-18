@@ -27,6 +27,7 @@ coverage
 .env*
 !/.env.defaults
 !.env.example
+/config/deploy.*.yml
 
 # Ruby/Bundler
 vendor/

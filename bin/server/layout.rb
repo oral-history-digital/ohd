@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Renders the Kamal config for one destination the way Kamal does (ERB, then a
-# deep merge of config/deploy.yml and config/deploy.<destination>.yml) and prints
+# Renders the shared Kamal config with the selected instance's environment and prints
 # the host layout that bin/server/bootstrap needs:
 #
 #   SSH_USER <user>
@@ -24,18 +23,6 @@ CONTAINER_UIDS = {
   "/app"           => 1000  # appuser (Dockerfile)
 }.freeze
 
-def load_config(path)
-  return {} unless File.exist?(path)
-
-  YAML.safe_load(ERB.new(File.read(path)).result(binding), aliases: true) || {}
-end
-
-def deep_merge(base, override)
-  base.merge(override) do |_key, a, b|
-    a.is_a?(Hash) && b.is_a?(Hash) ? deep_merge(a, b) : b
-  end
-end
-
 def container_uid(path)
   CONTAINER_UIDS.find { |prefix, _| path == prefix || path.start_with?("#{prefix}/") }&.last
 end
@@ -48,9 +35,9 @@ end
 
 destination = ARGV.fetch(0) { abort "usage: ruby bin/server/layout.rb <destination>" }
 
-cfg = deep_merge(load_config("config/deploy.yml"), load_config("config/deploy.#{destination}.yml"))
+cfg = YAML.safe_load(ERB.new(File.read("config/deploy.yml")).result, aliases: true)
 service = cfg.fetch("service")
-ssh_user = cfg.dig("ssh", "user") or abort "ssh.user must be set in config/deploy.#{destination}.yml"
+ssh_user = cfg.dig("ssh", "user") or abort "ssh.user must be set in config/deploy.yml"
 
 servers = cfg["servers"] || {}
 servers = { "web" => servers } if servers.is_a?(Array)
