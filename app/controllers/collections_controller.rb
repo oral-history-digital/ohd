@@ -40,11 +40,11 @@ class CollectionsController < ApplicationController
     @collection = current_project.collections.find(params[:id])
     authorize @collection
 
-    changes = collection_logo_changes
+    logo_changes = collection_logo_changes
     metadata = collection_params.except(:project_id)
 
-    if changes.any?
-      invalid_file = changes.values.any? do |file|
+    if logo_changes.any?
+      invalid_file = logo_changes.values.any? do |file|
         file.present? && (!file.is_a?(ActionDispatch::Http::UploadedFile) ||
           !Marcel::MimeType.for(file.tempfile).start_with?('image/'))
       end
@@ -52,7 +52,7 @@ class CollectionsController < ApplicationController
 
       @collection.with_lock do
         @collection.update!(metadata)
-        changes.each { |locale, file| update_logo(@collection, locale, file) }
+        logo_changes.each { |locale, file| update_logo(@collection, locale, file) }
       end
     else
       @collection.update metadata
