@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Create Kamal's required destination file without storing instance settings in it.
+set -euo pipefail
+
+destination=
+previous=
+for argument in "$@"; do
+  if [ "$previous" = destination ]; then
+    destination="$argument"
+    break
+  fi
+  case "$argument" in
+    -d|--destination) previous=destination ;;
+  esac
+done
+
+case "$destination" in
+  ""|*[!a-zA-Z0-9_-]*)
+    echo 'usage: bin/kamal <command> -d <destination>' >&2
+    exit 2
+    ;;
+esac
+
+cd "$(dirname "$0")/.."
+destination_file="config/deploy.$destination.yml"
+if [ ! -e "$destination_file" ]; then
+  printf '{}\n' > "$destination_file"
+fi
+
+exec bundle exec kamal-podman "$@"

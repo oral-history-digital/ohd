@@ -14,14 +14,16 @@ What it does on each host:
 - clears podman state left over from a reboot
 - installs `~/bin/podman-autostart.sh` and starts it at boot (user's crontab)
 
-Hosts, ssh user and directories come from `config/deploy.yml` and
-`config/deploy.<destination>.yml`. Nothing is hard-coded here.
+Hosts, SSH user, and directories come from the selected instance's environment.
+See `.env.example` for the required `DEPLOY_*` variables.
 
 ## Adding a server
 
-1. Copy `config/deploy.avd-staging.yml` to `config/deploy.<name>.yml` and change the
-   values at the top: `ssh_user`, `host_ip`, `domain`, `arch`.
-2. Put the secrets for it in `.kamal/secrets.<name>`.
+1. Set `DEPLOY_HOST`, `DEPLOY_SSH_USER`, `DEPLOY_DOMAIN`, and
+   `DEPLOY_STORAGE_DIR` in the instance's private environment file. Load it
+   before each bootstrap or Kamal command.
+2. Include the secrets referenced by
+   `.kamal/secrets-common`.
 3. Enable SSH access for the deploy user and grant temporary passwordless sudo.
 4. Bootstrap the server from your workstation.
 
@@ -32,9 +34,10 @@ Hosts, ssh user and directories come from `config/deploy.yml` and
 5. Revoke the deploy user's temporary sudo access, then run the first deployment.
 
    ```sh
-   bundle exec kamal-podman setup -d <name>
+   bin/kamal setup -d <name>
    ```
 
-Use `bundle exec kamal-podman deploy -d <name>` for subsequent releases.
+Use `bin/kamal deploy -d <name>` for subsequent releases. The wrapper creates
+the ignored empty destination file required by Kamal.
 
 Use `bin/server/layout.rb <name>` to print the host layout without touching a server.

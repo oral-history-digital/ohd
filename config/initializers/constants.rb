@@ -8,6 +8,7 @@ OHD_DOMAINS = {
 # Allow overriding the default domain for current environment via OHD_DOMAIN env var,
 # or configure environment-specific domains via OHD_DOMAIN_<ENV> vars.
 OHD_DOMAIN = ENV['OHD_DOMAIN'].presence || OHD_DOMAINS[Rails.env]
+OHD_DOMAINS[Rails.env] = OHD_DOMAIN
 DEFAULT_PRIMARY_COLOR = '#e01217'
 
 # Locales that may appear as the /:locale segment of a url. Setting I18n.locale

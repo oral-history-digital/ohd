@@ -141,10 +141,10 @@ echo "127.0.0.1 portal.myarchive.localhost" | sudo tee -a /etc/hosts
 getent hosts portal.myarchive.localhost
 ```
 
-3. If needed, set additional allowed development hosts with `OHD_EXTRA_HOSTS_DEVELOPMENT` (comma-separated), then restart app:
+3. If needed, set additional allowed development hosts with `OHD_EXTRA_HOSTS` (comma-separated), then restart app:
 
 ```bash
-OHD_EXTRA_HOSTS_DEVELOPMENT=portal.myarchive.localhost docker compose --profile db up -d app
+OHD_EXTRA_HOSTS=portal.myarchive.localhost docker compose --profile db up -d app
 docker compose --profile db restart app
 ```
 
@@ -309,9 +309,7 @@ Notes:
 ### Optional
 
 - `ALLOW_LOCALHOST_IN_PRODUCTION` (default `false`)
-- `OHD_EXTRA_HOSTS_DEVELOPMENT` (comma-separated hostnames)
-- `OHD_EXTRA_HOSTS_STAGING` (comma-separated hostnames)
-- `OHD_EXTRA_HOSTS_PRODUCTION` (comma-separated hostnames)
+- `OHD_EXTRA_HOSTS` (comma-separated hostnames)
 
 ### Active Record encryption for multi-factor authentication
 

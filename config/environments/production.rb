@@ -109,7 +109,7 @@ Rails.application.configure do
   config.require_master_key = true
 
   allowed_domains = YAML.load_file(Rails.root.join('config/allowed_domains.yml')).fetch(Rails.env, [])
-  extra_hosts = ENV.fetch('OHD_EXTRA_HOSTS_PRODUCTION', '').split(',').map(&:strip).reject(&:blank?)
+  extra_hosts = ENV.fetch('OHD_EXTRA_HOSTS', '').split(',').map(&:strip).reject(&:blank?)
 
   config.hosts = allowed_domains + extra_hosts
 

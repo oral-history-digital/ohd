@@ -1,31 +1,42 @@
+<%
+  require 'uri'
+  solr_url = ENV['SOLR_URL'] unless ENV['SOLR_URL'].to_s.empty?
+  solr_urls = {
+    'development' => URI.parse(solr_url || 'http://solr:8983/solr/default'),
+    'test' => URI.parse(solr_url || 'http://localhost:8983/solr/default'),
+    'staging' => URI.parse(solr_url || 'http://localhost:8983/solr/production'),
+    'production' => URI.parse(solr_url || 'http://localhost:8983/solr/production')
+  }
+  raise 'SOLR_URL must include a host and core path' if solr_urls.values.any? { |url| url.host.nil? || url.path.empty? }
+%>
 development:
   solr:
-    hostname: <%= ENV.fetch('SOLR_HOST_DEVELOPMENT', ENV.fetch('SOLR_HOST', 'solr')) %>
-    port: <%= ENV.fetch('SOLR_PORT_DEVELOPMENT', ENV.fetch('SOLR_PORT', '8983')) %>
-    log_level: <%= ENV.fetch('SOLR_LOG_LEVEL_DEVELOPMENT', 'INFO') %>
-    path: <%= ENV.fetch('SOLR_PATH_DEVELOPMENT', '/solr/default') %>
+    hostname: <%= solr_urls.fetch('development').host %>
+    port: <%= solr_urls.fetch('development').port %>
+    log_level: <%= ENV.fetch('SOLR_LOG_LEVEL', 'INFO') %>
+    path: <%= solr_urls.fetch('development').path %>
 
 test:
   solr:
-    hostname: <%= ENV.fetch('SOLR_HOST_TEST', 'localhost') %>
-    port: <%= ENV.fetch('SOLR_PORT_TEST', '8983') %>
-    log_level: <%= ENV.fetch('SOLR_LOG_LEVEL_TEST', 'INFO') %>
-    path: <%= ENV.fetch('SOLR_PATH_TEST', '/solr/default') %>
+    hostname: <%= solr_urls.fetch('test').host %>
+    port: <%= solr_urls.fetch('test').port %>
+    log_level: <%= ENV.fetch('SOLR_LOG_LEVEL', 'INFO') %>
+    path: <%= solr_urls.fetch('test').path %>
 
 staging:
-  auto_commit_after_request: <%= ENV.fetch('SOLR_AUTO_COMMIT_AFTER_REQUEST_STAGING', ENV.fetch('SOLR_AUTO_COMMIT_AFTER_REQUEST', 'true')) == 'true' %>
-  auto_commit_after_delete_request: <%= ENV.fetch('SOLR_AUTO_COMMIT_AFTER_DELETE_REQUEST_STAGING', ENV.fetch('SOLR_AUTO_COMMIT_AFTER_DELETE_REQUEST', 'true')) == 'true' %>
+  auto_commit_after_request: <%= ENV.fetch('SOLR_AUTO_COMMIT_AFTER_REQUEST', 'true') == 'true' %>
+  auto_commit_after_delete_request: <%= ENV.fetch('SOLR_AUTO_COMMIT_AFTER_DELETE_REQUEST', 'true') == 'true' %>
   solr:
-    hostname: <%= ENV.fetch('SOLR_HOST_STAGING', ENV.fetch('SOLR_HOST', 'localhost')) %>
-    port: <%= ENV.fetch('SOLR_PORT_STAGING', ENV.fetch('SOLR_PORT', '8983')) %>
-    log_level: <%= ENV.fetch('SOLR_LOG_LEVEL_STAGING', 'WARNING') %>
-    path: <%= ENV.fetch('SOLR_PATH_STAGING', '/solr/production') %>
+    hostname: <%= solr_urls.fetch('staging').host %>
+    port: <%= solr_urls.fetch('staging').port %>
+    log_level: <%= ENV.fetch('SOLR_LOG_LEVEL', 'WARNING') %>
+    path: <%= solr_urls.fetch('staging').path %>
 
 production:
-  auto_commit_after_request: <%= ENV.fetch('SOLR_AUTO_COMMIT_AFTER_REQUEST_PRODUCTION', ENV.fetch('SOLR_AUTO_COMMIT_AFTER_REQUEST', 'true')) == 'true' %>
-  auto_commit_after_delete_request: <%= ENV.fetch('SOLR_AUTO_COMMIT_AFTER_DELETE_REQUEST_PRODUCTION', ENV.fetch('SOLR_AUTO_COMMIT_AFTER_DELETE_REQUEST', 'true')) == 'true' %>
+  auto_commit_after_request: <%= ENV.fetch('SOLR_AUTO_COMMIT_AFTER_REQUEST', 'true') == 'true' %>
+  auto_commit_after_delete_request: <%= ENV.fetch('SOLR_AUTO_COMMIT_AFTER_DELETE_REQUEST', 'true') == 'true' %>
   solr:
-    hostname: <%= ENV.fetch('SOLR_HOST_PRODUCTION', ENV.fetch('SOLR_HOST', 'localhost')) %>
-    port: <%= ENV.fetch('SOLR_PORT_PRODUCTION', ENV.fetch('SOLR_PORT', '8983')) %>
-    log_level: <%= ENV.fetch('SOLR_LOG_LEVEL_PRODUCTION', 'WARNING') %>
-    path: <%= ENV.fetch('SOLR_PATH_PRODUCTION', '/solr/production') %>
+    hostname: <%= solr_urls.fetch('production').host %>
+    port: <%= solr_urls.fetch('production').port %>
+    log_level: <%= ENV.fetch('SOLR_LOG_LEVEL', 'WARNING') %>
+    path: <%= solr_urls.fetch('production').path %>
