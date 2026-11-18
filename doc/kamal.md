@@ -39,7 +39,6 @@ This guide covers:
 | `bin/server/README.md` | Short version of this section for new servers. |
 | `Dockerfile` | App image. Runtime user `appuser` has UID/GID 1000. |
 | `Dockerfile.base` | Shared base image (system packages, Node, Yarn). |
-| `Dockerfile.solr`, `docker/solr/init-core.sh` | Solr image with the Sunspot configset and idempotent core init. |
 
 Remove `.kamal/hooks/pre-setup/*` and any `docker`-based setup scripts from older
 versions of this guide. They are no longer used.
@@ -88,6 +87,9 @@ The registry also reads:
 `DEPLOY_ARCH` defaults to `amd64`. Set `OHD_EXTRA_HOSTS` for additional
 accepted hostnames. The destination name passed with `-d` identifies the deployment;
 the host and application values come from the loaded environment.
+`DEPLOY_RAILS_ENV` defaults to `production`; set it to `staging` for a Rails
+staging instance. Kamal passes this value to the app container as `RAILS_ENV`
+and `RACK_ENV`, independent of the deploy devcontainer's own environment.
 
 ---
 
@@ -165,12 +167,27 @@ first deployment to start the accessories, proxy, and app.
 bin/kamal setup -d avd-staging
 ```
 
+On a fresh, empty MariaDB database, the first setup starts the accessories but
+the web container cannot boot until the schema exists. After that first setup
+attempt, load the schema once and retry setup with the same image tag:
+
+```bash
+IMAGE_TAG=test-kamal-deploy # Replace with the tag used for the first setup.
+bin/kamal app exec --primary -d avd-staging --version "$IMAGE_TAG" "bin/rails db:schema:load"
+bin/kamal setup -d avd-staging --version "$IMAGE_TAG" --skip-push
+```
+
+Do not run `db:schema:load` on a populated database. It replaces existing tables.
+
 Use `bin/kamal deploy -d avd-staging` for subsequent releases.
 
 ### Nginx and HTTPS
 
-Nginx owns ports 80 and 443 and serves the ACME certificate. Kamal's HTTP
-proxy listens only on `127.0.0.1:8080`; it does not need certificate secrets.
+Nginx owns ports 80 and 443 and serves the ACME certificate. Kamal's proxy
+publishes HTTP on `127.0.0.1:8080` and its unused HTTPS port on
+`127.0.0.1:8443`; it does not need certificate secrets.
+The proxy container allows its non-root process to bind port 80 inside its
+network namespace through a container-level sysctl.
 Configure the Nginx HTTPS server block to forward requests to it:
 
 ```nginx
@@ -328,8 +345,11 @@ To redeploy the running version without running the bootstrap again, use
 
 - The app must use `SOLR_URL=http://ohd-solr:8983/solr/blacklight-core`. This is set in
   `config/deploy.yml`.
-- The Solr accessory uses the custom image `ghcr.io/oral-history-digital/ohd-solr` with
-  the Sunspot configset.
+- The Solr accessory uses the official `docker.io/library/solr:5.5` image. Kamal
+  uploads each file in `solr/configsets/sunspot/conf` from the repo, mounts them
+  read-only, and runs `solr-precreate` for `blacklight-core`.
+- After changing the configset, run `bin/kamal accessory reboot -d avd solr` to
+  upload the files and recreate the accessory.
 - The Solr data directory must be owned by UID 8983 in the container's user namespace.
   The bootstrap sets this.
 - If Solr crash-loops, check its logs:

@@ -4,6 +4,7 @@
   ssh_key = ENV['DEPLOY_SSH_KEY']
   storage = ENV.fetch('DEPLOY_STORAGE_DIR')
   domain = ENV.fetch('DEPLOY_DOMAIN')
+  rails_env = ENV.fetch('DEPLOY_RAILS_ENV', 'production')
   arch = ENV.fetch('DEPLOY_ARCH', 'amd64')
   database = ENV.fetch('MYSQL_DATABASE')
   database_user = ENV.fetch('MYSQL_USER')
@@ -38,6 +39,9 @@ env:
     - ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
     - ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
   clear:
+    RAILS_ENV: <%= rails_env %>
+    RACK_ENV: <%= rails_env %>
+    NODE_ENV: production
     WEB_CONCURRENCY: 1
     MYSQL_HOST: ohd-db
     MYSQL_DATABASE: <%= database %>
@@ -66,7 +70,9 @@ proxy:
   host: <%= domain %>
   app_port: 3000
   run:
+    registry: docker.io
     http_port: 8080
+    https_port: 8443
     bind_ips:
       - 127.0.0.1
 
@@ -102,12 +108,14 @@ accessories:
       - "<%= storage %>/db:/var/lib/mysql"
 
   solr:
-    image: ghcr.io/oral-history-digital/ohd-solr:5.5-sunspot
+    image: docker.io/library/solr:5.5
     hosts:
       - <%= host %>
-    env:
-      clear:
-        SOLR_CORE: blacklight-core
+    cmd: solr-precreate blacklight-core /opt/solr/server/solr/configsets/sunspot/conf
+    files:
+<% Dir.glob('solr/configsets/sunspot/conf/**/*', File::FNM_DOTMATCH).select { |path| File.file?(path) }.sort.each do |file| %>
+      - <%= "#{file}:/opt/solr/server/solr/configsets/sunspot/conf/#{file.delete_prefix('solr/configsets/sunspot/conf/')}:ro".inspect %>
+<% end %>
     directories:
       - "<%= storage %>/solr:/opt/solr/server/solr/mycores"
 
