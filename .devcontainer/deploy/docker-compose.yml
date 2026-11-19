@@ -9,8 +9,8 @@ services:
     env_file:
       - ./.env
     volumes:
-      # Mount SSH key from host
-      - ${SSH_KEY_PATH:-/dev/null}:/root/.ssh/id_deploy:ro
+      # Mount directory with SSH keys from host
+      - ${DEPLOY_KEYS_DIR}:/root/.ssh/deploy-keys:ro
       # Mount source code
       - ../..:/workspace:cached
       # Use a named volume for bundle to persist gems across container restarts
