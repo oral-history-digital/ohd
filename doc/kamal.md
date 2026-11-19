@@ -7,8 +7,8 @@ on top of Kamal 2.12). Use the repository wrapper:
 bin/kamal <command> -d <destination>
 ```
 
-The wrapper creates Kamal's required, ignored `config/deploy.<destination>.yml`
-with no instance settings. Load the selected instance's environment before each command.
+The wrapper loads `.env.kamal.<destination>` and creates Kamal's required,
+ignored `config/deploy.<destination>.yml` with no instance settings.
 
 Do not use plain `kamal`. It targets Docker, and the servers only run Podman.
 
@@ -30,7 +30,8 @@ This guide covers:
 | File | Purpose |
 |---|---|
 | `config/deploy.yml` | Shared config. Reads host, SSH user, domain, storage directory, and database settings from the selected instance's environment. |
-| `bin/kamal` | Creates the empty destination file Kamal requires and runs `kamal-podman`. |
+| `bin/kamal` | Loads the selected instance's environment, creates the empty destination file Kamal requires, and runs `kamal-podman`. |
+| `.env.kamal.<destination>` | Private, ignored environment file for one instance. |
 | `.kamal/secrets-common` | Maps the selected instance's environment variables to Kamal secrets. |
 | `bin/server/bootstrap` | Sets up the server(s) of a destination over SSH. Safe to re-run. |
 | `bin/server/remote-bootstrap.sh` | The part that runs on the server. Called by `bin/server/bootstrap`. |
@@ -50,7 +51,8 @@ versions of this guide. They are no longer used.
 **Local machine**
 
 - Ruby and Bundler, with the repo's gems installed (`bundle install`)
-- Podman. The builder runs `podman build` and `podman push`.
+- Podman only when building and pushing an image locally. CI-built images use
+  `--skip-push` and do not require Podman in the deploy devcontainer.
 - SSH access to the server, for example via `~/.ssh/config` (the `avd-stag` alias)
 - GitHub Container Registry credentials (see section 3)
 
@@ -65,8 +67,9 @@ versions of this guide. They are no longer used.
 
 ## 3) Environment variables (local)
 
-Load the selected instance's private environment before each bootstrap or Kamal command.
-Use `.env.example` for the variable names. Kamal requires `DEPLOY_HOST`,
+Create `.env.kamal.<destination>` in the repository root for each instance.
+Keep it private (`chmod 600`); `bin/kamal` and `bin/server/bootstrap` load it
+automatically. Use `.env.example` for the variable names. Kamal requires `DEPLOY_HOST`,
 `DEPLOY_SSH_USER`, `DEPLOY_DOMAIN`, `DEPLOY_STORAGE_DIR`, `MYSQL_DATABASE`,
 `MYSQL_USER`, `DATACITE_PREFIX`, `DATACITE_CLIENT_ID`, and `DATACITE_URL`.
 Set `DEPLOY_HOST` to a DNS name or IP address reachable from the deployment
@@ -76,8 +79,9 @@ devcontainer, set `SSH_KEY_PATH` in `.devcontainer/deploy/.env` to the key's hos
 path and set `DEPLOY_SSH_KEY=/root/.ssh/id_deploy` in the selected instance's
 environment. Recreate the devcontainer after changing the mounted key.
 The storage directory must be an absolute server path. Active Storage uses
-`/app/storage` inside the container and the `uploads` directory under the host
-storage path.
+`/app/storage` inside the container. Kamal mounts `files`, `logs`, `tmp/cache`,
+and `tmp/files` beneath the host storage path into both app roles. Keep the
+remaining `/app/tmp` contents, including Puma PID and socket files, ephemeral.
 
 The registry also reads:
 
@@ -95,7 +99,7 @@ and `RACK_ENV`, independent of the deploy devcontainer's own environment.
 
 ## 4) Secrets
 
-Load the selected instance's environment before running Kamal. Kamal reads
+The wrapper loads the selected instance's environment before Kamal reads
 `.kamal/secrets-common` for every destination.
 
 The environment must provide every secret referenced in the config:
@@ -334,9 +338,9 @@ To redeploy the running version without running the bootstrap again, use
 
 ## 12) Another server (instance)
 
-1. Create a private environment for the instance with the values in sections 3 and 4.
+1. Create `.env.kamal.<destination>` with the values in sections 3 and 4.
 2. Enable SSH access for its deploy user.
-3. Load that environment and follow [Setup and deploy](#6-setup-and-deploy) with
+3. Follow [Setup and deploy](#6-setup-and-deploy) with
    its destination name.
 
 ---
@@ -370,7 +374,7 @@ To redeploy the running version without running the bootstrap again, use
 | `unable to start container ... work/work/incompat: permission denied` | Overlay leftovers from an unclean shutdown | The autostart script removes them for stopped containers. Start the container again after the script has run, or run it by hand (section 9). |
 | `Operating system error number 13` / `Permission denied` in the MariaDB log | Data directory owned by the wrong UID in the namespace | Run `bin/server/bootstrap <dest>`. Check with `podman unshare stat -c '%u:%g' ~/ohd-db/data` (expect `999:999`). |
 | Solr cannot write its data | Wrong owner on `~/ohd-solr/solr_data` | As above, expect `8983:8983`. |
-| App cannot write to `tmp/` or `log/` | Wrong owner on app volumes | As above, expect `1000:1000` on `app-cache`, `app-files` and `app-logs`. |
+| App cannot write to storage, `tmp/` or `log/` | Wrong owner on app volumes | Expect `1000:1000` in Podman's user namespace on `files`, `logs`, `tmp/cache` and `tmp/files`. |
 | `rootlessport listen tcp 127.0.0.1:8080: address already in use` | Something else listens on port 8080 | Check listeners with `ss -ltnp` on the server and free port 8080. |
 | `"/" is not a shared mount` | Mount propagation of `/` | The root crontab fixes it at boot. Apply it now: `sudo mount --make-rshared /`. |
 | `XDG_RUNTIME_DIR is ... not /run/user/<uid>` (bootstrap warning) | SSH sessions do not export the runtime dir, so Podman uses a different one | Export `XDG_RUNTIME_DIR=/run/user/<uid>` for non-interactive sessions, e.g. in `~/.pam_environment`. Then re-run the bootstrap. |
@@ -384,8 +388,8 @@ To redeploy the running version without running the bootstrap again, use
 
 ## 15) Recommended workflow for a new instance
 
-1. Create and load the instance's private environment using sections 3 and 4.
-2. Export `GITHUB_ACTOR` and `GITHUB_TOKEN`.
+1. Create `.env.kamal.<destination>` using sections 3 and 4, including
+   `GITHUB_ACTOR` and `GITHUB_TOKEN`.
 3. Follow [Setup and deploy](#6-setup-and-deploy) with the new destination name.
 
 4. Reboot the server in a maintenance window and check

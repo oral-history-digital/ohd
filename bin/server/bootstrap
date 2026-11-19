@@ -14,10 +14,22 @@ ROOT="$(cd "$HERE/../.." && pwd)"
 cd "$ROOT"
 
 DEST="${1:-}"
-if [ -z "$DEST" ]; then
-  echo "usage: bin/server/bootstrap <destination>" >&2
-  exit 2
+case "$DEST" in
+  ""|*[!a-zA-Z0-9_-]*)
+    echo "usage: bin/server/bootstrap <destination>" >&2
+    exit 2
+    ;;
+esac
+env_file=".env.kamal.$DEST"
+if [ ! -f "$env_file" ]; then
+  echo "missing $env_file" >&2
+  exit 1
 fi
+set -a
+# shellcheck source=/dev/null
+source "$env_file"
+set +a
+
 LAYOUT="$(ruby "$HERE/layout.rb" "$DEST")"
 SSH_USER="$(awk '$1 == "SSH_USER" { print $2 }' <<<"$LAYOUT")"
 HOSTS="$(awk '$1 == "HOST" { print $2 }' <<<"$LAYOUT")"

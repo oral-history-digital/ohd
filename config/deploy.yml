@@ -77,10 +77,10 @@ proxy:
       - 127.0.0.1
 
 volumes:
-  - "<%= storage %>/app-cache:/app/tmp/cache"
-  - "<%= storage %>/app-files:/app/tmp/files"
-  - "<%= storage %>/app-logs:/app/log"
-  - "<%= storage %>/uploads:/app/storage"
+  - "<%= storage %>/files:/app/storage"
+  - "<%= storage %>/logs:/app/log"
+  - "<%= storage %>/tmp/cache:/app/tmp/cache"
+  - "<%= storage %>/tmp/files:/app/tmp/files"
 
 ssh:
   user: <%= ssh_user %>
