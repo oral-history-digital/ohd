@@ -19,21 +19,39 @@ class TranscriptsController < ApplicationController
     end
 
     locale = Language.find(transcript_params[:transcript_language_id]).code
-    file_path = create_tmp_file(file)
+    extension = File.extname(file.original_filename).downcase
+    import_options = {}
 
-    update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
-    tape.segments.destroy_all if transcript_params[:delete_existing]
+    # Handle queued formats (spreadsheet and subtitle files)
+    queued_formats = TranscriptSpreadsheetImport::EXTENSIONS + TranscriptSubtitleReader::EXTENSIONS
+    if queued_formats.include?(extension.delete_prefix('.'))
+      file_path = create_transcript_tmp_file(file, extension)
+      import_options = {
+        filename: file.original_filename,
+        delete_existing: transcript_params[:delete_existing],
+        frame_rate: transcript_params[:timecode_frame_rate],
+        trim_timecodes: transcript_params[:trim_timecodes],
+        contributions_attributes: transcript_params[:contributions_attributes]&.to_h
+      }
+    # Handle non-queued formats (odt)
+    else
+      file_path = create_tmp_file(file)
+      update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
+      tape.segments.destroy_all if transcript_params[:delete_existing]
+      update_contributions(interview, transcript_params[:contributions_attributes])
+    end
 
-    update_contributions(interview, transcript_params[:contributions_attributes])
-
-    ReadTranscriptFileJob.perform_later({
+    job_options = {
       interview: interview,
       file_path: file_path,
       tape_id: tape.id,
       locale: locale,
       user: current_user,
       update_only_speakers: transcript_params[:update_only_speakers],
-    })
+      **import_options
+    }
+
+    ReadTranscriptFileJob.perform_later(job_options)
 
     respond_to do |format|
       format.json do
@@ -72,8 +90,9 @@ class TranscriptsController < ApplicationController
   private
 
   def transcript_params
-    params.require(:transcript).
-      permit(
+    @transcript_params ||= params
+      .require(:transcript)
+      .permit(
         :archive_id,
         :transcript_language_id,
         :transcript_locale,
@@ -82,8 +101,23 @@ class TranscriptsController < ApplicationController
         :time_shifts,
         :delete_existing,
         :update_only_speakers,
+        :timecode_frame_rate,
+        :trim_timecodes,
         contributions_attributes: [:id, :person_id, :contribution_type_id, :speaker_designation]
-    )
+      )
+  end
+
+  # Copies an upload to a unique path so queued jobs can share a filename.
+  #
+  # @param file [ActionDispatch::Http::UploadedFile] Transcript upload
+  # @param extension [String] File extension used by the reader
+  # @return [String] Path to the closed temporary file
+  def create_transcript_tmp_file(file, extension)
+    temporary = Tempfile.create(['transcript-', extension], Rails.root.join('tmp'), binmode: true)
+    IO.copy_stream(file.tempfile, temporary)
+    temporary.path
+  ensure
+    temporary&.close
   end
 
   def update_tape_durations_and_time_shifts(interview)

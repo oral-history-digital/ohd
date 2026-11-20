@@ -1,36 +1,8 @@
-import { detectTimecodeFormat, normalizeTimecode } from 'modules/utils';
-
-import { formatTimecode, timecodeToSeconds } from './timeUtils';
-
-describe('detectTimecodeFormat', () => {
-    it('returns ms for 3 decimal places', () => {
-        expect(detectTimecodeFormat('01:23:45.123')).toBe('ms');
-    });
-
-    it('returns frames for 2 decimal places', () => {
-        expect(detectTimecodeFormat('01:23:45.12')).toBe('frames');
-    });
-
-    it('returns null for no decimal places', () => {
-        expect(detectTimecodeFormat('01:23:45')).toBeNull();
-    });
-
-    it('returns null for null input', () => {
-        expect(detectTimecodeFormat(null)).toBeNull();
-    });
-
-    it('returns null for undefined input', () => {
-        expect(detectTimecodeFormat(undefined)).toBeNull();
-    });
-
-    it('returns null for empty string', () => {
-        expect(detectTimecodeFormat('')).toBeNull();
-    });
-
-    it('returns ms for 1 decimal place (treated as ms variant)', () => {
-        expect(detectTimecodeFormat('01:23:45.1')).toBe('ms');
-    });
-});
+import {
+    formatTimecode,
+    normalizeTimecode,
+    timecodeToSeconds,
+} from './timeUtils';
 
 describe('normalizeTimecode', () => {
     it('returns timecode unchanged if already in dot format', () => {
@@ -327,24 +299,20 @@ describe('formatTimecode', () => {
             expect(actual).toEqual('0:00:25.300');
         });
 
-        test('round-trips with detectTimecodeFormat and timecodeToSeconds for ms', () => {
+        test('round-trips a millisecond timecode', () => {
             // formatTimecode uses single-digit hours, so '01:02:03.456' → '1:02:03.456'
             const timecode = '01:02:03.456';
-            const fmt = detectTimecodeFormat(timecode);
             const seconds = timecodeToSeconds(timecode);
-            expect(formatTimecode(seconds, false, true, false, fmt)).toEqual(
-                '1:02:03.456'
-            );
+            expect(formatTimecode(seconds, false, true)).toEqual('1:02:03.456');
         });
 
-        test('round-trips with detectTimecodeFormat and timecodeToSeconds for frames', () => {
+        test('round-trips a frame timecode with explicit frame formatting', () => {
             // formatTimecode uses single-digit hours, so '00:01:30.12' → '0:01:30.12'
             const timecode = '00:01:30.12';
-            const fmt = detectTimecodeFormat(timecode);
             const seconds = timecodeToSeconds(timecode);
-            expect(formatTimecode(seconds, false, true, false, fmt)).toEqual(
-                '0:01:30.12'
-            );
+            expect(
+                formatTimecode(seconds, false, true, false, 'frames')
+            ).toEqual('0:01:30.12');
         });
     });
 });
