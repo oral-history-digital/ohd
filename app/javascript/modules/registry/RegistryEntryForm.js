@@ -57,7 +57,7 @@ export default function RegistryEntryForm({
     function showRegistryName(registryName) {
         if (!registryName) return null;
         const translation = registryName.translations_attributes.find(
-            (t) => t.locale === locale
+            (t) => t.locale === locale || !!t.descriptor
         );
         return <span>{translation?.descriptor}</span>;
     }
@@ -149,7 +149,7 @@ export default function RegistryEntryForm({
                         scope: 'registry_name',
                         elementRepresentation: showRegistryName,
                         showElementsInForm: showElementsInForm,
-                        disableAddingElements: resultsFromNormDataSet,
+                        disableAddingElements: false, //resultsFromNormDataSet
                     },
                     {
                         wrapperComponent: NormDatumFormWrapper,
