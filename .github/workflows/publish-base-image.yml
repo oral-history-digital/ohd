@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'Dockerfile.base' # Only trigger on changes to the base Dockerfile
+      - 'Dockerfile.base'
+      - '.ruby-version'
   workflow_dispatch:
 
 env:
@@ -22,6 +23,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Read Ruby version
+        id: ruby
+        run: echo "version=$(cat .ruby-version)" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -53,6 +58,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
+            RUBY_VERSION=${{ steps.ruby.outputs.version }}
             NODE_VERSION=22.22.0
 
       - name: Summary

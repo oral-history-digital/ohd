@@ -11,7 +11,7 @@ set :branch, ENV.fetch('BRANCH', 'staging')
 
 # Legacy source-based Capistrano/rbenv settings (Docker deploy path does not use host Ruby runtime).
 set :rbenv_type, :system
-set :rbenv_ruby, '3.3.4'
+set :rbenv_ruby, File.read(File.expand_path('../../.ruby-version', __dir__)).strip
 set :rbenv_custom_path, '/opt/rbenv'
 
 # Docker Compose deployment settings
