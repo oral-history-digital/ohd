@@ -37,23 +37,25 @@ class CollectionsController < ApplicationController
   end
 
   def update
-    changes = collection_logo_changes
-    @collection = changes.any? ? current_project.collections.find(params[:id]) : Collection.find(params[:id])
+    @collection = current_project.collections.find(params[:id])
     authorize @collection
 
-    if changes.any?
-      invalid_file = changes.values.any? do |file|
+    logo_changes = collection_logo_changes
+    metadata = collection_params.except(:project_id)
+
+    if logo_changes.any?
+      invalid_file = logo_changes.values.any? do |file|
         file.present? && (!file.is_a?(ActionDispatch::Http::UploadedFile) ||
           !Marcel::MimeType.for(file.tempfile).start_with?('image/'))
       end
       return head :unprocessable_entity if invalid_file
 
       @collection.with_lock do
-        @collection.update!(collection_params.except(:project_id))
-        changes.each { |locale, file| update_logo(@collection, locale, file) }
+        @collection.update!(metadata)
+        logo_changes.each { |locale, file| update_logo(@collection, locale, file) }
       end
     else
-      @collection.update collection_params
+      @collection.update metadata
     end
 
     respond @collection
