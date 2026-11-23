@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   scan_ruby:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Checkout code
@@ -31,7 +31,7 @@ jobs:
         run: bundle exec brakeman --no-pager
 
   secret_scan:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -79,7 +79,7 @@ jobs:
   # Report only: records dependency advisories and never fails the build.
   # To gate later, drop the `|| true` guards and ignore accepted findings.
   dependency_scan:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -146,7 +146,7 @@ jobs:
           if-no-files-found: ignore
 
   test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       RAILS_ENV: test
       # Use env overrides consumed by config/database.yml in CI.
@@ -231,7 +231,7 @@ jobs:
 
   # TODO: Enable linting again when issues are fixed
   # lint:
-  #     runs-on: ubuntu-24.04
+  #     runs-on: ubuntu-26.04
   #     steps:
   #         - name: Checkout code
   #           uses: actions/checkout@v4
