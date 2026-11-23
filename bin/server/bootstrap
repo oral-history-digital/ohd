@@ -35,15 +35,24 @@ SSH_USER="$(awk '$1 == "SSH_USER" { print $2 }' <<<"$LAYOUT")"
 HOSTS="$(awk '$1 == "HOST" { print $2 }' <<<"$LAYOUT")"
 DIRS="$(grep '^DIR ' <<<"$LAYOUT" || true)"
 
+ssh_options=()
+if [ -n "${DEPLOY_SSH_KEY:-}" ]; then
+  if [ ! -r "$DEPLOY_SSH_KEY" ]; then
+    echo "deploy SSH key is not readable: $DEPLOY_SSH_KEY" >&2
+    exit 1
+  fi
+  ssh_options=(-o IdentitiesOnly=yes -i "$DEPLOY_SSH_KEY")
+fi
+
 for host in $HOSTS; do
   target="$SSH_USER@$host"
   echo "### $target (destination: $DEST)"
-  stage="$(ssh "$target" 'mktemp -d /tmp/ohd-bootstrap.XXXXXX')"
-  scp -q "$HERE/remote-bootstrap.sh" "$HERE/podman-autostart.sh" "$target:$stage/"
-  printf '%s\n' "$DIRS" | ssh "$target" "cat > '$stage/layout.txt'"
+  stage="$(ssh "${ssh_options[@]}" "$target" 'mktemp -d /tmp/ohd-bootstrap.XXXXXX')"
+  scp -q "${ssh_options[@]}" "$HERE/remote-bootstrap.sh" "$HERE/podman-autostart.sh" "$target:$stage/"
+  printf '%s\n' "$DIRS" | ssh "${ssh_options[@]}" "$target" "cat > '$stage/layout.txt'"
   rc=0
-  ssh "$target" "bash '$stage/remote-bootstrap.sh' '$stage'" || rc=$?
-  ssh "$target" "rm -rf '$stage'" || true
+  ssh "${ssh_options[@]}" "$target" "bash '$stage/remote-bootstrap.sh' '$stage'" || rc=$?
+  ssh "${ssh_options[@]}" "$target" "rm -rf '$stage'" || true
   if [ "$rc" -ne 0 ]; then
     echo "bootstrap failed on $host (exit $rc)" >&2
     exit "$rc"
