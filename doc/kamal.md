@@ -94,6 +94,10 @@ the host and application values come from the loaded environment.
 `DEPLOY_RAILS_ENV` defaults to `production`; set it to `staging` for a Rails
 staging instance. Kamal passes this value to the app container as `RAILS_ENV`
 and `RACK_ENV`, independent of the deploy devcontainer's own environment.
+`DEPLOY_PROXY_HTTP_PORT` and `DEPLOY_PROXY_HTTPS_PORT` default to `8080` and
+`8443`. Give each destination on the same server its own pair of host ports;
+for example, set them to `8081` and `8444` in `.env.kamal.avd-staging` when
+another service user already uses the defaults.
 
 ---
 
@@ -187,9 +191,10 @@ Use `bin/kamal deploy -d avd-staging` for subsequent releases.
 
 ### Nginx and HTTPS
 
-Nginx owns ports 80 and 443 and serves the ACME certificate. Kamal's proxy
-publishes HTTP on `127.0.0.1:8080` and its unused HTTPS port on
-`127.0.0.1:8443`; it does not need certificate secrets.
+Nginx owns ports 80 and 443 and serves the ACME certificate. With the default
+port settings, Kamal's proxy publishes HTTP on `127.0.0.1:8080` and its unused
+HTTPS port on `127.0.0.1:8443`; it does not need certificate secrets. If you
+change `DEPLOY_PROXY_HTTP_PORT`, use that port in the Nginx upstream too.
 The proxy container allows its non-root process to bind port 80 inside its
 network namespace through a container-level sysctl.
 Configure the Nginx HTTPS server block to forward requests to it:
@@ -375,7 +380,7 @@ To redeploy the running version without running the bootstrap again, use
 | `Operating system error number 13` / `Permission denied` in the MariaDB log | Data directory owned by the wrong UID in the namespace | Run `bin/server/bootstrap <dest>`. Check with `podman unshare stat -c '%u:%g' ~/ohd-db/data` (expect `999:999`). |
 | Solr cannot write its data | Wrong owner on `~/ohd-solr/solr_data` | As above, expect `8983:8983`. |
 | App cannot write to storage, `tmp/` or `log/` | Wrong owner on app volumes | Expect `1000:1000` in Podman's user namespace on `files`, `logs`, `tmp/cache` and `tmp/files`. |
-| `rootlessport listen tcp 127.0.0.1:8080: address already in use` | Something else listens on port 8080 | Check listeners with `ss -ltnp` on the server and free port 8080. |
+| `rootlessport listen tcp 127.0.0.1:8080: address already in use` | Another proxy uses port 8080 | Set unused `DEPLOY_PROXY_HTTP_PORT` and `DEPLOY_PROXY_HTTPS_PORT` values for this destination, then use its HTTP port in Nginx. Check listeners with `ss -ltnp` on the server. |
 | `"/" is not a shared mount` | Mount propagation of `/` | The root crontab fixes it at boot. Apply it now: `sudo mount --make-rshared /`. |
 | `XDG_RUNTIME_DIR is ... not /run/user/<uid>` (bootstrap warning) | SSH sessions do not export the runtime dir, so Podman uses a different one | Export `XDG_RUNTIME_DIR=/run/user/<uid>` for non-interactive sessions, e.g. in `~/.pam_environment`. Then re-run the bootstrap. |
 | Containers are down after a reboot | Autostart did not finish or failed | `~/log/podman-autostart.log` and `~/log/podman-autostart.cron.log` on the server. Then run `bash ~/bin/podman-autostart.sh`. |

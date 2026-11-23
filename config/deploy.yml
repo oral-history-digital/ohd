@@ -6,11 +6,14 @@
   domain = ENV.fetch('DEPLOY_DOMAIN')
   rails_env = ENV.fetch('DEPLOY_RAILS_ENV', 'production')
   arch = ENV.fetch('DEPLOY_ARCH', 'amd64')
+  proxy_http_port = Integer(ENV.fetch('DEPLOY_PROXY_HTTP_PORT', '8080'))
+  proxy_https_port = Integer(ENV.fetch('DEPLOY_PROXY_HTTPS_PORT', '8443'))
   database = ENV.fetch('MYSQL_DATABASE')
   database_user = ENV.fetch('MYSQL_USER')
   allowed_hosts = ([domain] + ENV.fetch('OHD_EXTRA_HOSTS', '').split(',').map(&:strip).reject(&:empty?)).uniq.join(',')
   abort 'DEPLOY_STORAGE_DIR must be an absolute path' unless storage.start_with?('/')
   abort 'Deployment host, SSH user, domain, database, and database user must be set' if [host, ssh_user, domain, database, database_user].any?(&:empty?)
+  abort 'Proxy ports must be distinct and between 1 and 65535' unless [proxy_http_port, proxy_https_port].all? { |port| (1..65535).cover?(port) } && proxy_http_port != proxy_https_port
 %>
 service: ohd
 image: oral-history-digital/ohd
@@ -72,10 +75,13 @@ proxy:
   app_port: 3000
   run:
     registry: docker.io
-    http_port: 8080
-    https_port: 8443
+    http_port: <%= proxy_http_port %>
+    https_port: <%= proxy_https_port %>
     bind_ips:
       - 127.0.0.1
+    options:
+      sysctl:
+        - net.ipv4.ip_unprivileged_port_start=80
 
 volumes:
   - "<%= storage %>/files:/app/storage"
