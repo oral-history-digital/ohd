@@ -1,3 +1,5 @@
+import { COUNTRY_TO_LANGUAGE } from 'modules/constants';
+
 export function prepareRegistryNameAttributes(
     entry,
     registryNameTypes,
@@ -11,7 +13,9 @@ export function prepareRegistryNameAttributes(
     const ancientNameType = Object.values(registryNameTypes).find(
         (r) => r.code === 'ancient'
     );
-    const langOrig = entry.Country?.toLowerCase();
+    // Map country code to language code, fallback to country code if not in mapping
+    const countryCode = entry.Country?.toLowerCase();
+    const langOrig = COUNTRY_TO_LANGUAGE[countryCode] || countryCode;
 
     project.available_locales.map((lang) => {
         if (Array.isArray(entry.AlternativeNames?.AlternativeName)) {
@@ -87,7 +91,7 @@ export function setDescriptor(
         'locale',
         locale
     );
-    translation.descriptor = Array.isArray(value) ? value[0] : value;
+    translation.descriptor = Array.isArray(value) ? value.join(', ') : value;
 }
 
 export function updateRegistryEntryTranslationsAttributes(entry, project) {
