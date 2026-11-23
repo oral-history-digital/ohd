@@ -82,7 +82,7 @@ See [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md) for detailed setup instructions
 
 The Dev Container setup uses a pre-built base image for faster startup times. The setup process includes:
 
-- Pulling the pre-built base image with Ruby 3.3.4, Node.js 22.x, Java, and system dependencies
+- Pulling the pre-built base image with the Ruby version in `.ruby-version`, Node.js 22.x, Java, and system dependencies
 - Building the development image with application-specific dependencies
 - Setting up the MySQL database and Solr search server
 - Installing application dependencies via Bundler and Yarn
@@ -93,7 +93,7 @@ The Dev Container setup uses a pre-built base image for faster startup times. Th
 
 The development environment uses the same image strategy as runtime:
 
-1. **Shared Base Image (`Dockerfile.base`)**: Provides Ruby 3.3.4, Node.js 22.x, Java, and shared system dependencies. Published as `ghcr.io/oral-history-digital/ohd-base:latest`.
+1. **Shared Base Image (`Dockerfile.base`)**: Provides the Ruby version in `.ruby-version`, Node.js 22.x, Java, and shared system dependencies. Published as `ghcr.io/oral-history-digital/ohd-base:latest`.
 
 2. **Development Image (`.devcontainer/Dockerfile`)**: Extends the shared base image with dev-only tooling (Chromium, Xvfb, noVNC) and cached dependencies for fast startup.
 
