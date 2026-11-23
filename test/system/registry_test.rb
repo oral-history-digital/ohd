@@ -49,15 +49,7 @@ class RegistryTest < ApplicationSystemTestCase
         click_on 'OK'
       end
 
-      # Wait for nested name fields to be replaced from mocked API response.
-      Timeout::timeout(5) do
-        loop do
-          break if all('#registry_name_descriptor_en').map(&:value).include?('Constantinople')
-          sleep 0.1
-        end
-      end
-
-      assert all('#registry_name_descriptor_en').map(&:value).include?('Constantinople')
+      assert_field 'registry_name_descriptor_en', with: 'Constantinople, Scarlet Apple', wait: 10
 
       # Wait for notes and coordinates to be populated from mocked API response.
       Timeout::timeout(5) do
@@ -92,7 +84,7 @@ class RegistryTest < ApplicationSystemTestCase
       end
 
       assert_includes all_descriptors, 'Istanbul'
-      assert_includes all_descriptors, 'Constantinople'
+      assert_includes all_descriptors, 'Constantinople, Scarlet Apple'
 
     ensure
       # Restore original NormDataApi.new method so other tests are not affected by our stub.
