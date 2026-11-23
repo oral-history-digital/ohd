@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.13.1] - 2026-11-23
+
+### Changed
+
+- chore(ruby): upgrade to 3.3.14 and centralize version definition ([#191](https://github.com/oral-history-digital/ohd/pull/191))
+- pin github workflows to ubuntu-24.04 (latest would need newer ruby versions) ([ab60ed435](https://github.com/oral-history-digital/ohd/commit/ab60ed435b1cc49de342fd37e5a8a26527e8f491))
+- feat(docker): add labels to Docker image for service identification ([6465f2990](https://github.com/oral-history-digital/ohd/commit/6465f2990e0dd4e789290463a70da817a2e1e802))
+
+### Fixed
+
+- fix(collections): scope archive listings to the current project ([#186](https://github.com/oral-history-digital/ohd/pull/186))
+- fix: harden against no method errors ([#187](https://github.com/oral-history-digital/ohd/pull/187))
+- fix(collections): prevent cross-project reassignment ([#190](https://github.com/oral-history-digital/ohd/pull/190))
+- disable DOI registering unless admin #738 ([a6310b113](https://github.com/oral-history-digital/ohd/commit/a6310b1135a09d06547d13ead9bbc52fc3587478))
+- fixing AdminRecord test ([fe7e6af64](https://github.com/oral-history-digital/ohd/commit/fe7e6af64d6ece8c4a59aa422df1ad1f14a43f4c))
+
 ## [2.13.0] - 2026-11-09
 
 ### Added
@@ -895,6 +911,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.13.1]: https://github.com/oral-history-digital/ohd/compare/v2.13.0...v2.13.1
 [2.13.0]: https://github.com/oral-history-digital/ohd/compare/v2.12.0...v2.13.0
 [2.12.0]: https://github.com/oral-history-digital/ohd/compare/v2.11.2...v2.12.0
 [2.11.2]: https://github.com/oral-history-digital/ohd/compare/v2.11.1...v2.11.2
