@@ -81,6 +81,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'rb-readline'
+  gem 'foreman'
 end
 
 group :test do
