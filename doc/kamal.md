@@ -29,7 +29,7 @@ This guide covers:
 
 | File | Purpose |
 |---|---|
-| `config/deploy.yml` | Shared config. Reads host, SSH user, domain, storage directory, and database settings from the selected instance's environment. |
+| `config/deploy.yml` | Shared config. Reads host, SSH user, domain, storage, database, and proxy ports from the selected instance's environment. |
 | `bin/kamal` | Loads the selected instance's environment, creates the empty destination file Kamal requires, and runs `kamal-podman`. |
 | `.env.kamal.<destination>` | Private, ignored environment file for one instance. |
 | `.kamal/secrets-common` | Maps the selected instance's environment variables to Kamal secrets. |
@@ -41,9 +41,6 @@ This guide covers:
 | `Dockerfile` | App image. Runtime user `appuser` has UID/GID 1000. |
 | `Dockerfile.base` | Shared base image (system packages, Node, Yarn). |
 
-Remove `.kamal/hooks/pre-setup/*` and any `docker`-based setup scripts from older
-versions of this guide. They are no longer used.
-
 ---
 
 ## 2) Prerequisites
@@ -53,13 +50,13 @@ versions of this guide. They are no longer used.
 - Ruby and Bundler, with the repo's gems installed (`bundle install`)
 - Podman only when building and pushing an image locally. CI-built images use
   `--skip-push` and do not require Podman in the deploy devcontainer.
-- SSH access to the server, for example via `~/.ssh/config` (the `avd-stag` alias)
+- SSH access to the server as the instance's deploy user
 - GitHub Container Registry credentials (see section 3)
 
 **Server**
 
 - Debian or Ubuntu with `apt`
-- A deploy user (e.g. `avd1`) with SSH access and temporary passwordless `sudo` for bootstrap
+- A separate deploy user for each instance, with SSH access and temporary passwordless `sudo` for bootstrap
 - Nothing else. `bin/server/bootstrap` installs Podman and everything it needs.
   Docker is not used.
 
@@ -74,10 +71,13 @@ automatically. Use `.env.example` for the variable names. Kamal requires `DEPLOY
 `MYSQL_USER`, `DATACITE_PREFIX`, `DATACITE_CLIENT_ID`, and `DATACITE_URL`.
 Set `DEPLOY_HOST` to a DNS name or IP address reachable from the deployment
 environment. Set `DEPLOY_SSH_KEY` to the private key path in that environment
-when the key is not available through its SSH agent or SSH config. In the deploy
-devcontainer, set `SSH_KEY_PATH` in `.devcontainer/deploy/.env` to the key's host
-path and set `DEPLOY_SSH_KEY=/root/.ssh/id_deploy` in the selected instance's
-environment. Recreate the devcontainer after changing the mounted key.
+when the key is not available through its SSH agent or SSH config. Both
+`bin/kamal` and `bin/server/bootstrap` use this value. For the deploy
+devcontainer, set `DEPLOY_KEYS_DIR` in `.devcontainer/deploy/.env` to the host
+directory containing your keys. Set `DEPLOY_SSH_KEY` in the instance environment
+to the key's path *inside* the devcontainer; check it with
+`test -r "$DEPLOY_SSH_KEY"` from the same shell used for deployment. Recreate the
+devcontainer after changing the directory mount.
 The storage directory must be an absolute server path. Active Storage uses
 `/app/storage` inside the container. Kamal mounts `files`, `logs`, `tmp/cache`,
 and `tmp/files` beneath the host storage path into both app roles. Keep the
@@ -96,8 +96,8 @@ staging instance. Kamal passes this value to the app container as `RAILS_ENV`
 and `RACK_ENV`, independent of the deploy devcontainer's own environment.
 `DEPLOY_PROXY_HTTP_PORT` and `DEPLOY_PROXY_HTTPS_PORT` default to `8080` and
 `8443`. Give each destination on the same server its own pair of host ports;
-for example, set them to `8081` and `8444` in `.env.kamal.avd-staging` when
-another service user already uses the defaults.
+for example, set them to `8084` and `8448` in `.env.kamal.avd-staging` when
+another service user already uses the defaults. Nginx forwards to the HTTP port.
 
 ---
 
@@ -146,6 +146,11 @@ The bootstrap reads the destination config, then connects to each host over SSH 
 - installs `~/bin/podman-autostart.sh` and starts it at boot (user's crontab)
 - clears Podman state left over from a reboot
 
+The host port sysctl allows rootless containers to publish low host ports, such
+as Nginx on 80 and 443. Kamal's high host ports do not need it. The separate
+`proxy.run.options.sysctl` lets the proxy process bind port 80 *inside* its
+container.
+
 The bootstrap is idempotent. Run it again after changing volumes, accessory
 directories or the autostart script. It only changes what is missing or wrong.
 
@@ -162,17 +167,20 @@ ruby bin/server/layout.rb avd-staging
 
 ## 6) Setup and deploy
 
-Run bootstrap from your workstation while the deploy user has passwordless sudo.
+Follow [the server bootstrap guide](../bin/server/README.md) to enable the
+deploy user's SSH key and temporary passwordless sudo. Run bootstrap from the
+deploy environment:
 
 ```bash
 bin/server/bootstrap avd-staging
 ```
 
 After bootstrap succeeds, revoke the deploy user's temporary sudo access. Run the
-first deployment to start the accessories, proxy, and app.
+first deployment with a published image tag to start the accessories, proxy,
+and app:
 
 ```bash
-bin/kamal setup -d avd-staging
+bin/kamal setup -d avd-staging --version v2.13.2 --skip-push
 ```
 
 On a fresh, empty MariaDB database, the first setup starts the accessories but
@@ -180,52 +188,58 @@ the web container cannot boot until the schema exists. After that first setup
 attempt, load the schema once and retry setup with the same image tag:
 
 ```bash
-IMAGE_TAG=test-kamal-deploy # Replace with the tag used for the first setup.
+IMAGE_TAG=v2.13.2 # Replace with the tag used for the first setup.
 bin/kamal app exec --primary -d avd-staging --version "$IMAGE_TAG" "bin/rails db:schema:load"
 bin/kamal setup -d avd-staging --version "$IMAGE_TAG" --skip-push
 ```
 
 Do not run `db:schema:load` on a populated database. It replaces existing tables.
 
-Use `bin/kamal deploy -d avd-staging` for subsequent releases.
+If you will import an existing database, do that instead of loading the empty
+schema. After the database is ready, use `bin/kamal deploy` with a published
+image tag and `--skip-push` for subsequent releases.
 
 ### Nginx and HTTPS
 
-Nginx owns ports 80 and 443 and serves the ACME certificate. With the default
-port settings, Kamal's proxy publishes HTTP on `127.0.0.1:8080` and its unused
-HTTPS port on `127.0.0.1:8443`; it does not need certificate secrets. If you
-change `DEPLOY_PROXY_HTTP_PORT`, use that port in the Nginx upstream too.
-The proxy container allows its non-root process to bind port 80 inside its
-network namespace through a container-level sysctl.
-Configure the Nginx HTTPS server block to forward requests to it:
+Run one Nginx container under a separate `webproxy` user, with host networking
+and ports 80 and 443. Give each hostname its own HTTPS server block and forward
+it to that instance's localhost Kamal HTTP port. Nginx terminates TLS; Kamal's
+HTTPS port is unused. The Kamal proxy binds port 80 inside its own network
+namespace through the `proxy.run.options.sysctl` setting in `config/deploy.yml`.
+For an instance using `DEPLOY_PROXY_HTTP_PORT=8084`, its Nginx location is:
 
 ```nginx
 location / {
-    proxy_pass http://127.0.0.1:8080;
+    proxy_pass http://127.0.0.1:8084;
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Proto https;
 }
 ```
 
-Set up Nginx and ACME separately on the server. Confirm that Nginx can connect
-to `127.0.0.1:8080` after Kamal setup.
+The forwarded `Host` must match the destination's `DEPLOY_DOMAIN`; Rails also
+uses the forwarded HTTPS scheme for domain routing. If you temporarily serve
+another hostname, either keep its current `DEPLOY_DOMAIN` or coordinate the
+domain change with a redeploy. Use a trusted certificate for passkeys; temporary
+self-signed certificates that the browser does not trust cannot provide a usable
+origin for them.
+
+Changing proxy ports in `.env.kamal.<destination>` does not change an existing
+proxy container. Recreate it from the deploy environment with
+`bin/kamal proxy reboot -d <destination>` (brief outage), then update the Nginx upstream and
+reload Nginx. Confirm the new port with `podman ps` as that instance's user.
 
 ---
 
 ## 7) Day-2 commands
 
 ```bash
-# deploy the current commit
-bin/kamal deploy -d avd-staging
+# deploy a published CI image
+bin/kamal deploy -d avd-staging --version v2.13.2 --skip-push
 
 # Rails console and shell in the app container (aliases from deploy.yml)
 bin/kamal console -d avd-staging
 bin/kamal shell -d avd-staging
-
-# web and job logs
-bin/kamal logs -d avd-staging          # alias for app logs -f
-bin/kamal joblogs -d avd-staging       # alias for app logs -r job -f
 
 # status
 bin/kamal app containers -d avd-staging
@@ -234,6 +248,19 @@ bin/kamal app version -d avd-staging
 ```
 
 Use the current container names from `app containers`. App containers are versioned.
+Kamal's `server exec` runs a command over SSH as the deploy user. Use it from
+the deploy environment to inspect containers and read their logs:
+
+```bash
+bin/kamal server exec -d avd-staging 'podman ps -a --filter label=destination=avd-staging'
+bin/kamal server exec -d avd-staging 'podman logs --tail 100 --timestamps CONTAINER_NAME'
+bin/kamal server exec -d avd-staging 'podman logs --tail 100 --timestamps --follow CONTAINER_NAME'
+```
+
+Put Podman log options before the container name.
+`--follow` needs a running container. Use the non-following command to read logs
+from a stopped container. Kamal's log subcommands may pass options after the
+container name, which this Podman version treats as another container name.
 
 ---
 
@@ -241,15 +268,21 @@ Use the current container names from `app containers`. App containers are versio
 
 ```bash
 bin/kamal accessory details -d avd-staging solr
-bin/kamal accessory logs -d avd-staging db
 bin/kamal accessory reboot -d avd-staging solr   # stop, remove, start
 bin/kamal accessory restart -d avd-staging db
 ```
 
-Accessory data lives in the remote home, not in the repo:
+From the deploy environment, read accessory logs with:
 
-- DB: `~/ohd-db/data`
-- Solr: `~/ohd-solr/solr_data`
+```bash
+bin/kamal server exec -d avd-staging 'podman logs --tail 100 --timestamps ohd-db'
+bin/kamal server exec -d avd-staging 'podman logs --tail 100 --timestamps ohd-solr'
+```
+
+Accessory data lives under the remote `DEPLOY_STORAGE_DIR`, not in the repo:
+
+- DB: `<storage>/db`
+- Solr: `<storage>/solr`
 
 > **Destructive:** `accessory remove` deletes the accessory's container and image and
 > runs `rm -rf ~/<service>-<accessory>`. That includes the data. Dump the database
@@ -264,7 +297,7 @@ bin/kamal accessory boot -d avd-staging solr
 
 ## 9) Reboots and autostart
 
-The servers have no systemd. Autostart uses cron:
+The bootstrap configures autostart through cron:
 
 - **Root's crontab** (set up by the bootstrap) runs at every boot:
   - `mkdir -p /run/user/<uid>` with owner and mode, because `/run` is cleared on boot
@@ -291,7 +324,7 @@ The script can be run by hand while containers are running. It only starts conta
 that are stopped and does not stop anything:
 
 ```bash
-ssh avd-stag 'bash ~/bin/podman-autostart.sh; tail -20 ~/log/podman-autostart.log'
+ssh <deploy-user>@<server> 'bash ~/bin/podman-autostart.sh; tail -20 ~/log/podman-autostart.log'
 ```
 
 > Do not run `podman system migrate` by hand while containers are running. It stops
@@ -300,7 +333,7 @@ ssh avd-stag 'bash ~/bin/podman-autostart.sh; tail -20 ~/log/podman-autostart.lo
 After a reboot, check the state:
 
 ```bash
-ssh avd-stag 'podman ps -a --format "{{.Names}} {{.Status}}"'
+ssh <deploy-user>@<server> 'podman ps -a --format "{{.Names}} {{.Status}}"'
 ```
 
 ---
@@ -312,18 +345,22 @@ The job worker is a separate role in the destination file:
 ```yaml
 servers:
   web:
-    - "<%= host_ip %>"
+    - <%= host %>
   job:
     hosts:
-      - "<%= host_ip %>"
+      - <%= host %>
     cmd: bundle exec rake jobs:work
 ```
 
-Check job logs:
+Locate the job container and check its logs from the deploy environment:
 
 ```bash
-bin/kamal app logs -d avd-staging -r job -f
+bin/kamal server exec -d avd-staging 'podman ps -a --filter label=destination=avd-staging --filter label=role=job'
+bin/kamal server exec -d avd-staging 'podman logs --tail 100 --timestamps JOB_CONTAINER_NAME'
 ```
+
+If the first command finds no job container, check whether setup completed and
+whether the job role was started.
 
 ---
 
@@ -333,11 +370,10 @@ If the image is already in GHCR, deploy it without rebuilding:
 
 ```bash
 bin/kamal deploy -d avd-staging --version 9f309618fb6335e01c530b27c9c24d5d44181016 --skip-push
-bin/kamal deploy -d avd-staging --version latest -P
 ```
 
-To redeploy the running version without running the bootstrap again, use
-`kamal-podman redeploy`.
+To redeploy the running version without running bootstrap again, use
+`bin/kamal redeploy -d avd-staging`.
 
 ---
 
@@ -364,9 +400,7 @@ To redeploy the running version without running the bootstrap again, use
 - If Solr crash-loops, check its logs:
 
   ```bash
-  bin/kamal accessory logs -d avd-staging solr
-  # or on the server:
-  ssh avd-stag 'podman logs --tail 200 ohd-solr'
+  bin/kamal server exec -d avd-staging 'podman logs --tail 200 --timestamps ohd-solr'
   ```
 
 ---
@@ -375,27 +409,31 @@ To redeploy the running version without running the bootstrap again, use
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `current system boot ID differs from cached boot ID` | Podman state from before a reboot | Run `bin/server/bootstrap <dest>`. The autostart script also clears this after a reboot. |
+| `current system boot ID differs from cached boot ID` | Podman state from before a reboot | Run `bin/server/bootstrap <destination>`. The autostart script also clears this after a reboot. |
 | `unable to start container ... work/work/incompat: permission denied` | Overlay leftovers from an unclean shutdown | The autostart script removes them for stopped containers. Start the container again after the script has run, or run it by hand (section 9). |
-| `Operating system error number 13` / `Permission denied` in the MariaDB log | Data directory owned by the wrong UID in the namespace | Run `bin/server/bootstrap <dest>`. Check with `podman unshare stat -c '%u:%g' ~/ohd-db/data` (expect `999:999`). |
-| Solr cannot write its data | Wrong owner on `~/ohd-solr/solr_data` | As above, expect `8983:8983`. |
+| `Operating system error number 13` / `Permission denied` in the MariaDB log | Data directory owned by the wrong UID in the namespace | Run `bin/server/bootstrap <destination>`. Check with `podman unshare stat -c '%u:%g' <storage>/db` (expect `999:999`). |
+| Solr cannot write its data | Wrong owner on `<storage>/solr` | As above, expect `8983:8983`. |
 | App cannot write to storage, `tmp/` or `log/` | Wrong owner on app volumes | Expect `1000:1000` in Podman's user namespace on `files`, `logs`, `tmp/cache` and `tmp/files`. |
-| `rootlessport listen tcp 127.0.0.1:8080: address already in use` | Another proxy uses port 8080 | Set unused `DEPLOY_PROXY_HTTP_PORT` and `DEPLOY_PROXY_HTTPS_PORT` values for this destination, then use its HTTP port in Nginx. Check listeners with `ss -ltnp` on the server. |
+| `rootlessport listen tcp 127.0.0.1:8080: address already in use` | Another proxy uses port 8080, or an existing proxy container still has old port bindings | Set unused proxy ports. Run `bin/kamal proxy reboot -d <destination>` to recreate an existing proxy, then update Nginx. Check listeners with `ss -ltnp`. |
+| `kamal-proxy` logs `listen tcp :80: bind: permission denied` | The proxy cannot bind port 80 inside its network namespace | Check that the `proxy.run.options.sysctl` setting is present, then recreate the proxy with `bin/kamal proxy reboot -d <destination>`. |
+| Requests return `404` after changing the hostname | Kamal only routes the configured host, or Rails sees HTTP rather than forwarded HTTPS | Check `DEPLOY_DOMAIN`, Nginx's `Host` and `X-Forwarded-Proto` headers, and the matching project domain. |
+| `podman logs` reports no container named `--tail` | Kamal passed log options after the container name | Use `bin/kamal server exec` to run `podman logs --tail 100 --timestamps CONTAINER_NAME` remotely. |
+| Job log following reports no container ID | No job container is currently running | List all job containers with `bin/kamal server exec`, then read the selected container's logs without `--follow`. |
 | `"/" is not a shared mount` | Mount propagation of `/` | The root crontab fixes it at boot. Apply it now: `sudo mount --make-rshared /`. |
 | `XDG_RUNTIME_DIR is ... not /run/user/<uid>` (bootstrap warning) | SSH sessions do not export the runtime dir, so Podman uses a different one | Export `XDG_RUNTIME_DIR=/run/user/<uid>` for non-interactive sessions, e.g. in `~/.pam_environment`. Then re-run the bootstrap. |
 | Containers are down after a reboot | Autostart did not finish or failed | `~/log/podman-autostart.log` and `~/log/podman-autostart.cron.log` on the server. Then run `bash ~/bin/podman-autostart.sh`. |
-| `kamal-podman setup` says Podman is not installed | Bootstrap has not run on this server | Run `bin/server/bootstrap <dest>` first. |
+| `kamal-podman setup` says Podman is not installed | Bootstrap has not run on this server | Run `bin/server/bootstrap <destination>` first. |
 | `docker: command not found` or Docker errors | Plain `kamal` was used | Use `bin/kamal`. |
 | `docker exec` / `docker logs` fail | Old commands | Use `podman` on the server, or `bin/kamal ... logs`. |
-| Wrong container name in `exec` | App containers are versioned | Use `bin/kamal app containers -d <dest>`. |
+| Wrong container name in `exec` | App containers are versioned | Use `bin/kamal app containers -d <destination>`. |
 
 ---
 
 ## 15) Recommended workflow for a new instance
 
 1. Create `.env.kamal.<destination>` using sections 3 and 4, including
-   `GITHUB_ACTOR` and `GITHUB_TOKEN`.
-3. Follow [Setup and deploy](#6-setup-and-deploy) with the new destination name.
-
+   `GITHUB_ACTOR`, `GITHUB_TOKEN`, and unique proxy ports for a shared server.
+2. Follow [Setup and deploy](#6-setup-and-deploy) with the new destination name.
+3. Configure the Nginx hostname and its upstream port.
 4. Reboot the server in a maintenance window and check
    `~/log/podman-autostart.log` and `podman ps -a`.

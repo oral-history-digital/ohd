@@ -10,11 +10,11 @@ This project provides two separate devcontainer environments:
 1. **Copy the example environment file:**
 
     ```bash
-    cp .devcontainer/deploy/.env.example .devcontainer/.env
+    cp .devcontainer/deploy/.env.example .devcontainer/deploy/.env
     ```
 
-2. **Edit `.devcontainer/.env`** with your actual deployment configuration:
-    - **Required:** Set FQDN hostnames and SSH key path
+2. **Edit `.devcontainer/deploy/.env`** with your deployment container settings:
+    - **Required:** Set `DEPLOY_KEYS_DIR` to the host directory containing your SSH keys
     - **Optional:** Set IP addresses (only if you need to override DNS resolution)
     - **Optional:** Set VPN DNS servers (only if your VPN requires specific DNS)
 
@@ -32,7 +32,15 @@ This project provides two separate devcontainer environments:
 
 - `STAGING_ALIAS` / `PROD_ALIAS` - SSH host aliases
 - `STAGING_FQDN` / `PROD_FQDN` - Fully qualified domain names
-- `SSH_KEY_PATH` - Path to your SSH private key
+- `DEPLOY_KEYS_DIR` - Absolute host path to the directory containing your SSH keys
+
+Set `DEPLOY_SSH_KEY` in the ignored `.env.kamal.<destination>` file to the key's
+path inside the deployment container. Check that the account running the deploy
+command can read it with `test -r "$DEPLOY_SSH_KEY"`. Recreate the container after
+changing the directory mount in `.devcontainer/deploy/docker-compose.yml`.
+The checked-in mount targets `/root/.ssh/deploy-keys`; a shell running as
+`vscode` cannot traverse `/root`, so use a mount target accessible to that user
+and set `DEPLOY_SSH_KEY` to the matching container path.
 
 ### Optional Settings
 
@@ -87,6 +95,9 @@ This project provides two separate devcontainer environments:
 3. **Deploy:**
 
     ```bash
+    # Deploy a published Kamal image to an instance
+    bin/kamal deploy -d avd-staging --version <published-image-tag> --skip-push
+
     # Deploy to staging with Docker Compose routine
     bundle exec cap ohd_archive_staging docker:deploy
 
@@ -94,7 +105,8 @@ This project provides two separate devcontainer environments:
     bundle exec cap ohd_archive docker:deploy
     ```
 
-    Note: this uses the Docker-specific Capistrano flow (`docker:deploy`), not the legacy source-based `deploy` task.
+    The Capistrano examples use its Docker-specific `docker:deploy` flow.
+    For Kamal server bootstrap and first setup, see [the Kamal guide](../../doc/kamal.md).
 
 4. **Switch back to development** when done:
     - Press `Ctrl+Shift+P`
@@ -117,7 +129,11 @@ ssh -vvv <prod-alias>
 
 For deployment to work, your SSH public key must be authorized on the deployment servers:
 
-### Option 1: Using ssh-copy-id (recommended)
+### Option 1: Using ssh-copy-id
+
+Use this only if the account already permits a login method that `ssh-copy-id`
+can use. For a locked service account, ask an administrator to install the
+public key as described in [the server bootstrap guide](../../bin/server/README.md).
 
 ```bash
 # Copy your public key to staging server
@@ -158,7 +174,7 @@ ssh-copy-id -i /path/to/your/ssh/key.pub deploy@production-server-fqdn
 
 ### SSH authentication errors
 
-- Verify your SSH key path in `.env` is correct
+- Verify `DEPLOY_KEYS_DIR` in `.devcontainer/deploy/.env` and `DEPLOY_SSH_KEY` in `.env.kamal.<destination>`
 - Check that your SSH key has proper permissions (600)
 - **Ensure your SSH public key is added to the deployment servers:**
     - Your public key must be in `~/.ssh/authorized_keys` on the target servers
@@ -168,7 +184,7 @@ ssh-copy-id -i /path/to/your/ssh/key.pub deploy@production-server-fqdn
 
 ### "No such file or directory" for local override files
 
-- Make sure you've copied the .env.example file: `cp .devcontainer/.env.example .devcontainer/.env`
+- Make sure you've copied the example: `cp .devcontainer/deploy/.env.example .devcontainer/deploy/.env`
 - The container will work without `.env`, but you need it for actual deployments
 
 ## Security Notes
