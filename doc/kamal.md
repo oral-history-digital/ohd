@@ -231,18 +231,36 @@ bin/kamal app version -d "$DESTINATION"
 ```
 
 Use the current container names from `app containers`. App containers are versioned.
-Kamal's `server exec` runs a command over SSH as the deploy user. Use it from
-the deploy environment to inspect containers and read their logs:
+Kamal's `server exec` runs a command over SSH as the deploy user. To inspect
+container startup messages and anything written to stdout or stderr, run:
 
 ```bash
 bin/kamal server exec -d "$DESTINATION" 'podman logs --tail 100 --timestamps CONTAINER_NAME'
-bin/kamal server exec -d "$DESTINATION" 'podman logs --tail 100 --timestamps --follow CONTAINER_NAME'
+bin/kamal server exec --interactive -d "$DESTINATION" 'podman logs --tail 100 --timestamps --follow CONTAINER_NAME'
 ```
 
-Put Podman log options before the container name.
+Rails currently writes request and application logs to `/app/log`, mounted at
+`<DEPLOY_STORAGE_DIR>/logs` on the server. To read or follow those logs from
+the deploy environment, for an instance with storage at `~/storage` and
+`RAILS_ENV=production`, run:
+
+```bash
+bin/kamal server exec -d "$DESTINATION" 'tail -n 100 ~/storage/logs/production.log'
+bin/kamal server exec --interactive -d "$DESTINATION" 'tail -n 100 -F ~/storage/logs/production.log'
+```
+
+Use the configured storage path and Rails environment (`staging.log` when
+`RAILS_ENV=staging`) for other instances. Container logs and the Rails log file
+are different streams; a quiet `podman logs --follow` does not mean Rails has
+stopped logging.
+
+Use `--interactive` for follow commands so Kamal streams output as it arrives;
+ordinary `server exec` prints captured output only after the command exits.
+Stop following with Ctrl-C. Put Podman log options before the container name.
 `--follow` needs a running container. Use the non-following command to read logs
-from a stopped container. Kamal's log subcommands may pass options after the
-container name, which this Podman version treats as another container name.
+from a stopped container.
+Kamal's log subcommands may pass options after the container name, which this
+Podman version treats as another container name.
 
 ---
 
