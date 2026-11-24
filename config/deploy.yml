@@ -88,6 +88,7 @@ volumes:
   - "<%= storage %>/logs:/app/log"
   - "<%= storage %>/tmp/cache:/app/tmp/cache"
   - "<%= storage %>/tmp/files:/app/tmp/files"
+  - "<%= storage %>/clamav-db:/var/lib/clamav:ro"
 
 ssh:
   user: <%= ssh_user %>
@@ -98,7 +99,7 @@ ssh:
 builder:
   arch: <%= arch %>
 
-# Accessories run as ohd-db / ohd-solr on the deployment host.
+# Accessories run as ohd-db / ohd-solr / ohd-clamav on the deployment host.
 accessories:
   db:
     image: docker.io/mariadb:10.5
@@ -125,6 +126,16 @@ accessories:
 <% end %>
     directories:
       - "<%= storage %>/solr:/opt/solr/server/solr/mycores"
+
+  clamav:
+    image: docker.io/clamav/clamav:1.5-debian
+    hosts:
+      - <%= host %>
+    env:
+      clear:
+        CLAMAV_NO_CLAMD: "true"
+    directories:
+      - "<%= storage %>/clamav-db:/var/lib/clamav"
 
 deploy_timeout: 120
 drain_timeout: 60

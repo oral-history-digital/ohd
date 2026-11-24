@@ -1,7 +1,7 @@
 # Virus scanning for uploads (Clamby wraps the clamscan binary).
 #
 # clamscan uses the default signature database. In containers it is the
-# `clamav-db` volume, maintained by freshclam in the `clamav` compose service.
+# shared `clamav-db` volume, maintained by FreshClam in the ClamAV service.
 Clamby.configure({
   :check => true,
   :daemonize => false,
