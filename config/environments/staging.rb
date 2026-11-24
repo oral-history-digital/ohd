@@ -110,4 +110,9 @@ Rails.application.configure do
   extra_hosts = ENV.fetch('OHD_EXTRA_HOSTS', '').split(',').map(&:strip).reject(&:blank?)
 
   config.hosts = (allowed_domains + extra_hosts).uniq
+
+  # Kamal checks /up using the container hostname rather than the public domain.
+  config.host_authorization = {
+    exclude: ->(request) { request.path == "/up" }
+  }
 end
