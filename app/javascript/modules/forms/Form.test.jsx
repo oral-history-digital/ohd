@@ -19,6 +19,89 @@ const elements = [
     },
 ];
 
+test('fields inherit label position, allow overrides, and preserve switch layout', () => {
+    const { rerender } = render(
+        <Form
+            scope="settings"
+            labelPosition="above"
+            elements={[
+                { attribute: 'title' },
+                {
+                    attribute: 'language',
+                    elementType: 'select',
+                    values: [],
+                    labelPosition: 'beside',
+                },
+                { attribute: 'notes', elementType: 'textarea', hidden: true },
+                {
+                    attribute: 'enabled',
+                    elementType: 'switch',
+                    labelPosition: 'above',
+                },
+            ]}
+            onSubmit={jest.fn()}
+        />
+    );
+
+    expect(screen.getByTestId('settings-title-element')).toHaveClass(
+        'form-group--label-above'
+    );
+    expect(screen.getByTestId('settings-language-element')).toHaveClass(
+        'form-group--label-beside'
+    );
+    expect(screen.getByTestId('settings-notes-element')).toHaveClass(
+        'form-group--label-above',
+        'hidden'
+    );
+    expect(screen.getByTestId('settings-enabled-element')).not.toHaveClass(
+        'form-group--label-above'
+    );
+    expect(
+        screen.getByLabelText('activerecord.attributes.settings.title')
+    ).toHaveAttribute('name', 'title');
+
+    rerender(
+        <Form
+            scope="settings"
+            elements={[{ attribute: 'title' }]}
+            onSubmit={jest.fn()}
+        />
+    );
+    expect(screen.getByTestId('settings-title-element')).not.toHaveClass(
+        'form-group--label-above',
+        'form-group--label-beside'
+    );
+});
+
+test('file pickers inherit label position and allow field overrides', () => {
+    const { rerender } = render(
+        <Form
+            scope="upload"
+            labelPosition="beside"
+            elements={elements}
+            onSubmit={jest.fn()}
+        />
+    );
+    expect(
+        screen.getByLabelText('activerecord.attributes.upload.file', {
+            selector: 'input',
+        }).parentElement
+    ).toHaveClass('FileInputField--label-beside');
+    rerender(
+        <Form
+            scope="upload"
+            labelPosition="beside"
+            elements={[{ ...elements[0], labelPosition: 'above' }]}
+            onSubmit={jest.fn()}
+        />
+    );
+    expect(
+        screen.getByLabelText('activerecord.attributes.upload.file', {
+            selector: 'input',
+        }).parentElement
+    ).toHaveClass('FileInputField--label-above');
+});
+
 test('switch fields toggle without submitting and submit boolean values', () => {
     const onSubmit = jest.fn();
     render(

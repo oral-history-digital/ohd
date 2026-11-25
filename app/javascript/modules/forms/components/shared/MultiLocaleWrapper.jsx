@@ -13,6 +13,7 @@ import { InputField, RichTextarea, Textarea } from '../input';
 /**
  * Renders translated inputs for the loaded project locales without changing stored translation IDs.
  * @param {Object} props - Field configuration, persisted translations, and change/validation callbacks.
+ * @param {'above'|'beside'} [props.labelPosition] - Label layout forwarded to each localized field.
  * @returns {React.ReactElement} Localized fields or project loading/error feedback.
  */
 export default function MultiLocaleWrapper(props) {
@@ -154,6 +155,7 @@ MultiLocaleWrapper.propTypes = {
     elementType: PropTypes.string,
     scope: PropTypes.string,
     label: PropTypes.string,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     mandatory: PropTypes.bool,
     baseLocales: PropTypes.arrayOf(PropTypes.string),
     data: PropTypes.object,

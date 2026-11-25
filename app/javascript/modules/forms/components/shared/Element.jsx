@@ -4,9 +4,16 @@ import PropTypes from 'prop-types';
 
 import Label from './Label';
 
+/**
+ * Renders a field label, control, help, and validation feedback in its form layout.
+ * @param {Object} props - Field content, labeling, and validation state.
+ * @param {'above'|'beside'} [props.labelPosition] - Explicit label layout; omission preserves existing styles.
+ * @returns {React.ReactElement} Accessible field wrapper.
+ */
 export default function Element({
     label,
     labelKey,
+    labelPosition,
     className,
     scope,
     attribute,
@@ -34,6 +41,8 @@ export default function Element({
                 className,
                 {
                     hidden: hidden,
+                    [`form-group--label-${labelPosition}`]:
+                        Boolean(labelPosition),
                     'has-error': !valid && showErrors,
                 }
             )}
@@ -77,6 +86,7 @@ export default function Element({
 Element.propTypes = {
     label: PropTypes.string,
     labelKey: PropTypes.string,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     htmlFor: PropTypes.string,
     scope: PropTypes.string,
     attribute: PropTypes.string,

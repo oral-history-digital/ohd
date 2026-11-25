@@ -10,10 +10,17 @@ import { HexColorInput, HexColorPicker } from 'react-colorful';
 
 import Element from '../shared/Element';
 
+/**
+ * Renders a color picker with form callbacks and a configurable label layout.
+ * @param {Object} props - Field configuration and form callbacks.
+ * @param {'above'|'beside'} [props.labelPosition] - Label layout inherited from the form or overridden by the field.
+ * @returns {React.ReactElement} Form field and feedback.
+ */
 export default function ColorPicker({
     value,
     attribute,
     scope,
+    labelPosition,
     elementType,
     className,
     help,
@@ -36,6 +43,7 @@ export default function ColorPicker({
     return (
         <Element
             scope={scope}
+            labelPosition={labelPosition}
             attribute={attribute}
             elementType={elementType}
             className={className}
@@ -67,6 +75,7 @@ ColorPicker.propTypes = {
     value: PropTypes.string,
     attribute: PropTypes.string.isRequired,
     scope: PropTypes.string.isRequired,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     elementType: PropTypes.string.isRequired,
     className: PropTypes.string,
     help: PropTypes.string,

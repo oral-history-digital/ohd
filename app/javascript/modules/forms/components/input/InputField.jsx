@@ -7,6 +7,12 @@ import { FaPencilAlt } from 'react-icons/fa';
 import { useTouchFieldOnBlur } from '../../hooks';
 import Element from '../shared/Element';
 
+/**
+ * Renders an input with form callbacks, labeling, and validation feedback.
+ * @param {Object} props - Field configuration and form callbacks.
+ * @param {'above'|'beside'} [props.labelPosition] - Label layout inherited from the form or overridden by the field.
+ * @returns {React.ReactElement} Form field and feedback.
+ */
 export default function InputField({
     scope,
     locale,
@@ -19,6 +25,7 @@ export default function InputField({
     otherError,
     label,
     labelKey,
+    labelPosition,
     showErrors,
     optional,
     handleChange,
@@ -110,6 +117,7 @@ export default function InputField({
             attribute={attribute}
             label={label}
             labelKey={labelKey}
+            labelPosition={labelPosition}
             htmlFor={`${scope}_${attribute}`}
             showErrors={showErrors}
             className={className}
@@ -139,6 +147,7 @@ InputField.propTypes = {
     otherError: PropTypes.any,
     label: PropTypes.string,
     labelKey: PropTypes.string,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     showErrors: PropTypes.bool,
     optional: PropTypes.bool,
     handleChange: PropTypes.func,

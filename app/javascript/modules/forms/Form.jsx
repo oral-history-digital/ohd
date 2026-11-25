@@ -48,6 +48,7 @@ const elementTypeToComponent = {
 /**
  * Renders validated fields and submission feedback.
  * @param {Object} props - Field definitions, initial values, and submission callbacks.
+ * @param {'above'|'beside'} [props.labelPosition] - Default label layout; fields may override it. Omit to preserve existing styles.
  * @returns {React.ReactElement} Form controls and feedback.
  */
 export default function Form({
@@ -62,6 +63,7 @@ export default function Form({
     hasValidationErrors = false,
     helpTextCode,
     index,
+    labelPosition,
     nested,
     nestedScopeProps,
     notification,
@@ -254,6 +256,7 @@ export default function Form({
 
     function elementComponent(element) {
         const preparedProps = { ...element };
+        preparedProps.labelPosition = element.labelPosition ?? labelPosition;
         preparedProps.scope = element.scope || scope;
         preparedProps.showErrors =
             (touched[element.attribute] || submitted) &&
@@ -276,14 +279,12 @@ export default function Form({
             preparedProps.type = 'text';
         }
 
-        if (preparedProps.multiLocale) {
-            return createElement(MultiLocaleWrapper, preparedProps);
-        } else {
-            return createElement(
-                elementTypeToComponent[preparedProps.elementType],
-                preparedProps
-            );
-        }
+        return createElement(
+            preparedProps.multiLocale
+                ? MultiLocaleWrapper
+                : elementTypeToComponent[preparedProps.elementType],
+            preparedProps
+        );
     }
 
     return (
@@ -427,6 +428,7 @@ Form.propTypes = {
             validate: PropTypes.func,
             scope: PropTypes.string,
             group: PropTypes.string,
+            labelPosition: PropTypes.oneOf(['above', 'beside']),
         })
     ).isRequired,
     fetching: PropTypes.bool,
@@ -435,6 +437,7 @@ Form.propTypes = {
     hasValidationErrors: PropTypes.bool,
     helpTextCode: PropTypes.string,
     index: PropTypes.number,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     nested: PropTypes.bool,
     nestedScopeProps: PropTypes.array,
     notification: PropTypes.shape({
