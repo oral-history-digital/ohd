@@ -47,7 +47,7 @@ class TranscriptSpreadsheetImport
 
   private
 
-  # Parses each worksheet in order and checks the normalized values for this tape.
+  # Trims surrounding whitespace, then parses and checks each worksheet for this tape.
   #
   # @param file_path [String] Path to the uploaded spreadsheet
   # @return [Array<Hash>] Rows with canonical timecodes and their source locations
@@ -61,7 +61,7 @@ class TranscriptSpreadsheetImport
         location = { sheet: name, row: line, field: 'timecode' }
         raw = row[:timecode]
         original = raw
-        value = @options[:trim_timecodes] && raw.is_a?(String) ? raw.strip : raw
+        value = raw.is_a?(String) ? raw.strip : raw
         begin
           timecode = Timecode.parse_import(value, frame_rate: @options[:frame_rate])
         rescue Timecode::ImportFormatError => e

@@ -64,12 +64,21 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
     with_spreadsheet(" 00:00:01:24 \t\tFirst\n00:00:03:00\t\tSecond\n") do |path|
       ReadTranscriptFileJob.new.perform(
         interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
-        frame_rate: '25', trim_timecodes: 'true', delete_existing: 'true'
+        frame_rate: '25', delete_existing: 'true'
       )
     end
 
     assert_equal %w[00:00:01.960 00:00:03.000], @tape.segments.order(:timecode).pluck(:timecode)
     assert_equal 'First', @tape.segments.find_by!(timecode: '00:00:01.960').text('eng')
+  end
+
+  test 'trims surrounding whitespace in spreadsheet timestamps without an option' do
+    with_spreadsheet(" 00:00:01.000 \t\tText\n") do |path|
+      ReadTranscriptFileJob.new.perform(
+        interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path, delete_existing: true
+      )
+    end
+    assert_equal ['00:00:01.000'], @tape.segments.pluck(:timecode)
   end
 
   test 'emails all invalid timecodes once and preserves the old transcript' do
@@ -143,7 +152,7 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
     with_spreadsheet("00:00:01.000\t\tFirst\n 00:00:01.000 \t\tSecond\n") do |path|
       error = assert_raises(Timecode::ImportFormatError) do
         ReadTranscriptFileJob.new.perform(
-          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path, trim_timecodes: true
+          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path
         )
       end
       assert_equal [2, 3], error.issues.map { |issue| issue[:location][:row] }

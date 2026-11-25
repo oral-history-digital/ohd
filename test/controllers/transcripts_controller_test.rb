@@ -27,7 +27,6 @@ class TranscriptsControllerTest < ActionController::TestCase
     assert_equal original_ids, @tape.segments.pluck(:id)
     assert_equal @tape.id, options.fetch(:tape_id)
     assert_equal '25', options.fetch(:frame_rate)
-    assert_equal 'true', options.fetch(:trim_timecodes)
     assert_equal 'true', options.fetch(:delete_existing)
     assert_equal 'transcript_de.csv', options.fetch(:filename)
     assert File.exist?(options.fetch(:file_path))
@@ -118,7 +117,7 @@ class TranscriptsControllerTest < ActionController::TestCase
   test 'pre-check accepts spreadsheets frames subtitles and ODT timing without writes' do
     sign_in User.find_by!(email: 'alice@example.com')
     cases = [
-      ['.csv', "TIMECODE\tSPEAKER\tTRANSCRIPT\n00:00:01.000\t\tText\n", {}],
+      ['.csv', "TIMECODE\tSPEAKER\tTRANSCRIPT\n 00:00:01.000 \t\tText\n", {}],
       ['.csv', "TIMECODE\tSPEAKER\tTRANSCRIPT\n00:00:01:24\t\tText\n", { timecode_frame_rate: '25' }],
       ['.vtt', "WEBVTT\n\n00:00:01.000 --> 00:00:02.000\nText\n", {}],
       ['.srt', "1\n00:00:01,000 --> 00:00:02,000\nText\n", {}],
@@ -275,7 +274,6 @@ class TranscriptsControllerTest < ActionController::TestCase
         tape_number: @tape.number,
         transcript_language_id: @locale.id,
         timecode_frame_rate: '25',
-        trim_timecodes: 'true',
         delete_existing: 'true'
       }
     }

@@ -104,7 +104,6 @@ class TranscriptsController < ApplicationController
       filename: file.original_filename,
       delete_existing: transcript_params[:delete_existing],
       frame_rate: transcript_params[:timecode_frame_rate],
-      trim_timecodes: transcript_params[:trim_timecodes],
       tape_durations: transcript_params[:tape_durations],
       time_shifts: transcript_params[:time_shifts],
       contributions_attributes: transcript_params[:contributions_attributes]&.to_h
@@ -134,7 +133,6 @@ class TranscriptsController < ApplicationController
         :delete_existing,
         :update_only_speakers,
         :timecode_frame_rate,
-        :trim_timecodes,
         contributions_attributes: [:id, :person_id, :contribution_type_id, :speaker_designation]
       )
   end

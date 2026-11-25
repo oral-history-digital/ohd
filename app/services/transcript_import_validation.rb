@@ -15,8 +15,7 @@ class TranscriptImportValidation
     boolean = ActiveModel::Type::Boolean.new
     settings = @options.merge(
       delete_existing: boolean.cast(@options[:delete_existing]),
-      update_only_speakers: boolean.cast(@options[:update_only_speakers]),
-      trim_timecodes: boolean.cast(@options[:trim_timecodes])
+      update_only_speakers: boolean.cast(@options[:update_only_speakers])
     )
     path = @options[:file_path]
     case File.extname(path).downcase.delete_prefix('.')
