@@ -1,3 +1,4 @@
+# Authorizes edit-table pre-checks, queued imports, and downloads.
 class EditTablesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:import_template]
   skip_after_action :verify_authorized, only: [:import_template]
@@ -5,41 +6,36 @@ class EditTablesController < ApplicationController
   # Queues an authorized upload and defers all interview changes to the import job.
   # @return [void]
   def create
-    raise ActiveRecord::RecordNotFound unless current_project
-
-    interview = current_project.interviews.find_by!(archive_id: edit_table_params[:archive_id])
-    authorize interview, :update?
-
-    file = params.require(:edit_table).require(:data)
-    raise ActionController::BadRequest, 'Expected an edit-table file' unless file.is_a?(ActionDispatch::Http::UploadedFile)
-
-    temporary = Tempfile.create(['edit-table-', '.csv'], Rails.root.join('tmp'), binmode: true)
-    begin
-      IO.copy_stream(file.tempfile, temporary)
-      file_path = temporary.path
-    ensure
-      temporary.close
-    end
-
-    ReadEditTableJob.perform_later({
-      interview: interview,
-      file_path: file_path,
-      filename: file.original_filename,
-      contributions_attributes: edit_table_params[:contributions_attributes]&.to_h,
-      locale: params[:locale],
-      only_references: edit_table_params[:only_references],
-      user: current_user
-    })
+    options = prepare_upload
+    ReadEditTableJob.perform_later(options)
 
     respond_to do |format|
       format.json do
         render json: {
           msg: "processing",
-          id: file.original_filename,
+          id: options[:filename],
           data_type: 'uploads'
         }, status: :ok
       end
     end
+  end
+
+  # Checks CSV rows and targets without importing them or sending email.
+  # @return [void] JSON validity and structured issues
+  def validate
+    options = prepare_upload
+    EditTableImport.new(
+      options[:interview], options[:file_path], options[:locale],
+      ActiveModel::Type::Boolean.new.cast(options[:only_references]),
+      contributions_attributes: options[:contributions_attributes]
+    ).validate!
+    render json: { valid: true, issues: [] }
+  rescue Timecode::ImportFormatError => e
+    render json: { valid: false, issues: e.issues }, status: :unprocessable_entity
+  rescue Roo::HeaderRowNotFoundError, CSV::MalformedCSVError
+    render json: { valid: false, issues: [ImportValidation.issue('file.invalid_structure')] }, status: :unprocessable_entity
+  ensure
+    FileUtils.rm_f(options[:file_path]) if options
   end
 
   def show
@@ -69,6 +65,38 @@ class EditTablesController < ApplicationController
   end
 
   private
+
+  # Authorizes the interview and copies the upload for import or read-only validation.
+  # @return [Hash] Import settings with a closed temporary CSV path
+  # @raise [ActiveRecord::RecordNotFound] If the interview is outside the current project
+  # @raise [ActionController::BadRequest] If no uploaded file was supplied
+  def prepare_upload
+    raise ActiveRecord::RecordNotFound unless current_project
+
+    interview = current_project.interviews.find_by!(archive_id: edit_table_params[:archive_id])
+    authorize interview, :update?
+
+    file = params.require(:edit_table).require(:data)
+    raise ActionController::BadRequest, 'Expected an edit-table file' unless file.is_a?(ActionDispatch::Http::UploadedFile)
+
+    temporary = Tempfile.create(['edit-table-', '.csv'], Rails.root.join('tmp'), binmode: true)
+    begin
+      IO.copy_stream(file.tempfile, temporary)
+      file_path = temporary.path
+    ensure
+      temporary.close
+    end
+
+    {
+      interview: interview,
+      file_path: file_path,
+      filename: file.original_filename,
+      contributions_attributes: edit_table_params[:contributions_attributes]&.to_h,
+      locale: params[:locale],
+      only_references: edit_table_params[:only_references],
+      user: current_user
+    }
+  end
 
   def edit_table_params
     @edit_table_params ||= params.require(:edit_table).
