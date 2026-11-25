@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.13.2] - 2026-11-23
+
+### Fixed
+
+- fix(docker): remove duplicate runtime package install ([feebd60ba](https://github.com/oral-history-digital/ohd/commit/feebd60ba1e5c8be12edeb633408c399e9aeaa75))
+
 ## [2.13.1] - 2026-11-23
 
 ### Changed
@@ -911,6 +917,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.13.2]: https://github.com/oral-history-digital/ohd/compare/v2.13.1...v2.13.2
 [2.13.1]: https://github.com/oral-history-digital/ohd/compare/v2.13.0...v2.13.1
 [2.13.0]: https://github.com/oral-history-digital/ohd/compare/v2.12.0...v2.13.0
 [2.12.0]: https://github.com/oral-history-digital/ohd/compare/v2.11.2...v2.12.0

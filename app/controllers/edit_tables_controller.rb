@@ -1,20 +1,31 @@
 class EditTablesController < ApplicationController
-
   skip_before_action :authenticate_user!, only: [:import_template]
   skip_after_action :verify_authorized, only: [:import_template]
 
+  # Queues an authorized upload and defers all interview changes to the import job.
+  # @return [void]
   def create
-    interview = Interview.find_by_archive_id(edit_table_params[:archive_id])
+    raise ActiveRecord::RecordNotFound unless current_project
+
+    interview = current_project.interviews.find_by!(archive_id: edit_table_params[:archive_id])
     authorize interview, :update?
 
-    file = params[:edit_table].delete(:data)
-    file_path = create_tmp_file(file)
+    file = params.require(:edit_table).require(:data)
+    raise ActionController::BadRequest, 'Expected an edit-table file' unless file.is_a?(ActionDispatch::Http::UploadedFile)
 
-    update_contributions(interview, edit_table_params[:contributions_attributes])
+    temporary = Tempfile.create(['edit-table-', '.csv'], Rails.root.join('tmp'), binmode: true)
+    begin
+      IO.copy_stream(file.tempfile, temporary)
+      file_path = temporary.path
+    ensure
+      temporary.close
+    end
 
     ReadEditTableJob.perform_later({
       interview: interview,
       file_path: file_path,
+      filename: file.original_filename,
+      contributions_attributes: edit_table_params[:contributions_attributes]&.to_h,
       locale: params[:locale],
       only_references: edit_table_params[:only_references],
       user: current_user
@@ -60,7 +71,7 @@ class EditTablesController < ApplicationController
   private
 
   def edit_table_params
-    params.require(:edit_table).
+    @edit_table_params ||= params.require(:edit_table).
       permit(
         :archive_id,
         :only_references,

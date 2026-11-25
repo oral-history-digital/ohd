@@ -176,7 +176,7 @@ function EditableSegment({
         canEditSegment,
     });
 
-    if (!text) return null;
+    if (!text && !isEditviewActive) return null;
 
     return (
         <div

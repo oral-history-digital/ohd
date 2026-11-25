@@ -335,6 +335,10 @@ class BasicsTest < ApplicationSystemTestCase
   test 'modify segment' do
     Interview.reindex
     DataHelper.test_media
+    TranslationValue.create_or_update_for_key(
+      'activerecord.errors.models.segment.attributes.timecode.invalid_format',
+      en: 'Invalid format. Expected: HH:MM:SS.mmm'
+    )
 
     visit '/'
     login_as 'alice@example.com'
@@ -344,6 +348,13 @@ class BasicsTest < ApplicationSystemTestCase
     click_test_id('toggle-edit-view-button')
     click_test_id('interview-tab-transcript')
     click_test_id('segment-button-edit')
+    within '.Segment--editMode' do
+      fill_in 'timecode', with: '00:17:12'
+      assert_selector "[data-testid='submit-button'][disabled]"
+      assert_text 'Invalid format. Expected: HH:MM:SS.mmm'
+      assert_field 'timecode', with: '00:17:12'
+      fill_in 'timecode', with: '00:17:12.000'
+    end
     select 'Dupont, Jean'
     click_test_id('submit-button')
     within '.Segment--editMode' do
