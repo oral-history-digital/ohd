@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
 
+import { getArchiveId } from 'modules/archive';
+import {
+    FetchProjectResource,
+    fetchData,
+    getContributionTypesForCurrentProject,
+    getSpeakerDesignationsStatus,
+    submitData,
+} from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { ContributionFormContainer } from 'modules/interview-metadata';
@@ -7,20 +15,35 @@ import { usePeople } from 'modules/person';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 /**
- * Edits interview content through the current project and locale route.
- * @param {Object} props - Content data and form/mutation callbacks.
- * @returns {React.ReactElement|null} Content editor and processing feedback.
+ * Loads project-owned contribution types before mounting the speaker editor.
+ * @param {Object} props - Speaker assignment properties.
+ * @param {Object} props.interview - Interview to update.
+ * @returns {React.ReactElement} Resource boundary and speaker editor.
  */
-export default function AssignSpeakersForm({
-    archiveId,
-    contributionTypes,
-    fetchData,
-    interview,
-    speakerDesignationsStatus,
-    submitData,
-}) {
+export default function AssignSpeakersForm({ interview }) {
+    return (
+        <FetchProjectResource resource="contribution_types">
+            <SpeakerAssignmentFields interview={interview} />
+        </FetchProjectResource>
+    );
+}
+
+/**
+ * Selects speaker-assignment state and dispatches updates through Redux.
+ * @param {Object} props - Speaker assignment properties.
+ * @param {Object} props.interview - Interview to update.
+ * @returns {React.ReactElement} Speaker fields or loading feedback.
+ */
+function SpeakerAssignmentFields({ interview }) {
+    const archiveId = useSelector(getArchiveId);
+    const contributionTypes = useSelector(
+        getContributionTypesForCurrentProject
+    );
+    const speakerDesignationsStatus = useSelector(getSpeakerDesignationsStatus);
+    const dispatch = useDispatch();
     const pathBase = usePathBase();
     const [showForm, setShowForm] = useState(true);
     const { t, locale } = useI18n();
@@ -33,11 +56,13 @@ export default function AssignSpeakersForm({
                 '-'
             )[0] === 'reload'
         ) {
-            fetchData(
-                { pathBase },
-                'interviews',
-                archiveId,
-                'speaker_designations'
+            dispatch(
+                fetchData(
+                    { pathBase },
+                    'interviews',
+                    archiveId,
+                    'speaker_designations'
+                )
             );
         }
     });
@@ -103,7 +128,7 @@ export default function AssignSpeakersForm({
                 <Form
                     scope="update_speaker"
                     onSubmit={(params) => {
-                        submitData({ pathBase }, params);
+                        dispatch(submitData({ pathBase }, params));
                         setShowForm(false);
                     }}
                     helpTextCode="assign_speakers_form"
@@ -130,10 +155,9 @@ export default function AssignSpeakersForm({
 }
 
 AssignSpeakersForm.propTypes = {
-    archiveId: PropTypes.string.isRequired,
-    contributionTypes: PropTypes.object.isRequired,
-    fetchData: PropTypes.func.isRequired,
     interview: PropTypes.object.isRequired,
-    speakerDesignationsStatus: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
+};
+
+SpeakerAssignmentFields.propTypes = {
+    interview: PropTypes.object.isRequired,
 };

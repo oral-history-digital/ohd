@@ -1,21 +1,26 @@
 import { useState } from 'react';
 
+import { getArchiveId } from 'modules/archive';
+import { getCurrentInterview, getLanguages, submitData } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Modal, SubmitButton } from 'modules/ui';
-import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 import TranscriptImportForm from './TranscriptImportForm';
 
 /**
  * Opens transcript importing in a modal while keeping the template in the sidebar.
- * @param {Object} props - Interview, language options, archive ID, and Redux mutation callback.
  * @returns {React.ReactElement|null} Template link and modal trigger.
  */
-export default function UploadTranscript(props) {
+export default function UploadTranscript() {
+    const archiveId = useSelector(getArchiveId);
+    const interview = useSelector(getCurrentInterview);
+    const languages = useSelector(getLanguages);
+    const dispatch = useDispatch();
     const { t } = useI18n();
     const [showDialog, setShowDialog] = useState(false);
-    if (!props.interview.contributions) return null;
+    if (!interview.contributions) return null;
     const template = (
         <p>
             <a href="/transcript-import-template.csv" download>
@@ -41,7 +46,7 @@ export default function UploadTranscript(props) {
             </div>
             {showDialog && (
                 <Modal
-                    key={props.archiveId}
+                    key={archiveId}
                     title={t('edit.upload_transcript.title')}
                     trigger={t('edit.upload_transcript.title')}
                     hideButton
@@ -50,7 +55,12 @@ export default function UploadTranscript(props) {
                 >
                     {(close) => (
                         <TranscriptImportForm
-                            {...props}
+                            archiveId={archiveId}
+                            interview={interview}
+                            languages={languages}
+                            submitData={(...args) =>
+                                dispatch(submitData(...args))
+                            }
                             template={template}
                             onCancel={close}
                         />
@@ -60,10 +70,3 @@ export default function UploadTranscript(props) {
         </>
     );
 }
-
-UploadTranscript.propTypes = {
-    archiveId: PropTypes.string.isRequired,
-    interview: PropTypes.object.isRequired,
-    languages: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
-};

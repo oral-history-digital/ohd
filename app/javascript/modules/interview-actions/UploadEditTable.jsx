@@ -1,18 +1,22 @@
 import { useState } from 'react';
 
+import { getArchiveId } from 'modules/archive';
 import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
+import { getCurrentInterview, submitData } from 'modules/data';
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-import PropTypes from 'prop-types';
 import { FaDownload } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 
 /**
  * Uploads interview editing tables and links to the template for the current route.
- * @param {Object} props - Record data, form options, and mutation callbacks.
  * @returns {React.ReactElement|null} Editing controls and request feedback.
  */
-export default function UploadEditTable({ archiveId, interview, submitData }) {
+export default function UploadEditTable() {
+    const archiveId = useSelector(getArchiveId);
+    const interview = useSelector(getCurrentInterview);
+    const dispatch = useDispatch();
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
     const [showForm, setShowForm] = useState(true);
@@ -68,7 +72,7 @@ export default function UploadEditTable({ archiveId, interview, submitData }) {
             <Form
                 scope="edit_table"
                 onSubmit={(params) => {
-                    submitData({ pathBase }, params);
+                    dispatch(submitData({ pathBase }, params));
                     setShowForm(false);
                 }}
                 submitText="edit.upload_edit_table.title"
@@ -100,9 +104,3 @@ export default function UploadEditTable({ archiveId, interview, submitData }) {
         </>
     );
 }
-
-UploadEditTable.propTypes = {
-    archiveId: PropTypes.string.isRequired,
-    interview: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
-};

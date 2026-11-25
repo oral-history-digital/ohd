@@ -7,9 +7,9 @@ import { HelpText } from 'modules/help-text';
 import { useI18n } from 'modules/i18n';
 import {
     DestroyTranscript,
-    MarkTextFormContainer,
-    UploadEditTableContainer,
-    UploadTranscriptContainer,
+    MarkTextForm,
+    UploadEditTable,
+    UploadTranscript,
 } from 'modules/interview-actions';
 import { InterviewMap } from 'modules/interview-map';
 import {
@@ -193,7 +193,7 @@ export default function InterviewTabPanel({
                             code="interview_upload_transcript"
                             className="u-mb"
                         />
-                        <UploadTranscriptContainer />
+                        <UploadTranscript />
                     </SubTab>
                 </AuthorizedContent>
 
@@ -218,20 +218,20 @@ export default function InterviewTabPanel({
 
                 <AuthorizedContent object={interview} action="update">
                     <SubTab title={t('edit.upload_edit_table.title')}>
-                        <UploadEditTableContainer />
+                        <UploadEditTable />
                     </SubTab>
                 </AuthorizedContent>
 
                 {/* TODO: rework assign speaker functionality
                 <AuthorizedContent object={interview} action='update_speakers'>
                     <SubTab title={t('assign_speakers')}>
-                        <AssignSpeakersFormContainer interview={interview} />
+                        <AssignSpeakersForm interview={interview} />
                     </SubTab>
                 </AuthorizedContent>*/}
 
                 <AuthorizedContent object={interview} action="mark_texts">
                     <SubTab title={t('mark_texts')}>
-                        <MarkTextFormContainer interview={interview} />
+                        <MarkTextForm />
                     </SubTab>
                 </AuthorizedContent>
 

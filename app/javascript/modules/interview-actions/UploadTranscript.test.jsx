@@ -6,9 +6,19 @@ import {
     waitFor,
     within,
 } from '@testing-library/react';
+import { submitData as submitDataAction } from 'modules/data';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
 import UploadTranscript from './UploadTranscript';
 
+jest.mock('modules/data', () => ({
+    getCurrentInterview: (state) =>
+        state.data.interviews[state.archive.archiveId],
+    getLanguages: (state) => state.data.languages,
+    getMarkTextStatus: (state) => state.data.statuses.mark_text,
+    submitData: jest.fn(),
+}));
 jest.mock('modules/routes', () => ({ usePathBase: () => '/adg/de' }));
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: 'de', t: (key) => key }),
@@ -28,13 +38,24 @@ beforeEach(() => {
  * @returns {HTMLElement} Import dialog.
  */
 function openForm(submitData) {
+    submitDataAction.mockImplementation((...args) => {
+        submitData(...args);
+        return { type: 'QUEUE_TRANSCRIPT' };
+    });
+    const state = {
+        archive: { archiveId: 'adg001' },
+        data: {
+            interviews: {
+                adg001: { contributions: {}, primary_language_id: 1 },
+            },
+            languages: { 1: { id: 1, name: 'German' } },
+        },
+    };
+    const store = createStore(() => state);
     render(
-        <UploadTranscript
-            archiveId="adg001"
-            interview={{ contributions: {}, primary_language_id: 1 }}
-            languages={{ 1: { id: 1, name: 'German' } }}
-            submitData={submitData}
-        />
+        <Provider store={store}>
+            <UploadTranscript />
+        </Provider>
     );
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(
