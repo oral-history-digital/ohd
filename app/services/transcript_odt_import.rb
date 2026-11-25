@@ -17,7 +17,7 @@ class TranscriptOdtImport
   # @raise [Timecode::ImportFormatError] If timing values are missing, malformed, or inconsistent
   def call(file_path)
     @interview.with_lock(requires_new: true) do
-      settings = timing_settings
+      settings = validate!
       settings.each do |tape, duration, shift|
         tape.assign_attributes(duration: duration, time_shift: shift)
         tape.save!
@@ -28,6 +28,15 @@ class TranscriptOdtImport
       @tape.segments.each(&:destroy!) if @options[:delete_existing]
       @interview.create_or_update_segments_from_text(file_path, @tape.id, @locale)
     end
+  end
+
+  # Checks timing and proposed contribution ownership without writing records.
+  #
+  # @return [Array<Array>] Validated tape, duration, and shift settings
+  # @raise [Timecode::ImportFormatError] If timing is invalid
+  def validate!
+    TranscriptImportContributions.resolve(@interview, @options[:contributions_attributes])
+    timing_settings
   end
 
   private

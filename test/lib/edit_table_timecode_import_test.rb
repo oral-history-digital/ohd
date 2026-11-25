@@ -7,6 +7,21 @@ class EditTableTimecodeImportTest < ActiveSupport::TestCase
     @interview = DataHelper.interview_with_everything(@project, 1, true)
   end
 
+  test 'validation preserves tapes and uses proposed speaker designations without saving' do
+    original = @interview.tapes.pluck(:id)
+    contribution = @interview.contributions.first
+    designation = contribution.speaker_designation
+    with_table(['00:00:01.000']) do |path|
+      importer = EditTableImport.new(@interview, path, :de, false,
+        contributions_attributes: { '0' => { id: contribution.id, speaker_designation: 'PROPOSED' } })
+      rows = importer.validate!
+      assert_equal '00:00:01.000', rows.first[:timecode]
+      assert_equal 'PROPOSED', importer.contributions[contribution.person_id]
+    end
+    assert_equal original, @interview.tapes.pluck(:id)
+    assert_equal designation, contribution.reload.speaker_designation
+  end
+
   test 'reports all malformed timestamps in one email and preserves the interview' do
     original = @interview.segments.pluck(:id, :timecode)
     tapes = @interview.tapes.pluck(:id)

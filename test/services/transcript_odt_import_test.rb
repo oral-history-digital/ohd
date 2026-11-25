@@ -7,6 +7,17 @@ class TranscriptOdtImportTest < ActiveSupport::TestCase
     @tape = @interview.tapes.first
   end
 
+  test 'validation returns timing settings without changing the tape or segments' do
+    original = @tape.attributes
+    segments = @tape.segments.pluck(:id)
+    settings = TranscriptOdtImport.new(@tape, 'eng', {
+      tape_durations: '00:10:00', time_shifts: '00:00:30', delete_existing: true
+    }).validate!
+    assert_equal [600, 30], settings.first.drop(1)
+    assert_equal original, @tape.reload.attributes
+    assert_equal segments, @tape.segments.pluck(:id)
+  end
+
   test 'reports both malformed timing fields before replacing segments' do
     original = @tape.segments.pluck(:id)
     error = assert_raises(Timecode::ImportFormatError) do

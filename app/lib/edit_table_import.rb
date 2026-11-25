@@ -35,11 +35,10 @@ class EditTableImport
     # Combine indexing requests and enqueue them only after the import commits.
     RefreshSearchIndexJob.batch do
       interview.with_lock(requires_new: true) do
+        validate!
         (@options[:contributions_attributes] || {}).each_value do |attributes|
           interview.contributions.find(attributes[:id]).update!(speaker_designation: attributes[:speaker_designation])
         end
-        self.contributions = interview.contributions_hash
-        validate_rows!
         unless only_references
           interview.tapes.each(&:destroy!)
           interview.find_or_create_tapes(sheet.map { |row| row[:tape_number].to_i }.max)
@@ -48,6 +47,20 @@ class EditTableImport
         interview.touch
       end
     end
+  end
+
+  # Checks the table and references-only targets without writing to the database.
+  #
+  # @return [Array<Hash>] Validated table rows
+  # @raise [Timecode::ImportFormatError] If timestamps or targets are invalid
+  def validate!
+    self.sheet = parse_sheet
+    proposed = TranscriptImportContributions.resolve(interview, @options[:contributions_attributes])
+    self.contributions = proposed.each_with_object({}) do |contribution, result|
+      result[contribution.person_id] = contribution.speaker_designation if contribution.speaker_designation
+    end
+    validate_rows!
+    sheet
   end
 
   # Writes prevalidated rows and raises on failed writes.

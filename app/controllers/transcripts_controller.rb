@@ -21,16 +21,14 @@ class TranscriptsController < ApplicationController
       raise ActionController::BadRequest, 'Expected a transcript file'
     end
 
-    assignment = interview.interview_languages.includes(:language).find_by(
-      language_id: transcript_params[:transcript_language_id]
-    )
-    unless assignment
+    language = interview.find_assigned_language(transcript_params[:transcript_language_id])
+    unless language
       return render json: {
         errors: { transcript_language_id: ['Choose a language assigned to this interview.'] }
       }, status: :unprocessable_entity
     end
 
-    locale = assignment.language.code
+    locale = language.code
     extension = File.extname(file.original_filename).downcase
     file_path = create_transcript_tmp_file(file, extension)
     import_options = {

@@ -7,6 +7,32 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
     @user = User.find_by!(email: 'alice@example.com')
   end
 
+  test 'spreadsheet validation matches proposed speakers without saving them or replacing segments' do
+    contribution = @interview.contributions.first
+    original = contribution.speaker_designation
+    segment = @tape.segments.first
+    original_segments = @tape.segments.pluck(:id, :timecode)
+    options = {
+      delete_existing: false,
+      contributions_attributes: { '0' => { id: contribution.id, speaker_designation: 'PROPOSED' } }
+    }
+    with_spreadsheet("#{segment.timecode}\tPROPOSED\tUpdated text\n") do |path|
+      writes = []
+      subscriber = ->(*event) do
+        sql = event.last[:sql]
+        writes << sql if sql.match?(/\A\s*(INSERT|UPDATE|DELETE)\b/i)
+      end
+      ActiveSupport::Notifications.subscribed(subscriber, 'sql.active_record') do
+        rows = TranscriptSpreadsheetImport.new(@tape, 'eng', options).validate!(path)
+        assert_equal contribution.person_id, rows.first[:speaker_id]
+        assert_equal segment.id, rows.first[:segment].id
+      end
+      assert_empty writes
+    end
+    assert_equal original, contribution.reload.speaker_designation
+    assert_equal original_segments, @tape.segments.pluck(:id, :timecode)
+  end
+
   test 'emails ODT timing errors once and preserves the transcript' do
     original = @tape.segments.pluck(:id)
     assert_difference 'ActionMailer::Base.deliveries.count', 1 do

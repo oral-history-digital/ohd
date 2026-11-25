@@ -22,6 +22,16 @@ class TranscriptSpreadsheetImport
   # @return [void]
   # @raise [Timecode::ImportFormatError] If an input timestamp cannot be imported
   def call(file_path)
+    rows = validate!(file_path)
+    TranscriptSegmentImport.new(@tape, @locale, @options).call(rows)
+  end
+
+  # Parses and checks the file and segment targets without writing to the database.
+  #
+  # @param file_path [String] Uploaded spreadsheet path
+  # @return [Array<Hash>] Validated rows with durations and matching segments
+  # @raise [Timecode::ImportFormatError] If timestamps or targets are invalid
+  def validate!(file_path)
     rows = parse_rows(file_path)
     if rows.empty?
       raise Timecode::ImportFormatError,
@@ -33,7 +43,7 @@ class TranscriptSpreadsheetImport
       next_time = rows[index + 1]&.fetch(:time) || tape_end
       row[:duration] = next_time - row[:time]
     end
-    TranscriptSegmentImport.new(@tape, @locale, @options).call(rows)
+    TranscriptSegmentImport.new(@tape, @locale, @options).validate!(rows)
   end
 
   private
