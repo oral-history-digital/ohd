@@ -1,14 +1,11 @@
 /* eslint-disable react/prop-types */
 import { act, render, screen } from '@testing-library/react';
-import { submitData as submitDataAction } from 'modules/data';
 import { Form } from 'modules/forms';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 
 import PhotoForm from '../gallery/PhotoForm';
 import ContributionForm from '../interview-metadata/ContributionForm';
+import UploadEditTable from './EditTableImportForm';
 import UploadTranscript from './TranscriptImportForm';
-import UploadEditTable from './UploadEditTable';
 
 jest.mock('modules/archive', () => ({
     getArchiveId: (state) => state.archive.archiveId,
@@ -101,28 +98,14 @@ test.each([UploadTranscript, UploadEditTable])(
     'upload preserves public identifiers, file validation, and queued-work feedback (%p)',
     async (Component) => {
         const submitData = jest.fn();
-        const state = {
-            archive: { archiveId: 'adg001' },
-            data: { interviews: { adg001: { contributions: {} } } },
-        };
-        submitDataAction.mockImplementation((...args) => {
-            submitData(...args);
-            return { type: 'QUEUE_EDIT_TABLE' };
-        });
         render(
-            <Provider store={createStore(() => state)}>
-                {Component === UploadTranscript ? (
-                    <Component
-                        archiveId="adg001"
-                        interview={{ contributions: {}, tape_numbers: [1, 3] }}
-                        languages={{}}
-                        onCancel={jest.fn()}
-                        submitData={submitData}
-                    />
-                ) : (
-                    <Component />
-                )}
-            </Provider>
+            <Component
+                archiveId="adg001"
+                interview={{ contributions: {}, tape_numbers: [1, 3] }}
+                languages={{}}
+                onCancel={jest.fn()}
+                submitData={submitData}
+            />
         );
         const form = Form.mock.lastCall[0];
         expect(form.values.archive_id).toBe('adg001');
@@ -138,22 +121,18 @@ test.each([UploadTranscript, UploadEditTable])(
         await act(async () => {
             submission = form.onSubmit(params);
         });
-        const expectedArgs = [{ pathBase: '/adg/de' }, params];
-        const callbacks = [expect.any(Object), expect.any(Function)];
-        if (Component === UploadTranscript) {
-            expectedArgs.push(...callbacks);
-            act(() => submitData.mock.calls[0][3]());
-        }
-        expect(submitData).toHaveBeenCalledWith(...expectedArgs);
+        expect(submitData).toHaveBeenCalledWith(
+            { pathBase: '/adg/de' },
+            params,
+            expect.any(Object),
+            expect.any(Function)
+        );
+        act(() => submitData.mock.calls[0][3]());
         await act(async () => {
             await submission;
         });
         expect(
-            screen.getByText(
-                Component === UploadTranscript
-                    ? 'import_validation.queued'
-                    : 'edit.upload.processing'
-            )
+            screen.getByText('import_validation.queued')
         ).toBeInTheDocument();
         expect(screen.queryByText('Upload form')).not.toBeInTheDocument();
     }

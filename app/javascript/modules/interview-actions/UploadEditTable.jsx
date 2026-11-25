@@ -1,16 +1,17 @@
 import { useState } from 'react';
 
 import { getArchiveId } from 'modules/archive';
-import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
 import { getCurrentInterview, submitData } from 'modules/data';
-import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
+import { Modal, SubmitButton } from 'modules/ui';
 import { FaDownload } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
+import EditTableImportForm from './EditTableImportForm';
+
 /**
- * Uploads interview editing tables and links to the template for the current route.
+ * Opens edit-table importing in a modal and keeps the template in the sidebar.
  * @returns {React.ReactElement|null} Editing controls and request feedback.
  */
 export default function UploadEditTable() {
@@ -19,88 +20,59 @@ export default function UploadEditTable() {
     const dispatch = useDispatch();
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
-    const [showForm, setShowForm] = useState(true);
+    const [showDialog, setShowDialog] = useState(false);
 
-    if (!interview.contributions) {
-        return null;
-    }
+    if (!interview.contributions) return null;
 
-    if (!showForm) {
-        return (
-            <>
-                <p>{t('edit.upload.processing')}</p>
-                <button
-                    type="button"
-                    className="Button return-to-upload"
-                    onClick={() => setShowForm(true)}
-                >
-                    {t('edit.upload.return')}
-                </button>
-            </>
-        );
-    }
-
-    // Create a copy in order to not mutate state in the form.
-    const contributions = Object.values(interview.contributions)
-        .filter((contribution) =>
-            CONTRIBUTION_TYPES_SPEAKING.includes(contribution.contribution_type)
-        )
-        .map((contribution) => ({
-            id: contribution.id,
-            contribution_type: contribution.contribution_type,
-            person_id: contribution.person_id,
-            speaker_designation: contribution.speaker_designation,
-        }));
+    const template = (
+        <p>
+            <a
+                href={`${pathBase}/edit-table-import-template.csv?id=${archiveId}&locale=${locale}`}
+                download
+            >
+                <span className="flyout-sub-tabs-content-ico-link">
+                    <FaDownload
+                        className="Icon Icon--small"
+                        aria-hidden="true"
+                    />{' '}
+                    {t('edit.upload_edit_table.template')}
+                </span>
+            </a>
+        </p>
+    );
 
     return (
         <>
-            <p>
-                <a
-                    href={`${pathBase}/edit-table-import-template.csv?id=${archiveId}&locale=${locale}`}
-                    download
+            <div className="u-align-right">
+                {template}
+                <SubmitButton
+                    type="button"
+                    buttonText={t('edit.upload_edit_table.title')}
+                    onClick={() => setShowDialog(true)}
+                />
+            </div>
+            {showDialog && (
+                <Modal
+                    key={archiveId}
+                    title={t('edit.upload_edit_table.title')}
+                    trigger={t('edit.upload_edit_table.title')}
+                    hideButton
+                    showDialogInitially
+                    onClose={() => setShowDialog(false)}
                 >
-                    <span className="flyout-sub-tabs-content-ico-link">
-                        <FaDownload
-                            className="Icon Icon--small"
-                            title={t('download')}
-                        />{' '}
-                        {t('edit.upload_edit_table.template')}
-                    </span>
-                </a>
-            </p>
-
-            <Form
-                scope="edit_table"
-                onSubmit={(params) => {
-                    dispatch(submitData({ pathBase }, params));
-                    setShowForm(false);
-                }}
-                submitText="edit.upload_edit_table.title"
-                values={{
-                    archive_id: archiveId,
-                }}
-                elements={[
-                    {
-                        attribute: 'data',
-                        elementType: 'input',
-                        type: 'file',
-                        validate: function (v) {
-                            return v instanceof File;
-                        },
-                    },
-                    {
-                        elementType: 'input',
-                        help: 'import_edit_table.only_references',
-                        attribute: 'only_references',
-                        type: 'checkbox',
-                    },
-                    {
-                        elementType: 'speakerDesignationInputs',
-                        attribute: 'contributions_attributes',
-                        value: contributions,
-                    },
-                ]}
-            />
+                    {(close) => (
+                        <EditTableImportForm
+                            archiveId={archiveId}
+                            interview={interview}
+                            submitData={(...args) =>
+                                dispatch(submitData(...args))
+                            }
+                            template={template}
+                            onCancel={close}
+                        />
+                    )}
+                </Modal>
+            )}
         </>
     );
 }

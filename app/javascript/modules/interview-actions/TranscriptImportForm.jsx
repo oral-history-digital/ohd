@@ -1,19 +1,16 @@
 import { useState } from 'react';
 
 import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
-import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
 import { Button, InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
-import ImportValidationFeedback from './ImportValidationFeedback';
+import ImportForm from './ImportForm';
 import {
     ACCEPTED_FORMATS,
     ODT_EXTENSION,
     SPREADSHEET_EXTENSIONS,
 } from './constants';
-import { useImportValidation } from './hooks';
 import { getFileExtension, prepareTranscriptParams } from './utils';
 
 const FRAME_RATE_OPTIONS = [24, 25, 30, 50, 60].map((rate) => ({
@@ -34,17 +31,8 @@ export default function TranscriptImportForm({
     onCancel,
     template,
 }) {
-    const pathBase = usePathBase();
     const { t } = useI18n();
     const [filename, setFilename] = useState('');
-    const [queued, setQueued] = useState(false);
-    const [submitting, setSubmitting] = useState(false);
-    const [submitError, setSubmitError] = useState(false);
-    const validation = useImportValidation(
-        pathBase,
-        'transcripts',
-        prepareTranscriptParams
-    );
     const [useFrameTimecodes, setUseFrameTimecodes] = useState(false);
     const extension = getFileExtension(filename);
     const isOdt = extension === ODT_EXTENSION;
@@ -56,23 +44,6 @@ export default function TranscriptImportForm({
 
     if (!interview.contributions) {
         return null;
-    }
-
-    if (queued) {
-        return (
-            <>
-                <InlineNotification
-                    variant="success"
-                    title={t('import_validation.queued')}
-                    description={t('import_validation.queued_hint')}
-                    role="status"
-                    isClosable={false}
-                />
-                <div className="u-align-right">
-                    <Button buttonText={t('close')} onClick={onCancel} />
-                </div>
-            </>
-        );
     }
 
     const tapeNumbers = interview.tape_numbers;
@@ -96,33 +67,6 @@ export default function TranscriptImportForm({
             </>
         );
     }
-
-    const handleSubmit = async (params) => {
-        if (submitting || validation.status === 'checking') return;
-        setSubmitError(false);
-        if (!(await validation.check(params.transcript))) {
-            throw new Error('Import pre-check did not pass');
-        }
-        setSubmitting(true);
-        return new Promise((resolve, reject) => {
-            submitData(
-                { pathBase },
-                prepareTranscriptParams(params.transcript),
-                {
-                    onError: () => {
-                        setSubmitting(false);
-                        setSubmitError(true);
-                        reject(new Error('Import request failed'));
-                    },
-                },
-                () => {
-                    setSubmitting(false);
-                    setQueued(true);
-                    resolve();
-                }
-            );
-        });
-    };
 
     // Create a copy in order to not mutate state in the form.
     const contributions = Object.values(interview.contributions)
@@ -151,18 +95,13 @@ export default function TranscriptImportForm({
 
     return (
         <>
-            {template}
-            <p className="explanation">{t('upload.explanation.transcript')}</p>
-
-            <Form
+            <ImportForm
                 scope="transcript"
-                onChange={() => {
-                    validation.reset();
-                    setSubmitError(false);
-                }}
-                fetching={submitting || validation.status === 'checking'}
+                resource="transcripts"
+                submitData={submitData}
+                prepareParams={prepareTranscriptParams}
+                template={template}
                 onCancel={onCancel}
-                onSubmit={handleSubmit}
                 submitText="edit.upload_transcript.title"
                 values={{
                     archive_id: archiveId,
@@ -261,15 +200,10 @@ export default function TranscriptImportForm({
                     },
                 ]}
             >
-                <ImportValidationFeedback {...validation} />
-                {submitError && (
-                    <InlineNotification
-                        variant="error"
-                        title={t('import_validation.import_failed')}
-                        isClosable={false}
-                    />
-                )}
-            </Form>
+                <p className="explanation">
+                    {t('upload.explanation.transcript')}
+                </p>
+            </ImportForm>
         </>
     );
 }
