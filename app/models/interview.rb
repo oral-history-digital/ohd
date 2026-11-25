@@ -406,6 +406,12 @@ class Interview < ApplicationRecord
     tapes.count
   end
 
+  # Lists the existing tape numbers in playback order, including numbering gaps.
+  # @return [Array<Integer>] Numbers scoped to this interview
+  def tape_numbers
+    tapes.reorder(:number).pluck(:number)
+  end
+
   def material_count
     materials.where(workflow_state: 'public').count
   end

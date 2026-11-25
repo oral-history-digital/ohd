@@ -35,9 +35,10 @@ beforeEach(() => {
 /**
  * Opens the real modal and supplies required form fields.
  * @param {Function} submitData - Redux mutation callback.
+ * @param {number[]|null} [tapeNumbers=[1]] - Existing tapes, or null while loading.
  * @returns {HTMLElement} Import dialog.
  */
-function openForm(submitData) {
+function openForm(submitData, tapeNumbers = [1]) {
     submitDataAction.mockImplementation((...args) => {
         submitData(...args);
         return { type: 'QUEUE_TRANSCRIPT' };
@@ -46,7 +47,11 @@ function openForm(submitData) {
         archive: { archiveId: 'adg001' },
         data: {
             interviews: {
-                adg001: { contributions: {}, primary_language_id: 1 },
+                adg001: {
+                    contributions: {},
+                    primary_language_id: 1,
+                    tape_numbers: tapeNumbers,
+                },
             },
             languages: { 1: { id: 1, name: 'German' } },
         },
@@ -74,6 +79,7 @@ function openForm(submitData) {
             hidden: true,
         })
     ).toHaveLength(2);
+    if (!Array.isArray(tapeNumbers) || tapeNumbers.length === 0) return dialog;
     fireEvent.change(
         within(dialog).getByLabelText(
             /activerecord.attributes.transcript.data/,
@@ -87,13 +93,6 @@ function openForm(submitData) {
         within(dialog).getByLabelText(
             /activerecord.attributes.transcript.transcript_language_id/,
             { selector: 'select' }
-        ),
-        { target: { value: '1' } }
-    );
-    fireEvent.change(
-        within(dialog).getByLabelText(
-            /activerecord.attributes.transcript.tape_number/,
-            { selector: 'input' }
         ),
         { target: { value: '1' } }
     );
@@ -235,4 +234,81 @@ test('shows checking and prevents duplicate submissions while validation is pend
         finish({ status: 200, json: async () => ({ valid: true, issues: [] }) })
     );
     expect(submitData).toHaveBeenCalledTimes(1);
+});
+
+test('preselects the only existing tape by its number', async () => {
+    const submitData = jest.fn();
+    const dialog = openForm(submitData, [8]);
+    const tape = within(dialog).getByLabelText(
+        /activerecord.attributes.transcript.tape_number/,
+        { selector: 'select' }
+    );
+    expect(tape).toHaveValue('8');
+    expect(within(tape).getAllByRole('option')).toHaveLength(1);
+    fireEvent.click(
+        within(dialog).getByRole('button', {
+            name: 'edit.upload_transcript.title',
+        })
+    );
+    await waitFor(() => expect(submitData).toHaveBeenCalledTimes(1));
+    expect(submitData.mock.calls[0][1].transcript.tape_number).toBe('8');
+});
+
+test('requires an explicit existing tape when numbering has gaps', async () => {
+    const submitData = jest.fn();
+    const dialog = openForm(submitData, [2, 7]);
+    const tape = within(dialog).getByLabelText(
+        /activerecord.attributes.transcript.tape_number/,
+        { selector: 'select' }
+    );
+    expect(tape).toHaveValue('');
+    expect(
+        within(tape)
+            .getAllByRole('option')
+            .map((option) => option.value)
+    ).toEqual(['', '2', '7']);
+    const submit = within(dialog).getByRole('button', {
+        name: 'edit.upload_transcript.title',
+    });
+    fireEvent.click(submit);
+    expect(fetch).not.toHaveBeenCalled();
+    fireEvent.change(tape, { target: { value: '7' } });
+    fireEvent.click(submit);
+    await waitFor(() => expect(submitData).toHaveBeenCalledTimes(1));
+    expect(submitData.mock.calls[0][1].transcript.tape_number).toBe('7');
+});
+
+test('explains the selected starting tape for ODT using translation keys', () => {
+    const dialog = openForm(jest.fn(), [1, 4]);
+    fireEvent.change(
+        within(dialog).getByLabelText(
+            /activerecord.attributes.transcript.data/,
+            { selector: 'input' }
+        ),
+        {
+            target: { files: [new File(['text'], 'transcript.odt')] },
+        }
+    );
+    expect(
+        within(dialog).getByLabelText(/transcript_import.starting_tape/, {
+            selector: 'select',
+        })
+    ).toBeInTheDocument();
+    expect(
+        within(dialog).getByText('transcript_import.starting_tape_help')
+    ).toBeInTheDocument();
+});
+
+test.each([
+    [[], 'alert', 'transcript_import.no_tapes'],
+    [null, 'status', 'transcript_import.loading_tapes'],
+])('blocks importing when tapes are %j', (numbers, role, message) => {
+    const dialog = openForm(jest.fn(), numbers);
+    expect(within(dialog).getByRole(role)).toHaveTextContent(message);
+    expect(
+        within(dialog).queryByRole('button', {
+            name: 'edit.upload_transcript.title',
+        })
+    ).not.toBeInTheDocument();
+    expect(fetch).not.toHaveBeenCalled();
 });

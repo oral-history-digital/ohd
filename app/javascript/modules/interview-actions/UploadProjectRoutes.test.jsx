@@ -68,6 +68,7 @@ test('transcript language options include only assigned original and translation
             archiveId="adg001"
             interview={{
                 contributions: {},
+                tape_numbers: [1, 3],
                 primary_language_id: 1,
                 primary_translation_language_id: '2',
             }}
@@ -87,7 +88,7 @@ test('transcript language options include only assigned original and translation
     rerender(
         <UploadTranscript
             archiveId="adg001"
-            interview={{ contributions: {} }}
+            interview={{ contributions: {}, tape_numbers: [1, 3] }}
             languages={languages}
             onCancel={jest.fn()}
             submitData={jest.fn()}
@@ -113,7 +114,7 @@ test.each([UploadTranscript, UploadEditTable])(
                 {Component === UploadTranscript ? (
                     <Component
                         archiveId="adg001"
-                        interview={{ contributions: {} }}
+                        interview={{ contributions: {}, tape_numbers: [1, 3] }}
                         languages={{}}
                         onCancel={jest.fn()}
                         submitData={submitData}
@@ -163,6 +164,7 @@ test('transcript uploads show timecode options for spreadsheets', () => {
         <UploadTranscript
             archiveId="adg001"
             interview={{
+                tape_numbers: [1, 3],
                 contributions: {
                     7: {
                         id: 7,
@@ -221,7 +223,7 @@ test.each([true, false])(
         render(
             <UploadTranscript
                 archiveId="adg001"
-                interview={{ contributions: {} }}
+                interview={{ contributions: {}, tape_numbers: [1, 3] }}
                 languages={{}}
                 onCancel={jest.fn()}
                 submitData={submitData}
