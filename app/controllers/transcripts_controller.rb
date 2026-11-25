@@ -72,7 +72,7 @@ class TranscriptsController < ApplicationController
   # @return [Hash, nil] Job options, or nil after rendering an invalid language response
   # @raise [ActiveRecord::RecordNotFound] If the interview or tape is outside the destination
   # @raise [ActionController::BadRequest] If no uploaded file was supplied
-  # @raise [Timecode::ImportFormatError] If the pre-check language is not assigned
+  # @raise [Timecode::ImportFormatError] If the pre-check language is neither primary nor an assigned translation
   def prepare_upload
     raise ActiveRecord::RecordNotFound unless current_project
 
@@ -84,7 +84,7 @@ class TranscriptsController < ApplicationController
       raise ActionController::BadRequest, 'Expected a transcript file'
     end
 
-    language = interview.find_assigned_language(transcript_params[:transcript_language_id])
+    language = interview.find_transcript_language(transcript_params[:transcript_language_id])
     unless language
       if action_name == 'validate'
         raise Timecode::ImportFormatError.new(ImportValidation.issue(
@@ -92,7 +92,7 @@ class TranscriptsController < ApplicationController
         ))
       end
       render json: {
-        errors: { transcript_language_id: ['Choose a language assigned to this interview.'] }
+        errors: { transcript_language_id: ['Choose the primary interview language or an assigned translation language.'] }
       }, status: :unprocessable_entity
       return
     end

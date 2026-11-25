@@ -54,11 +54,12 @@ jest.mock('modules/forms', () => ({
 
 beforeEach(() => jest.clearAllMocks());
 
-test('transcript language options include only assigned original and translation languages', () => {
+test('transcript language options exclude the secondary interview language and include both translations', () => {
     const languages = {
         1: { id: 1, name: 'German' },
         2: { id: 2, name: 'English' },
         3: { id: 3, name: 'French' },
+        4: { id: 4, name: 'Spanish' },
     };
     const { rerender } = render(
         <UploadTranscript
@@ -67,7 +68,9 @@ test('transcript language options include only assigned original and translation
                 contributions: {},
                 tape_numbers: [1, 3],
                 primary_language_id: 1,
+                secondary_language_id: 3,
                 primary_translation_language_id: '2',
+                secondary_translation_language_id: 4,
             }}
             languages={languages}
             onCancel={jest.fn()}
@@ -81,6 +84,7 @@ test('transcript language options include only assigned original and translation
     expect(languageField().values).toEqual({
         1: languages[1],
         2: languages[2],
+        4: languages[4],
     });
     rerender(
         <UploadTranscript

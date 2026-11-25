@@ -110,8 +110,34 @@ class TranscriptsControllerTest < ActionController::TestCase
 
     assert_response :unprocessable_entity
     assert_includes JSON.parse(response.body).fetch('errors').fetch('transcript_language_id'),
-                    'Choose a language assigned to this interview.'
+                    'Choose the primary interview language or an assigned translation language.'
     assert_equal original, @tape.segments.pluck(:id, :timecode)
+  end
+
+  test 'rejects the secondary interview language for pre-checks and uploads without changing segments' do
+    sign_in User.find_by!(email: 'alice@example.com')
+    language = Language.create!(code: 'zzz', name: 'Secondary language')
+    @interview.interview_languages.create!(language: language, spec: 'secondary')
+    original = @tape.segments.pluck(:id, :timecode)
+
+    %i[create validate].each do |action|
+      parameters = upload_params
+      parameters[:transcript][:transcript_language_id] = language.id
+      @controller.stub(:current_project, @project) do
+        ReadTranscriptFileJob.stub(:perform_later, ->(*) { flunk 'Queued a secondary language' }) do
+          post action, params: parameters
+        end
+      end
+      assert_response :unprocessable_entity
+      result = JSON.parse(response.body)
+      if action == :validate
+        assert_equal 'language.not_assigned', result['issues'].first['code']
+      else
+        assert_includes result.fetch('errors').fetch('transcript_language_id'),
+                        'Choose the primary interview language or an assigned translation language.'
+      end
+      assert_equal original, @tape.segments.pluck(:id, :timecode)
+    end
   end
 
   test 'pre-check accepts spreadsheets frames subtitles and ODT timing without writes' do

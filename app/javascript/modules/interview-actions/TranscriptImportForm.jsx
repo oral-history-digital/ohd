@@ -81,7 +81,6 @@ export default function TranscriptImportForm({
 
     const assignedLanguageIds = [
         interview.primary_language_id,
-        interview.secondary_language_id,
         interview.primary_translation_language_id,
         interview.secondary_translation_language_id,
     ]

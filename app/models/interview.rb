@@ -572,12 +572,15 @@ class Interview < ApplicationRecord
     ISO_639.find(primary_translation_language&.code).try(:alpha2) || language&.code[0..1]
   end
 
-  # Resolves an import language through this interview's metadata assignments.
+  # Resolves a transcript language from the primary or translation assignments.
+  # The secondary interview language describes spoken content, not a separate transcript.
   #
   # @param language_id [Integer, String, nil] Selected import language ID
-  # @return [Language, nil] Assigned language, or nil when the selection is unassigned
-  def find_assigned_language(language_id)
-    interview_languages.includes(:language).find_by(language_id: language_id)&.language
+  # @return [Language, nil] Import language, or nil when the assignment cannot hold a transcript
+  def find_transcript_language(language_id)
+    interview_languages.includes(:language).
+      where(spec: %w[primary primary_translation secondary_translation]).
+      find_by(language_id: language_id)&.language
   end
 
   def alpha3s
