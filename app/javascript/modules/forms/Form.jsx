@@ -25,6 +25,7 @@ import {
     RegistryEntrySelect,
     SelectField,
     SpeakerDesignationInputs,
+    SwitchField,
     Textarea,
 } from './components';
 import { useFormState } from './hooks';
@@ -38,6 +39,7 @@ const elementTypeToComponent = {
     richTextEditor: RichTextEditor,
     select: SelectField,
     speakerDesignationInputs: SpeakerDesignationInputs,
+    switch: SwitchField,
     textarea: Textarea,
     extra: Extra,
     fileInput: FileInputFormElement,

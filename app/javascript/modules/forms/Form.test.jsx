@@ -19,6 +19,30 @@ const elements = [
     },
 ];
 
+test('switch fields toggle without submitting and submit boolean values', () => {
+    const onSubmit = jest.fn();
+    render(
+        <Form
+            scope="settings"
+            elements={[{ attribute: 'enabled', elementType: 'switch' }]}
+            onSubmit={onSubmit}
+        />
+    );
+    const control = screen.getByRole('switch', {
+        name: 'activerecord.attributes.settings.enabled',
+    });
+    fireEvent.click(control);
+    expect(control).toHaveAttribute('aria-checked', 'true');
+    fireEvent.click(control);
+    expect(control).toHaveAttribute('aria-checked', 'false');
+    expect(onSubmit).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'submit' }));
+    expect(onSubmit).toHaveBeenCalledWith(
+        { settings: { enabled: false } },
+        undefined
+    );
+});
+
 test('pending requests block button and keyboard submission', () => {
     const onSubmit = jest.fn();
     render(<Form scope="upload" elements={[]} onSubmit={onSubmit} fetching />);
