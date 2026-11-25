@@ -57,7 +57,11 @@ class TimecodeTest < ActiveSupport::TestCase
     error = assert_raises(Timecode::ImportFormatError) do
       Timecode.parse_import('01:02:01:24', frame_rate: 24)
     end
-    assert_includes error.message, 'between 00 and 23'
+    assert_equal [{
+      code: 'timecode.frames_out_of_range',
+      params: { rate: 24, max: 23 },
+      location: {}
+    }], error.issues
 
     [0, 29.97, 25.0, '25'].each do |rate|
       assert_raises(Timecode::ImportFormatError) { Timecode.parse_import('01:02:01:12', frame_rate: rate) }

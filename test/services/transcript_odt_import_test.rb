@@ -25,8 +25,8 @@ class TranscriptOdtImportTest < ActiveSupport::TestCase
         tape_durations: '00:61:00', time_shifts: '00:00:60', delete_existing: true
       }).call('unused.odt')
     end
-    assert_includes error.message, "Tape #{@tape.number}: Invalid duration"
-    assert_includes error.message, "Tape #{@tape.number}: Invalid time shift"
+    assert_equal %w[odt.timing_format odt.timing_format], error.issues.map { |issue| issue[:code] }
+    assert_equal %w[duration time_shift], error.issues.map { |issue| issue[:location][:field] }
     assert_equal original, @tape.segments.pluck(:id)
   end
 

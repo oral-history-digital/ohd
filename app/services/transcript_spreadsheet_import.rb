@@ -34,8 +34,7 @@ class TranscriptSpreadsheetImport
   def validate!(file_path)
     rows = parse_rows(file_path)
     if rows.empty?
-      raise Timecode::ImportFormatError,
-            'The spreadsheet has no transcript rows. Add at least one row and upload it again.'
+      raise Timecode::ImportFormatError.new(ImportValidation.issue('spreadsheet.empty'))
     end
 
     tape_end = Timecode.new(@tape.duration).time
@@ -59,20 +58,20 @@ class TranscriptSpreadsheetImport
     previous = nil
     workbook.each_with_pagename do |name, sheet|
       sheet.parse(HEADERS).each.with_index(sheet.header_line + 1) do |row, line|
-        location = "Sheet #{name.inspect}, row #{line}"
+        location = { sheet: name, row: line, field: 'timecode' }
         raw = row[:timecode]
-        original = raw.nil? ? '(empty)' : raw.to_s.truncate(100).inspect
+        original = raw
         value = @options[:trim_timecodes] && raw.is_a?(String) ? raw.strip : raw
         begin
           timecode = Timecode.parse_import(value, frame_rate: @options[:frame_rate])
         rescue Timecode::ImportFormatError => e
-          errors << "#{location}: timecode #{original}. #{e.message}"
+          errors.concat(ImportValidation.contextualize(e.issues, value: raw, location: location))
           next
         end
 
         if previous && ([timecode.length, timecode] <=> [previous.length, previous]).negative?
           # Only the hour field varies in width, so compare width before digits.
-          errors << "#{location}: timecode #{original} cannot be earlier than #{previous} on the same tape."
+          errors << ImportValidation.issue('timecode.out_of_order', params: { value: raw, previous: previous }, location: location)
         end
 
         previous = timecode
@@ -81,7 +80,7 @@ class TranscriptSpreadsheetImport
       end
     end
 
-    raise Timecode::ImportFormatError, errors.join("\n") if errors.any?
+    raise Timecode::ImportFormatError.new(errors) if errors.any?
 
     rows
   end

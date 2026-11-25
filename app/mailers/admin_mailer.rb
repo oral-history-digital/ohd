@@ -52,6 +52,11 @@ class AdminMailer < ApplicationMailer
     @filename = params[:filename] || (@file && @file.split('/').last)
     @locale = params[:locale]
     @error = params[:error]
+    if @error.is_a?(Timecode::ImportFormatError)
+      @import_error_message = ImportValidationMessages.render(
+        @error.issues, @receiver.locale_with_project_fallback(@project || @interview&.project)
+      )
+    end
     subject = "Interview-Archiv #{@project_name} - #{TranslationValue.for('jobs.'+@type, 'de')} #{@filename}"
     mail(
       subject: subject,

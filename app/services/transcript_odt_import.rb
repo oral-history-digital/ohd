@@ -51,21 +51,21 @@ class TranscriptOdtImport
     shifts = @options[:time_shifts].presence&.split(',', -1)
     errors = []
     if shifts && shifts.length != durations.length
-      errors << 'Provide one time shift for each tape duration, or leave time shifts empty to start at zero.'
+      errors << ImportValidation.issue('odt.shift_count')
     end
     settings = durations.each_with_index.map do |raw, index|
       # Each list entry applies to the next tape, starting with the selected tape.
       number = @tape.number + index
       tape = @interview.tapes.find_by(number: number)
-      errors << "Tape #{number}: No tape with this number exists in the interview." unless tape
+      errors << ImportValidation.issue('tape.missing', location: { tape: number }) unless tape
       duration = timing_value(raw, number, 'duration', errors)
-      shift = timing_value(shifts ? shifts[index] : '00:00:00', number, 'time shift', errors)
+      shift = timing_value(shifts ? shifts[index] : '00:00:00', number, 'time_shift', errors)
       if duration && shift && duration <= shift
-        errors << "Tape #{number}: Duration must be later than the time shift so the transcript has a positive time interval."
+        errors << ImportValidation.issue('odt.interval', location: { tape: number })
       end
       [tape, duration, shift]
     end
-    raise Timecode::ImportFormatError, errors.join("\n") if errors.any?
+    raise Timecode::ImportFormatError.new(errors) if errors.any?
 
     settings
   end
@@ -75,14 +75,14 @@ class TranscriptOdtImport
   # @param raw [String, nil] Uploaded field value
   # @param number [Integer] Tape number
   # @param field [String] Field name for the diagnostic
-  # @param errors [Array<String>] Collected diagnostics
+  # @param errors [Array<Hash>] Collected structured diagnostics
   # @return [Integer, nil] Seconds, or nil when invalid
   def timing_value(raw, number, field, errors)
     value = raw.to_s.strip
     canonical = Timecode.parse_import("#{value}.000") # Add milliseconds to match the Timecode parser format
     Timecode.parse_timecode(canonical).to_i # Convert to seconds for the tape model
   rescue Timecode::ImportFormatError
-    errors << "Tape #{number}: Invalid #{field} #{value.inspect}. Use HH:MM:SS with minutes and seconds between 00 and 59, for example 01:30:00."
+    errors << ImportValidation.issue('odt.timing_format', params: { value: raw }, location: { tape: number, field: field })
     nil
   end
 end

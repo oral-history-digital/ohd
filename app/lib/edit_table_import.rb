@@ -117,27 +117,34 @@ class EditTableImport
   # @raise [Timecode::ImportFormatError] If any row is invalid or ambiguous
   def validate_rows!
     errors = []
-    errors << 'The edit table has no rows. Add at least one row and upload it again.' if sheet.empty?
+    errors << ImportValidation.issue('edit_table.empty') if sheet.empty?
+
     previous = {}
     sheet.each_with_index do |row, index|
-      location = "Row #{index + 2}, tape #{row[:tape_number].inspect}"
+      location = { row: index + 2, tape: row[:tape_number], field: 'timecode' }
       raw = row[:timecode]
+
+      # Validate timecodes
       begin
         row[:timecode] = Timecode.parse_import(raw.is_a?(String) ? raw.strip : raw)
       rescue Timecode::ImportFormatError => e
-        errors << "#{location}: timecode #{raw.to_s.truncate(100).inspect}. #{e.message}"
+        errors.concat(ImportValidation.contextualize(e.issues, value: raw, location: location))
         next
       end
+
+      # Validate tape number
       number = row[:tape_number].to_s
       unless /\A[1-9][0-9]*\z/.match?(number)
-        errors << "#{location}: Use a positive whole tape number."
+        errors << ImportValidation.issue('tape.invalid_number', params: { value: row[:tape_number] }, location: location.merge(field: 'tape_number'))
         next
       end
+
       timecode = row[:timecode]
       # Compare by length first, then by digits, which handles hours above 99.
       if previous[number] && ([timecode.length, timecode] <=> [previous[number].length, previous[number]]).negative?
-        errors << "#{location}: Timecode #{timecode} cannot be earlier than #{previous[number]}."
+        errors << ImportValidation.issue('timecode.out_of_order', params: { value: raw, previous: previous[number] }, location: location)
       end
+
       previous[number] = timecode
       next unless only_references
 
@@ -151,10 +158,10 @@ class EditTableImport
       if matches.one?
         row[:segment] = matches.first
       else
-        errors << "#{location}: Timecode #{timecode} must identify one existing segment. Check the tape, timecode, and speaker designation."
+        errors << ImportValidation.issue('segment.not_unique', params: { value: raw }, location: location)
       end
     end
-    raise Timecode::ImportFormatError, errors.join("\n") if errors.any?
+    raise Timecode::ImportFormatError.new(errors) if errors.any?
   end
 
   def create_references(row, interview, ref_object)

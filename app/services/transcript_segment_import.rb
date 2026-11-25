@@ -34,8 +34,9 @@ class TranscriptSegmentImport
       rescue ActiveRecord::RecordInvalid => e
         raise unless e.record.errors[:timecode].any?
 
-        raise Timecode::ImportFormatError,
-              "#{row[:location]}: start timecode #{row[:original]}. #{e.record.errors[:timecode].join('. ')}"
+        raise Timecode::ImportFormatError.new(ImportValidation.issue(
+          'timecode.save_failed', params: { value: row[:original] }, location: row[:location]
+        ))
       end
     end
   end
@@ -86,12 +87,13 @@ class TranscriptSegmentImport
            (candidates.empty? || matches.one?)
           row[:segment] = matches.first
         else
-          errors << "#{row[:location]}: timecode #{row[:original]} is shared. " \
-                    'Use a recognized speaker designation that identifies a single segment and appears once at this timecode in the file.'
+          errors << ImportValidation.issue(
+            'segment.ambiguous', params: { value: row[:original] }, location: row[:location]
+          )
         end
       end
     end
 
-    raise Timecode::ImportFormatError, errors.join("\n") if errors.any?
+    raise Timecode::ImportFormatError.new(errors) if errors.any?
   end
 end
