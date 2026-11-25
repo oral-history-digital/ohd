@@ -70,6 +70,32 @@ class TranscriptsControllerTest < ActionController::TestCase
     FileUtils.rm_f(options[:file_path]) if options
   end
 
+  test 'ODT upload defers tape timing and replacement to the job' do
+    sign_in User.find_by!(email: 'alice@example.com')
+    original_ids = @tape.segments.pluck(:id)
+    original_duration = @tape.duration
+    options = nil
+    parameters = upload_params
+    parameters[:transcript][:data] = Rack::Test::UploadedFile.new(
+      Rails.root.join('test/files/transcript_de.vtt'), 'application/vnd.oasis.opendocument.text',
+      original_filename: 'transcript.odt'
+    )
+    parameters[:transcript][:tape_durations] = '00:61:00'
+    parameters[:transcript][:time_shifts] = '00:00:60'
+    @controller.stub(:current_project, @project) do
+      ReadTranscriptFileJob.stub(:perform_later, ->(args) { options = args }) do
+        post :create, params: parameters
+      end
+    end
+    assert_response :ok
+    assert_equal original_ids, @tape.segments.pluck(:id)
+    assert_equal original_duration, @tape.reload.duration
+    assert_equal '00:61:00', options.fetch(:tape_durations)
+    assert_equal '00:00:60', options.fetch(:time_shifts)
+  ensure
+    FileUtils.rm_f(options[:file_path]) if options
+  end
+
   private
 
   # Builds an upload request with explicit frame conversion and replacement.

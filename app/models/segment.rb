@@ -219,14 +219,13 @@ class Segment < ApplicationRecord
         if splitted_text.length.even?
           speaker_designation = splitted_text.shift
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
-          person_id = segment.interview.contributions.select{|c| c.speaker_designation ==  speaker_designation}.first&.person_id
+          person_id = segment.interview.contributions.select { |c| c.speaker_designation == speaker_designation}.first&.person_id
           atts[:speaker_id] = person_id if person_id
-          segment.update atts
         else
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
-          atts[:speaker_id] = segment.prev && segment.prev.speaker_id if !segment.speaker_id && segment.prev && segment.prev.speaker_id
-          segment.update atts
+          atts[:speaker_id] = segment.prev && segment.prev.speaker_id if !segment.speaker_id && segment.prev&.speaker_id
         end
+        segment.update!(atts)
 
         # if there is another speaker_designation in the text
         # check whether there is  an automatically generated segment (from reading in the transcript in another language)

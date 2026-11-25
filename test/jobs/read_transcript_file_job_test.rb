@@ -7,6 +7,23 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
     @user = User.find_by!(email: 'alice@example.com')
   end
 
+  test 'emails ODT timing errors once and preserves the transcript' do
+    original = @tape.segments.pluck(:id)
+    assert_difference 'ActionMailer::Base.deliveries.count', 1 do
+      with_upload('unused', '.odt') do |path|
+        ReadTranscriptFileJob.perform_now(
+          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
+          filename: 'transcript.odt', user: @user, delete_existing: true,
+          tape_durations: '00:61:00', time_shifts: '00:00:60'
+        )
+      end
+    end
+    assert_equal original, @tape.segments.pluck(:id)
+    body = ActionMailer::Base.deliveries.last.text_part.decoded
+    assert_includes body, 'Invalid duration'
+    assert_includes body, 'Invalid time shift'
+  end
+
   test 'replaces a transcript with canonical timecodes converted from frames' do
     with_spreadsheet(" 00:00:01:24 \t\tFirst\n00:00:03:00\t\tSecond\n") do |path|
       ReadTranscriptFileJob.new.perform(

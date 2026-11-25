@@ -20,26 +20,16 @@ class TranscriptsController < ApplicationController
 
     locale = Language.find(transcript_params[:transcript_language_id]).code
     extension = File.extname(file.original_filename).downcase
-    import_options = {}
-
-    # Handle queued formats (spreadsheet and subtitle files)
-    queued_formats = TranscriptSpreadsheetImport::EXTENSIONS + TranscriptSubtitleReader::EXTENSIONS
-    if queued_formats.include?(extension.delete_prefix('.'))
-      file_path = create_transcript_tmp_file(file, extension)
-      import_options = {
-        filename: file.original_filename,
-        delete_existing: transcript_params[:delete_existing],
-        frame_rate: transcript_params[:timecode_frame_rate],
-        trim_timecodes: transcript_params[:trim_timecodes],
-        contributions_attributes: transcript_params[:contributions_attributes]&.to_h
-      }
-    # Handle non-queued formats (odt)
-    else
-      file_path = create_tmp_file(file)
-      update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
-      tape.segments.destroy_all if transcript_params[:delete_existing]
-      update_contributions(interview, transcript_params[:contributions_attributes])
-    end
+    file_path = create_transcript_tmp_file(file, extension)
+    import_options = {
+      filename: file.original_filename,
+      delete_existing: transcript_params[:delete_existing],
+      frame_rate: transcript_params[:timecode_frame_rate],
+      trim_timecodes: transcript_params[:trim_timecodes],
+      tape_durations: transcript_params[:tape_durations],
+      time_shifts: transcript_params[:time_shifts],
+      contributions_attributes: transcript_params[:contributions_attributes]&.to_h
+    }
 
     job_options = {
       interview: interview,
@@ -118,18 +108,6 @@ class TranscriptsController < ApplicationController
     temporary.path
   ensure
     temporary&.close
-  end
-
-  def update_tape_durations_and_time_shifts(interview)
-    tape_durations = transcript_params[:tape_durations].split(',').map{|t| Timecode.new(t).time}
-    time_shifts = transcript_params[:time_shifts] ? transcript_params[:time_shifts].split(',').map{|t| Timecode.new(t).time} : tape_durations.map{|t| 0}
-
-    tape_durations.each_with_index do |tape_duration, index|
-      tape_number = (!transcript_params[:tape_number].blank? && transcript_params[:tape_number].to_i) || index + 1
-      tape_media_id = [interview.archive_id, format('%02d', interview.tapes.count), format('%02d', tape_number)].join('_')
-      tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id
-      tape.update duration: tape_duration, time_shift: time_shifts[index]
-    end
   end
 
 end

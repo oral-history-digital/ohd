@@ -30,11 +30,10 @@ class ReadTranscriptFileJob < ApplicationJob
             **import_options
           )
         when 'odt'
-          interview.create_or_update_segments_from_text(
-            opts[:file_path],
-            opts[:tape_id],
-            opts[:locale]
-          )
+          tape = interview.tapes.find(opts[:tape_id])
+          TranscriptOdtImport.new(tape, opts[:locale], import_options.merge(
+            tape_durations: opts[:tape_durations], time_shifts: opts[:time_shifts]
+          )).call(opts[:file_path])
         when *TranscriptSubtitleReader::EXTENSIONS
           interview.create_or_update_segments_from_vtt(
             opts[:file_path],

@@ -683,7 +683,7 @@ class Interview < ApplicationRecord
 
   # tape_id is a dummy here
   def create_or_update_segments_from_text(file_path, tape_id, locale)
-    tape = Tape.find(tape_id)
+    tape = tapes.find(tape_id)
     data = File.read file_path
     text = Yomu.read :text, data
     Segment.create_or_update_by({
