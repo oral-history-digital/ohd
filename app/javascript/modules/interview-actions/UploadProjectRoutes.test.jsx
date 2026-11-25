@@ -4,8 +4,8 @@ import { Form } from 'modules/forms';
 
 import PhotoForm from '../gallery/PhotoForm';
 import ContributionForm from '../interview-metadata/ContributionForm';
+import UploadTranscript from './TranscriptImportForm';
 import UploadEditTable from './UploadEditTable';
-import UploadTranscript from './UploadTranscript';
 
 const mockInvalidate = jest.fn();
 jest.mock('modules/person', () => ({
@@ -14,7 +14,22 @@ jest.mock('modules/person', () => ({
     useInvalidateInterviewContributors: () => mockInvalidate,
     PersonForm: () => null,
 }));
-jest.mock('modules/ui', () => ({ Modal: () => null }));
+jest.mock('modules/ui', () => ({
+    Modal: () => null,
+    Button: ({ buttonText, onClick }) => (
+        <button onClick={onClick}>{buttonText}</button>
+    ),
+    InlineNotification: ({ title }) => <p>{title}</p>,
+}));
+jest.mock('./hooks/useImportValidation', () => ({
+    __esModule: true,
+    useImportValidation: () => ({
+        status: 'idle',
+        issues: [],
+        check: jest.fn().mockResolvedValue(true),
+        reset: jest.fn(),
+    }),
+}));
 jest.mock('modules/spinners', () => ({ Spinner: () => null }));
 
 jest.mock('modules/routes', () => ({ usePathBase: () => '/adg/de' }));
@@ -43,6 +58,7 @@ test('transcript language options include only assigned original and translation
                 primary_translation_language_id: '2',
             }}
             languages={languages}
+            onCancel={jest.fn()}
             submitData={jest.fn()}
         />
     );
@@ -59,6 +75,7 @@ test('transcript language options include only assigned original and translation
             archiveId="adg001"
             interview={{ contributions: {} }}
             languages={languages}
+            onCancel={jest.fn()}
             submitData={jest.fn()}
         />
     );
@@ -67,13 +84,14 @@ test('transcript language options include only assigned original and translation
 
 test.each([UploadTranscript, UploadEditTable])(
     'upload preserves public identifiers, file validation, and queued-work feedback (%p)',
-    (Component) => {
+    async (Component) => {
         const submitData = jest.fn();
         render(
             <Component
                 archiveId="adg001"
                 interview={{ contributions: {} }}
                 languages={{}}
+                onCancel={jest.fn()}
                 submitData={submitData}
             />
         );
@@ -87,12 +105,27 @@ test.each([UploadTranscript, UploadEditTable])(
         );
         expect(fileField.validate('file')).toBe(false);
         const params = { [form.scope]: { archive_id: 'adg001', data: 'file' } };
-        act(() => form.onSubmit(params));
-        expect(submitData).toHaveBeenCalledWith(
-            { pathBase: '/adg/de' },
-            params
-        );
-        expect(screen.getByText('edit.upload.processing')).toBeInTheDocument();
+        let submission;
+        await act(async () => {
+            submission = form.onSubmit(params);
+        });
+        const expectedArgs = [{ pathBase: '/adg/de' }, params];
+        const callbacks = [expect.any(Object), expect.any(Function)];
+        if (Component === UploadTranscript) {
+            expectedArgs.push(...callbacks);
+            act(() => submitData.mock.calls[0][3]());
+        }
+        expect(submitData).toHaveBeenCalledWith(...expectedArgs);
+        await act(async () => {
+            await submission;
+        });
+        expect(
+            screen.getByText(
+                Component === UploadTranscript
+                    ? 'import_validation.queued'
+                    : 'edit.upload.processing'
+            )
+        ).toBeInTheDocument();
         expect(screen.queryByText('Upload form')).not.toBeInTheDocument();
     }
 );
@@ -112,6 +145,7 @@ test('transcript uploads show timecode options for spreadsheets', () => {
                 },
             }}
             languages={{}}
+            onCancel={jest.fn()}
             submitData={jest.fn()}
         />
     );
@@ -145,23 +179,23 @@ test('transcript uploads show timecode options for spreadsheets', () => {
     expect(
         field('timecode_frame_rate').values.map(({ value }) => value)
     ).toEqual(['24', '25', '30', '50', '60']);
-    expect(field('trim_timecodes').hidden).toBe(false);
+    expect(field('trim_timecodes')).toBeUndefined();
 
     selectFile('transcript.vtt');
     expect(field('use_frame_timecodes').hidden).toBe(true);
     expect(field('timecode_frame_rate').hidden).toBe(true);
-    expect(field('trim_timecodes').hidden).toBe(true);
 });
 
 test.each([true, false])(
     'transcript uploads include a selected rate only in frame mode (%p)',
-    (useFrames) => {
+    async (useFrames) => {
         const submitData = jest.fn();
         render(
             <UploadTranscript
                 archiveId="adg001"
                 interview={{ contributions: {} }}
                 languages={{}}
+                onCancel={jest.fn()}
                 submitData={submitData}
             />
         );
@@ -171,15 +205,15 @@ test.each([true, false])(
                 .find(({ attribute }) => attribute === 'data')
                 .handlechangecallback('data', file)
         );
-        act(() =>
+        await act(async () => {
             Form.mock.lastCall[0].onSubmit({
                 transcript: {
                     data: file,
                     use_frame_timecodes: useFrames,
                     timecode_frame_rate: '25',
                 },
-            })
-        );
+            });
+        });
         expect(submitData).toHaveBeenCalledWith(
             { pathBase: '/adg/de' },
             {
@@ -187,7 +221,9 @@ test.each([true, false])(
                     data: file,
                     ...(useFrames && { timecode_frame_rate: '25' }),
                 },
-            }
+            },
+            expect.any(Object),
+            expect.any(Function)
         );
     }
 );

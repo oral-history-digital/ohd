@@ -19,6 +19,14 @@ const elements = [
     },
 ];
 
+test('pending requests block button and keyboard submission', () => {
+    const onSubmit = jest.fn();
+    render(<Form scope="upload" elements={[]} onSubmit={onSubmit} fetching />);
+    expect(screen.getByRole('button', { name: 'submit' })).toBeDisabled();
+    fireEvent.submit(screen.getByTestId('upload-form'));
+    expect(onSubmit).not.toHaveBeenCalled();
+});
+
 function selectReplacement() {
     const replacement = new File(['replacement'], 'replacement.png', {
         type: 'image/png',

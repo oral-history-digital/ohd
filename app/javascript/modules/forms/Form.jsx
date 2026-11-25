@@ -43,6 +43,11 @@ const elementTypeToComponent = {
     fileInput: FileInputFormElement,
 };
 
+/**
+ * Renders validated fields and submission feedback.
+ * @param {Object} props - Field definitions, initial values, and submission callbacks.
+ * @returns {React.ReactElement} Form controls and feedback.
+ */
 export default function Form({
     buttonFullWidth = false,
     children,
@@ -197,6 +202,7 @@ export default function Form({
 
     function handleSubmit(event) {
         event.preventDefault();
+        if (fetching) return;
         touchAllFields();
 
         if (!valid()) {
