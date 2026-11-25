@@ -28,6 +28,43 @@ jest.mock('modules/forms', () => ({
 
 beforeEach(() => jest.clearAllMocks());
 
+test('transcript language options include only assigned original and translation languages', () => {
+    const languages = {
+        1: { id: 1, name: 'German' },
+        2: { id: 2, name: 'English' },
+        3: { id: 3, name: 'French' },
+    };
+    const { rerender } = render(
+        <UploadTranscript
+            archiveId="adg001"
+            interview={{
+                contributions: {},
+                primary_language_id: 1,
+                primary_translation_language_id: '2',
+            }}
+            languages={languages}
+            submitData={jest.fn()}
+        />
+    );
+    const languageField = () =>
+        Form.mock.lastCall[0].elements.find(
+            ({ attribute }) => attribute === 'transcript_language_id'
+        );
+    expect(languageField().values).toEqual({
+        1: languages[1],
+        2: languages[2],
+    });
+    rerender(
+        <UploadTranscript
+            archiveId="adg001"
+            interview={{ contributions: {} }}
+            languages={languages}
+            submitData={jest.fn()}
+        />
+    );
+    expect(languageField().values).toEqual({});
+});
+
 test.each([UploadTranscript, UploadEditTable])(
     'upload preserves public identifiers, file validation, and queued-work feedback (%p)',
     (Component) => {

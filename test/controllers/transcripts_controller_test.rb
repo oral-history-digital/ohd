@@ -96,6 +96,25 @@ class TranscriptsControllerTest < ActionController::TestCase
     FileUtils.rm_f(options[:file_path]) if options
   end
 
+  test 'rejects an unassigned language before queuing or replacing segments' do
+    sign_in User.find_by!(email: 'alice@example.com')
+    language = Language.create!(code: 'zzz', name: 'Unassigned language')
+    original = @tape.segments.pluck(:id, :timecode)
+    parameters = upload_params
+    parameters[:transcript][:transcript_language_id] = language.id
+
+    @controller.stub(:current_project, @project) do
+      ReadTranscriptFileJob.stub(:perform_later, ->(*) { flunk 'Queued an unassigned language' }) do
+        post :create, params: parameters
+      end
+    end
+
+    assert_response :unprocessable_entity
+    assert_includes JSON.parse(response.body).fetch('errors').fetch('transcript_language_id'),
+                    'Choose a language assigned to this interview.'
+    assert_equal original, @tape.segments.pluck(:id, :timecode)
+  end
+
   private
 
   # Builds an upload request with explicit frame conversion and replacement.

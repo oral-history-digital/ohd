@@ -69,6 +69,20 @@ export default function UploadTranscript({
             speaker_designation: contribution.speaker_designation,
         }));
 
+    const assignedLanguageIds = [
+        interview.primary_language_id,
+        interview.secondary_language_id,
+        interview.primary_translation_language_id,
+        interview.secondary_translation_language_id,
+    ]
+        .filter((id) => id != null)
+        .map(String);
+    const assignedLanguages = Object.fromEntries(
+        Object.entries(languages).filter(([id]) =>
+            assignedLanguageIds.includes(String(id))
+        )
+    );
+
     return (
         <>
             <p className="explanation">{t('upload.explanation.transcript')}</p>
@@ -117,7 +131,7 @@ export default function UploadTranscript({
                     {
                         elementType: 'select',
                         attribute: 'transcript_language_id',
-                        values: languages,
+                        values: assignedLanguages,
                         withEmpty: true,
                         validate: function (v) {
                             return v !== '';
