@@ -187,6 +187,13 @@ test('transcript uploads show timecode options for spreadsheets', () => {
     const fields = () => Form.mock.lastCall[0].elements;
     const field = (attribute) =>
         fields().find((element) => element.attribute === attribute);
+    for (const attribute of [
+        'use_frame_timecodes',
+        'delete_existing',
+        'update_only_speakers',
+    ]) {
+        expect(field(attribute).elementType).toBe('switch');
+    }
     expect(field('timecode_frame_rate').hidden).toBe(true);
 
     const selectFile = (name) => {

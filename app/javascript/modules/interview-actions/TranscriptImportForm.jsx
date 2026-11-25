@@ -166,10 +166,12 @@ export default function TranscriptImportForm({
                 submitText="edit.upload_transcript.title"
                 values={{
                     archive_id: archiveId,
+                    timecode_frame_rate: '25',
                     tape_number:
                         tapeNumbers.length === 1 ? String(tapeNumbers[0]) : '',
                     contributions_attributes: contributions,
                 }}
+                labelPosition="above"
                 elements={[
                     {
                         attribute: 'data',
@@ -189,6 +191,7 @@ export default function TranscriptImportForm({
                         validate: function (v) {
                             return v !== '';
                         },
+                        group: 'lang_and_tape',
                     },
                     {
                         attribute: 'tape_number',
@@ -209,11 +212,21 @@ export default function TranscriptImportForm({
                             tapeNumbers.some(
                                 (number) => String(number) === String(value)
                             ),
+                        group: 'lang_and_tape',
+                    },
+                    {
+                        elementType: 'switch',
+                        help: 'activerecord.attributes.transcript.delete_existing_explanation',
+                        attribute: 'delete_existing',
+                    },
+                    {
+                        elementType: 'switch',
+                        help: 'activerecord.attributes.transcript.update_only_speakers_explanation',
+                        attribute: 'update_only_speakers',
                     },
                     {
                         attribute: 'use_frame_timecodes',
-                        elementType: 'input',
-                        type: 'checkbox',
+                        elementType: 'switch',
                         hidden: !isSpreadsheet,
                         help: 'activerecord.attributes.transcript.timecode_frame_rate_explanation',
                         handlechangecallback: (_name, checked) =>
@@ -227,18 +240,6 @@ export default function TranscriptImportForm({
                         keepOrder: true,
                         validate: Boolean,
                         hidden: !isSpreadsheet || !useFrameTimecodes,
-                    },
-                    {
-                        elementType: 'input',
-                        help: 'activerecord.attributes.transcript.delete_existing_explanation',
-                        attribute: 'delete_existing',
-                        type: 'checkbox',
-                    },
-                    {
-                        elementType: 'input',
-                        help: 'activerecord.attributes.transcript.update_only_speakers_explanation',
-                        attribute: 'update_only_speakers',
-                        type: 'checkbox',
                     },
                     {
                         attribute: 'tape_durations',

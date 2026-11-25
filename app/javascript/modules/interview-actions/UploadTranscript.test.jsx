@@ -170,10 +170,9 @@ test('submit displays issues in InlineNotification and editing clears them witho
     expect(screen.getByRole('alert')).toHaveClass('InlineNotification--error');
     expect(submitData).not.toHaveBeenCalled();
     fireEvent.click(
-        within(dialog).getByLabelText(
-            'activerecord.attributes.transcript.delete_existing',
-            { selector: 'input' }
-        )
+        within(dialog).getByRole('switch', {
+            name: 'activerecord.attributes.transcript.delete_existing',
+        })
     );
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     expect(fetch).toHaveBeenCalledTimes(1);
