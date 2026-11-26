@@ -1,16 +1,22 @@
+# frozen_string_literal: true
+
+# Imports an uploaded edit table and delegates completion or error emails to ApplicationJob.
 class ReadEditTableJob < ApplicationJob
   queue_as :default
 
+  # Imports the edit table atomically and removes the uniquely named upload afterward.
+  #
+  # @param opts [Hash] Interview, upload path, locale, reference mode, and contributions
+  # @return [void]
   def perform(opts)
     EditTableImport.new(
       opts[:interview],
       opts[:file_path],
       opts[:locale],
-      opts[:only_references],
+      ActiveModel::Type::Boolean.new.cast(opts[:only_references]),
+      contributions_attributes: opts[:contributions_attributes]
     ).process
-
-    File.delete(opts[:file_path]) if File.exist?(opts[:file_path])
-    opts[:interview].touch
+  ensure
+    FileUtils.rm_f(opts[:file_path]) if opts[:filename]
   end
-
 end

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Authorizes transcript uploads, queues imports, and removes transcript translations.
 class TranscriptsController < ApplicationController
   def new
     authorize :upload, :new?
@@ -18,22 +21,39 @@ class TranscriptsController < ApplicationController
       raise ActionController::BadRequest, 'Expected a transcript file'
     end
 
-    locale = Language.find(transcript_params[:transcript_language_id]).code
-    file_path = create_tmp_file(file)
+    assignment = interview.interview_languages.includes(:language).find_by(
+      language_id: transcript_params[:transcript_language_id]
+    )
+    unless assignment
+      return render json: {
+        errors: { transcript_language_id: ['Choose a language assigned to this interview.'] }
+      }, status: :unprocessable_entity
+    end
 
-    update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
-    tape.segments.destroy_all if transcript_params[:delete_existing]
+    locale = assignment.language.code
+    extension = File.extname(file.original_filename).downcase
+    file_path = create_transcript_tmp_file(file, extension)
+    import_options = {
+      filename: file.original_filename,
+      delete_existing: transcript_params[:delete_existing],
+      frame_rate: transcript_params[:timecode_frame_rate],
+      trim_timecodes: transcript_params[:trim_timecodes],
+      tape_durations: transcript_params[:tape_durations],
+      time_shifts: transcript_params[:time_shifts],
+      contributions_attributes: transcript_params[:contributions_attributes]&.to_h
+    }
 
-    update_contributions(interview, transcript_params[:contributions_attributes])
-
-    ReadTranscriptFileJob.perform_later({
+    job_options = {
       interview: interview,
       file_path: file_path,
       tape_id: tape.id,
       locale: locale,
       user: current_user,
       update_only_speakers: transcript_params[:update_only_speakers],
-    })
+      **import_options
+    }
+
+    ReadTranscriptFileJob.perform_later(job_options)
 
     respond_to do |format|
       format.json do
@@ -72,8 +92,9 @@ class TranscriptsController < ApplicationController
   private
 
   def transcript_params
-    params.require(:transcript).
-      permit(
+    @transcript_params ||= params
+      .require(:transcript)
+      .permit(
         :archive_id,
         :transcript_language_id,
         :transcript_locale,
@@ -82,20 +103,23 @@ class TranscriptsController < ApplicationController
         :time_shifts,
         :delete_existing,
         :update_only_speakers,
+        :timecode_frame_rate,
+        :trim_timecodes,
         contributions_attributes: [:id, :person_id, :contribution_type_id, :speaker_designation]
-    )
+      )
   end
 
-  def update_tape_durations_and_time_shifts(interview)
-    tape_durations = transcript_params[:tape_durations].split(',').map{|t| Timecode.new(t).time}
-    time_shifts = transcript_params[:time_shifts] ? transcript_params[:time_shifts].split(',').map{|t| Timecode.new(t).time} : tape_durations.map{|t| 0}
-
-    tape_durations.each_with_index do |tape_duration, index|
-      tape_number = (!transcript_params[:tape_number].blank? && transcript_params[:tape_number].to_i) || index + 1
-      tape_media_id = [interview.archive_id, format('%02d', interview.tapes.count), format('%02d', tape_number)].join('_')
-      tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id
-      tape.update duration: tape_duration, time_shift: time_shifts[index]
-    end
+  # Copies an upload to a unique path so queued jobs can share a filename.
+  #
+  # @param file [ActionDispatch::Http::UploadedFile] Transcript upload
+  # @param extension [String] File extension used by the reader
+  # @return [String] Path to the closed temporary file
+  def create_transcript_tmp_file(file, extension)
+    temporary = Tempfile.create(['transcript-', extension], Rails.root.join('tmp'), binmode: true)
+    IO.copy_stream(file.tempfile, temporary)
+    temporary.path
+  ensure
+    temporary&.close
   end
 
 end

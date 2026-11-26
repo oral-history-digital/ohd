@@ -28,6 +28,43 @@ jest.mock('modules/forms', () => ({
 
 beforeEach(() => jest.clearAllMocks());
 
+test('transcript language options include only assigned original and translation languages', () => {
+    const languages = {
+        1: { id: 1, name: 'German' },
+        2: { id: 2, name: 'English' },
+        3: { id: 3, name: 'French' },
+    };
+    const { rerender } = render(
+        <UploadTranscript
+            archiveId="adg001"
+            interview={{
+                contributions: {},
+                primary_language_id: 1,
+                primary_translation_language_id: '2',
+            }}
+            languages={languages}
+            submitData={jest.fn()}
+        />
+    );
+    const languageField = () =>
+        Form.mock.lastCall[0].elements.find(
+            ({ attribute }) => attribute === 'transcript_language_id'
+        );
+    expect(languageField().values).toEqual({
+        1: languages[1],
+        2: languages[2],
+    });
+    rerender(
+        <UploadTranscript
+            archiveId="adg001"
+            interview={{ contributions: {} }}
+            languages={languages}
+            submitData={jest.fn()}
+        />
+    );
+    expect(languageField().values).toEqual({});
+});
+
 test.each([UploadTranscript, UploadEditTable])(
     'upload preserves public identifiers, file validation, and queued-work feedback (%p)',
     (Component) => {
@@ -57,6 +94,101 @@ test.each([UploadTranscript, UploadEditTable])(
         );
         expect(screen.getByText('edit.upload.processing')).toBeInTheDocument();
         expect(screen.queryByText('Upload form')).not.toBeInTheDocument();
+    }
+);
+
+test('transcript uploads show timecode options for spreadsheets', () => {
+    render(
+        <UploadTranscript
+            archiveId="adg001"
+            interview={{
+                contributions: {
+                    7: {
+                        id: 7,
+                        contribution_type: 'interviewee',
+                        person_id: 9,
+                        speaker_designation: 'IP',
+                    },
+                },
+            }}
+            languages={{}}
+            submitData={jest.fn()}
+        />
+    );
+
+    expect(Form.mock.lastCall[0].values.contributions_attributes).toEqual([
+        { id: 7, person_id: 9, speaker_designation: 'IP' },
+    ]);
+
+    const fields = () => Form.mock.lastCall[0].elements;
+    const field = (attribute) =>
+        fields().find((element) => element.attribute === attribute);
+    expect(field('timecode_frame_rate').hidden).toBe(true);
+
+    const selectFile = (name) => {
+        act(() =>
+            field('data').handlechangecallback('data', new File(['data'], name))
+        );
+    };
+    selectFile('transcript.CSV');
+    expect(field('use_frame_timecodes').hidden).toBe(false);
+    expect(field('timecode_frame_rate').hidden).toBe(true);
+    act(() =>
+        field('use_frame_timecodes').handlechangecallback(
+            'use_frame_timecodes',
+            true
+        )
+    );
+    expect(field('timecode_frame_rate').hidden).toBe(false);
+    expect(field('timecode_frame_rate').elementType).toBe('select');
+    expect(field('timecode_frame_rate').validate('')).toBe(false);
+    expect(
+        field('timecode_frame_rate').values.map(({ value }) => value)
+    ).toEqual(['24', '25', '30', '50', '60']);
+    expect(field('trim_timecodes').hidden).toBe(false);
+
+    selectFile('transcript.vtt');
+    expect(field('use_frame_timecodes').hidden).toBe(true);
+    expect(field('timecode_frame_rate').hidden).toBe(true);
+    expect(field('trim_timecodes').hidden).toBe(true);
+});
+
+test.each([true, false])(
+    'transcript uploads include a selected rate only in frame mode (%p)',
+    (useFrames) => {
+        const submitData = jest.fn();
+        render(
+            <UploadTranscript
+                archiveId="adg001"
+                interview={{ contributions: {} }}
+                languages={{}}
+                submitData={submitData}
+            />
+        );
+        const file = new File(['data'], 'transcript.csv');
+        act(() =>
+            Form.mock.lastCall[0].elements
+                .find(({ attribute }) => attribute === 'data')
+                .handlechangecallback('data', file)
+        );
+        act(() =>
+            Form.mock.lastCall[0].onSubmit({
+                transcript: {
+                    data: file,
+                    use_frame_timecodes: useFrames,
+                    timecode_frame_rate: '25',
+                },
+            })
+        );
+        expect(submitData).toHaveBeenCalledWith(
+            { pathBase: '/adg/de' },
+            {
+                transcript: {
+                    data: file,
+                    ...(useFrames && { timecode_frame_rate: '25' }),
+                },
+            }
+        );
     }
 );
 

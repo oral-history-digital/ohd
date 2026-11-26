@@ -27,21 +27,6 @@ export function normalizeTimecode(timecode) {
 }
 
 /**
- * Detects the timecode format from a timecode string.
- * @param {string|null|undefined} timecode
- * @returns {'ms'|'frames'|null} - 'ms' for HH:MM:SS.mmm (3 decimal places),
- *   'frames' for HH:MM:SS.ff (2 decimal places, 25fps base), or null if unknown.
- */
-export function detectTimecodeFormat(timecode) {
-    if (!timecode) return null;
-    const normalized = normalizeTimecode(timecode);
-    if (!normalized) return null;
-    const match = normalized.match(/^\d{2}:\d{2}:\d{2}\.(\d+)$/);
-    if (!match) return null;
-    return match[1].length === 2 ? 'frames' : 'ms';
-}
-
-/**
  * Converts a timecode string to seconds.
  *
  * Supports the following formats:
@@ -92,7 +77,6 @@ export function timecodeToSeconds(timecode) {
  * @param {'ms'|'frames'} [format='ms'] - Sub-second format when `includeMilliseconds` is true.
  *                                         'ms'     → 3-digit milliseconds  (e.g., ".760")
  *                                         'frames' → 2-digit frame number at 25 fps (e.g., ".19")
- *                                         Mirrors the return values of {@link detectTimecodeFormat}.
  *
  * @returns {string} Formatted timecode string
  *

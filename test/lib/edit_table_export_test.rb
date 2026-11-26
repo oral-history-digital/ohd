@@ -24,7 +24,7 @@ class EditTableExportTest < ActiveSupport::TestCase
     end
 
     assert_equal "1", @first_row_entries[0]
-    assert_equal "00:00:02.00", @first_row_entries[1]
+    assert_equal "00:00:02.000", @first_row_entries[1]
     assert_equal "INT", @first_row_entries[2]
     assert_equal "Итак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца", @first_row_entries[3]
     assert_equal "Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez", @first_row_entries[4]
@@ -38,7 +38,7 @@ class EditTableExportTest < ActiveSupport::TestCase
     assert_equal "Hauptsitz Berlin Filiale für die Eisenerzgewinnung in Elsass-Lothringen", @first_row_entries[@header_indices['Anmerkungen (ger)']]
 
     assert_equal "2", @second_row_entries[0]
-    assert_equal "00:02:02.00", @second_row_entries[1]
+    assert_equal "00:02:02.000", @second_row_entries[1]
     assert_equal "AB", @second_row_entries[2]
     assert_equal "И, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни", @second_row_entries[3]
     assert_equal "Und ich würde Sie bitten, Konstantin Woitowitsch, erzählen Sie bitte Ihre Lebensgeschichte", @second_row_entries[4]

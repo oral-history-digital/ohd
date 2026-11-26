@@ -19,8 +19,12 @@
 
 <% if @error %>
   <p>Es gab folgende Fehlermeldung:</p>
-  <%= @error.message %>
-  <%= @error.backtrace[0..5] %>
+  <% if @error.is_a?(Timecode::ImportFormatError) %>
+    <%= safe_join(@error.message.lines.map(&:chomp), tag.br) %>
+  <% else %>
+    <%= @error.message %>
+    <%= @error.backtrace[0..5] %>
+  <% end %>
 <% else %>
   <p>Bitte prüfen Sie Vollständigkeit und Korrektheit der importierten Daten.</p>
 <% end %>
