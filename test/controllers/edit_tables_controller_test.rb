@@ -62,6 +62,27 @@ class EditTablesControllerTest < ActionController::TestCase
     assert_equal '00:61:00.000', result['issues'].first['params']['value']
   end
 
+  test 'speaker discovery uses the edit table headers without validating timestamps or writing' do
+    with_validation_table('invalid') do |parameters, project|
+      assert_read_only_validation(parameters, project, action: :speakers)
+    end
+    assert_response :ok
+    assert_equal({ 'speakers' => ['INT'] }, JSON.parse(response.body))
+  end
+
+  test 'speaker discovery enforces authorization and project membership' do
+    with_validation_table('invalid') do |parameters, project|
+      sign_in User.find_by!(email: 'john@example.com')
+      assert_read_only_validation(parameters, project, action: :speakers)
+      assert_response :forbidden
+
+      sign_in User.find_by!(email: 'alice@example.com')
+      @controller.stub(:current_project, Project.find_by!(shortname: 'ohd')) do
+        assert_raises(ActiveRecord::RecordNotFound) { post :speakers, params: parameters }
+      end
+    end
+  end
+
   test 'references-only pre-check checks existing segment targets' do
     with_validation_table('99:00:00.000') do |parameters, project|
       parameters[:edit_table][:only_references] = 'true'
@@ -143,14 +164,15 @@ class EditTablesControllerTest < ActionController::TestCase
   # Verifies that a pre-check makes no database writes or deliveries and removes its copy.
   # @param parameters [Hash] Upload request
   # @param project [Project] Current project
+  # @param action [Symbol] Read-only import action
   # @return [void]
-  def assert_read_only_validation(parameters, project)
+  def assert_read_only_validation(parameters, project, action: :validate)
     files = Dir.glob(Rails.root.join('tmp/edit-table-*'))
     writes = []
     subscriber = ->(*event) { writes << event.last[:sql] if event.last[:sql].match?(/\A\s*(INSERT|UPDATE|DELETE)\b/i) }
     assert_no_difference 'ActionMailer::Base.deliveries.count' do
       ActiveSupport::Notifications.subscribed(subscriber, 'sql.active_record') do
-        @controller.stub(:current_project, project) { post :validate, params: parameters }
+        @controller.stub(:current_project, project) { post action, params: parameters }
       end
     end
     assert_empty writes

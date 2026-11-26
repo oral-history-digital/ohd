@@ -5,11 +5,26 @@ class TranscriptSubtitleReader
   EXTENSIONS = %w[vtt srt].freeze
   VTT_TIMESTAMP = /\A(?:(\d{2,}):)?(\d{2}):(\d{2})\.(\d{3})\z/
   SRT_TIMESTAMP = /\A(\d+):(\d{1,2}):(\d{1,2}),(\d{3})\z/
+  SPEAKER_TAG = /<v (\S+)>/
 
   # @param file_path [String] Path to the VTT or SRT upload
   def initialize(file_path)
     @file_path = file_path
     @vtt = File.extname(file_path).strip.casecmp?('.vtt')
+  end
+
+  # Reads explicit VTT voice tags independently of cue timing, excluding metadata blocks.
+  # @return [Array<String>] Unique designations supported by the subtitle importer
+  def speaker_designations
+    return [] unless @vtt
+
+    # Read UTF-8 text, stripping an optional BOM, and normalize CRLF/CR line endings to LF.
+    # Blank lines separate VTT blocks; inspect each block without parsing its timestamps.
+    File.read(@file_path, encoding: 'bom|utf-8').gsub(/\r\n?/, "\n").split(/\n\s*\n/).flat_map do |block|
+      next [] if block.strip.match?(/\A(?:WEBVTT|NOTE(?:[ \t]|\n|\z)|STYLE(?:\n|\z)|REGION(?:\n|\z))/)
+
+      block.scan(SPEAKER_TAG).flatten
+    end.uniq
   end
 
   # @return [Array<Hash>] Validated cue rows ready for the transcript writer
@@ -65,7 +80,7 @@ class TranscriptSubtitleReader
       {
         timecode: start.first,
         duration: duration / 1000.0,
-        speaker: text[/<v (\S+)>/, 1],
+        speaker: text[SPEAKER_TAG, 1],
         transcript: text.sub(/<v \S+> /, ''),
         location: location,
         original: start_value

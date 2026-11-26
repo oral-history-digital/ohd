@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import Form from './Form';
+import { InputField } from './components';
 
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({ t: (key) => key }),
@@ -18,6 +19,39 @@ const elements = [
         },
     },
 ];
+
+test('custom field components receive form values and update the submitted payload', () => {
+    const onSubmit = jest.fn();
+    render(
+        <Form
+            scope="settings"
+            labelPosition="above"
+            values={{ title: 'Original' }}
+            elements={[
+                {
+                    attribute: 'title',
+                    elementType: 'custom',
+                    component: InputField,
+                    type: 'text',
+                    label: 'Title',
+                },
+            ]}
+            onSubmit={onSubmit}
+        />
+    );
+    expect(screen.getByLabelText('Title')).toHaveValue('Original');
+    expect(screen.getByTestId('settings-title-element')).toHaveClass(
+        'form-group--label-above'
+    );
+    fireEvent.change(screen.getByLabelText('Title'), {
+        target: { value: 'Changed' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'submit' }));
+    expect(onSubmit).toHaveBeenCalledWith(
+        { settings: { title: 'Changed' } },
+        undefined
+    );
+});
 
 test('fields inherit label position, allow overrides, and preserve switch layout', () => {
     const { rerender } = render(

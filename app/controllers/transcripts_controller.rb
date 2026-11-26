@@ -43,6 +43,17 @@ class TranscriptsController < ApplicationController
     FileUtils.rm_f(options[:file_path]) if options
   end
 
+  # Reads file speaker labels before a tape, language, or mapping has been selected.
+  # @return [void] JSON labels, or a structured table-reading error
+  def speakers
+    options = prepare_upload(speakers_only: true)
+    render json: { speakers: ImportSpeakerLabels.new(options).call }
+  rescue Roo::HeaderRowNotFoundError, CSV::MalformedCSVError
+    render json: { issues: [ImportValidation.issue('file.invalid_structure')] }, status: :unprocessable_entity
+  ensure
+    FileUtils.rm_f(options[:file_path]) if options
+  end
+
   def destroy
     interview = Interview.find_by_archive_id(params[:interview_id])
     authorize interview, :upload_transcript?
@@ -69,20 +80,27 @@ class TranscriptsController < ApplicationController
   private
 
   # Authorizes the destination and prepares identical settings for import and pre-check.
+  # @param speakers_only [Boolean] Skip import settings when only reading file speaker labels
   # @return [Hash, nil] Job options, or nil after rendering an invalid language response
   # @raise [ActiveRecord::RecordNotFound] If the interview or tape is outside the destination
   # @raise [ActionController::BadRequest] If no uploaded file was supplied
   # @raise [Timecode::ImportFormatError] If the pre-check language is neither primary nor an assigned translation
-  def prepare_upload
+  def prepare_upload(speakers_only: false)
     raise ActiveRecord::RecordNotFound unless current_project
 
     interview = current_project.interviews.find_by!(archive_id: transcript_params[:archive_id])
     authorize interview, :upload_transcript?
-    tape = interview.tapes.find_by!(number: transcript_params[:tape_number])
     file = params.require(:transcript).require(:data)
     unless file.is_a?(ActionDispatch::Http::UploadedFile)
       raise ActionController::BadRequest, 'Expected a transcript file'
     end
+
+    extension = File.extname(file.original_filename).downcase
+    if speakers_only
+      return { interview: interview, file_path: create_transcript_tmp_file(file, extension) }
+    end
+
+    tape = interview.tapes.find_by!(number: transcript_params[:tape_number])
 
     language = interview.find_transcript_language(transcript_params[:transcript_language_id])
     unless language
@@ -98,7 +116,6 @@ class TranscriptsController < ApplicationController
     end
 
     locale = language.code
-    extension = File.extname(file.original_filename).downcase
     file_path = create_transcript_tmp_file(file, extension)
     import_options = {
       filename: file.original_filename,

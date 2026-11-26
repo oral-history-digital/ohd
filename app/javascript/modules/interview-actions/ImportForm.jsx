@@ -7,7 +7,8 @@ import { Button, InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
 
 import ImportValidationFeedback from './ImportValidationFeedback';
-import { useImportValidation } from './hooks';
+import SpeakerDesignationInputs from './SpeakerDesignationInputs';
+import { useImportSpeakers, useImportValidation } from './hooks';
 
 /**
  * Validates an import before queueing it and displays errors or queued feedback.
@@ -32,6 +33,14 @@ export default function ImportForm({
     const [queued, setQueued] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState(false);
+    const [file, setFile] = useState(null);
+    const speakers = useImportSpeakers(
+        pathBase,
+        resource,
+        scope,
+        values.archive_id,
+        file
+    );
     const prepare = useCallback(
         (formValues) =>
             prepareParams ? prepareParams(formValues) : { [scope]: formValues },
@@ -94,19 +103,41 @@ export default function ImportForm({
             {children}
             <Form
                 scope={scope}
-                onChange={() => {
+                onChange={({ field, value }) => {
                     validation.reset();
                     setSubmitError(false);
+                    if (field === 'data') setFile(value);
                 }}
-                fetching={submitting || validation.status === 'checking'}
+                fetching={
+                    submitting ||
+                    validation.status === 'checking' ||
+                    speakers.isLoading
+                }
                 onCancel={onCancel}
                 onSubmit={handleSubmit}
                 submitText={submitText}
                 values={values}
-                elements={elements}
+                elements={elements.map((element) =>
+                    element.elementType === 'speakerDesignationInputs'
+                        ? {
+                              ...element,
+                              component: SpeakerDesignationInputs,
+                              speakerOptions: speakers.options,
+                              speakerOptionsLoading: speakers.isLoading,
+                              labelPosition: 'beside',
+                          }
+                        : element
+                )}
                 labelPosition={labelPosition}
             >
                 <ImportValidationFeedback {...validation} />
+                {speakers.error && (
+                    <InlineNotification
+                        variant="warning"
+                        title={t('import_validation.speakers_unavailable')}
+                        isClosable={false}
+                    />
+                )}
                 {submitError && (
                     <InlineNotification
                         variant="error"

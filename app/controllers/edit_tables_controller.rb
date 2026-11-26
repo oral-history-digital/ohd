@@ -38,6 +38,17 @@ class EditTablesController < ApplicationController
     FileUtils.rm_f(options[:file_path]) if options
   end
 
+  # Reads CSV speaker labels without validating timestamps or updating the interview.
+  # @return [void] JSON labels, or a structured table-reading error
+  def speakers
+    options = prepare_upload
+    render json: { speakers: ImportSpeakerLabels.new(options, edit_table: true).call }
+  rescue Roo::HeaderRowNotFoundError, CSV::MalformedCSVError
+    render json: { issues: [ImportValidation.issue('file.invalid_structure')] }, status: :unprocessable_entity
+  ensure
+    FileUtils.rm_f(options[:file_path]) if options
+  end
+
   def show
     interview = Interview.find_by_archive_id(params[:id])
     authorize interview, :download?

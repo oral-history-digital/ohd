@@ -24,6 +24,13 @@ jest.mock('modules/i18n', () => ({
     useI18n: () => ({ locale: 'de', t: (key) => key }),
 }));
 jest.mock('modules/person', () => ({ usePeople: () => ({ data: {} }) }));
+jest.mock('./hooks/useImportSpeakers', () => ({
+    useImportSpeakers: () => ({
+        options: null,
+        isLoading: false,
+        error: false,
+    }),
+}));
 
 beforeEach(() => {
     window.fetch = jest.fn().mockResolvedValue({

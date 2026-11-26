@@ -55,6 +55,7 @@ Rails.application.routes.draw do
 
     resources :edit_tables, only: [:create, :show] do
       post :validate, on: :collection
+      post :speakers, on: :collection
     end
     resources :languages
     resources :translation_values, except: [:show, :new, :edit]
@@ -115,6 +116,7 @@ Rails.application.routes.draw do
 
     resources :transcripts, only: [:new, :create] do
       post :validate, on: :collection
+      post :speakers, on: :collection
     end
     resources :uploads, only: [:new, :create] do
     end

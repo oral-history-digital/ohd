@@ -24,7 +24,6 @@ import {
     NestedScope,
     RegistryEntrySelect,
     SelectField,
-    SpeakerDesignationInputs,
     SwitchField,
     Textarea,
 } from './components';
@@ -38,7 +37,6 @@ const elementTypeToComponent = {
     registryEntryTreeSelect: RegistryTreeSelect,
     richTextEditor: RichTextEditor,
     select: SelectField,
-    speakerDesignationInputs: SpeakerDesignationInputs,
     switch: SwitchField,
     textarea: Textarea,
     extra: Extra,
@@ -48,6 +46,7 @@ const elementTypeToComponent = {
 /**
  * Renders validated fields and submission feedback.
  * @param {Object} props - Field definitions, initial values, and submission callbacks.
+ * @param {Array<Object>} props.elements - Field definitions; component may override the standard renderer for non-localized fields.
  * @param {'above'|'beside'} [props.labelPosition] - Default label layout; fields may override it. Omit to preserve existing styles.
  * @returns {React.ReactElement} Form controls and feedback.
  */
@@ -282,7 +281,8 @@ export default function Form({
         return createElement(
             preparedProps.multiLocale
                 ? MultiLocaleWrapper
-                : elementTypeToComponent[preparedProps.elementType],
+                : preparedProps.component ||
+                      elementTypeToComponent[preparedProps.elementType],
             preparedProps
         );
     }
@@ -422,6 +422,7 @@ Form.propTypes = {
             accept: PropTypes.string,
             condition: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
             elementType: PropTypes.string,
+            component: PropTypes.elementType,
             hidden: PropTypes.bool,
             optional: PropTypes.bool,
             multiLocale: PropTypes.bool,

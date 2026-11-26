@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import buildFormData from 'modules/api/buildFormData';
-
-import { getCsrfToken } from '../../../utils';
+import { postImportRequest } from '../utils';
 
 /**
  * Checks uploads on demand and cancels obsolete checks after edits or unmounting.
@@ -45,19 +43,12 @@ export function useImportValidation(pathBase, resource, prepareParams) {
             pending.current.controller = controller;
             setResult({ status: 'checking', issues: [] });
             try {
-                const body = new FormData();
-                buildFormData(body, prepareParams(values));
-                const response = await fetch(
-                    `${pathBase}/${resource}/validate`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            Accept: 'application/json',
-                            'X-CSRF-Token': getCsrfToken(),
-                        },
-                        body,
-                        signal: controller.signal,
-                    }
+                const response = await postImportRequest(
+                    pathBase,
+                    resource,
+                    'validate',
+                    prepareParams(values),
+                    controller.signal
                 );
                 const json = await response.json();
                 if (

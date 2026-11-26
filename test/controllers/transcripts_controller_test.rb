@@ -159,6 +159,27 @@ class TranscriptsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'speaker discovery reads unique labels without import settings or valid timestamps' do
+    sign_in User.find_by!(email: 'alice@example.com')
+    with_validation_upload("TIMECODE\tSPEAKER\tTRANSCRIPT\nbad\tIP_MH\tText\nwrong\tINT\tText\n\tIP_MH\tText\n", '.csv') do |parameters|
+      parameters[:transcript].except!(:transcript_language_id, :tape_number)
+      assert_read_only_validation(parameters, action: :speakers)
+    end
+    assert_response :ok
+    assert_equal({ 'speakers' => %w[IP_MH INT] }, JSON.parse(response.body))
+  end
+
+  test 'speaker discovery requires authorization and project membership' do
+    sign_in User.find_by!(email: 'john@example.com')
+    assert_read_only_validation(upload_params, action: :speakers)
+    assert_response :forbidden
+
+    sign_in User.find_by!(email: 'alice@example.com')
+    @controller.stub(:current_project, Project.find_by!(shortname: 'ohd')) do
+      assert_raises(ActiveRecord::RecordNotFound) { post :speakers, params: upload_params }
+    end
+  end
+
   test 'pre-check returns every timestamp issue with original values and locations' do
     sign_in User.find_by!(email: 'alice@example.com')
     with_validation_upload("TIMECODE\tSPEAKER\tTRANSCRIPT\n00:61:00.000\t\tBad minutes\n00:00:01.00\t\tBad precision\n", '.csv') do |parameters|
@@ -195,17 +216,21 @@ class TranscriptsControllerTest < ActionController::TestCase
   end
 
   test 'pre-check requires authentication' do
-    assert_read_only_validation(upload_params)
-    assert_response :unauthorized
+    %i[validate speakers].each do |action|
+      assert_read_only_validation(upload_params, action: action)
+      assert_response :unauthorized
+    end
   end
 
   test 'pre-check routes support portal and dedicated archive domains' do
     @project.update!(archive_domain: 'http://precheck.example.org')
     %w[transcripts edit_tables].each do |controller|
-      portal = Rails.application.routes.recognize_path("#{OHD_DOMAIN}/test/en/#{controller}/validate", method: :post)
-      archive = Rails.application.routes.recognize_path("http://precheck.example.org/en/#{controller}/validate", method: :post)
-      assert_equal({ controller: controller, action: 'validate', locale: 'en', project_id: 'test' }, portal)
-      assert_equal({ controller: controller, action: 'validate', locale: 'en' }, archive)
+      %w[validate speakers].each do |action|
+        portal = Rails.application.routes.recognize_path("#{OHD_DOMAIN}/test/en/#{controller}/#{action}", method: :post)
+        archive = Rails.application.routes.recognize_path("http://precheck.example.org/en/#{controller}/#{action}", method: :post)
+        assert_equal({ controller: controller, action: action, locale: 'en', project_id: 'test' }, portal)
+        assert_equal({ controller: controller, action: action, locale: 'en' }, archive)
+      end
     end
   end
 
@@ -257,14 +282,15 @@ class TranscriptsControllerTest < ActionController::TestCase
 
   # Posts a pre-check and verifies it neither writes records nor leaves an upload copy.
   # @param parameters [Hash] Upload request
+  # @param action [Symbol] Read-only import action
   # @return [void]
-  def assert_read_only_validation(parameters)
+  def assert_read_only_validation(parameters, action: :validate)
     files = Dir.glob(Rails.root.join('tmp/transcript-*'))
     writes = []
     subscriber = ->(*event) { writes << event.last[:sql] if event.last[:sql].match?(/\A\s*(INSERT|UPDATE|DELETE)\b/i) }
     assert_no_difference 'ActionMailer::Base.deliveries.count' do
       ActiveSupport::Notifications.subscribed(subscriber, 'sql.active_record') do
-        @controller.stub(:current_project, @project) { post :validate, params: parameters }
+        @controller.stub(:current_project, @project) { post action, params: parameters }
       end
     end
     assert_empty writes
