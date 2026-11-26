@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.13.3] - 2026-11-26
+
+### Changed
+
+- add identify_description to oai initializer ([#188](https://github.com/oral-history-digital/ohd/pull/188))
+- added foreman to Gemfile, updated thor ([6ba654f6a](https://github.com/oral-history-digital/ohd/commit/6ba654f6abfc9c14f3536ba1eeecc78524319c59))
+
+### Fixed
+
+- fix(deploy): pin Bundler 2.5.22 for staging Passenger ([d656cc75d](https://github.com/oral-history-digital/ohd/commit/d656cc75d024474ed5f8c63c206d33ae6135f877))
+
 ## [2.13.2] - 2026-11-23
 
 ### Fixed
@@ -917,6 +928,7 @@ Initial numbered public release of Oral History.Digital. The project has been de
 - Capistrano deploy recipes for staging and production; feature-branch staging deploys supported
 - Test suite and CI-ready structure (Rails tests, Jest for frontend)
 
+[2.13.3]: https://github.com/oral-history-digital/ohd/compare/v2.13.3...v2.13.3
 [2.13.2]: https://github.com/oral-history-digital/ohd/compare/v2.13.1...v2.13.2
 [2.13.1]: https://github.com/oral-history-digital/ohd/compare/v2.13.0...v2.13.1
 [2.13.0]: https://github.com/oral-history-digital/ohd/compare/v2.12.0...v2.13.0
