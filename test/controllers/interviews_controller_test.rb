@@ -23,6 +23,29 @@ class InterviewsControllerTest < ActionDispatch::IntegrationTest
     assert 'test123', data['archive_id']
   end
 
+  test 'cached interview responses include current tape numbers without assuming consecutive numbering' do
+    portal = URI.parse(OHD_DOMAIN)
+    host! "#{portal.host}:#{portal.port}"
+    login_as User.find_by!(email: 'alice@example.com')
+    interview.tapes.first.update_column(:number, 12)
+    path = "/#{project.shortname}/en/interviews/#{interview.archive_id}.json"
+    cache = ActiveSupport::Cache::MemoryStore.new
+
+    Rails.stub(:cache, cache) do
+      get path
+      assert_response :success
+      numbers = JSON.parse(response.body).fetch('data').fetch('tape_numbers')
+      assert_includes numbers, 12
+
+      timestamp = interview.reload.updated_at
+      Tape.create!(interview: interview, number: 33, media_id: "#{interview.archive_id}_tape_selection_33")
+      assert_equal timestamp, interview.reload.updated_at
+      get path
+      assert_response :success
+      assert_equal (numbers + [33]).sort, JSON.parse(response.body).fetch('data').fetch('tape_numbers')
+    end
+  end
+
   test 'creation rejects invalid attributes and foreign projects or collections' do
     host! 'test.portal.oral-history.localhost:47001'
     login_as User.find_by!(email: 'alice@example.com')

@@ -1,0 +1,29 @@
+.Form.transcript .form-row--lang_and_tape {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+
+  > .form-group {
+    min-width: 0;
+    margin-top: 0;
+  }
+}
+
+.Form.transcript .form-group.form-group--timecode_frame_rate {
+  // Match the switch's 2rem icon column and 0.75rem gap.
+  margin-left: 2.75rem;
+  margin-top: 0;
+  width: calc(100% - 2.75rem);
+
+  > .form-input > select {
+    width: 30%;
+  }
+
+  &:not(.hidden) {
+    animation: slideDown 200ms ease-out;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+}

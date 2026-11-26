@@ -9,7 +9,15 @@ class Timecode
   IMPORT_FRAME_RATES = [24, 25, 30, 50, 60].freeze
 
   # Indicates that an uploaded timestamp does not match the selected format.
-  class ImportFormatError < ArgumentError; end
+  class ImportFormatError < ArgumentError
+    attr_reader :issues
+
+    # @param issues [Hash, Array<Hash>] Validation codes, interpolation values, and locations
+    def initialize(issues)
+      @issues = issues.is_a?(Hash) ? [issues] : issues
+      super(@issues.map { |issue| issue.fetch(:code) }.join("\n"))
+    end
+  end
 
   def initialize(time=nil)
     @time = case time
@@ -84,22 +92,20 @@ class Timecode
     if frame_rate.nil?
       return value if canonical?(value)
 
-      raise ImportFormatError,
-            'Use colons (:) between hours, minutes, and seconds, then a dot (.) followed by three millisecond digits, as in 00:04:29.000.'
+      raise ImportFormatError.new(ImportValidation.issue('timecode.milliseconds_format'))
     end
 
     unless frame_rate.is_a?(Integer) && IMPORT_FRAME_RATES.include?(frame_rate)
-      raise ImportFormatError, "Choose a supported source frame rate (#{IMPORT_FRAME_RATES.join(', ')} fps)."
+      raise ImportFormatError.new(ImportValidation.issue('timecode.frame_rate', params: { rates: IMPORT_FRAME_RATES.join(', ') }))
     end
 
     unless value.is_a?(String) && /\A#{CLOCK_PATTERN}:[0-9]{2}\z/.match?(value)
-      raise ImportFormatError,
-            'Use colons (:) between hours, minutes, seconds, and the two-digit frame number, as in 00:04:29:12.'
+      raise ImportFormatError.new(ImportValidation.issue('timecode.frames_format'))
     end
 
     hours, minutes, seconds, frames = value.split(':').map(&:to_i)
     if frames >= frame_rate
-      raise ImportFormatError, "At #{frame_rate} fps, the frame number must be between 00 and #{frame_rate - 1}."
+      raise ImportFormatError.new(ImportValidation.issue('timecode.frames_out_of_range', params: { rate: frame_rate, max: frame_rate - 1 }))
     end
 
     format_duration(hours * 3600 + minutes * 60 + seconds + Rational(frames, frame_rate))
@@ -177,7 +183,7 @@ class Timecode
     clock = /\A[0-9]+:([0-9]{2}):([0-9]{2})(?=[.:,;]|\z)/.match(value)
     return unless clock
 
-    raise ImportFormatError, 'Minutes must be between 00 and 59.' if clock[1].to_i > 59
-    raise ImportFormatError, 'Seconds must be between 00 and 59.' if clock[2].to_i > 59
+    raise ImportFormatError.new(ImportValidation.issue('timecode.minutes_out_of_range')) if clock[1].to_i > 59
+    raise ImportFormatError.new(ImportValidation.issue('timecode.seconds_out_of_range')) if clock[2].to_i > 59
   end
 end

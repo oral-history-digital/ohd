@@ -406,6 +406,12 @@ class Interview < ApplicationRecord
     tapes.count
   end
 
+  # Lists the existing tape numbers in playback order, including numbering gaps.
+  # @return [Array<Integer>] Numbers scoped to this interview
+  def tape_numbers
+    tapes.reorder(:number).pluck(:number)
+  end
+
   def material_count
     materials.where(workflow_state: 'public').count
   end
@@ -564,6 +570,17 @@ class Interview < ApplicationRecord
 
   def translation_alpha2
     ISO_639.find(primary_translation_language&.code).try(:alpha2) || language&.code[0..1]
+  end
+
+  # Resolves a transcript language from the primary or translation assignments.
+  # The secondary interview language describes spoken content, not a separate transcript.
+  #
+  # @param language_id [Integer, String, nil] Selected import language ID
+  # @return [Language, nil] Import language, or nil when the assignment cannot hold a transcript
+  def find_transcript_language(language_id)
+    interview_languages.includes(:language).
+      where(spec: %w[primary primary_translation secondary_translation]).
+      find_by(language_id: language_id)&.language
   end
 
   def alpha3s

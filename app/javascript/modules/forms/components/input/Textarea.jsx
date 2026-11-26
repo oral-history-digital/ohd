@@ -4,6 +4,12 @@ import PropTypes from 'prop-types';
 import { useTouchFieldOnBlur } from '../../hooks';
 import Element from '../shared/Element';
 
+/**
+ * Renders a textarea with form callbacks, labeling, and validation feedback.
+ * @param {Object} props - Field configuration and form callbacks.
+ * @param {'above'|'beside'} [props.labelPosition] - Label layout inherited from the form or overridden by the field.
+ * @returns {React.ReactElement} Form field and feedback.
+ */
 export default function Textarea({
     value,
     data,
@@ -13,6 +19,7 @@ export default function Textarea({
     locale,
     label,
     labelKey,
+    labelPosition,
     className,
     hidden,
     showErrors,
@@ -55,6 +62,7 @@ export default function Textarea({
             attribute={attribute}
             label={label}
             labelKey={labelKey}
+            labelPosition={labelPosition}
             showErrors={showErrors}
             className={className}
             hidden={hidden}
@@ -99,6 +107,7 @@ Textarea.propTypes = {
     attribute: PropTypes.string,
     label: PropTypes.string,
     labelKey: PropTypes.string,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     className: PropTypes.string,
     individualErrorMsg: PropTypes.string,
     help: PropTypes.string,

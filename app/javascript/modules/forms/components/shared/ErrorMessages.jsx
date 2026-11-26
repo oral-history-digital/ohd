@@ -44,7 +44,7 @@ export default function ErrorMessages({ elements, errors, scope }) {
 }
 
 ErrorMessages.propTypes = {
-    elements: PropTypes.object,
+    elements: PropTypes.arrayOf(PropTypes.object),
     errors: PropTypes.object,
     scope: PropTypes.string,
 };

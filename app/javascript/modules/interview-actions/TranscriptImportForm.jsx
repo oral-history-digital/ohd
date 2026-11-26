@@ -1,11 +1,17 @@
 import { useState } from 'react';
 
 import { CONTRIBUTION_TYPES_SPEAKING } from 'modules/constants';
-import { Form, validateTapeNumber } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
+import { Button, InlineNotification } from 'modules/ui';
 import PropTypes from 'prop-types';
-import { FaDownload } from 'react-icons/fa';
+
+import ImportForm from './ImportForm';
+import {
+    ACCEPTED_FORMATS,
+    ODT_EXTENSION,
+    SPREADSHEET_EXTENSIONS,
+} from './constants';
+import { getFileExtension, prepareTranscriptParams } from './utils';
 
 const FRAME_RATE_OPTIONS = [24, 25, 30, 50, 60].map((rate) => ({
     value: String(rate),
@@ -13,23 +19,24 @@ const FRAME_RATE_OPTIONS = [24, 25, 30, 50, 60].map((rate) => ({
 }));
 
 /**
- * Uploads transcripts through the current route and keeps queued-work feedback visible.
+ * Checks transcript settings before queueing an import and reports request failures.
  * @param {Object} props - Record data, form options, and mutation callbacks.
  * @returns {React.ReactElement|null} Editing controls and request feedback.
  */
-export default function UploadTranscript({
+export default function TranscriptImportForm({
     archiveId,
     interview,
     languages,
     submitData,
+    onCancel,
+    template,
 }) {
-    const pathBase = usePathBase();
     const { t } = useI18n();
     const [filename, setFilename] = useState('');
-    const [showForm, setShowForm] = useState(true);
     const [useFrameTimecodes, setUseFrameTimecodes] = useState(false);
-    const isOdt = /\.odt$/i.test(filename);
-    const isSpreadsheet = /\.(ods|xlsx|xlsm|xls|xlm|csv)$/i.test(filename);
+    const extension = getFileExtension(filename);
+    const isOdt = extension === ODT_EXTENSION;
+    const isSpreadsheet = SPREADSHEET_EXTENSIONS.includes(extension);
 
     const handleFileChange = (name, file) => {
         if (name === 'data') setFilename(file?.name || '');
@@ -39,21 +46,24 @@ export default function UploadTranscript({
         return null;
     }
 
-    if (!showForm) {
+    const tapeNumbers = interview.tape_numbers;
+    if (!Array.isArray(tapeNumbers) || tapeNumbers.length === 0) {
         return (
             <>
-                <p>{t('edit.upload.processing')}</p>
-                <button
-                    type="button"
-                    className="Button return-to-upload"
-                    onClick={() => {
-                        setFilename('');
-                        setUseFrameTimecodes(false);
-                        setShowForm(true);
-                    }}
-                >
-                    {t('edit.upload.return')}
-                </button>
+                {template}
+                <InlineNotification
+                    variant={Array.isArray(tapeNumbers) ? 'error' : 'info'}
+                    title={t(
+                        Array.isArray(tapeNumbers)
+                            ? 'transcript_import.no_tapes'
+                            : 'transcript_import.loading_tapes'
+                    )}
+                    role={Array.isArray(tapeNumbers) ? 'alert' : 'status'}
+                    isClosable={false}
+                />
+                <div className="u-align-right">
+                    <Button buttonText={t('close')} onClick={onCancel} />
+                </div>
             </>
         );
     }
@@ -71,7 +81,6 @@ export default function UploadTranscript({
 
     const assignedLanguageIds = [
         interview.primary_language_id,
-        interview.secondary_language_id,
         interview.primary_translation_language_id,
         interview.secondary_translation_language_id,
     ]
@@ -82,47 +91,36 @@ export default function UploadTranscript({
             assignedLanguageIds.includes(String(id))
         )
     );
+    const availableLanguageIds = Object.keys(assignedLanguages);
 
     return (
         <>
-            <p className="explanation">{t('upload.explanation.transcript')}</p>
-
-            <p>
-                <a href="/transcript-import-template.csv" download>
-                    <span className="flyout-sub-tabs-content-ico-link">
-                        <FaDownload
-                            className="Icon Icon--small"
-                            title={t('download')}
-                        />{' '}
-                        {t('transcript_template')}
-                    </span>
-                </a>
-            </p>
-
-            <Form
+            <ImportForm
                 scope="transcript"
-                onSubmit={(params) => {
-                    const {
-                        use_frame_timecodes,
-                        timecode_frame_rate,
-                        ...transcript
-                    } = params.transcript;
-                    if (isSpreadsheet && use_frame_timecodes) {
-                        transcript.timecode_frame_rate = timecode_frame_rate;
-                    }
-                    submitData({ pathBase }, { transcript });
-                    setShowForm(false);
-                }}
+                resource="transcripts"
+                submitData={submitData}
+                prepareParams={prepareTranscriptParams}
+                template={template}
+                onCancel={onCancel}
                 submitText="edit.upload_transcript.title"
                 values={{
                     archive_id: archiveId,
+                    timecode_frame_rate: '25',
+                    transcript_language_id:
+                        availableLanguageIds.length === 1
+                            ? availableLanguageIds[0]
+                            : '',
+                    tape_number:
+                        tapeNumbers.length === 1 ? String(tapeNumbers[0]) : '',
                     contributions_attributes: contributions,
                 }}
+                labelPosition="above"
                 elements={[
                     {
                         attribute: 'data',
                         elementType: 'input',
                         type: 'file',
+                        accept: ACCEPTED_FORMATS,
                         validate: function (v) {
                             return v instanceof File;
                         },
@@ -132,19 +130,46 @@ export default function UploadTranscript({
                         elementType: 'select',
                         attribute: 'transcript_language_id',
                         values: assignedLanguages,
-                        withEmpty: true,
+                        withEmpty: availableLanguageIds.length !== 1,
                         validate: function (v) {
                             return v !== '';
                         },
+                        group: 'lang_and_tape',
                     },
                     {
                         attribute: 'tape_number',
-                        validate: validateTapeNumber,
+                        elementType: 'select',
+                        values: tapeNumbers.map((number) => ({
+                            value: String(number),
+                            name: `${t('tape')} ${number}`,
+                        })),
+                        withEmpty: tapeNumbers.length > 1,
+                        keepOrder: true,
+                        labelKey: isOdt
+                            ? 'transcript_import.starting_tape'
+                            : undefined,
+                        help: isOdt
+                            ? 'transcript_import.starting_tape_help'
+                            : undefined,
+                        validate: (value) =>
+                            tapeNumbers.some(
+                                (number) => String(number) === String(value)
+                            ),
+                        group: 'lang_and_tape',
+                    },
+                    {
+                        elementType: 'switch',
+                        help: 'activerecord.attributes.transcript.delete_existing_explanation',
+                        attribute: 'delete_existing',
+                    },
+                    {
+                        elementType: 'switch',
+                        help: 'activerecord.attributes.transcript.update_only_speakers_explanation',
+                        attribute: 'update_only_speakers',
                     },
                     {
                         attribute: 'use_frame_timecodes',
-                        elementType: 'input',
-                        type: 'checkbox',
+                        elementType: 'switch',
                         hidden: !isSpreadsheet,
                         help: 'activerecord.attributes.transcript.timecode_frame_rate_explanation',
                         handlechangecallback: (_name, checked) =>
@@ -160,38 +185,17 @@ export default function UploadTranscript({
                         hidden: !isSpreadsheet || !useFrameTimecodes,
                     },
                     {
-                        attribute: 'trim_timecodes',
-                        elementType: 'input',
-                        type: 'checkbox',
-                        hidden: !isSpreadsheet,
-                    },
-                    {
-                        elementType: 'input',
-                        help: 'activerecord.attributes.transcript.delete_existing_explanation',
-                        attribute: 'delete_existing',
-                        type: 'checkbox',
-                    },
-                    {
-                        elementType: 'input',
-                        help: 'activerecord.attributes.transcript.update_only_speakers_explanation',
-                        attribute: 'update_only_speakers',
-                        type: 'checkbox',
-                    },
-                    {
                         attribute: 'tape_durations',
                         help: 'activerecord.attributes.transcript.tape_durations_explanation',
                         hidden: !isOdt,
                         validate: function (v) {
-                            return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v);
+                            return Boolean(v?.trim());
                         },
                     },
                     {
                         attribute: 'time_shifts',
                         help: 'activerecord.attributes.transcript.time_shifts_explanation',
                         hidden: !isOdt,
-                        validate: function (v) {
-                            return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v);
-                        },
                     },
                     {
                         elementType: 'speakerDesignationInputs',
@@ -199,14 +203,20 @@ export default function UploadTranscript({
                         value: contributions,
                     },
                 ]}
-            />
+            >
+                <p className="explanation">
+                    {t('upload.explanation.transcript')}
+                </p>
+            </ImportForm>
         </>
     );
 }
 
-UploadTranscript.propTypes = {
+TranscriptImportForm.propTypes = {
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    template: PropTypes.node,
 };

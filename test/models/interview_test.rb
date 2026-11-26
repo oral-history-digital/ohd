@@ -11,6 +11,24 @@ class InterviewTest < ActiveSupport::TestCase
     @interview
   end
 
+  test 'transcript languages include primary and translations but not secondary-only assignments' do
+    language = Language.find_by!(code: 'eng')
+    interview.interview_languages.where(language: language).destroy_all
+    assert_nil interview.find_transcript_language(language.id)
+
+    assignment = interview.interview_languages.create!(language: language, spec: 'secondary')
+    assert_nil interview.find_transcript_language(language.id)
+
+    %w[primary primary_translation secondary_translation].each do |spec|
+      assignment.update!(spec: spec)
+      assert_equal language, interview.find_transcript_language(language.id.to_s)
+    end
+
+    interview.interview_languages.create!(language: language, spec: 'secondary')
+    assert_equal language, interview.find_transcript_language(language.id)
+    assert_nil interview.find_transcript_language(nil)
+  end
+
   test 'alpha2 is nil for a language without a two-letter ISO code' do
     interview.primary_language_id = Language.find_or_create_by!(code: 'gsw').id
 

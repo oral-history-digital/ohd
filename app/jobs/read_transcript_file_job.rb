@@ -26,7 +26,6 @@ class ReadTranscriptFileJob < ApplicationJob
             opts[:locale],
             boolean.cast(opts[:update_only_speakers]),
             frame_rate: frame_rate,
-            trim_timecodes: boolean.cast(opts[:trim_timecodes]),
             **import_options
           )
         when 'odt'

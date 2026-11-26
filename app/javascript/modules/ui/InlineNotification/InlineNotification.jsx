@@ -29,7 +29,7 @@ const ICON_MAP = {
  * @param {Object} props - Component props
  * @param {('success'|'warning'|'error'|'info')} props.variant - Notification type/state
  * @param {string} [props.title] - Notification title (bold heading)
- * @param {string} [props.description] - Main notification message
+ * @param {ReactNode|string} [props.description] - Main notification message
  * @param {string|ReactNode} [props.additionalInfo] - Additional collapsible content
  * @param {boolean} [props.isAdditionalInfoOpen] - Controlled state for additional info collapse
  * @param {Function} [props.onAdditionalInfoToggle] - Callback when additional info is toggled
@@ -267,7 +267,7 @@ InlineNotification.propTypes = {
     variant: PropTypes.oneOf(['success', 'warning', 'error', 'info'])
         .isRequired,
     title: PropTypes.string,
-    description: PropTypes.string,
+    description: PropTypes.node,
     additionalInfo: PropTypes.node,
     isAdditionalInfoOpen: PropTypes.bool,
     onAdditionalInfoToggle: PropTypes.func,

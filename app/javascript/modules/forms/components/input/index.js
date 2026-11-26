@@ -6,5 +6,5 @@ export { default as InputField } from './InputField';
 export { default as RegistryEntrySelect } from './RegistryEntrySelect';
 export { default as RichTextarea } from './RichTextarea';
 export { default as SelectField } from './SelectField';
-export { default as SpeakerDesignationInputs } from './SpeakerDesignationInputs';
+export { default as SwitchField } from './SwitchField';
 export { default as Textarea } from './Textarea';

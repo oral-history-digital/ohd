@@ -53,7 +53,10 @@ Rails.application.routes.draw do
     get 'metadata-import-template', to: "uploads#metadata_import_template"
     get 'edit-table-import-template', to: "edit_tables#import_template"
 
-    resources :edit_tables, only: [:create, :show]
+    resources :edit_tables, only: [:create, :show] do
+      post :validate, on: :collection
+      post :speakers, on: :collection
+    end
     resources :languages
     resources :translation_values, except: [:show, :new, :edit]
     get "translations/:id", to: "translation_values#show"
@@ -111,7 +114,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :transcripts, only: [:new, :create]
+    resources :transcripts, only: [:new, :create] do
+      post :validate, on: :collection
+      post :speakers, on: :collection
+    end
     resources :uploads, only: [:new, :create] do
     end
 

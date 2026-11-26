@@ -30,3 +30,59 @@
     font-size: 2rem;
   }
 }
+
+// Keep form switches beside their label and help, independent of form columns.
+.Form .form-group.SwitchField {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  column-gap: 0.75rem;
+  align-items: center;
+
+  &.hidden {
+    display: none;
+  }
+
+  &::before,
+  &::after {
+    content: none;
+  }
+
+  Button:focus {
+    box-shadow: none;
+  }
+
+  > .form-label {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    margin: 0;
+    float: none;
+
+    label {
+      float: none;
+      width: auto;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  > .form-input {
+    display: contents;
+
+    > .Switch {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      justify-content: center;
+      min-height: 2rem;
+
+      > span:empty {
+        display: none;
+      }
+    }
+  }
+
+  .help-block {
+    grid-column: 2;
+    margin: 0;
+  }
+}

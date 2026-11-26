@@ -21,6 +21,7 @@ import {
  * responsibility.
  *
  * @param {Object} props
+ * @param {string} [props.className] Additional field layout classes.
  * @param {string} props.id Unique input ID used by the associated label.
  * @param {string} props.name Native form-field name.
  * @param {string} props.label Visible and accessible field label.
@@ -78,6 +79,7 @@ import {
  * />
  */
 export default function FileInputField({
+    className,
     id,
     name,
     label,
@@ -178,7 +180,7 @@ export default function FileInputField({
     }
 
     return (
-        <div className="FileInputField">
+        <div className={classNames('FileInputField', className)}>
             <label className="FormLabel" htmlFor={id}>
                 {label}
                 {required && <span aria-hidden="true"> *</span>}
@@ -321,6 +323,7 @@ const currentFileShape = PropTypes.shape({
 });
 
 FileInputField.propTypes = {
+    className: PropTypes.string,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,

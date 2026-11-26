@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class ReadTranscriptFileJobTest < ActiveSupport::TestCase
   setup do
@@ -7,28 +8,63 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
     @user = User.find_by!(email: 'alice@example.com')
   end
 
-  test 'emails ODT timing errors once and preserves the transcript' do
-    original = @tape.segments.pluck(:id)
-    assert_difference 'ActionMailer::Base.deliveries.count', 1 do
-      with_upload('unused', '.odt') do |path|
-        ReadTranscriptFileJob.perform_now(
-          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
-          filename: 'transcript.odt', user: @user, delete_existing: true,
-          tape_durations: '00:61:00', time_shifts: '00:00:60'
-        )
+  test 'spreadsheet validation matches proposed speakers without saving them or replacing segments' do
+    contribution = @interview.contributions.first
+    original = contribution.speaker_designation
+    segment = @tape.segments.first
+    original_segments = @tape.segments.pluck(:id, :timecode)
+    options = {
+      delete_existing: false,
+      contributions_attributes: { '0' => { id: contribution.id, speaker_designation: 'PROPOSED' } }
+    }
+    with_spreadsheet("#{segment.timecode}\tPROPOSED\tUpdated text\n") do |path|
+      writes = []
+      subscriber = ->(*event) do
+        sql = event.last[:sql]
+        writes << sql if sql.match?(/\A\s*(INSERT|UPDATE|DELETE)\b/i)
       end
+      ActiveSupport::Notifications.subscribed(subscriber, 'sql.active_record') do
+        rows = TranscriptSpreadsheetImport.new(@tape, 'eng', options).validate!(path)
+        assert_equal contribution.person_id, rows.first[:speaker_id]
+        assert_equal segment.id, rows.first[:segment].id
+      end
+      assert_empty writes
     end
-    assert_equal original, @tape.segments.pluck(:id)
-    body = ActionMailer::Base.deliveries.last.text_part.decoded
-    assert_includes body, 'Invalid duration'
-    assert_includes body, 'Invalid time shift'
+    assert_equal original, contribution.reload.speaker_designation
+    assert_equal original_segments, @tape.segments.pluck(:id, :timecode)
+  end
+
+  test 'emails ODT timing errors once and preserves the transcript' do
+    reported = []
+    render_codes = lambda do |issues, _locale|
+      reported.replace(issues)
+      issues.map { |issue| issue[:code] }.join("\n")
+    end
+    ImportValidationMessages.stub(:render, render_codes) do
+      original = @tape.segments.pluck(:id)
+      assert_difference 'ActionMailer::Base.deliveries.count', 1 do
+        with_upload('unused', '.odt') do |path|
+          ReadTranscriptFileJob.perform_now(
+            interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
+            filename: 'transcript.odt', user: @user, delete_existing: true,
+            tape_durations: '00:61:00', time_shifts: '00:00:60'
+          )
+        end
+      end
+      assert_equal original, @tape.segments.pluck(:id)
+      body = ActionMailer::Base.deliveries.last.text_part.decoded
+      assert_equal %w[odt.timing_format odt.timing_format], reported.map { |issue| issue[:code] }
+      assert_equal %w[duration time_shift], reported.map { |issue| issue[:location][:field] }
+      assert_equal %w[00:61:00 00:00:60], reported.map { |issue| issue[:params][:value] }
+      assert_includes body, 'odt.timing_format'
+    end
   end
 
   test 'replaces a transcript with canonical timecodes converted from frames' do
     with_spreadsheet(" 00:00:01:24 \t\tFirst\n00:00:03:00\t\tSecond\n") do |path|
       ReadTranscriptFileJob.new.perform(
         interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
-        frame_rate: '25', trim_timecodes: 'true', delete_existing: 'true'
+        frame_rate: '25', delete_existing: 'true'
       )
     end
 
@@ -36,30 +72,46 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
     assert_equal 'First', @tape.segments.find_by!(timecode: '00:00:01.960').text('eng')
   end
 
-  test 'emails all invalid timecodes once and preserves the old transcript' do
-    original = @tape.segments.pluck(:id, :timecode)
-    rows = "00:00:01.000\t\tFirst\n00:01:54.00\t\tSecond\n" \
-           "00:61:49.000\t\tThird\n00:02:60.000\t\tFourth\n00:04:29:000\t\tFifth\n"
-    assert_difference 'ActionMailer::Base.deliveries.count', 1 do
-      with_spreadsheet(rows) do |path|
-        ReadTranscriptFileJob.perform_now(
-          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
-          filename: 'transcript.csv', user: @user, delete_existing: true
-        )
-      end
+  test 'trims surrounding whitespace in spreadsheet timestamps without an option' do
+    with_spreadsheet(" 00:00:01.000 \t\tText\n") do |path|
+      ReadTranscriptFileJob.new.perform(
+        interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path, delete_existing: true
+      )
     end
+    assert_equal ['00:00:01.000'], @tape.segments.pluck(:timecode)
+  end
 
-    assert_equal original, @tape.segments.pluck(:id, :timecode)
-    email = ActionMailer::Base.deliveries.last
-    assert_equal [@user.email], email.to
-    assert_includes email.text_part.decoded, 'transcript.csv'
-    assert_match(/row 3: timecode "00:01:54\.00"\. Use colons/, email.text_part.decoded)
-    assert_match(/row 4: timecode "00:61:49\.000"\. Minutes must be between 00 and 59/, email.text_part.decoded)
-    assert_match(/row 5: timecode "00:02:60\.000"\. Seconds must be between 00 and 59/, email.text_part.decoded)
-    assert_match(/row 6: timecode "00:04:29:000"\. Use colons/, email.text_part.decoded)
-    assert_includes email.text_part.decoded, 'a dot (.) followed by three millisecond digits'
-    assert_includes email.html_part.decoded, '<br>'
-    refute_includes email.text_part.decoded, 'transcript_spreadsheet_import.rb'
+  test 'emails all invalid timecodes once and preserves the old transcript' do
+    reported = []
+    render_codes = lambda do |issues, _locale|
+      reported.replace(issues)
+      issues.map { |issue| issue[:code] }.join("\n")
+    end
+    ImportValidationMessages.stub(:render, render_codes) do
+      original = @tape.segments.pluck(:id, :timecode)
+      rows = "00:00:01.000\t\tFirst\n00:01:54.00\t\tSecond\n" \
+             "00:61:49.000\t\tThird\n00:02:60.000\t\tFourth\n00:04:29:000\t\tFifth\n"
+      assert_difference 'ActionMailer::Base.deliveries.count', 1 do
+        with_spreadsheet(rows) do |path|
+          ReadTranscriptFileJob.perform_now(
+            interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
+            filename: 'transcript.csv', user: @user, delete_existing: true
+          )
+        end
+      end
+
+      assert_equal original, @tape.segments.pluck(:id, :timecode)
+      email = ActionMailer::Base.deliveries.last
+      assert_equal [@user.email], email.to
+      assert_includes email.text_part.decoded, 'transcript.csv'
+      assert_equal %w[timecode.milliseconds_format timecode.minutes_out_of_range timecode.seconds_out_of_range timecode.milliseconds_format],
+                   reported.map { |issue| issue[:code] }
+      assert_equal [3, 4, 5, 6], reported.map { |issue| issue[:location][:row] }
+      assert_equal %w[00:01:54.00 00:61:49.000 00:02:60.000 00:04:29:000], reported.map { |issue| issue[:params][:value] }
+      reported.each { |issue| assert_includes email.text_part.decoded, issue[:code] }
+      assert_includes email.html_part.decoded, '<br>'
+      refute_includes email.text_part.decoded, 'transcript_spreadsheet_import.rb'
+    end
   end
 
   test 'replaces a transcript with separate segments for rows that share a timecode' do
@@ -100,12 +152,11 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
     with_spreadsheet("00:00:01.000\t\tFirst\n 00:00:01.000 \t\tSecond\n") do |path|
       error = assert_raises(Timecode::ImportFormatError) do
         ReadTranscriptFileJob.new.perform(
-          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path, trim_timecodes: true
+          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path
         )
       end
-      assert_includes error.message, 'row 2'
-      assert_includes error.message, 'row 3'
-      assert_includes error.message, 'recognized speaker designation'
+      assert_equal [2, 3], error.issues.map { |issue| issue[:location][:row] }
+      assert_equal ['segment.ambiguous'], error.issues.map { |issue| issue[:code] }.uniq
     end
   end
 
@@ -116,7 +167,8 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
           interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path
         )
       end
-      assert_includes error.message, 'cannot be earlier than 100:00:00.000'
+      assert_equal 'timecode.out_of_order', error.issues.first[:code]
+      assert_equal '100:00:00.000', error.issues.first[:params][:previous]
     end
   end
 
@@ -175,31 +227,40 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
   end
 
   test 'emails invalid VTT boundaries and preserves existing segments during replacement' do
-    content = <<~VTT
-      WEBVTT
-
-      00:61:49.000 --> 00:01:54.00
-      Bad start and end
-
-      00:00:05.000 --> 00:00:04.000
-      Reversed cue
-    VTT
-    original = @tape.segments.pluck(:id, :timecode)
-    assert_difference 'ActionMailer::Base.deliveries.count', 1 do
-      with_upload(content, '.vtt') do |path|
-        ReadTranscriptFileJob.perform_now(
-          interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
-          filename: 'transcript.vtt', user: @user, delete_existing: true
-        )
-      end
+    reported = []
+    render_codes = lambda do |issues, _locale|
+      reported.replace(issues)
+      issues.map { |issue| issue[:code] }.join("\n")
     end
+    ImportValidationMessages.stub(:render, render_codes) do
+      content = <<~VTT
+        WEBVTT
 
-    assert_equal original, @tape.segments.pluck(:id, :timecode)
-    body = ActionMailer::Base.deliveries.last.text_part.decoded
-    assert_includes body, 'Line 3: Invalid cue start timestamp "00:61:49.000". Minutes must be between 00 and 59.'
-    assert_includes body, 'Line 3: Invalid cue end timestamp "00:01:54.00". Use HH:MM:SS.mmm or MM:SS.mmm'
-    assert_includes body, 'Line 6: Cue end "00:00:04.000" must be later than start "00:00:05.000".'
-    refute_includes body, 'transcript_subtitle_reader.rb'
+        00:61:49.000 --> 00:01:54.00
+        Bad start and end
+
+        00:00:05.000 --> 00:00:04.000
+        Reversed cue
+      VTT
+      original = @tape.segments.pluck(:id, :timecode)
+      assert_difference 'ActionMailer::Base.deliveries.count', 1 do
+        with_upload(content, '.vtt') do |path|
+          ReadTranscriptFileJob.perform_now(
+            interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path,
+            filename: 'transcript.vtt', user: @user, delete_existing: true
+          )
+        end
+      end
+
+      assert_equal original, @tape.segments.pluck(:id, :timecode)
+      body = ActionMailer::Base.deliveries.last.text_part.decoded
+      assert_equal %w[timecode.minutes_out_of_range subtitle.vtt_format subtitle.interval], reported.map { |issue| issue[:code] }
+      assert_equal [3, 3, 6], reported.map { |issue| issue[:location][:line] }
+      assert_equal %w[start end], reported.first(2).map { |issue| issue[:location][:field] }
+      assert_equal({ start: '00:00:05.000', end: '00:00:04.000' }, reported.last[:params])
+      reported.each { |issue| assert_includes body, issue[:code] }
+      refute_includes body, 'transcript_subtitle_reader.rb'
+    end
   end
 
   test 'reports the comma requirement for a malformed SRT timestamp' do
@@ -209,7 +270,9 @@ class ReadTranscriptFileJobTest < ActiveSupport::TestCase
           interview: @interview, tape_id: @tape.id, locale: 'eng', file_path: path
         )
       end
-      assert_includes error.message, 'Line 2: Invalid cue start timestamp "00:00:01.000". Use HH:MM:SS,mmm'
+      assert_equal 'subtitle.srt_format', error.issues.first[:code]
+      assert_equal({ line: 2, field: 'start' }, error.issues.first[:location])
+      assert_equal '00:00:01.000', error.issues.first[:params][:value]
     end
   end
 

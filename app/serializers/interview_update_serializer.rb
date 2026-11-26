@@ -6,6 +6,7 @@ class InterviewUpdateSerializer < ApplicationSerializer
     :observations,
     :duration,
     :tape_count,
+    :tape_numbers,
     :include_notes_in_transcript_pdf,
     :links,
     :pseudo_links,

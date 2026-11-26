@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import Form from './Form';
+import { InputField } from './components';
 
 jest.mock('modules/i18n', () => ({
     useI18n: () => ({ t: (key) => key }),
@@ -18,6 +19,154 @@ const elements = [
         },
     },
 ];
+
+test('custom field components receive form values and update the submitted payload', () => {
+    const onSubmit = jest.fn();
+    render(
+        <Form
+            scope="settings"
+            labelPosition="above"
+            values={{ title: 'Original' }}
+            elements={[
+                {
+                    attribute: 'title',
+                    elementType: 'custom',
+                    component: InputField,
+                    type: 'text',
+                    label: 'Title',
+                },
+            ]}
+            onSubmit={onSubmit}
+        />
+    );
+    expect(screen.getByLabelText('Title')).toHaveValue('Original');
+    expect(screen.getByTestId('settings-title-element')).toHaveClass(
+        'form-group--label-above'
+    );
+    fireEvent.change(screen.getByLabelText('Title'), {
+        target: { value: 'Changed' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'submit' }));
+    expect(onSubmit).toHaveBeenCalledWith(
+        { settings: { title: 'Changed' } },
+        undefined
+    );
+});
+
+test('fields inherit label position, allow overrides, and preserve switch layout', () => {
+    const { rerender } = render(
+        <Form
+            scope="settings"
+            labelPosition="above"
+            elements={[
+                { attribute: 'title' },
+                {
+                    attribute: 'language',
+                    elementType: 'select',
+                    values: [],
+                    labelPosition: 'beside',
+                },
+                { attribute: 'notes', elementType: 'textarea', hidden: true },
+                {
+                    attribute: 'enabled',
+                    elementType: 'switch',
+                    labelPosition: 'above',
+                },
+            ]}
+            onSubmit={jest.fn()}
+        />
+    );
+
+    expect(screen.getByTestId('settings-title-element')).toHaveClass(
+        'form-group--label-above'
+    );
+    expect(screen.getByTestId('settings-language-element')).toHaveClass(
+        'form-group--label-beside'
+    );
+    expect(screen.getByTestId('settings-notes-element')).toHaveClass(
+        'form-group--label-above',
+        'hidden'
+    );
+    expect(screen.getByTestId('settings-enabled-element')).not.toHaveClass(
+        'form-group--label-above'
+    );
+    expect(
+        screen.getByLabelText('activerecord.attributes.settings.title')
+    ).toHaveAttribute('name', 'title');
+
+    rerender(
+        <Form
+            scope="settings"
+            elements={[{ attribute: 'title' }]}
+            onSubmit={jest.fn()}
+        />
+    );
+    expect(screen.getByTestId('settings-title-element')).not.toHaveClass(
+        'form-group--label-above',
+        'form-group--label-beside'
+    );
+});
+
+test('file pickers inherit label position and allow field overrides', () => {
+    const { rerender } = render(
+        <Form
+            scope="upload"
+            labelPosition="beside"
+            elements={elements}
+            onSubmit={jest.fn()}
+        />
+    );
+    expect(
+        screen.getByLabelText('activerecord.attributes.upload.file', {
+            selector: 'input',
+        }).parentElement
+    ).toHaveClass('FileInputField--label-beside');
+    rerender(
+        <Form
+            scope="upload"
+            labelPosition="beside"
+            elements={[{ ...elements[0], labelPosition: 'above' }]}
+            onSubmit={jest.fn()}
+        />
+    );
+    expect(
+        screen.getByLabelText('activerecord.attributes.upload.file', {
+            selector: 'input',
+        }).parentElement
+    ).toHaveClass('FileInputField--label-above');
+});
+
+test('switch fields toggle without submitting and submit boolean values', () => {
+    const onSubmit = jest.fn();
+    render(
+        <Form
+            scope="settings"
+            elements={[{ attribute: 'enabled', elementType: 'switch' }]}
+            onSubmit={onSubmit}
+        />
+    );
+    const control = screen.getByRole('switch', {
+        name: 'activerecord.attributes.settings.enabled',
+    });
+    fireEvent.click(control);
+    expect(control).toHaveAttribute('aria-checked', 'true');
+    fireEvent.click(control);
+    expect(control).toHaveAttribute('aria-checked', 'false');
+    expect(onSubmit).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'submit' }));
+    expect(onSubmit).toHaveBeenCalledWith(
+        { settings: { enabled: false } },
+        undefined
+    );
+});
+
+test('pending requests block button and keyboard submission', () => {
+    const onSubmit = jest.fn();
+    render(<Form scope="upload" elements={[]} onSubmit={onSubmit} fetching />);
+    expect(screen.getByRole('button', { name: 'submit' })).toBeDisabled();
+    fireEvent.submit(screen.getByTestId('upload-form'));
+    expect(onSubmit).not.toHaveBeenCalled();
+});
 
 function selectReplacement() {
     const replacement = new File(['replacement'], 'replacement.png', {

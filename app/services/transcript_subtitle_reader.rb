@@ -5,11 +5,26 @@ class TranscriptSubtitleReader
   EXTENSIONS = %w[vtt srt].freeze
   VTT_TIMESTAMP = /\A(?:(\d{2,}):)?(\d{2}):(\d{2})\.(\d{3})\z/
   SRT_TIMESTAMP = /\A(\d+):(\d{1,2}):(\d{1,2}),(\d{3})\z/
+  SPEAKER_TAG = /<v (\S+)>/
 
   # @param file_path [String] Path to the VTT or SRT upload
   def initialize(file_path)
     @file_path = file_path
     @vtt = File.extname(file_path).strip.casecmp?('.vtt')
+  end
+
+  # Reads explicit VTT voice tags independently of cue timing, excluding metadata blocks.
+  # @return [Array<String>] Unique designations supported by the subtitle importer
+  def speaker_designations
+    return [] unless @vtt
+
+    # Read UTF-8 text, stripping an optional BOM, and normalize CRLF/CR line endings to LF.
+    # Blank lines separate VTT blocks; inspect each block without parsing its timestamps.
+    File.read(@file_path, encoding: 'bom|utf-8').gsub(/\r\n?/, "\n").split(/\n\s*\n/).flat_map do |block|
+      next [] if block.strip.match?(/\A(?:WEBVTT|NOTE(?:[ \t]|\n|\z)|STYLE(?:\n|\z)|REGION(?:\n|\z))/)
+
+      block.scan(SPEAKER_TAG).flatten
+    end.uniq
   end
 
   # @return [Array<Hash>] Validated cue rows ready for the transcript writer
@@ -22,10 +37,10 @@ class TranscriptSubtitleReader
       # WebVTT keeps the file header in its own block before the first cue.
       header = blocks.shift
       unless header&.first&.first&.match?(/\AWEBVTT(?:[ \t]|\n|\z)/)
-        raise Timecode::ImportFormatError, 'Line 1: A WebVTT file must start with WEBVTT.'
+        raise Timecode::ImportFormatError.new(ImportValidation.issue('subtitle.vtt_header', location: { line: 1 }))
       end
       if (cue_line = header.drop(1).find { |text, _| text.include?('-->') })
-        raise Timecode::ImportFormatError, "Line #{cue_line.last}: Add a blank line before the first WebVTT cue."
+        raise Timecode::ImportFormatError.new(ImportValidation.issue('subtitle.header_spacing', location: { line: cue_line.last }))
       end
     end
 
@@ -38,10 +53,10 @@ class TranscriptSubtitleReader
       # A cue can start with its timing line or have an identifier on the line above.
       timing_index = first_line.include?('-->') || first_line.match?(/\A\d+[:.,]/) ? 0 : 1
       timing, line = block[timing_index] || block.last
-      location = "Line #{line}"
+      location = { line: line }
       start_value, arrow, end_value = timing.partition('-->')
       if arrow.empty?
-        errors << "#{location}: Expected cue start and end timestamps separated by -->."
+        errors << ImportValidation.issue('subtitle.timing_line', location: location)
         next
       end
 
@@ -54,7 +69,7 @@ class TranscriptSubtitleReader
 
       duration = finish.last - start.last
       unless duration.positive?
-        errors << "#{location}: Cue end #{end_value.inspect} must be later than start #{start_value.inspect}."
+        errors << ImportValidation.issue('subtitle.interval', params: { start: start_value, end: end_value }, location: location)
         next
       end
 
@@ -65,16 +80,16 @@ class TranscriptSubtitleReader
       {
         timecode: start.first,
         duration: duration / 1000.0,
-        speaker: text[/<v (\S+)>/, 1],
+        speaker: text[SPEAKER_TAG, 1],
         transcript: text.sub(/<v \S+> /, ''),
         location: location,
-        original: start_value.inspect
+        original: start_value
       }
     end
 
     # Send one report for the entire file before the importer can write any segments.
-    raise Timecode::ImportFormatError, errors.join("\n") if errors.any?
-    raise Timecode::ImportFormatError, 'No subtitle cues found. Add at least one cue and upload the file again.' if rows.empty?
+    raise Timecode::ImportFormatError.new(errors) if errors.any?
+    raise Timecode::ImportFormatError.new(ImportValidation.issue('subtitle.empty')) if rows.empty?
 
     rows
   end
@@ -85,18 +100,14 @@ class TranscriptSubtitleReader
   #
   # @param value [String, nil] Source timestamp
   # @param field [String] Cue boundary name
-  # @param location [String] Source line description
-  # @param errors [Array<String>] Diagnostics for the file
+  # @param location [Hash] Source line
+  # @param errors [Array<Hash>] Structured diagnostics for the file
   # @return [Array, nil] Canonical timestamp and integer milliseconds, or nil on failure
   def timestamp(value, field, location, errors)
     match = (@vtt ? VTT_TIMESTAMP : SRT_TIMESTAMP).match(value.to_s)
     unless match
-      expected = if @vtt
-                   'Use HH:MM:SS.mmm or MM:SS.mmm, for example 00:01:54.000.'
-                 else
-                   'Use HH:MM:SS,mmm, for example 00:01:54,000.'
-                 end
-      raise Timecode::ImportFormatError, expected
+      code = @vtt ? 'subtitle.vtt_format' : 'subtitle.srt_format'
+      raise Timecode::ImportFormatError.new(ImportValidation.issue(code))
     end
 
     # A short WebVTT timestamp has no hours capture. nil.to_i supplies zero.
@@ -105,7 +116,7 @@ class TranscriptSubtitleReader
     canonical = Timecode.parse_import("#{canonical}.#{match[4]}")
     [canonical, ((hours * 60 + minutes) * 60 + seconds) * 1000 + milliseconds]
   rescue Timecode::ImportFormatError => e
-    errors << "#{location}: Invalid cue #{field} timestamp #{value.to_s.truncate(100).inspect}. #{e.message}"
+    errors.concat(ImportValidation.contextualize(e.issues, value: value, location: location.merge(field: field)))
     nil
   end
 end

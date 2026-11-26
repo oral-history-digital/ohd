@@ -15,22 +15,11 @@ class TranscriptSegmentImport
   # @raise [Timecode::ImportFormatError] If a timecode cannot be matched or saved
   def call(rows)
     @interview.with_lock(requires_new: true) do
+      rows = validate!(rows)
       (@options[:contributions_attributes] || {}).each_value do |attributes|
         @interview.contributions.find(attributes[:id]).update!(speaker_designation: attributes[:speaker_designation])
       end
-
-      speakers = @interview.contributions.reload.select { |contribution| contribution.speaker_designation.present? }
-      speakers_by_designation = speakers.group_by(&:speaker_designation)
-      rows.each do |row|
-        row[:speaker_ids] = speakers_by_designation.fetch(row[:speaker], []).map(&:person_id).uniq
-        row[:speaker_id] = row[:speaker_ids].first
-      end
-
-      if @options[:delete_existing]
-        @tape.segments.each(&:destroy!)
-      else
-        match_segments(rows)
-      end
+      @tape.segments.each(&:destroy!) if @options[:delete_existing]
 
       rows.each do |row|
         speaker_id = row[:speaker_id]
@@ -45,10 +34,29 @@ class TranscriptSegmentImport
       rescue ActiveRecord::RecordInvalid => e
         raise unless e.record.errors[:timecode].any?
 
-        raise Timecode::ImportFormatError,
-              "#{row[:location]}: start timecode #{row[:original]}. #{e.record.errors[:timecode].join('. ')}"
+        raise Timecode::ImportFormatError.new(ImportValidation.issue(
+          'timecode.save_failed', params: { value: row[:original] }, location: row[:location]
+        ))
       end
     end
+  end
+
+  # Resolves speakers and existing targets without saving or deleting records.
+  #
+  # @param rows [Array<Hash>] Parsed transcript rows
+  # @return [Array<Hash>] Copies of the rows with speaker IDs and update targets
+  # @raise [Timecode::ImportFormatError] If a row has an ambiguous target
+  def validate!(rows)
+    rows = rows.map { |row| row.except(:segment, :speaker_ids, :speaker_id) }
+    speakers = TranscriptImportContributions.resolve(@interview, @options[:contributions_attributes])
+    speakers_by_designation = speakers.select { |speaker| speaker.speaker_designation.present? }
+                                      .group_by(&:speaker_designation)
+    rows.each do |row|
+      row[:speaker_ids] = speakers_by_designation.fetch(row[:speaker], []).map(&:person_id).uniq
+      row[:speaker_id] = row[:speaker_ids].first
+    end
+    match_segments(rows) unless @options[:delete_existing]
+    rows
   end
 
   private
@@ -79,12 +87,13 @@ class TranscriptSegmentImport
            (candidates.empty? || matches.one?)
           row[:segment] = matches.first
         else
-          errors << "#{row[:location]}: timecode #{row[:original]} is shared. " \
-                    'Use a recognized speaker designation that identifies a single segment and appears once at this timecode in the file.'
+          errors << ImportValidation.issue(
+            'segment.ambiguous', params: { value: row[:original] }, location: row[:location]
+          )
         end
       end
     end
 
-    raise Timecode::ImportFormatError, errors.join("\n") if errors.any?
+    raise Timecode::ImportFormatError.new(errors) if errors.any?
   end
 end

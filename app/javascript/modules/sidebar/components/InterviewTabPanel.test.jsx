@@ -21,9 +21,9 @@ jest.mock('modules/gallery', () => ({ GalleryContainer: () => null }));
 jest.mock('modules/help-text', () => ({ HelpText: () => null }));
 jest.mock('modules/interview-actions', () => ({
     DestroyTranscript: () => null,
-    MarkTextFormContainer: () => null,
-    UploadEditTableContainer: () => null,
-    UploadTranscriptContainer: () => null,
+    MarkTextForm: () => null,
+    UploadEditTable: () => null,
+    UploadTranscript: () => null,
 }));
 jest.mock('modules/interview-map', () => ({
     InterviewMap: () => <p>Interview map</p>,
