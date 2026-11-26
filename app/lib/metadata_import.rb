@@ -61,8 +61,7 @@ class MetadataImport
       pseudo_links: row[:link_to_interview],
     }
 
-    interview = Interview.find_by_archive_id(row[:archive_id]) ||
-      (row[:signature_original] && Interview.find_by_signature_original(row[:signature_original]))
+    interview = Interview.find_by_archive_id(row[:archive_id])
 
     interview_languages_attributes = []
 
