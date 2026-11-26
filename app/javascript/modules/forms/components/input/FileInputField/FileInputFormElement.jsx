@@ -7,6 +7,9 @@ import FileInputField from './FileInputField';
 /**
  * Connects FileInputField to the generic Form element API.
  * Pass `onRemoveCurrent` through when a parent must remove a persisted file.
+ * @param {Object} props - File field configuration and form callbacks.
+ * @param {'above'|'beside'} [props.labelPosition] - Label layout inherited from the form or overridden by the field.
+ * @returns {React.ReactElement} File picker connected to form state.
  */
 export default function FileInputFormElement({
     scope,
@@ -16,6 +19,7 @@ export default function FileInputFormElement({
     currentFiles,
     label,
     labelKey,
+    labelPosition,
     help,
     accept,
     maxSize,
@@ -67,6 +71,9 @@ export default function FileInputFormElement({
 
     return (
         <FileInputField
+            className={
+                labelPosition && `FileInputField--label-${labelPosition}`
+            }
             id={id}
             name={attribute}
             label={labelText}
@@ -116,6 +123,7 @@ FileInputFormElement.propTypes = {
     ]),
     label: PropTypes.string,
     labelKey: PropTypes.string,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     help: PropTypes.node,
     accept: PropTypes.oneOfType([
         PropTypes.string,

@@ -20,7 +20,7 @@
 <% if @error %>
   <p>Es gab folgende Fehlermeldung:</p>
   <% if @error.is_a?(Timecode::ImportFormatError) %>
-    <%= safe_join(@error.message.lines.map(&:chomp), tag.br) %>
+    <%= safe_join(@import_error_message.lines.map(&:chomp), tag.br) %>
   <% else %>
     <%= @error.message %>
     <%= @error.backtrace[0..5] %>

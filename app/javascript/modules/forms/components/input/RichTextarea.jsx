@@ -5,6 +5,7 @@ import RichTextEditor from 'react-rte-18support';
 
 import Element from '../shared/Element';
 
+/** Rich text field forwarding label layout and validation to the shared wrapper. */
 export default class RichTextarea extends Component {
     constructor(props) {
         super(props);
@@ -50,6 +51,7 @@ export default class RichTextarea extends Component {
                 attribute={this.props.attribute}
                 label={this.props.label}
                 labelKey={this.props.labelKey}
+                labelPosition={this.props.labelPosition}
                 showErrors={this.props.showErrors}
                 className={this.props.className}
                 hidden={this.props.hidden}
@@ -90,6 +92,7 @@ RichTextarea.propTypes = {
     locale: PropTypes.string,
     label: PropTypes.string,
     labelKey: PropTypes.string,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     showErrors: PropTypes.bool,
     className: PropTypes.string,
     hidden: PropTypes.bool,

@@ -414,6 +414,10 @@ class ApplicationController < ActionController::Base
         collection_visible: collection_visible,
         cache_key_suffix: "#{opts[:cache_key_suffix]}-collection-visible-v1-#{collection_visible}"
       )
+      # Tape changes need not update the interview timestamp used by this cache.
+      if [nil, 'Interview', 'InterviewUpdate'].include?(opts[:serializer_name])
+        opts = opts.merge(cache_key_suffix: "#{opts[:cache_key_suffix]}-tape-numbers-v1-#{data.tape_numbers.join(',')}")
+      end
     end
 
     instance_setting_cache_key = data.is_a?(Project) ?

@@ -1,3 +1,90 @@
+.Form .form-group.form-group--label-above,
+.Form .form-group.form-group--label-beside {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem;
+
+  &.hidden {
+    display: none;
+  }
+
+  &::before,
+  &::after {
+    content: none;
+  }
+
+  > .form-label,
+  > .form-input {
+    float: none;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  > .form-label label {
+    float: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  > .form-input > input:not([type='checkbox']):not([type='radio']),
+  > .form-input > select,
+  > .form-input > textarea,
+  > .form-input > .richtextarea {
+    float: none;
+    width: 100%;
+  }
+
+  .help-block {
+    margin-left: 0;
+  }
+}
+
+@include screen-l {
+  .Form .form-group.form-group--label-beside {
+    grid-template-columns: 25% minmax(0, 1fr);
+    column-gap: 3%;
+
+    > .help-block {
+      grid-column: 2;
+    }
+  }
+}
+
+// The file picker owns its markup rather than using the shared Element wrapper.
+.Form .FileInputField--label-above,
+.Form .FileInputField--label-beside {
+  > .FormLabel {
+    float: none;
+    width: 100%;
+    margin: 0 0 0.5rem;
+    padding: 0;
+  }
+
+  > .help-block {
+    margin-left: 0;
+  }
+}
+
+@include screen-l {
+  .Form .FileInputField--label-beside {
+    display: grid;
+    grid-template-columns: 25% minmax(0, 1fr);
+    column-gap: 3%;
+    row-gap: 0.5rem;
+
+    > .FormLabel {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    > :not(.FormLabel):not(.FileInputField-nativeInput) {
+      grid-column: 2;
+    }
+  }
+}
+
 .Form-footer {
   display: flex;
   flex-direction: column;

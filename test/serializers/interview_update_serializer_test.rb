@@ -40,4 +40,12 @@ class InterviewUpdateSerializerTest < ActiveSupport::TestCase
 
     assert_equal interview.properties, serializer.attributes[:properties]
   end
+
+  test 'full and update responses include actual tape numbers in order' do
+    interview.tapes.first.update_column(:number, 12)
+    Tape.create!(interview: interview, number: 3, media_id: "#{interview.archive_id}_tape_selection_3")
+
+    assert_equal [3, 12], InterviewSerializer.new(interview).attributes[:tape_numbers]
+    assert_equal [3, 12], InterviewUpdateSerializer.new(interview, changes: []).attributes[:tape_numbers]
+  end
 end

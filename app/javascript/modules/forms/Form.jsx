@@ -24,7 +24,7 @@ import {
     NestedScope,
     RegistryEntrySelect,
     SelectField,
-    SpeakerDesignationInputs,
+    SwitchField,
     Textarea,
 } from './components';
 import { useFormState } from './hooks';
@@ -37,12 +37,19 @@ const elementTypeToComponent = {
     registryEntryTreeSelect: RegistryTreeSelect,
     richTextEditor: RichTextEditor,
     select: SelectField,
-    speakerDesignationInputs: SpeakerDesignationInputs,
+    switch: SwitchField,
     textarea: Textarea,
     extra: Extra,
     fileInput: FileInputFormElement,
 };
 
+/**
+ * Renders validated fields and submission feedback.
+ * @param {Object} props - Field definitions, initial values, and submission callbacks.
+ * @param {Array<Object>} props.elements - Field definitions; component may override the standard renderer for non-localized fields.
+ * @param {'above'|'beside'} [props.labelPosition] - Default label layout; fields may override it. Omit to preserve existing styles.
+ * @returns {React.ReactElement} Form controls and feedback.
+ */
 export default function Form({
     buttonFullWidth = false,
     children,
@@ -55,6 +62,7 @@ export default function Form({
     hasValidationErrors = false,
     helpTextCode,
     index,
+    labelPosition,
     nested,
     nestedScopeProps,
     notification,
@@ -197,6 +205,7 @@ export default function Form({
 
     function handleSubmit(event) {
         event.preventDefault();
+        if (fetching) return;
         touchAllFields();
 
         if (!valid()) {
@@ -246,6 +255,7 @@ export default function Form({
 
     function elementComponent(element) {
         const preparedProps = { ...element };
+        preparedProps.labelPosition = element.labelPosition ?? labelPosition;
         preparedProps.scope = element.scope || scope;
         preparedProps.showErrors =
             (touched[element.attribute] || submitted) &&
@@ -268,14 +278,13 @@ export default function Form({
             preparedProps.type = 'text';
         }
 
-        if (preparedProps.multiLocale) {
-            return createElement(MultiLocaleWrapper, preparedProps);
-        } else {
-            return createElement(
-                elementTypeToComponent[preparedProps.elementType],
-                preparedProps
-            );
-        }
+        return createElement(
+            preparedProps.multiLocale
+                ? MultiLocaleWrapper
+                : preparedProps.component ||
+                      elementTypeToComponent[preparedProps.elementType],
+            preparedProps
+        );
     }
 
     return (
@@ -413,12 +422,14 @@ Form.propTypes = {
             accept: PropTypes.string,
             condition: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
             elementType: PropTypes.string,
+            component: PropTypes.elementType,
             hidden: PropTypes.bool,
             optional: PropTypes.bool,
             multiLocale: PropTypes.bool,
             validate: PropTypes.func,
             scope: PropTypes.string,
             group: PropTypes.string,
+            labelPosition: PropTypes.oneOf(['above', 'beside']),
         })
     ).isRequired,
     fetching: PropTypes.bool,
@@ -427,6 +438,7 @@ Form.propTypes = {
     hasValidationErrors: PropTypes.bool,
     helpTextCode: PropTypes.string,
     index: PropTypes.number,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     nested: PropTypes.bool,
     nestedScopeProps: PropTypes.array,
     notification: PropTypes.shape({

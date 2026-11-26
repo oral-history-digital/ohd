@@ -1,10 +1,24 @@
 /* eslint-disable react/prop-types */
 import { act, fireEvent, render, screen } from '@testing-library/react';
+import { submitData as submitDataAction } from 'modules/data';
 import { Form } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
 import MarkTextForm from '../interview-actions/MarkTextForm';
 import Annotation from './Annotation';
+
+jest.mock('modules/archive', () => ({
+    getArchiveId: (state) => state.archive.archiveId,
+}));
+jest.mock('modules/data', () => ({
+    getCurrentInterview: (state) =>
+        state.data.interviews[state.archive.archiveId],
+    getLanguages: (state) => state.data.languages,
+    getMarkTextStatus: (state) => state.data.statuses.mark_text,
+    submitData: jest.fn(),
+}));
 
 let mockAuthorized;
 const mockClose = jest.fn();
@@ -70,13 +84,34 @@ test.each(['/pilot/en', '/de'])(
 
 test('preserves text-marking languages, public interview ID, nested replacement data, and status', () => {
     const submitData = jest.fn();
-    const props = {
-        submitData,
-        interview: { archive_id: 'pilot001', alpha3s: ['eng', 'deu'] },
-        archiveId: 'pilot001',
-        markTextStatus: {},
+    const interview = { archive_id: 'pilot001', alpha3s: ['eng', 'deu'] };
+    const initial = {
+        archive: { archiveId: 'pilot001' },
+        data: {
+            interviews: { pilot001: interview },
+            statuses: { mark_text: {} },
+        },
     };
-    const { rerender } = render(<MarkTextForm {...props} />);
+    const store = createStore((state = initial, action) =>
+        action.type === 'MARK_STATUS'
+            ? {
+                  ...state,
+                  data: {
+                      ...state.data,
+                      statuses: { mark_text: action.status },
+                  },
+              }
+            : state
+    );
+    submitDataAction.mockImplementation((...args) => {
+        submitData(...args);
+        return { type: 'MARK_TEXT' };
+    });
+    render(
+        <Provider store={store}>
+            <MarkTextForm />
+        </Provider>
+    );
     const form = Form.mock.calls.at(-1)[0];
     expect(form.values).toEqual({ id: 'pilot001' });
     expect(form.elements[0].values).toEqual({
@@ -85,7 +120,7 @@ test('preserves text-marking languages, public interview ID, nested replacement 
     });
     expect(form.nestedScopeProps[0]).toMatchObject({
         scope: 'text',
-        parent: props.interview,
+        parent: interview,
     });
     const params = {
         mark_text: {
@@ -97,11 +132,11 @@ test('preserves text-marking languages, public interview ID, nested replacement 
     act(() => form.onSubmit(params));
     expect(submitData).toHaveBeenCalledWith({ pathBase: '/pilot/en' }, params);
     expect(screen.queryByText('Mark text form')).not.toBeInTheDocument();
-    rerender(
-        <MarkTextForm
-            {...props}
-            markTextStatus={{ for_interviews_pilot001: 'processing' }}
-        />
+    act(() =>
+        store.dispatch({
+            type: 'MARK_STATUS',
+            status: { for_interviews_pilot001: 'processing' },
+        })
     );
     expect(screen.getByText('edit.text.processing')).toBeInTheDocument();
 });

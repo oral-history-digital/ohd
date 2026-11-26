@@ -1,5 +1,6 @@
 class InterviewSerializer < InterviewBaseSerializer
   attributes [
+    :tape_numbers,
     :last_segments_ids,
     :first_segments_ids,
     :workflow_state,

@@ -6,6 +6,12 @@ import PropTypes from 'prop-types';
 import { useTouchFieldOnBlur } from '../../hooks';
 import Element from '../shared/Element';
 
+/**
+ * Renders a select with form callbacks, labeling, and validation feedback.
+ * @param {Object} props - Field configuration and form callbacks.
+ * @param {'above'|'beside'} [props.labelPosition] - Label layout inherited from the form or overridden by the field.
+ * @returns {React.ReactElement} Form field and feedback.
+ */
 export default function SelectField({
     scope,
     attribute,
@@ -16,6 +22,7 @@ export default function SelectField({
     validate,
     label,
     labelKey,
+    labelPosition,
     showErrors,
     handleChange,
     handlechangecallback,
@@ -136,6 +143,7 @@ export default function SelectField({
             attribute={attribute}
             label={label}
             labelKey={labelKey}
+            labelPosition={labelPosition}
             htmlFor={`${scope}_${id ? id : attribute}`}
             showErrors={showErrors}
             className={className}
@@ -177,6 +185,7 @@ SelectField.propTypes = {
     validate: PropTypes.func,
     label: PropTypes.string,
     labelKey: PropTypes.string,
+    labelPosition: PropTypes.oneOf(['above', 'beside']),
     showErrors: PropTypes.bool,
     handleChange: PropTypes.func,
     handlechangecallback: PropTypes.func,

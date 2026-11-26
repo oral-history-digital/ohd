@@ -7,23 +7,45 @@ class EditTableTimecodeImportTest < ActiveSupport::TestCase
     @interview = DataHelper.interview_with_everything(@project, 1, true)
   end
 
-  test 'reports all malformed timestamps in one email and preserves the interview' do
-    original = @interview.segments.pluck(:id, :timecode)
-    tapes = @interview.tapes.pluck(:id)
-    with_table(['00:01:54.00', '00:61:49.000']) do |path|
-      assert_difference 'ActionMailer::Base.deliveries.count', 1 do
-        ReadEditTableJob.perform_now(
-          interview: @interview, file_path: path, locale: 'de',
-          user: User.find_by!(email: 'alice@example.com'), only_references: 'false'
-        )
-      end
+  test 'validation preserves tapes and uses proposed speaker designations without saving' do
+    original = @interview.tapes.pluck(:id)
+    contribution = @interview.contributions.first
+    designation = contribution.speaker_designation
+    with_table(['00:00:01.000']) do |path|
+      importer = EditTableImport.new(@interview, path, :de, false,
+        contributions_attributes: { '0' => { id: contribution.id, speaker_designation: 'PROPOSED' } })
+      rows = importer.validate!
+      assert_equal '00:00:01.000', rows.first[:timecode]
+      assert_equal 'PROPOSED', importer.contributions[contribution.person_id]
     end
-    assert_equal original, @interview.segments.pluck(:id, :timecode)
-    assert_equal tapes, @interview.tapes.pluck(:id)
-    body = ActionMailer::Base.deliveries.last.text_part.decoded
-    assert_includes body, 'Row 2'
-    assert_includes body, 'Row 3'
-    assert_includes body, 'Minutes must be between 00 and 59'
+    assert_equal original, @interview.tapes.pluck(:id)
+    assert_equal designation, contribution.reload.speaker_designation
+  end
+
+  test 'reports all malformed timestamps in one email and preserves the interview' do
+    reported = []
+    render_codes = lambda do |issues, _locale|
+      reported.replace(issues)
+      issues.map { |issue| issue[:code] }.join("\n")
+    end
+    ImportValidationMessages.stub(:render, render_codes) do
+      original = @interview.segments.pluck(:id, :timecode)
+      tapes = @interview.tapes.pluck(:id)
+      with_table(['00:01:54.00', '00:61:49.000']) do |path|
+        assert_difference 'ActionMailer::Base.deliveries.count', 1 do
+          ReadEditTableJob.perform_now(
+            interview: @interview, file_path: path, locale: 'de',
+            user: User.find_by!(email: 'alice@example.com'), only_references: 'false'
+          )
+        end
+      end
+      assert_equal original, @interview.segments.pluck(:id, :timecode)
+      assert_equal tapes, @interview.tapes.pluck(:id)
+      body = ActionMailer::Base.deliveries.last.text_part.decoded
+      assert_equal %w[timecode.milliseconds_format timecode.minutes_out_of_range], reported.map { |issue| issue[:code] }
+      assert_equal [2, 3], reported.map { |issue| issue[:location][:row] }
+      reported.each { |issue| assert_includes body, issue[:code] }
+    end
   end
 
   test 'rolls back deleted tapes when a write fails after validation' do
@@ -44,7 +66,7 @@ class EditTableTimecodeImportTest < ActiveSupport::TestCase
       error = assert_raises(Timecode::ImportFormatError) do
         EditTableImport.new(@interview, path, :de, true).process
       end
-      assert_includes error.message, 'one existing segment'
+      assert_equal 'segment.not_unique', error.issues.first[:code]
     end
   end
 
