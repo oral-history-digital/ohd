@@ -707,4 +707,4 @@ DEPENDENCIES
   workflow-activerecord (~> 6.0)
 
 BUNDLED WITH
-   2.5.11
+   2.5.22
