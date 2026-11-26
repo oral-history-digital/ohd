@@ -86,6 +86,8 @@ test('transcript language options exclude the secondary interview language and i
         2: languages[2],
         4: languages[4],
     });
+    expect(Form.mock.lastCall[0].values.transcript_language_id).toBe('');
+    expect(languageField().withEmpty).toBe(true);
     rerender(
         <UploadTranscript
             archiveId="adg001"
@@ -96,6 +98,7 @@ test('transcript language options exclude the secondary interview language and i
         />
     );
     expect(languageField().values).toEqual({});
+    expect(Form.mock.lastCall[0].values.transcript_language_id).toBe('');
 });
 
 test.each([UploadTranscript, UploadEditTable])(

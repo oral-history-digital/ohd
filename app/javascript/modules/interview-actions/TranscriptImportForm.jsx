@@ -91,6 +91,7 @@ export default function TranscriptImportForm({
             assignedLanguageIds.includes(String(id))
         )
     );
+    const availableLanguageIds = Object.keys(assignedLanguages);
 
     return (
         <>
@@ -105,6 +106,10 @@ export default function TranscriptImportForm({
                 values={{
                     archive_id: archiveId,
                     timecode_frame_rate: '25',
+                    transcript_language_id:
+                        availableLanguageIds.length === 1
+                            ? availableLanguageIds[0]
+                            : '',
                     tape_number:
                         tapeNumbers.length === 1 ? String(tapeNumbers[0]) : '',
                     contributions_attributes: contributions,
@@ -125,7 +130,7 @@ export default function TranscriptImportForm({
                         elementType: 'select',
                         attribute: 'transcript_language_id',
                         values: assignedLanguages,
-                        withEmpty: true,
+                        withEmpty: availableLanguageIds.length !== 1,
                         validate: function (v) {
                             return v !== '';
                         },

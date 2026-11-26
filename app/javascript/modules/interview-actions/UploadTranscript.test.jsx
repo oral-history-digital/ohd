@@ -96,15 +96,18 @@ function openForm(submitData, tapeNumbers = [1]) {
             target: { files: [new File(['text'], 'transcript.csv')] },
         }
     );
-    fireEvent.change(
-        within(dialog).getByLabelText(
-            /activerecord.attributes.transcript.transcript_language_id/,
-            { selector: 'select' }
-        ),
-        { target: { value: '1' } }
-    );
     return dialog;
 }
+
+test('preselects the only eligible language without an empty option', () => {
+    const dialog = openForm(jest.fn());
+    const language = within(dialog).getByLabelText(
+        /activerecord.attributes.transcript.transcript_language_id/,
+        { selector: 'select' }
+    );
+    expect(language).toHaveValue('1');
+    expect(within(language).getAllByRole('option')).toHaveLength(1);
+});
 
 test('submit checks first and queues automatically after a valid response', async () => {
     const submitData = jest.fn();
