@@ -15,6 +15,22 @@ end
 
 Selenium::WebDriver.logger.level = :error
 
+# Capybara 3.40 uses a wildcard origin that Chrome 158 no longer accepts.
+# Discard the browser to clear storage for every visited project domain.
+module ChromeSessionReset
+  # Resets the browser session without the unsupported wildcard CDP command.
+  # @return [void]
+  def reset!
+    return super unless @browser && chromedriver_version >= 158
+
+    quit
+  end
+end
+
+if Gem.loaded_specs.fetch('capybara').version == Gem::Version.new('3.40.0')
+  Capybara::Selenium::Driver::ChromeDriver.prepend(ChromeSessionReset)
+end
+
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include FormTestingHelper
   include FormFieldsDiscoveryHelper
