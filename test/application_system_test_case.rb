@@ -14,6 +14,9 @@ Capybara.configure do |c|
 end
 
 Selenium::WebDriver.logger.level = :error
+if ENV['SE_CHROMEDRIVER'].present?
+  Selenium::WebDriver::Chrome::Service.driver_path = ENV['SE_CHROMEDRIVER']
+end
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include FormTestingHelper
@@ -40,6 +43,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   driven_by :selenium, using: :chrome, screen_size: [1400, 1400] do |options|
     chrome_opts.each { |arg| options.add_argument(arg) }
+    options.binary = ENV['CHROME_BIN'] if ENV['CHROME_BIN'].present?
   end
 
   teardown do
