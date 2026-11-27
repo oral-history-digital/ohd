@@ -212,7 +212,19 @@ jobs:
           echo "Solr not ready yet, retrying... ($i)"
           sleep 1
           done
+      # Capybara 3.40's reset uses a wildcard origin rejected by Chrome 158.
+      # Remove this pin when https://github.com/teamcapybara/capybara/issues/2865 is fixed.
+      - name: Install compatible Chrome and ChromeDriver
+        id: chrome
+        uses: browser-actions/setup-chrome@48ad923757ca74d66703209fe939badbdf80f2f4 # v2.2.0
+        with:
+          chrome-version: '157.0.8103.78'
+          install-chromedriver: true
       - name: Run tests
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+          SE_CHROMEDRIVER: ${{ steps.chrome.outputs.chromedriver-path }}
+          CI_CHROME_VERSION: '157.0.8103.78'
         run: bin/test
       - name: Upload Capybara screenshots
         if: always() # always run, even if tests failed
