@@ -4,6 +4,7 @@ require 'application_system_test_case'
 class BrowserSessionResetTest < ApplicationSystemTestCase
   test 'reset clears browser state without replacing the browser' do
     visit '/en?checked_ohd_session=true'
+    assert_selector '.SessionButtons', wait: 15
     browser = page.driver.browser
     if ENV['CI_CHROME_VERSION'].present?
       assert_equal ENV['CI_CHROME_VERSION'], browser.capabilities.browser_version
@@ -20,6 +21,7 @@ class BrowserSessionResetTest < ApplicationSystemTestCase
     assert_same browser, page.driver.browser
 
     visit '/en?checked_ohd_session=true'
+    assert_selector '.SessionButtons', wait: 15
     assert_no_match(/(?:^|; )reset_test=/, page.evaluate_script('document.cookie'))
     assert_nil page.evaluate_script("localStorage.getItem('reset_test')")
   end

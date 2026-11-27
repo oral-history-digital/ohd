@@ -14,6 +14,9 @@ Capybara.configure do |c|
 end
 
 Selenium::WebDriver.logger.level = :error
+if ENV['SE_CHROMEDRIVER'].present?
+  Selenium::WebDriver::Chrome::Service.driver_path = ENV['SE_CHROMEDRIVER']
+end
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include FormTestingHelper
